@@ -1,33 +1,28 @@
 package it.spaghettisource.navaltrader.game.loop;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import it.spaghettisource.navaltrader.game.model.GameTime;
+import it.spaghettisource.navaltrader.game.GameData;
 
 public class LoopManager implements  Runnable {
 
 	static Log log = LogFactory.getLog(LoopManager.class.getName());
 	
-	private GameTime timeData;
-	private List<Updatable> entities;
+	private GameData gameData;
 	
 	private boolean pause;
 	private boolean shutdown;	
 	private int timeSleep;
 	private int timePass;		
 
-	public LoopManager() {
+	public LoopManager(GameData gameData) {
 		super();
-		timeData = new GameTime();
+		this.gameData = gameData;
 		pause = false;
 		shutdown = false;
-		timeSleep = 10;
+		timeSleep = 20;
 		timePass = 20;		
-		entities = new ArrayList<Updatable>();
 	}
 
 	public void run() {
@@ -39,11 +34,13 @@ public class LoopManager implements  Runnable {
 				Thread.sleep(timeSleep);
 				
 				if(!pause){
-					timeData.addMinuts(timePass);
-					log.debug("time:"+timeData.getTime());			
-					for (Updatable updatable : entities) {
-						updatable.update(timePass);
-					}
+					
+					gameData.getTime().addMinuts(timePass);
+					log.debug("time:"+gameData.getTime().getTime());			
+					//TODO add the loop to update all the entities
+//					for (Updatable updatable : entities) {
+//						updatable.update(timePass);
+//					}
 				}
 
 			} catch (InterruptedException e) {
@@ -70,16 +67,6 @@ public class LoopManager implements  Runnable {
 	public void setTimePass(int toSet){
 		timePass = toSet;
 	}
-	
-	public void addUpdatable(List<Updatable> toAdd){
-		entities.addAll(toAdd);
-	}
-	
-	public static void main(String[] args){
-		LoopManager manager = new LoopManager();
-		
-		(new Thread(manager)).start();
-		
-	}
+
 	
 }
