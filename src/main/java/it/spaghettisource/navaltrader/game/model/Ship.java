@@ -11,6 +11,7 @@ public class Ship implements Entity{
 	
 	private String type;
 	private String name;	
+	private Finance finance;
 	
 	private ShipStatus status;
 	
@@ -21,6 +22,13 @@ public class Ship implements Entity{
 	private float actualSpeed;	
 	private float maxSpeed;	
 	
+	
+	public Ship(String ShipName) {
+		
+		name = ShipName;
+		finance = new Finance();
+	}
+
 	
 	@Override	
 	public void update(int minutsPassed) {
@@ -99,8 +107,10 @@ public class Ship implements Entity{
 	public void setMaxSpeed(float maxSpeed) {
 		this.maxSpeed = maxSpeed;
 	}
-	
-	
 
+	public Finance getFinance() {
+		return finance;
+	}
 	
+		
 }
