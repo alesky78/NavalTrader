@@ -19,7 +19,7 @@ public class GameManager {
 		loopManager = new LoopManager(gameData);
 		
 	}
-
+	
 
 	public void startGame() {
 		(new Thread(loopManager)).start();
