@@ -21,19 +21,25 @@ import it.spaghettisource.navaltrader.game.GameManager;
 public class GameFrame extends JFrame  implements ActionListener{
 
 	static Log log = LogFactory.getLog(GameFrame.class.getName());
-	
+
+	//ui components
+	private JDesktopPane desktop;
+
+	//game components
 	private GameManager gameManager;
-	
-	
+	private JMenuBar menuBar;
+
+
+
 	public GameFrame(GameManager gameManager) {
 		super("Naval Trader");
-		
+
 		this.gameManager = gameManager;
-				
+
 		//frame.setIconImage(ImageIconFactory.getAppImage());        //TODO add App icon
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JDesktopPane desktop = new JDesktopPane();
+		desktop = new JDesktopPane();
 		//Make dragging a little faster but perhaps uglier.
 		desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);	        
 
@@ -41,7 +47,7 @@ public class GameFrame extends JFrame  implements ActionListener{
 		setContentPane(desktop);
 		pack();		
 		setResizable(true);
-		
+
 		//Centre and size the frame
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(screenSize.width/2-getSize().width/2, screenSize.height/2-getSize().height/2);	        
@@ -51,40 +57,72 @@ public class GameFrame extends JFrame  implements ActionListener{
 		int inset = 100;
 		setBounds(inset, inset,screenSize.width  - inset*2,screenSize.height - inset*2);
 
-		
+
 		setJMenuBar(createMenuBar());
 
 		//Display the window.
 		setVisible(true);
-		
-		
-	}
-	
-	private JMenuBar createMenuBar() {
-		JMenuBar menuBar = new JMenuBar();
 
-		//Set up the lone menu.
-		JMenu menu = new JMenu("Game");
+
+	}
+
+	private JMenuBar createMenuBar() {
+		menuBar = new JMenuBar();
+
+		JMenuItem menuItem;
+		JMenu menu; 
+
+		//Set up the Game menu.
+		menu = new JMenu("Game");
 		menuBar.add(menu);
 
-
-		JMenuItem menuItem = new JMenuItem("New");
+		menuItem = new JMenuItem("New");
 		menuItem.setMnemonic(KeyEvent.VK_N);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-		menuItem.setActionCommand("new");
+		menuItem.setActionCommand("New");
 		menuItem.addActionListener(this);
 		menu.add(menuItem);
 
+		menuItem = new JMenuItem("Quit");
+		menuItem.setMnemonic(KeyEvent.VK_N);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
+		menuItem.setActionCommand("Quit");
+		menuItem.addActionListener(this);
+		menu.add(menuItem);		
+
+		//Set up the Game menu.
+		menu = new JMenu("Report");
+		menuBar.add(menu);
+
+		menuItem = new JMenuItem("Office");
+		menuItem.setActionCommand("Office");
+		menuItem.addActionListener(this);
+		menu.add(menuItem);
+		
 		return menuBar;
 	}
 
 
-	
+
 	public void actionPerformed(ActionEvent event) {
-		  if ("new".equals(event.getActionCommand())) { 
-			  	gameManager.newGame("test");
-			  	gameManager.startGame();
-	        }		
+		if ("New".equals(event.getActionCommand())) { 
+			//quit old game if exist
+			gameManager.quitGame();
+			//start the new game
+			gameManager.newGame("test");
+			gameManager.startGame();
+		}else if ("Quit".equals(event.getActionCommand())) { 
+			gameManager.quitGame();
+		}else if ("Office".equals(event.getActionCommand())) { 
+			InternalFrameOffice frame = new InternalFrameOffice(gameManager);
+			frame.setVisible(true);
+			desktop.add(frame);
+	        try {
+	            frame.setSelected(true);
+	        } catch (java.beans.PropertyVetoException e) {}			
+		}    
+		
+		
 	}	 	
-	
+
 }

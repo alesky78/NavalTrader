@@ -20,11 +20,18 @@ public class GameManager {
 		
 	}
 	
-
 	public void startGame() {
 		(new Thread(loopManager)).start();
 	}
+	
+	public void quitGame() {
+		if(loopManager!=null) {
+			loopManager.shutdown();			
+		}
 
+	}	
+
+	
 	public static void main(String[] args){
 		GameManager manager = new GameManager();
 		manager.newGame("test");
