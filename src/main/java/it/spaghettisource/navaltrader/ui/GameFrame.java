@@ -17,6 +17,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.ui.event.EventManager;
+import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
 public class GameFrame extends JFrame  implements ActionListener{
 
@@ -24,17 +26,22 @@ public class GameFrame extends JFrame  implements ActionListener{
 
 	//ui components
 	private JDesktopPane desktop;
-
+	private JMenuBar menuBar;
+	
 	//game components
 	private GameManager gameManager;
-	private JMenuBar menuBar;
+	private EventManager eventManager;	
+	private InboundEventQueue eventQueue;	
 
 
 
-	public GameFrame(GameManager gameManager) {
+
+	public GameFrame(GameManager gameManager,InboundEventQueue eventQueue,EventManager eventManager) {
 		super("Naval Trader");
 
 		this.gameManager = gameManager;
+		this.eventQueue = eventQueue;
+		this.eventManager = eventManager;
 
 		//frame.setIconImage(ImageIconFactory.getAppImage());        //TODO add App icon
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -7,6 +7,8 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.GameFrame;
+import it.spaghettisource.navaltrader.ui.event.EventManager;
+import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
 public class Application {
 
@@ -16,6 +18,8 @@ public class Application {
 	public static void main(String[] args){
 
 		//initialize game structure
+		EventManager eventManager = new EventManager();
+		InboundEventQueue eventQueue = new InboundEventQueue(eventManager);		
 		GameManager gameManager = new GameManager();
 
 		//Make sure we have nice window decorations.
@@ -25,7 +29,7 @@ public class Application {
 		//creating and showing this application's GUI.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new GameFrame(gameManager);
+				new GameFrame(gameManager,eventQueue,eventManager);
 			}
 		});
 
