@@ -113,13 +113,26 @@ public class MainFrame extends JFrame  implements ActionListener{
 
 	public void actionPerformed(ActionEvent event) {
 		if ("New".equals(event.getActionCommand())) { 
+			
 			//quit old game if exist
 			gameManager.quitGame();
+			eventQueue.shutdownPublishEvents();		
+			eventManager.clearAllListeners();
+			//TODO close all internal frames
+
 			//start the new game
 			gameManager.newGame("test");
+			
 			gameManager.startGame();
-		}else if ("Quit".equals(event.getActionCommand())) { 
+			eventQueue.startQueue();
+			
+		}else if ("Quit".equals(event.getActionCommand())) {
+			
 			gameManager.quitGame();
+			eventQueue.shutdownPublishEvents();		
+			eventManager.clearAllListeners();
+			//TODO close all internal frames			
+			
 		}else if ("Office".equals(event.getActionCommand())) { 
 			InternalFrameOffice frame = new InternalFrameOffice(gameManager);
 			eventManager.register(frame);			

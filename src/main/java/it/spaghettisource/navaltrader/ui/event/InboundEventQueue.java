@@ -28,11 +28,15 @@ public class InboundEventQueue {
 		processor = new InboundEventQueuePublisher();
 		this.eventManager=  eventManager;
 
+	
+	}
+	
+	public void startQueue() {
 		Thread thread = new Thread(processor);
 		thread.setDaemon(true);
 		thread.start();
-		log.info("start inboud event queue");		
-	}
+		log.info("start inboud event queue");	
+	}	
 
 
 	public void put(Event event) {
@@ -44,7 +48,7 @@ public class InboundEventQueue {
 		}
 	}
 
-	public Event take() {
+	private Event take() {
 		Event event = null;
 
 		try {
@@ -57,7 +61,7 @@ public class InboundEventQueue {
 		return event;
 	}
 
-	public Event poll(long millis) {
+	private Event poll(long millis) {
 		Event event = null;
 
 		try {
@@ -129,12 +133,12 @@ public class InboundEventQueue {
 				
 				lastPass = System.currentTimeMillis();				
 
+				event = poll(millisBetweenUpdates);
 
-				while (isEmpty()) {
-					event = poll(millisBetweenUpdates);
+				if(event!=null){
+					fireEvent(event);					
 				}
 
-				fireEvent(event);
 				now = System.currentTimeMillis();
 
 				elapsed = now - lastPass;
