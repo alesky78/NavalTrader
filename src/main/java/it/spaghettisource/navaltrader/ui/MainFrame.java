@@ -20,9 +20,9 @@ import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.event.EventManager;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
-public class GameFrame extends JFrame  implements ActionListener{
+public class MainFrame extends JFrame  implements ActionListener{
 
-	static Log log = LogFactory.getLog(GameFrame.class.getName());
+	static Log log = LogFactory.getLog(MainFrame.class.getName());
 
 	//ui components
 	private JDesktopPane desktop;
@@ -36,7 +36,7 @@ public class GameFrame extends JFrame  implements ActionListener{
 
 
 
-	public GameFrame(GameManager gameManager,InboundEventQueue eventQueue,EventManager eventManager) {
+	public MainFrame(GameManager gameManager,InboundEventQueue eventQueue,EventManager eventManager) {
 		super("Naval Trader");
 
 		this.gameManager = gameManager;
@@ -122,6 +122,7 @@ public class GameFrame extends JFrame  implements ActionListener{
 			gameManager.quitGame();
 		}else if ("Office".equals(event.getActionCommand())) { 
 			InternalFrameOffice frame = new InternalFrameOffice(gameManager);
+			eventManager.register(frame);			
 			frame.setVisible(true);
 			desktop.add(frame);
 	        try {

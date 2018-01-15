@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
-import it.spaghettisource.navaltrader.ui.GameFrame;
+import it.spaghettisource.navaltrader.ui.MainFrame;
 import it.spaghettisource.navaltrader.ui.event.EventManager;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
@@ -29,7 +29,7 @@ public class Application {
 		//creating and showing this application's GUI.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new GameFrame(gameManager,eventQueue,eventManager);
+				new MainFrame(gameManager,eventQueue,eventManager);
 			}
 		});
 

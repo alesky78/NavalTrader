@@ -1,21 +1,29 @@
 package it.spaghettisource.navaltrader.ui;
 
-import javax.swing.JInternalFrame;
-
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.ui.event.Event;
+import it.spaghettisource.navaltrader.ui.event.EventType;
 
-public class InternalFrameOffice extends JInternalFrame {
+public class InternalFrameOffice extends InternalFrameAbstract {
 
 	private GameManager gameManager;
 	
 	public InternalFrameOffice(GameManager gameManager) {
-		super("Office", true, true, true, true);
-        setSize(300,300);
-        this.gameManager = gameManager; 
+		super(gameManager,"Office");
         
-        //Set the window's location.
-        setLocation(30,30);
-        
+	}
+
+
+	
+	
+	public void eventReceived(Event event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public EventType[] getEventsOfInterest() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
