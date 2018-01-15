@@ -1,28 +1,36 @@
 package it.spaghettisource.navaltrader.game.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Finance {
 
-	private List<FinancialEntry> profit;
-	private List<FinancialEntry> loss;	
+	private Map<FinancialEntryType,Integer> profit;
+	private Map<FinancialEntryType,Integer> loss;	
 	
 	public Finance() {
-		reset();	
+		profit = new HashMap<FinancialEntryType,Integer>();
+		loss = new HashMap<FinancialEntryType,Integer>();
 	}
 	
-	public void reset() {
-		profit = new ArrayList<FinancialEntry>();
-		loss = new ArrayList<FinancialEntry>();		
+	public void init() {
+		profit.clear();
+		profit.put(FinancialEntryType.SHIP_INCOME, 0);
+		
+		loss.clear();		
+		profit.put(FinancialEntryType.SHIP_REPAIR, 0);
+		profit.put(FinancialEntryType.SHIP_MAINTAINANCE, 0);
+		profit.put(FinancialEntryType.SHIP_FUEL, 0);		
 	}
 	
 	public void addProfit(FinancialEntry toAdd) {
-		profit.add(toAdd);
+		Integer mount = profit.get(toAdd.getType());
+		 profit.put(toAdd.getType(), mount+toAdd.getAmount());
 	}
 
 	public void addLoss(FinancialEntry toAdd) {
-		loss.add(toAdd);
+		Integer mount = loss.get(toAdd.getType());
+		loss.put(toAdd.getType(), mount+toAdd.getAmount());
 	}
 	
 }

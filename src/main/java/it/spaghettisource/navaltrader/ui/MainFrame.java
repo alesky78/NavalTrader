@@ -43,7 +43,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 		this.eventQueue = eventQueue;
 		this.eventManager = eventManager;
 
-		//frame.setIconImage(ImageIconFactory.getAppImage());        //TODO add App icon
+		setIconImage(ImageIconFactory.getAppImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		desktop = new JDesktopPane();

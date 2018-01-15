@@ -27,6 +27,7 @@ public class Ship implements Entity{
 		
 		name = ShipName;
 		finance = new Finance();
+		finance.init();
 	}
 
 	

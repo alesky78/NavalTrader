@@ -5,7 +5,6 @@ public enum FinancialEntryType {
 	SHIP_FUEL,
 	SHIP_REPAIR,
 	SHIP_MAINTAINANCE,
-	SHIP_TRANSPORT;
-	
+	SHIP_INCOME;
 	
 }

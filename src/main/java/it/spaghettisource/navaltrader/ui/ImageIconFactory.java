@@ -15,6 +15,8 @@ public class ImageIconFactory {
 
 	private static Log log = LogFactory.getLog(ImageIconFactory.class.getName());
 	public  static final int ICON_SIZE_BUTTON = 30;
+	public  static final int ICON_SIZE_TAB = 25;
+	public  static final int ICON_SIZE_FRAME = 20;		
 
 	private ImageIconFactory(){
 	}
@@ -34,6 +36,7 @@ public class ImageIconFactory {
 
 	}
 
+	
 	private static ImageIcon getImageIconByNameAndSize(String name,int size) {
 		return new ImageIcon(getImageByNameAndSize(name,size));
 	}
@@ -42,9 +45,17 @@ public class ImageIconFactory {
 		return getImageIconByNameAndSize(name, ICON_SIZE_BUTTON);
 	}
 
+	public static ImageIcon getForTab(String name) {
+		return getImageIconByNameAndSize(name, ICON_SIZE_TAB);
+	}
+
+	public static ImageIcon getForFrame(String name) {
+		return getImageIconByNameAndSize(name, ICON_SIZE_FRAME);
+	}
+	
 	public static Image getAppImage() {
 		try {
-			return ImageIO.read(ImageIconFactory.class.getResourceAsStream("/app.png"));
+			return ImageIO.read(ImageIconFactory.class.getResourceAsStream("/icon/ship.png"));
 		} catch (IOException e) {
 			log.error("error loading the app image for:"+e.getMessage(),e );
 			throw new RuntimeException(e);
