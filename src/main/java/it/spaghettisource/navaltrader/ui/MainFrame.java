@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.event.EventManager;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
+import it.spaghettisource.navaltrader.ui.office.InternalFrameOffice;
 
 public class MainFrame extends JFrame  implements ActionListener{
 
@@ -134,7 +135,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 			//TODO close all internal frames			
 			
 		}else if ("Office".equals(event.getActionCommand())) { 
-			InternalFrameOffice frame = new InternalFrameOffice(gameManager);
+			InternalFrameOffice frame = new InternalFrameOffice(gameManager,eventManager);
 			eventManager.register(frame);			
 			frame.setVisible(true);
 			desktop.add(frame);

@@ -23,14 +23,48 @@ public class Finance {
 		profit.put(FinancialEntryType.SHIP_FUEL, 0);		
 	}
 	
-	public void addProfit(FinancialEntry toAdd) {
-		Integer mount = profit.get(toAdd.getType());
-		 profit.put(toAdd.getType(), mount+toAdd.getAmount());
+	public void addProfit(FinancialEntryType type,int amount) {
+		Integer actual = profit.get(type);
+		profit.put(type, actual+amount);
 	}
 
-	public void addLoss(FinancialEntry toAdd) {
-		Integer mount = loss.get(toAdd.getType());
-		loss.put(toAdd.getType(), mount+toAdd.getAmount());
+	public void addLoss(FinancialEntryType type,int amount) {
+		Integer actual = loss.get(type);
+		loss.put(type, actual+amount);
 	}
+	
+	public Map<FinancialEntryType, Integer> getProfit() {
+		return profit;
+	}
+
+	public Map<FinancialEntryType, Integer> getLoss() {
+		return loss;
+	}
+	
+	public int getNetProfit(){
+		
+		int netProfit = 0;
+		
+		for (FinancialEntryType key : profit.keySet()) {
+			netProfit += profit.get(key);
+		}
+		for (FinancialEntryType key : loss.keySet()) {
+			netProfit -= loss.get(key);
+		}
+		return netProfit;
+	}
+	
+	public void add(Finance other){
+		
+		for (FinancialEntryType key : other.profit.keySet()) {
+			profit.put(key, profit.get(key)+other.profit.get(key));
+		}
+		for (FinancialEntryType key : other.loss.keySet()) {
+			loss.put(key, loss.get(key)+other.loss.get(key));
+		}
+		
+	}
+
+
 	
 }

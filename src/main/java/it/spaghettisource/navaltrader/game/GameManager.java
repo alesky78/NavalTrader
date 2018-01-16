@@ -20,6 +20,10 @@ public class GameManager {
 		
 	}
 	
+	public GameData getGameData() {
+		return gameData;
+	}
+
 	public void startGame() {
 		(new Thread(loopManager)).start();
 	}

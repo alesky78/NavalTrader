@@ -43,6 +43,23 @@ public class EventManager {
 			list.add(listener);
 		}
 	}
+	
+	/**
+	 * un-Registers an event listener to its events of interest
+	 * @param listener the event listener to register
+	 */
+	public void unRegister(EventListener listener) {
+		EventType [] eventsType = listener.getEventsOfInterest();
+
+		if (eventsType == null) {
+			return;
+		}
+		
+		for (int i = 0; i < eventsType.length; i++) {
+			List<EventListener> list = getListeners(eventsType[i]);
+			list.remove(listener);
+		}		
+	}
 
 	/**
 	 * Fires an event to the registered listeners,
