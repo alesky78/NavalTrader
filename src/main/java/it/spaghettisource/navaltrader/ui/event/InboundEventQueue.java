@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import EDU.oswego.cs.dl.util.concurrent.LinkedQueue;
+import it.spaghettisource.navaltrader.ui.MainFrame;
 
 
 /**
@@ -32,15 +33,14 @@ public class InboundEventQueue {
 	}
 	
 	public void startQueue() {
-		Thread thread = new Thread(processor);
-		thread.setDaemon(true);
-		thread.start();
+		processor.startThread();
 		log.info("start inboud event queue");	
 	}	
 
 
 	public void put(Event event) {
 		try {
+			log.debug("add new event in the queue:"+event.getEventType());			
 			linkedQueue.put(event);
 		}
 		catch (InterruptedException e) {
@@ -105,11 +105,21 @@ public class InboundEventQueue {
 			shutdown = true;
 		}
 
+		public void startThread(){
+			shutdown = false;
+			Thread thread = new Thread(processor);
+			thread.setDaemon(true);
+			thread.start();			
+		}
+		
+		
+
 		/**
 		 * Fires the event
 		 * @param loggingEvent the event to fire
 		 */
 		protected void fireEvent(Event event) {
+
 			eventManager.fireEvent(event);
 
 		}
@@ -154,8 +164,6 @@ public class InboundEventQueue {
 				}
 				
 			}
-
-
 		}
 	}
 

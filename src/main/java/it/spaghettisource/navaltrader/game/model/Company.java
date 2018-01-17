@@ -39,6 +39,19 @@ public class Company implements Entity {
 		ships.add(ship);
 	}
 
+	public List<Ship> getShips() {
+		return ships;
+	}
+	
+	public Ship getShipByName(String name) {
+		for (Ship ship : ships) {
+			if(ship.getName().equals(name)){
+				return ship;
+			}
+		}
+		return null;
+	}	
+	
 	public void removeShip(Ship ship) {
 		ships.remove(ship);
 	}
@@ -69,7 +82,9 @@ public class Company implements Entity {
 		
 		return global;
 	}
+
+
 	
-	
+
 	
 }

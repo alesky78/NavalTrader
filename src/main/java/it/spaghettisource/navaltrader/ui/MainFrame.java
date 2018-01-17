@@ -17,7 +17,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.game.model.FinancialEntryType;
+import it.spaghettisource.navaltrader.game.model.Ship;
+import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventManager;
+import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 import it.spaghettisource.navaltrader.ui.office.InternalFrameOffice;
 
@@ -120,6 +124,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 			eventQueue.shutdownPublishEvents();		
 			eventManager.clearAllListeners();
 			//TODO close all internal frames
+			
 
 			//start the new game
 			gameManager.newGame("test");
@@ -127,16 +132,21 @@ public class MainFrame extends JFrame  implements ActionListener{
 			gameManager.startGame();
 			eventQueue.startQueue();
 			
+			testThread.start();
+			
 		}else if ("Quit".equals(event.getActionCommand())) {
 			
 			gameManager.quitGame();
 			eventQueue.shutdownPublishEvents();		
 			eventManager.clearAllListeners();
 			//TODO close all internal frames			
+			testThread.stop();
+			
 			
 		}else if ("Office".equals(event.getActionCommand())) { 
 			InternalFrameOffice frame = new InternalFrameOffice(gameManager,eventManager);
-			eventManager.register(frame);			
+			eventManager.register(frame);
+			log.debug("register listener: office");			
 			frame.setVisible(true);
 			desktop.add(frame);
 	        try {
@@ -146,5 +156,45 @@ public class MainFrame extends JFrame  implements ActionListener{
 		
 		
 	}	 	
+	
+	private TestThread testThread = new TestThread();
+	
+	class TestThread implements Runnable{
+
+		private boolean stop = false;
+		private int timeSleep = 2000;	
+		
+		public void start(){
+			stop = false;
+			(new Thread(this)).start();
+		}
+		
+		public void stop(){
+			stop = true;
+		}		
+		
+		public void run() {
+			
+			gameManager.getGameData().getCompany().addShip(new Ship("testShip-1"));
+			
+			while(!stop){
+				try {
+					Thread.sleep(timeSleep);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				gameManager.getGameData().getCompany().addBudget(100);
+				gameManager.getGameData().getCompany().getShipByName("testShip-1").getFinance().addProfit(FinancialEntryType.SHIP_INCOME, 10);
+				gameManager.getGameData().getCompany().getShipByName("testShip-1").getFinance().addLoss(FinancialEntryType.SHIP_MAINTAINANCE, 10);
+				
+				eventQueue.put(new Event(EventType.FINANCIAL_EVENT));
+				eventQueue.put(new Event(EventType.BUDGET_EVENT));				
+				
+			}
+			
+		}
+		
+	}
 
 }

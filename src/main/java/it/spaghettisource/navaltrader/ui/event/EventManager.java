@@ -7,6 +7,9 @@ import java.util.Map;
 
 import javax.swing.SwingWorker;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Manages events for update the UI event and ensures that all events
  * are dispatched in an independent thread
@@ -14,6 +17,8 @@ import javax.swing.SwingWorker;
  */
 public class EventManager {
 
+	static Log log = LogFactory.getLog(EventManager.class.getName());
+	
 	/**
 	 * A map of listeners
 	 */
@@ -32,6 +37,7 @@ public class EventManager {
 	 * @param listener the event listener to register
 	 */
 	public void register(EventListener listener) {
+		
 		EventType [] eventsType = listener.getEventsOfInterest();
 
 		if (eventsType == null) {
@@ -116,6 +122,7 @@ public class EventManager {
 		 * Executed by the Swing event dispatcher thread
 		 */
 		protected Void doInBackground() throws Exception {
+			log.debug("process event: "+event.getEventType());
 			doFireEventForEachListner(event);
 			return null;
 		}

@@ -21,7 +21,7 @@ public class LoopManager implements  Runnable {
 		this.gameData = gameData;
 		pause = false;
 		shutdown = false;
-		timeSleep = 20;
+		timeSleep = 5000;
 		timePass = 20;		
 	}
 

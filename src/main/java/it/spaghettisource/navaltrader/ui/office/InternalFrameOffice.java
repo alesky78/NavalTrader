@@ -133,12 +133,14 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 			tableFinancialData.addAll(FinancialTableRow.mapData(finance)); 
 		}else if(event.getEventType().equals(EventType.RATING_EVENT)){
 			companyRating.setText(gameData.getCompany().getRating());
-		}
+		}else if(event.getEventType().equals(EventType.BUDGET_EVENT)){
+			budget.setText(Integer.toString(gameData.getCompany().getBudget()));
+		}		
 
 	}
 
 	public EventType[] getEventsOfInterest() {
-		return new EventType[]{EventType.FINANCIAL_EVENT,EventType.RATING_EVENT};
+		return new EventType[]{EventType.FINANCIAL_EVENT,EventType.RATING_EVENT,EventType.BUDGET_EVENT};
 	}
 
 

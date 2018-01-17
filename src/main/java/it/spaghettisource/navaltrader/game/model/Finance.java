@@ -25,11 +25,17 @@ public class Finance {
 	
 	public void addProfit(FinancialEntryType type,int amount) {
 		Integer actual = profit.get(type);
+		if(actual == null){
+			actual = new Integer(0);
+		}		
 		profit.put(type, actual+amount);
 	}
 
 	public void addLoss(FinancialEntryType type,int amount) {
 		Integer actual = loss.get(type);
+		if(actual == null){
+			actual = new Integer(0);
+		}
 		loss.put(type, actual+amount);
 	}
 	
@@ -56,11 +62,21 @@ public class Finance {
 	
 	public void add(Finance other){
 		
+		Integer amount = null;
+		
 		for (FinancialEntryType key : other.profit.keySet()) {
-			profit.put(key, profit.get(key)+other.profit.get(key));
+			amount = profit.get(key);
+			if(amount == null){
+				amount = Integer.valueOf(0);
+			}
+			profit.put(key, amount+other.profit.get(key));
 		}
 		for (FinancialEntryType key : other.loss.keySet()) {
-			loss.put(key, loss.get(key)+other.loss.get(key));
+			amount = loss.get(key);
+			if(amount == null){
+				amount = Integer.valueOf(0);
+			}			
+			loss.put(key, amount+other.loss.get(key));
 		}
 		
 	}

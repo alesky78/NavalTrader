@@ -7,7 +7,8 @@ package it.spaghettisource.navaltrader.ui.event;
 public class EventType {
 
 	//pre builds event
-	public static final EventType FINANCIAL_EVENT = new EventType("FINANCIAL_EVENT");	
+	public static final EventType FINANCIAL_EVENT = new EventType("FINANCIAL_EVENT");
+	public static final EventType BUDGET_EVENT = new EventType("BUDGET_EVENT");	
 	public static final EventType RATING_EVENT = new EventType("RATING_EVENT");	
 
 	private String id;
