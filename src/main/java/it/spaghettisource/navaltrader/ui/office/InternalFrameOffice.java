@@ -30,7 +30,7 @@ import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.InternalFrameAbstract;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.event.Event;
-import it.spaghettisource.navaltrader.ui.event.EventManager;
+import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.FinancialTableRow;
 import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
@@ -59,8 +59,8 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 	private JTextField maxLoanAmount;	
 
 
-	public InternalFrameOffice(GameManager gameManager,EventManager eventManager) {
-		super(gameManager,eventManager,"Office");
+	public InternalFrameOffice(GameManager gameManager) {
+		super(gameManager,"Office");
 		setSize(500,350);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/desk.png"));
 
@@ -189,13 +189,15 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 			tableBankLoan.clear();
 			tableBankLoan.addAll(LoanTableRow.mapData(gameData.getBank().getLoanList()));
 			maxLoanAmount.setText(Integer.toString(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany())));
-		}		
+		}else if(event.getEventType().equals(EventType.BANK_CHANGE_EVENT)){
+			maxLoanAmount.setText(Integer.toString(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany())));
+		}				
 
 
 	}
 
 	public EventType[] getEventsOfInterest() {
-		return new EventType[]{EventType.FINANCIAL_EVENT,EventType.RATING_EVENT,EventType.BUDGET_EVENT,EventType.LOAN_EVENT};
+		return new EventType[]{EventType.FINANCIAL_EVENT,EventType.RATING_EVENT,EventType.BUDGET_EVENT,EventType.LOAN_EVENT,EventType.BANK_CHANGE_EVENT};
 	}
 
 

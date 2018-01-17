@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import it.spaghettisource.navaltrader.game.GameData;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.event.EventListener;
-import it.spaghettisource.navaltrader.ui.event.EventManager;
+import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 
 public abstract class InternalFrameAbstract extends JInternalFrame implements EventListener,InternalFrameListener {
 
@@ -18,13 +18,15 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 	
 	protected GameManager gameManager;
 	protected GameData gameData; 
-	protected EventManager eventManager;
 	
-	public InternalFrameAbstract(GameManager gameManager,EventManager eventManager, String name) {
+	public InternalFrameAbstract(GameManager gameManager, String name) {
 		super(name, true, true, true, true);
         this.gameManager = gameManager; 
         this.gameData = gameManager.getGameData();
-        this.eventManager = eventManager;
+        
+        //register to receive event
+		log.debug("register listener: "+title);        
+        EventPublisher.getInstance().register(this);
         
         //Set the window's location.
         setLocation(30,30);
@@ -37,7 +39,7 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 
 	public void internalFrameClosed(InternalFrameEvent arg0) {
 		log.debug("unregister listener: "+title);
-		eventManager.unRegister(this);
+		EventPublisher.getInstance().unRegister(this);
 	}
 
 	public void internalFrameClosing(InternalFrameEvent arg0) {

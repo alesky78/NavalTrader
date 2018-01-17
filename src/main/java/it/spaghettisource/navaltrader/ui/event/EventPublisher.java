@@ -15,9 +15,21 @@ import org.apache.commons.logging.LogFactory;
  * are dispatched in an independent thread
  *
  */
-public class EventManager {
+public class EventPublisher {
 
-	static Log log = LogFactory.getLog(EventManager.class.getName());
+	static Log log = LogFactory.getLog(EventPublisher.class.getName());
+	
+	private static EventPublisher instance;
+	
+	public static EventPublisher getInstance(){
+		if(instance==null){
+			instance = new EventPublisher();
+		}
+		return instance;
+	}
+	
+	private EventPublisher(){
+	}
 	
 	/**
 	 * A map of listeners

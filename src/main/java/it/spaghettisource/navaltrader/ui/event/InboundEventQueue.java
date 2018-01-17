@@ -17,25 +17,34 @@ public class InboundEventQueue {
 
 	static Log log = LogFactory.getLog(InboundEventQueue.class.getName());
 	
-	private EventManager eventManager;
-
+	private static InboundEventQueue instance;
+	
 	private LinkedQueue linkedQueue = new LinkedQueue();
 	private InboundEventQueuePublisher processor = null;
 
 	private long millisBetweenUpdates = 200;
-
-	public InboundEventQueue(EventManager eventManager) {
-		processor = new InboundEventQueuePublisher();
-		this.eventManager=  eventManager;
-
 	
+	public static InboundEventQueue getInstance(){
+		if(instance==null){
+			instance = new InboundEventQueue();
+		}
+		return instance;
 	}
 	
-	public void startQueue() {
+	private InboundEventQueue() {
+		processor = new InboundEventQueuePublisher();	
+	}
+	
+	public void startQueuePublisher() {
 		processor.startThread();
 		log.info("start inboud event queue");	
 	}	
-
+	
+	public void stopQueuePublisher(){
+		processor.stopThread();
+		linkedQueue = new LinkedQueue();		
+		log.info("stop inboud event queue");		
+	}	
 
 	public void put(Event event) {
 		try {
@@ -78,11 +87,7 @@ public class InboundEventQueue {
 	}
 
 
-	public void shutdownPublishEvents(){
-		processor.stopThread();
-		linkedQueue = new LinkedQueue();		
-		log.info("stop inboud event queue");		
-	}
+
 
 	/**
 	 * processor from the inbounds event queue
@@ -118,9 +123,7 @@ public class InboundEventQueue {
 		 * @param loggingEvent the event to fire
 		 */
 		protected void fireEvent(Event event) {
-
-			eventManager.fireEvent(event);
-
+			EventPublisher.getInstance().fireEvent(event);
 		}
 
 		/**

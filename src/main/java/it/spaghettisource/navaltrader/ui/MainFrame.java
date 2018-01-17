@@ -24,7 +24,7 @@ import it.spaghettisource.navaltrader.game.model.FinancialEntryType;
 import it.spaghettisource.navaltrader.game.model.Loan;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.ui.event.Event;
-import it.spaghettisource.navaltrader.ui.event.EventManager;
+import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 import it.spaghettisource.navaltrader.ui.office.InternalFrameOffice;
@@ -39,18 +39,11 @@ public class MainFrame extends JFrame  implements ActionListener{
 	
 	//game components
 	private GameManager gameManager;
-	private EventManager eventManager;	
-	private InboundEventQueue eventQueue;	
 
-
-
-
-	public MainFrame(GameManager gameManager,InboundEventQueue eventQueue,EventManager eventManager) {
+	public MainFrame(GameManager gameManager) {
 		super("Naval Trader");
 
 		this.gameManager = gameManager;
-		this.eventQueue = eventQueue;
-		this.eventManager = eventManager;
 
 		setIconImage(ImageIconFactory.getAppImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,7 +63,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 		log.debug("center the frame");
 		log.debug("monitor width:"+screenSize.width+" height:"+screenSize.height);
 		log.debug("frame width:"+getSize().width+" height:"+getSize().height);
-		int inset = 100;
+		int inset = 200;
 		setBounds(inset, inset,screenSize.width  - inset*2,screenSize.height - inset*2);
 
 
@@ -123,33 +116,25 @@ public class MainFrame extends JFrame  implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		if ("New".equals(event.getActionCommand())) { 
 			
-			//quit old game if exist
-			gameManager.quitGame();
-			eventQueue.shutdownPublishEvents();		
-			eventManager.clearAllListeners();
-			//TODO close all internal frames
-			
-
 			//start the new game
-			gameManager.newGame("test");
-			
+			gameManager.newGame("test");			
 			gameManager.startGame();
-			eventQueue.startQueue();
+			InboundEventQueue.getInstance().startQueuePublisher();
 			
 			testThread.start();
 			
 		}else if ("Quit".equals(event.getActionCommand())) {
 			
 			gameManager.quitGame();
-			eventQueue.shutdownPublishEvents();		
-			eventManager.clearAllListeners();
-			//TODO close all internal frames			
+			InboundEventQueue.getInstance().stopQueuePublisher();		
+			EventPublisher.getInstance().clearAllListeners();
+			
 			testThread.stop();
 			
 			
 		}else if ("Office".equals(event.getActionCommand())) { 
-			InternalFrameOffice frame = new InternalFrameOffice(gameManager,eventManager);
-			eventManager.register(frame);
+			InternalFrameOffice frame = new InternalFrameOffice(gameManager);
+			EventPublisher.getInstance().register(frame);
 			log.debug("register listener: office");			
 			frame.setVisible(true);
 			desktop.add(frame);
@@ -199,13 +184,13 @@ public class MainFrame extends JFrame  implements ActionListener{
 				company.getShipByName("testShip-1").getFinance().addLoss(FinancialEntryType.SHIP_FUEL, random.nextInt(50));		
 				
 				
-				for (Loan load : bank.getLoanList()) {
-					load.repair(1);
+				for (Loan loan : bank.getLoanList()) {
+					loan.repair(1);
 				}
 				
-				eventQueue.put(new Event(EventType.FINANCIAL_EVENT));
-				eventQueue.put(new Event(EventType.BUDGET_EVENT));				
-				eventQueue.put(new Event(EventType.LOAN_EVENT));				
+				InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT));
+				InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));				
+				InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));				
 				
 			}
 			
