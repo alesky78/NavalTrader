@@ -3,10 +3,14 @@ package it.spaghettisource.navaltrader.ui.office;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -30,19 +34,19 @@ import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.InternalFrameAbstract;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.event.Event;
-import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.FinancialTableRow;
 import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
-import test.ButtonColumn;
 
-public class InternalFrameOffice extends InternalFrameAbstract  implements ChangeListener {
+public class InternalFrameOffice extends InternalFrameAbstract  implements ChangeListener,ActionListener {
 
 	static Log log = LogFactory.getLog(InternalFrameOffice.class.getName());
 
 	private final static String TAB_FINANCIAL_STATUS = "financial status";
 	private final static String TAB_BANK = "bank";
 	private final static String TAB_SHIP_BROKER = "ship broker";		
+	
+	private final static String ACTION_NEW_LOAN = "new loan";	
 
 	//UI components
 	private JTabbedPane tabbedPane;
@@ -57,6 +61,8 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 	private EventList<LoanTableRow> tableBankLoan;
 	private JTextField interest;		
 	private JTextField maxLoanAmount;	
+	private JSlider sliderNewLoan;	
+	private JTextField newLoanAmount;
 
 
 	public InternalFrameOffice(GameManager gameManager) {
@@ -69,7 +75,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 		tabbedPane = new JTabbedPane();		
 		tabbedPane.addChangeListener(this);
 
-		tabbedPane.addTab(TAB_FINANCIAL_STATUS, ImageIconFactory.getForTab("/icon/coins.png"),createFinancialStatusPanel());
+		tabbedPane.addTab(TAB_FINANCIAL_STATUS, ImageIconFactory.getForTab("/icon/pie-chart.png"),createFinancialStatusPanel());
 		tabbedPane.addTab(TAB_BANK, ImageIconFactory.getForTab("/icon/bank.png"),createBankPanel());
 		tabbedPane.addTab(TAB_SHIP_BROKER, ImageIconFactory.getForTab("/icon/justice.png"),createShipBrokerPanel());				
 
@@ -96,6 +102,8 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 		tableBankLoan.addAll(LoanTableRow.mapData(bank.getLoanList()));
 		interest = new JTextField(Double.toString(bank.getActualInterest(company)));
 		maxLoanAmount = new JTextField(Integer.toString(bank.getMaxAcceptedAmount(company)));
+		sliderNewLoan = new JSlider(JSlider.HORIZONTAL,0, bank.getMaxAcceptedAmount(company), 0);
+		newLoanAmount = new JTextField("0");		
 
 	}
 
@@ -114,7 +122,6 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 		String[] columnLabels = new String[] { "entry", "profit", "loss"};
 		TableFormat<FinancialTableRow> tf = GlazedLists.tableFormat(FinancialTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<FinancialTableRow>(tableFinancialData, tf));	
-		//ButtonColumn test = new ButtonColumn(table, null, 3);
 
 		//create financial info
 		JPanel financialPanel = new JPanel(new SpringLayout());		
@@ -125,10 +132,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 		financialPanel.add(new Label("budget"));
 		financialPanel.add(budget);		
 
-		SpringLayoutUtilities.makeGrid(financialPanel,
-				3, 2, //rows, cols
-				5, 5, //initialX, initialY
-				5, 5);//xPad, yPad		
+		SpringLayoutUtilities.makeGrid(financialPanel,3, 2,5, 5,5, 5);		
 
 		//add all together
 		panel.add(new JScrollPane(table), BorderLayout.CENTER);
@@ -161,8 +165,34 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 		SpringLayoutUtilities.makeGrid(interestPanel,2, 2,5, 5,5, 5);	
 		loanPanel.add(interestPanel,BorderLayout.SOUTH);
 
+
+		//prepare new load panel	
+		JPanel newLoanPanel = new JPanel(new SpringLayout());
+		newLoanPanel.setBorder(BorderFactory.createTitledBorder("request new loan"));
+
+		sliderNewLoan.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider)e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					newLoanAmount.setText(Integer.toString( source.getValue()));
+				}
+			}
+		});
+		
+		JButton newLoanButton = new JButton(ImageIconFactory.getForTab("/icon/money.png"));
+		newLoanButton.setActionCommand(ACTION_NEW_LOAN);
+		newLoanButton.addActionListener(this);
+		
+		newLoanPanel.add(sliderNewLoan);		
+		newLoanPanel.add(newLoanButton);
+		newLoanPanel.add(new Label("requested amount"));		
+		newLoanPanel.add(newLoanAmount);		
+		SpringLayoutUtilities.makeCompactGrid(newLoanPanel,2, 2,5, 5,5, 5);
+
+
 		//add all together
 		panel.add(loanPanel, BorderLayout.CENTER);
+		panel.add(newLoanPanel, BorderLayout.SOUTH);		
 
 		return panel;
 	}	
@@ -174,6 +204,17 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 	}
 
 
+	public void actionPerformed(ActionEvent e) {
+		String command = e.getActionCommand();
+		if(command.equals(ACTION_NEW_LOAN)){
+			if(Integer.valueOf(newLoanAmount.getText())>0 ){
+				gameData.getBank().createNewLoad(Integer.valueOf(newLoanAmount.getText()) , gameData.getCompany());				
+			}
+		}
+		
+	}
+	
+	
 	public void eventReceived(Event event) {
 
 		if(event.getEventType().equals(EventType.FINANCIAL_EVENT)){
@@ -189,8 +230,10 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 			tableBankLoan.clear();
 			tableBankLoan.addAll(LoanTableRow.mapData(gameData.getBank().getLoanList()));
 			maxLoanAmount.setText(Integer.toString(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany())));
+			sliderNewLoan.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
 		}else if(event.getEventType().equals(EventType.BANK_CHANGE_EVENT)){
 			maxLoanAmount.setText(Integer.toString(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany())));
+			sliderNewLoan.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));			
 		}				
 
 
@@ -199,6 +242,8 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 	public EventType[] getEventsOfInterest() {
 		return new EventType[]{EventType.FINANCIAL_EVENT,EventType.RATING_EVENT,EventType.BUDGET_EVENT,EventType.LOAN_EVENT,EventType.BANK_CHANGE_EVENT};
 	}
+
+
 
 
 

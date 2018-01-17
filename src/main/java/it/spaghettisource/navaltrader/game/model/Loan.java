@@ -32,7 +32,7 @@ public class Loan {
 	}
 	
 	public boolean isTotalyRepair(){
-		if(amount >= 0){
+		if(amount <= 0){
 			return true;
 		}
 		return false;

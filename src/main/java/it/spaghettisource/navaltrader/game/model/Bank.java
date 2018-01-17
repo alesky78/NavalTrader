@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
+import it.spaghettisource.navaltrader.ui.event.Event;
+import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
 public class Bank implements Entity {
 
@@ -19,7 +22,9 @@ public class Bank implements Entity {
 	
 	public void createNewLoad(int amount,Company company){
 		loanList.add(new Loan(amount, interest));
-		company.addBudget(amount);
+		company.addBudget(amount);			
+		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));
+		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));			
 	}
 	
 	public void repairLoad(String loanId, int amount){
@@ -29,6 +34,7 @@ public class Bank implements Entity {
 		if(loan.isTotalyRepair()){
 			loanList.remove(loan);
 		}	
+		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));		
 	}	
 	
 	public double getActualInterest(Company company){
@@ -54,7 +60,7 @@ public class Bank implements Entity {
 	}
 
 	public List<Loan> getLoanList() {
-		return loanList;
+		return  new ArrayList(loanList);
 	}
 
 

@@ -169,7 +169,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 			company.addShip(new Ship("testShip-1"));
 			
 			Bank bank = gameManager.getGameData().getBank();
-			bank.createNewLoad(1000000,company);
 			
 			while(!stop){
 				try {
@@ -185,12 +184,12 @@ public class MainFrame extends JFrame  implements ActionListener{
 				
 				
 				for (Loan loan : bank.getLoanList()) {
-					loan.repair(1);
+					bank.repairLoad(loan.getId(), 1);
 				}
 				
 				InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT));
-				InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));				
-				InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));				
+				InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));		
+					
 				
 			}
 			

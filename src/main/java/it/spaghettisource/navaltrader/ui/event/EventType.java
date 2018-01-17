@@ -42,6 +42,9 @@ public class EventType {
 	}
 
 
+	public String toString(){
+		return id;
+	}
 
 
 
