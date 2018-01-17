@@ -5,14 +5,15 @@ import java.util.List;
 
 import it.spaghettisource.navaltrader.game.model.Finance;
 import it.spaghettisource.navaltrader.game.model.FinancialEntryType;
+import test.ButtonColumn;
 
 public class FinancialTableRow {
 
 	private String entry;
-	private int profit;
-	private int loss;
+	private String profit;
+	private String loss;
 	
-	public FinancialTableRow(String entry, int profit, int loss) {
+	public FinancialTableRow(String entry, String profit, String loss) {
 		super();
 		this.entry = entry;
 		this.profit = profit;
@@ -23,35 +24,23 @@ public class FinancialTableRow {
 		return entry;
 	}
 
-	public void setEntry(String entry) {
-		this.entry = entry;
-	}
-
-	public int getProfit() {
+	public String getProfit() {
 		return profit;
 	}
 
-	public void setProfit(int profit) {
-		this.profit = profit;
-	}
-
-	public int getLoss() {
+	public String getLoss() {
 		return loss;
 	}
-
-	public void setLoss(int loss) {
-		this.loss = loss;
-	}	
 	
 	public static List<FinancialTableRow> mapData(Finance finance){
 		
 		List<FinancialTableRow> entryList = new ArrayList<FinancialTableRow>();
 		
 		for (FinancialEntryType key : finance.getProfit().keySet()) {
-			entryList.add(new FinancialTableRow(key.toString(), finance.getProfit().get(key), 0));
+			entryList.add(new FinancialTableRow(key.toString(), Integer.toString(finance.getProfit().get(key)), "0"));
 		}
 		for (FinancialEntryType key : finance.getLoss().keySet()) {
-			entryList.add(new FinancialTableRow(key.toString(), 0, finance.getLoss().get(key)));
+			entryList.add(new FinancialTableRow(key.toString(), "0", Integer.toString(finance.getLoss().get(key))));
 		}
 		
 		return entryList;

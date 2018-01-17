@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import EDU.oswego.cs.dl.util.concurrent.LinkedQueue;
-import it.spaghettisource.navaltrader.ui.MainFrame;
 
 
 /**
@@ -23,7 +22,7 @@ public class InboundEventQueue {
 	private LinkedQueue linkedQueue = new LinkedQueue();
 	private InboundEventQueuePublisher processor = null;
 
-	private long millisBetweenUpdates = 100;
+	private long millisBetweenUpdates = 200;
 
 	public InboundEventQueue(EventManager eventManager) {
 		processor = new InboundEventQueuePublisher();

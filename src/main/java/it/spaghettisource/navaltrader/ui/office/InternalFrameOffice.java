@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Label;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -22,6 +23,8 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.gui.TableFormat;
 import ca.odell.glazedlists.swing.EventTableModel;
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.game.model.Bank;
+import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Finance;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.InternalFrameAbstract;
@@ -30,32 +33,39 @@ import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventManager;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.FinancialTableRow;
+import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
+import test.ButtonColumn;
 
 public class InternalFrameOffice extends InternalFrameAbstract  implements ChangeListener {
 
 	static Log log = LogFactory.getLog(InternalFrameOffice.class.getName());
-	
+
 	private final static String TAB_FINANCIAL_STATUS = "financial status";
 	private final static String TAB_BANK = "bank";
 	private final static String TAB_SHIP_BROKER = "ship broker";		
 
 	//UI components
 	private JTabbedPane tabbedPane;
-	
+
 	//financial data tab
-	private EventList<FinancialTableRow> tableFinancialData;		
+	private EventList<FinancialTableRow> tableFinancialData;
 	private JTextField netProfit;
 	private JTextField companyRating;
 	private JTextField budget;	
 
+	//bank event tab
+	private EventList<LoanTableRow> tableBankLoan;
+	private JTextField interest;		
+	private JTextField maxLoanAmount;	
+
 
 	public InternalFrameOffice(GameManager gameManager,EventManager eventManager) {
 		super(gameManager,eventManager,"Office");
-		setSize(500,300);   
+		setSize(500,350);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/desk.png"));
 
 		initValuesFromModel();
-		
+
 		tabbedPane = new JTabbedPane();		
 		tabbedPane.addChangeListener(this);
 
@@ -68,13 +78,25 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 	}
 
 	private void initValuesFromModel() {
+
+		Company company = gameData.getCompany();
+		Finance finance = company.getCompanyFinance();
+		Bank bank = gameData.getBank();		
+
 		//financial tab
-		Finance finance = gameData.getCompany().getCompanyFinance();
+
 		tableFinancialData = GlazedLists.threadSafeList(new BasicEventList<FinancialTableRow>());	
 		tableFinancialData.addAll(FinancialTableRow.mapData(finance)); 
 		netProfit = new JTextField(Integer.toString(finance.getNetProfit()));
-		companyRating = new JTextField(gameData.getCompany().getRating());	
-		budget = new JTextField(Integer.toString(gameData.getCompany().getBudget()));			
+		companyRating = new JTextField(company.getRating());	
+		budget = new JTextField(Integer.toString(company.getBudget()));
+
+		//bank tab
+		tableBankLoan = GlazedLists.threadSafeList(new BasicEventList<LoanTableRow>());	
+		tableBankLoan.addAll(LoanTableRow.mapData(bank.getLoanList()));
+		interest = new JTextField(Double.toString(bank.getActualInterest(company)));
+		maxLoanAmount = new JTextField(Integer.toString(bank.getMaxAcceptedAmount(company)));
+
 	}
 
 	private Component createShipBrokerPanel() {
@@ -82,20 +104,17 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 		return panel;
 	}
 
-	private Component createBankPanel() {
-		JPanel panel = new JPanel();
-		return panel;
-	}
 
 	private JPanel createFinancialStatusPanel(){
 		JPanel panel = new JPanel(new BorderLayout());
 
-		//create the table
+		//create the table of finance
 		JTable table;		
-		String[] propertyNames = new String[] { "entry", "profit", "loss" };
+		String[] propertyNames = new String[] { "entry", "profit", "loss"};
 		String[] columnLabels = new String[] { "entry", "profit", "loss"};
 		TableFormat<FinancialTableRow> tf = GlazedLists.tableFormat(FinancialTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<FinancialTableRow>(tableFinancialData, tf));	
+		//ButtonColumn test = new ButtonColumn(table, null, 3);
 
 		//create financial info
 		JPanel financialPanel = new JPanel(new SpringLayout());		
@@ -111,11 +130,42 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 				5, 5, //initialX, initialY
 				5, 5);//xPad, yPad		
 
+		//add all together
 		panel.add(new JScrollPane(table), BorderLayout.CENTER);
 		panel.add(financialPanel, BorderLayout.SOUTH);			
 
 		return panel;
 	}
+
+
+	private Component createBankPanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+
+		JPanel loanPanel = new JPanel(new BorderLayout());
+		loanPanel.setBorder(BorderFactory.createTitledBorder("loans open"));
+
+		//create the table of loans		
+		JTable table;		
+		String[] propertyNames = new String[] { "amount", "interest"};
+		String[] columnLabels = new String[] { "amount", "interest"};
+		TableFormat<LoanTableRow> tf = GlazedLists.tableFormat(LoanTableRow.class, propertyNames, columnLabels);
+		table = new JTable(new EventTableModel<LoanTableRow>(tableBankLoan, tf));	
+		loanPanel.add(new JScrollPane(table),BorderLayout.CENTER);
+
+		//create the interest data
+		JPanel interestPanel = new JPanel(new SpringLayout());
+		interestPanel.add(new Label("Proposed interest"));
+		interestPanel.add(interest);
+		interestPanel.add(new Label("Max loan amount"));
+		interestPanel.add(maxLoanAmount);				
+		SpringLayoutUtilities.makeGrid(interestPanel,2, 2,5, 5,5, 5);	
+		loanPanel.add(interestPanel,BorderLayout.SOUTH);
+
+		//add all together
+		panel.add(loanPanel, BorderLayout.CENTER);
+
+		return panel;
+	}	
 
 
 	public void stateChanged(ChangeEvent arg0) {
@@ -125,7 +175,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 
 
 	public void eventReceived(Event event) {
-		
+
 		if(event.getEventType().equals(EventType.FINANCIAL_EVENT)){
 			Finance finance = gameData.getCompany().getCompanyFinance();
 			netProfit.setText(Integer.toString(finance.getNetProfit()));
@@ -135,12 +185,17 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 			companyRating.setText(gameData.getCompany().getRating());
 		}else if(event.getEventType().equals(EventType.BUDGET_EVENT)){
 			budget.setText(Integer.toString(gameData.getCompany().getBudget()));
+		}else if(event.getEventType().equals(EventType.LOAN_EVENT)){
+			tableBankLoan.clear();
+			tableBankLoan.addAll(LoanTableRow.mapData(gameData.getBank().getLoanList()));
+			maxLoanAmount.setText(Integer.toString(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany())));
 		}		
+
 
 	}
 
 	public EventType[] getEventsOfInterest() {
-		return new EventType[]{EventType.FINANCIAL_EVENT,EventType.RATING_EVENT,EventType.BUDGET_EVENT};
+		return new EventType[]{EventType.FINANCIAL_EVENT,EventType.RATING_EVENT,EventType.BUDGET_EVENT,EventType.LOAN_EVENT};
 	}
 
 

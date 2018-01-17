@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -17,7 +18,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.game.model.Bank;
+import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.FinancialEntryType;
+import it.spaghettisource.navaltrader.game.model.Loan;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventManager;
@@ -163,6 +167,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 
 		private boolean stop = false;
 		private int timeSleep = 2000;	
+		private Random random = new Random();
 		
 		public void start(){
 			stop = false;
@@ -175,7 +180,11 @@ public class MainFrame extends JFrame  implements ActionListener{
 		
 		public void run() {
 			
-			gameManager.getGameData().getCompany().addShip(new Ship("testShip-1"));
+			Company company = gameManager.getGameData().getCompany();
+			company.addShip(new Ship("testShip-1"));
+			
+			Bank bank = gameManager.getGameData().getBank();
+			bank.createNewLoad(1000000,company);
 			
 			while(!stop){
 				try {
@@ -184,12 +193,19 @@ public class MainFrame extends JFrame  implements ActionListener{
 					e.printStackTrace();
 				}
 				
-				gameManager.getGameData().getCompany().addBudget(100);
-				gameManager.getGameData().getCompany().getShipByName("testShip-1").getFinance().addProfit(FinancialEntryType.SHIP_INCOME, 10);
-				gameManager.getGameData().getCompany().getShipByName("testShip-1").getFinance().addLoss(FinancialEntryType.SHIP_MAINTAINANCE, 10);
+				company.addBudget(random.nextInt(200));
+				company.getShipByName("testShip-1").getFinance().addProfit(FinancialEntryType.SHIP_INCOME, random.nextInt(50));
+				company.getShipByName("testShip-1").getFinance().addLoss(FinancialEntryType.SHIP_MAINTAINANCE, random.nextInt(50));
+				company.getShipByName("testShip-1").getFinance().addLoss(FinancialEntryType.SHIP_FUEL, random.nextInt(50));		
+				
+				
+				for (Loan load : bank.getLoanList()) {
+					load.repair(1);
+				}
 				
 				eventQueue.put(new Event(EventType.FINANCIAL_EVENT));
 				eventQueue.put(new Event(EventType.BUDGET_EVENT));				
+				eventQueue.put(new Event(EventType.LOAN_EVENT));				
 				
 			}
 			

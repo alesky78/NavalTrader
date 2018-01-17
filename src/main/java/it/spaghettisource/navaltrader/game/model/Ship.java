@@ -33,7 +33,7 @@ public class Ship implements Entity{
 	
 	@Override	
 	public void update(int minutsPassed) {
-
+		// TODO business logic for ship
 		
 	}
 

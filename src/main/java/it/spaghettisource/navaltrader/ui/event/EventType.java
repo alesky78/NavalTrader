@@ -7,9 +7,12 @@ package it.spaghettisource.navaltrader.ui.event;
 public class EventType {
 
 	//pre builds event
-	public static final EventType FINANCIAL_EVENT = new EventType("FINANCIAL_EVENT");
-	public static final EventType BUDGET_EVENT = new EventType("BUDGET_EVENT");	
-	public static final EventType RATING_EVENT = new EventType("RATING_EVENT");	
+	public static final EventType FINANCIAL_EVENT = new EventType("FINANCIAL_EVENT");				//company or ship finance situation change
+	public static final EventType BUDGET_EVENT = new EventType("BUDGET_EVENT");						//company budget change
+	public static final EventType RATING_EVENT = new EventType("RATING_EVENT");						//company rating change
+	public static final EventType BANK_CHANGE_EVENT = new EventType("BANK_CHANGE_EVENT");			//interest or max accepted amount for load change
+	public static final EventType LOAN_EVENT = new EventType("LOAN_EVENT");							//loan change: added, removed, repair	
+	
 
 	private String id;
 	
