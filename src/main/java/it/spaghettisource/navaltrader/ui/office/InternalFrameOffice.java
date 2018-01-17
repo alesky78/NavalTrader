@@ -37,7 +37,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 	
 	private final static String TAB_FINANCIAL_STATUS = "financial status";
 	private final static String TAB_BANK = "bank";
-	private final static String TAB_MARKET = "ship market";		
+	private final static String TAB_SHIP_BROKER = "ship broker";		
 
 	//UI components
 	private JTabbedPane tabbedPane;
@@ -61,7 +61,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 
 		tabbedPane.addTab(TAB_FINANCIAL_STATUS, ImageIconFactory.getForTab("/icon/coins.png"),createFinancialStatusPanel());
 		tabbedPane.addTab(TAB_BANK, ImageIconFactory.getForTab("/icon/bank.png"),createBankPanel());
-		tabbedPane.addTab(TAB_MARKET, ImageIconFactory.getForTab("/icon/justice.png"),createShipMarketPanel());				
+		tabbedPane.addTab(TAB_SHIP_BROKER, ImageIconFactory.getForTab("/icon/justice.png"),createShipBrokerPanel());				
 
 		getContentPane().add(tabbedPane);
 
@@ -77,7 +77,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 		budget = new JTextField(Integer.toString(gameData.getCompany().getBudget()));			
 	}
 
-	private Component createShipMarketPanel() {
+	private Component createShipBrokerPanel() {
 		JPanel panel = new JPanel();
 		return panel;
 	}
