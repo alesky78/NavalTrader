@@ -18,9 +18,9 @@ public class Finance {
 		profit.put(FinancialEntryType.SHIP_INCOME, 0);
 		
 		loss.clear();		
-		profit.put(FinancialEntryType.SHIP_REPAIR, 0);
-		profit.put(FinancialEntryType.SHIP_MAINTAINANCE, 0);
-		profit.put(FinancialEntryType.SHIP_FUEL, 0);		
+		loss.put(FinancialEntryType.SHIP_REPAIR, 0);
+		loss.put(FinancialEntryType.SHIP_MAINTAINANCE, 0);
+		loss.put(FinancialEntryType.SHIP_FUEL, 0);		
 	}
 	
 	public void addProfit(FinancialEntryType type,int amount) {
