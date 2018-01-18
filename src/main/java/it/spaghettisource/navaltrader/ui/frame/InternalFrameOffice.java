@@ -55,9 +55,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 
 	//UI components
-	private JTabbedPane tabbedPane;
-	private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-	private NumberFormat percentageFormat = NumberFormat.getPercentInstance();		
+	private JTabbedPane tabbedPane;	
 
 	//financial data tab
 	private EventList<FinancialTableRow> tableFinancialData;

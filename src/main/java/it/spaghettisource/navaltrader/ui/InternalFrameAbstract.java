@@ -1,5 +1,7 @@
 package it.spaghettisource.navaltrader.ui;
 
+import java.text.NumberFormat;
+
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -18,6 +20,9 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 	
 	protected GameManager gameManager;
 	protected GameData gameData; 
+	
+	protected NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+	protected NumberFormat percentageFormat = NumberFormat.getPercentInstance();		
 	
 	public InternalFrameAbstract(GameManager gameManager, String name) {
 		super(name, true, true, true, true);
