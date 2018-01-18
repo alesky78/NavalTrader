@@ -21,7 +21,6 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 	protected GameManager gameManager;
 	protected GameData gameData; 
 	
-	protected NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 	protected NumberFormat percentageFormat = NumberFormat.getPercentInstance();		
 	
 	public InternalFrameAbstract(GameManager gameManager, String name) {

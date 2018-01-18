@@ -127,7 +127,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 			gameManager.startGame();
 			InboundEventQueue.getInstance().startQueuePublisher();
 			
-			//testThread.start();
+			testThread.start();
 			
 		}else if ("Quit".equals(event.getActionCommand())) {
 			
@@ -198,9 +198,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 					bank.repairLoad(loan.getId(), 1,company);
 				}
 				
-				InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT));
-				InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));		
-					
+				InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT));		
 				
 			}
 			
