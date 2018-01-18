@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.ui;
+package it.spaghettisource.navaltrader.ui.frame;
 
 import java.text.NumberFormat;
 

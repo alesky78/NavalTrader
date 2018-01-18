@@ -13,7 +13,6 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.InternalFrameAbstract;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 

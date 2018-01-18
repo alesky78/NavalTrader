@@ -35,7 +35,6 @@ import it.spaghettisource.navaltrader.game.model.Bank;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Finance;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.InternalFrameAbstract;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.TableCellNumberRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
