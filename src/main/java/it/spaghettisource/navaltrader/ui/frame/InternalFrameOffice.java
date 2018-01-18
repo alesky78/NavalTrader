@@ -106,7 +106,6 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		netProfit.setValue(finance.getNetProfit());
 		companyRating = new JTextField(company.getRating());	
 	
-		//budget = new JTextField(Integer.toString());
 		budget = new JFormattedTextField(currencyFormat);	
 		budget.setValue(company.getBudget());
 
@@ -278,7 +277,6 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 					gameData.getBank().repairLoad(data.getId(), sliderAmountToRepair.getValue(), gameData.getCompany());	
 					sliderAmountToRepair.setMaximum(0);					
 				}catch (Exception e) {}
-				
 			}
 		}
 		
