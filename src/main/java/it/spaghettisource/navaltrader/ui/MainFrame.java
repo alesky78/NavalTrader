@@ -189,9 +189,9 @@ public class MainFrame extends JFrame  implements ActionListener{
 				}
 				
 				company.addBudget(random.nextInt(200));
-				company.getShipByName("testShip-1").getFinance().addProfit(FinancialEntryType.SHIP_INCOME, random.nextInt(50));
-				company.getShipByName("testShip-1").getFinance().addLoss(FinancialEntryType.SHIP_MAINTAINANCE, random.nextInt(50));
-				company.getShipByName("testShip-1").getFinance().addLoss(FinancialEntryType.SHIP_FUEL, random.nextInt(50));		
+				company.getShipByName("testShip-1").getFinance().addEntry(FinancialEntryType.SHIP_INCOME, random.nextInt(50));
+				company.getShipByName("testShip-1").getFinance().addEntry(FinancialEntryType.SHIP_MAINTAINANCE, -random.nextInt(50));
+				company.getShipByName("testShip-1").getFinance().addEntry(FinancialEntryType.SHIP_FUEL, -random.nextInt(50));		
 				
 				
 				for (Loan loan : bank.getLoanList()) {

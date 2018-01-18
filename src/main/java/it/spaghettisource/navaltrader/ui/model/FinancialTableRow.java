@@ -9,40 +9,32 @@ import test.ButtonColumn;
 
 public class FinancialTableRow {
 
-	private String entry;
-	private Double profit;
-	private Double loss;
+	private String name;
+	private Double amount;
 	
-	public FinancialTableRow(String entry, Double profit, Double loss) {
+	public FinancialTableRow(String entryName, Double amount) {
 		super();
-		this.entry = entry;
-		this.profit = profit;
-		this.loss = loss;
-	}
-
-	public String getEntry() {
-		return entry;
-	}
-
-	public Double getProfit() {
-		return profit;
-	}
-
-	public Double getLoss() {
-		return loss;
+		this.name = entryName;
+		this.amount = amount;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+
 	public static List<FinancialTableRow> mapData(Finance finance){
 		
 		List<FinancialTableRow> entryList = new ArrayList<FinancialTableRow>();
 		
-		for (FinancialEntryType key : finance.getProfit().keySet()) {
-			entryList.add(new FinancialTableRow(key.toString(), finance.getProfit().get(key), 0.0));
+		for (FinancialEntryType key : finance.getEntry().keySet()) {
+			entryList.add(new FinancialTableRow(key.toString(), finance.getEntry().get(key)));
 		}
-		for (FinancialEntryType key : finance.getLoss().keySet()) {
-			entryList.add(new FinancialTableRow(key.toString(), 0.0, finance.getLoss().get(key)));
-		}
-		
+	
 		return entryList;
 	}
 	

@@ -128,13 +128,13 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		///////////////////////////		
 		//create the table of finance
 		JTable table;		
-		String[] propertyNames = new String[] { "entry", "profit", "loss"};
-		String[] columnLabels = new String[] { "entry", "profit", "loss"};
+		String[] propertyNames = new String[] { "name", "amount"};
+		String[] columnLabels = new String[] { "entry", "amount"};
 		TableFormat<FinancialTableRow> tf = GlazedLists.tableFormat(FinancialTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<FinancialTableRow>(listFinancialData, tf));	
 
 		table.getColumnModel().getColumn(1).setCellRenderer(TableCellCurrentyRenderer.getRenderer());
-		table.getColumnModel().getColumn(2).setCellRenderer(TableCellCurrentyRenderer.getRenderer());		
+		
 		
 		///////////////////////////		
 		//create financial info
