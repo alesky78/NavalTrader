@@ -22,7 +22,7 @@ public class InboundEventQueue {
 	private LinkedQueue linkedQueue = new LinkedQueue();
 	private InboundEventQueuePublisher processor = null;
 
-	private long millisBetweenUpdates = 200;
+	private long millisBetweenUpdates = 1000;
 	
 	public static InboundEventQueue getInstance(){
 		if(instance==null){

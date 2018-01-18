@@ -121,7 +121,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 			gameManager.startGame();
 			InboundEventQueue.getInstance().startQueuePublisher();
 			
-			testThread.start();
+			//testThread.start();
 			
 		}else if ("Quit".equals(event.getActionCommand())) {
 			
@@ -135,7 +135,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 		}else if ("Office".equals(event.getActionCommand())) { 
 			InternalFrameOffice frame = new InternalFrameOffice(gameManager);
 			EventPublisher.getInstance().register(frame);
-			log.debug("register listener: office");			
 			frame.setVisible(true);
 			desktop.add(frame);
 	        try {

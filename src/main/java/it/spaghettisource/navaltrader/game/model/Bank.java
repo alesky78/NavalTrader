@@ -24,7 +24,7 @@ public class Bank implements Entity {
 		loanList.add(new Loan(amount, interest));
 		company.addBudget(amount);			
 		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));
-		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));			
+		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));
 	}
 	
 	public void repairLoad(String loanId, int amount){
@@ -34,7 +34,8 @@ public class Bank implements Entity {
 		if(loan.isTotalyRepair()){
 			loanList.remove(loan);
 		}	
-		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));		
+		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));
+		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));		
 	}	
 	
 	public double getActualInterest(Company company){
