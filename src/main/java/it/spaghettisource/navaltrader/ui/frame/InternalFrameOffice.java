@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.ui.office;
+package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

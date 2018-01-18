@@ -27,7 +27,7 @@ import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
-import it.spaghettisource.navaltrader.ui.office.InternalFrameOffice;
+import it.spaghettisource.navaltrader.ui.frame.InternalFrameOffice;
 
 public class MainFrame extends JFrame  implements ActionListener{
 
