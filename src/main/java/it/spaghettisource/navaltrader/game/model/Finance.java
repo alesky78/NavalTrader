@@ -5,51 +5,51 @@ import java.util.Map;
 
 public class Finance {
 
-	private Map<FinancialEntryType,Integer> profit;
-	private Map<FinancialEntryType,Integer> loss;	
+	private Map<FinancialEntryType,Double> profit;
+	private Map<FinancialEntryType,Double> loss;	
 	
 	public Finance() {
-		profit = new HashMap<FinancialEntryType,Integer>();
-		loss = new HashMap<FinancialEntryType,Integer>();
+		profit = new HashMap<FinancialEntryType,Double>();
+		loss = new HashMap<FinancialEntryType,Double>();
 	}
 	
 	public void init() {
 		profit.clear();
-		profit.put(FinancialEntryType.SHIP_INCOME, 0);
+		profit.put(FinancialEntryType.SHIP_INCOME, 0.0);
 		
 		loss.clear();		
-		loss.put(FinancialEntryType.SHIP_REPAIR, 0);
-		loss.put(FinancialEntryType.SHIP_MAINTAINANCE, 0);
-		loss.put(FinancialEntryType.SHIP_FUEL, 0);		
+		loss.put(FinancialEntryType.SHIP_REPAIR, 0.0);
+		loss.put(FinancialEntryType.SHIP_MAINTAINANCE, 0.0);
+		loss.put(FinancialEntryType.SHIP_FUEL, 0.0);		
 	}
 	
-	public void addProfit(FinancialEntryType type,int amount) {
-		Integer actual = profit.get(type);
+	public void addProfit(FinancialEntryType type,double amount) {
+		Double actual = profit.get(type);
 		if(actual == null){
-			actual = new Integer(0);
+			actual = new Double(0);
 		}		
 		profit.put(type, actual+amount);
 	}
 
-	public void addLoss(FinancialEntryType type,int amount) {
-		Integer actual = loss.get(type);
+	public void addLoss(FinancialEntryType type,double amount) {
+		Double actual = loss.get(type);
 		if(actual == null){
-			actual = new Integer(0);
+			actual = new Double(0);
 		}
 		loss.put(type, actual+amount);
 	}
 	
-	public Map<FinancialEntryType, Integer> getProfit() {
+	public Map<FinancialEntryType, Double> getProfit() {
 		return profit;
 	}
 
-	public Map<FinancialEntryType, Integer> getLoss() {
+	public Map<FinancialEntryType, Double> getLoss() {
 		return loss;
 	}
 	
-	public int getNetProfit(){
+	public double getNetProfit(){
 		
-		int netProfit = 0;
+		double netProfit = 0;
 		
 		for (FinancialEntryType key : profit.keySet()) {
 			netProfit += profit.get(key);
@@ -62,19 +62,19 @@ public class Finance {
 	
 	public void add(Finance other){
 		
-		Integer amount = null;
+		Double amount = null;
 		
 		for (FinancialEntryType key : other.profit.keySet()) {
 			amount = profit.get(key);
 			if(amount == null){
-				amount = Integer.valueOf(0);
+				amount = Double.valueOf(0);
 			}
 			profit.put(key, amount+other.profit.get(key));
 		}
 		for (FinancialEntryType key : other.loss.keySet()) {
 			amount = loss.get(key);
 			if(amount == null){
-				amount = Integer.valueOf(0);
+				amount = Double.valueOf(0);
 			}			
 			loss.put(key, amount+other.loss.get(key));
 		}

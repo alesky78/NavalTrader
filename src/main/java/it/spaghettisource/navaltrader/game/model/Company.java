@@ -23,7 +23,7 @@ public class Company implements Entity {
 	
 	private String name;
 	private List<Ship> ships;
-	private int budget;	
+	private double budget;	
 	private String rating;		
 	
 	public Company(String companyName, int initialBudget) {
@@ -59,17 +59,17 @@ public class Company implements Entity {
 		ships.remove(ship);
 	}
 
-	public void addBudget(int toAdd) {
+	public void addBudget(double toAdd) {
 		budget = budget + toAdd;
 		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));			
 	}
 
-	public void removeBudget(int toRemove) {
+	public void removeBudget(double toRemove) {
 		budget = budget - toRemove;
 		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));			
 	}
 
-	public int getBudget() {
+	public Double getBudget() {
 		return budget;
 	}
 

@@ -5,9 +5,11 @@ import java.awt.Component;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -35,9 +37,9 @@ import it.spaghettisource.navaltrader.game.model.Finance;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.InternalFrameAbstract;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
+import it.spaghettisource.navaltrader.ui.TableCellNumberRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 import it.spaghettisource.navaltrader.ui.model.FinancialTableRow;
 import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 
@@ -54,21 +56,25 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 	//UI components
 	private JTabbedPane tabbedPane;
+	private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+	private NumberFormat percentageFormat = NumberFormat.getPercentInstance();		
 
 	//financial data tab
 	private EventList<FinancialTableRow> tableFinancialData;
-	private JTextField netProfit;
+	private JFormattedTextField netProfit;
 	private JTextField companyRating;
-	private JTextField budget;	
+	private JFormattedTextField budget;		
 
+	
 	//bank event tab
 	private JTable loanTable;
 	private EventList<LoanTableRow> tableBankLoan;
-	private JTextField interest;		
-	private JTextField maxLoanAmount;	
+	private JFormattedTextField interest;		
+	private JFormattedTextField maxLoanAmount;	
 	private JSlider sliderNewLoanAmount;	
 	private JSlider sliderAmountToRepair;		
 
+	 
 
 	public InternalFrameOffice(GameManager gameManager) {
 		super(gameManager,"Office");
@@ -96,16 +102,23 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 		tableFinancialData = GlazedLists.threadSafeList(new BasicEventList<FinancialTableRow>());	
 		tableFinancialData.addAll(FinancialTableRow.mapData(finance)); 
-		netProfit = new JTextField(Integer.toString(finance.getNetProfit()));
+		netProfit = new JFormattedTextField(currencyFormat);
+		netProfit.setValue(finance.getNetProfit());
 		companyRating = new JTextField(company.getRating());	
-		budget = new JTextField(Integer.toString(company.getBudget()));
+	
+		//budget = new JTextField(Integer.toString());
+		budget = new JFormattedTextField(currencyFormat);	
+		budget.setValue(company.getBudget());
 
 		//bank tab
 		tableBankLoan = GlazedLists.threadSafeList(new BasicEventList<LoanTableRow>());	
 		tableBankLoan.addAll(LoanTableRow.mapData(bank.getLoanList()));
-		interest = new JTextField(Double.toString(bank.getActualInterest(company)));
-		maxLoanAmount = new JTextField(Integer.toString(bank.getMaxAcceptedAmount(company)));
-		sliderNewLoanAmount = new JSlider(JSlider.HORIZONTAL,0, bank.getMaxAcceptedAmount(company), 0);	
+		interest = new JFormattedTextField(percentageFormat);		
+		interest.setValue(bank.getActualInterest(company));
+		maxLoanAmount = new JFormattedTextField(currencyFormat);
+		maxLoanAmount.setValue(bank.getMaxAcceptedAmount(company));
+		
+		sliderNewLoanAmount = new JSlider(JSlider.HORIZONTAL,0, bank.getMaxAcceptedAmount(company).intValue(), 0);	
 
 	}
 
@@ -126,6 +139,9 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		TableFormat<FinancialTableRow> tf = GlazedLists.tableFormat(FinancialTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<FinancialTableRow>(tableFinancialData, tf));	
 
+		table.getColumnModel().getColumn(1).setCellRenderer(TableCellNumberRenderer.getCurrencyRenderer());
+		table.getColumnModel().getColumn(2).setCellRenderer(TableCellNumberRenderer.getCurrencyRenderer());		
+		
 		///////////////////////////		
 		//create financial info
 		JPanel financialPanel = new JPanel(new SpringLayout());		
@@ -154,13 +170,14 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		JPanel repairLoanPanel = new JPanel(new SpringLayout());
 		repairLoanPanel.setBorder(BorderFactory.createTitledBorder("repair loan"));		
 		sliderAmountToRepair = new JSlider(JSlider.HORIZONTAL,0, 0, 0);			
-		JTextField amountToRepair = new JTextField("0");		
+		JFormattedTextField amountToRepair = new JFormattedTextField(currencyFormat);	
+		amountToRepair.setValue(0.0);
 
 		sliderAmountToRepair.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider)e.getSource();
 				if (!source.getValueIsAdjusting()) {
-					amountToRepair.setText(Integer.toString( source.getValue()));
+					amountToRepair.setValue(source.getValue());
 				}
 			}
 		});
@@ -188,14 +205,18 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 			public void valueChanged(ListSelectionEvent event) {
 				try{
 					LoanTableRow data = tableBankLoan.get(loanTable.convertRowIndexToModel(loanTable.getSelectedRow()));
-					if(gameData.getCompany().getBudget() > Integer.valueOf(data.getAmount())){
-						sliderAmountToRepair.setMaximum(Integer.valueOf(data.getAmount()));						
+					if(gameData.getCompany().getBudget() > data.getAmount()){
+						sliderAmountToRepair.setMaximum( data.getAmount().intValue());						
 					}else{
-						sliderAmountToRepair.setMaximum(Integer.valueOf(gameData.getCompany().getBudget()));
+						sliderAmountToRepair.setMaximum(gameData.getCompany().getBudget().intValue());
 					}
 				}catch (Exception e) {}
 			}
 		});		
+		loanTable.getColumnModel().getColumn(0).setCellRenderer(TableCellNumberRenderer.getCurrencyRenderer());
+		loanTable.getColumnModel().getColumn(1).setCellRenderer(TableCellNumberRenderer.getPercentRenderer());
+		loanTable.getColumnModel().getColumn(2).setCellRenderer(TableCellNumberRenderer.getCurrencyRenderer());		
+			
 		loanPanel.add(new JScrollPane(loanTable),BorderLayout.CENTER);
 
 		//create the interest data
@@ -211,13 +232,14 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		//prepare new load panel	
 		JPanel newLoanPanel = new JPanel(new SpringLayout());
 		newLoanPanel.setBorder(BorderFactory.createTitledBorder("request new loan"));
-		JTextField newLoanAmount = new JTextField("0");
+		JFormattedTextField newLoanAmount = new JFormattedTextField(currencyFormat);
+		newLoanAmount.setValue(0.0);
 
 		sliderNewLoanAmount.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider)e.getSource();
 				if (!source.getValueIsAdjusting()) {
-					newLoanAmount.setText(Integer.toString( source.getValue()));
+					newLoanAmount.setValue( source.getValue());
 				}
 			}
 		});
@@ -268,21 +290,21 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 		if(event.getEventType().equals(EventType.FINANCIAL_EVENT)){
 			Finance finance = gameData.getCompany().getCompanyFinance();
-			netProfit.setText(Integer.toString(finance.getNetProfit()));
+			netProfit.setValue(finance.getNetProfit());
 			tableFinancialData.clear();	
 			tableFinancialData.addAll(FinancialTableRow.mapData(finance)); 
 		}else if(event.getEventType().equals(EventType.RATING_EVENT)){
 			companyRating.setText(gameData.getCompany().getRating());
 		}else if(event.getEventType().equals(EventType.BUDGET_EVENT)){
-			budget.setText(Integer.toString(gameData.getCompany().getBudget()));
+			budget.setValue(gameData.getCompany().getBudget());
 		}else if(event.getEventType().equals(EventType.LOAN_EVENT)){
 			tableBankLoan.clear();
 			tableBankLoan.addAll(LoanTableRow.mapData(gameData.getBank().getLoanList()));
-			maxLoanAmount.setText(Integer.toString(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany())));
-			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
+			maxLoanAmount.setValue(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
+			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());
 		}else if(event.getEventType().equals(EventType.BANK_CHANGE_EVENT)){
-			maxLoanAmount.setText(Integer.toString(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany())));
-			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));			
+			maxLoanAmount.setValue(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
+			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());			
 		}				
 
 

@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Loan {
 
 	String id;
-	int amount;
+	double amount;
 	double interest;
 	
 	public Loan(int amount, double interest) {
@@ -19,7 +19,7 @@ public class Loan {
 		return id;
 	}
 
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 

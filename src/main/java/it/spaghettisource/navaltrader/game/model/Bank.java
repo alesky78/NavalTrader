@@ -12,7 +12,7 @@ public class Bank implements Entity {
 
 	private List<Loan> loanList;
 	private double interest;
-	private  int maxLoanAmount = 5000000;	
+	private  double maxLoanAmount = 5000000;	
 
 	public Bank(double interest) {
 		super();
@@ -44,13 +44,13 @@ public class Bank implements Entity {
 		return 0.08;
 	}
 
-	public int getMaxAcceptedAmount(Company company){
-		int actualUsedAmount = 0;
+	public Double getMaxAcceptedAmount(Company company){
+		double actualUsedAmount = 0;
 		for (Loan loan : loanList) {
 			actualUsedAmount += loan.getAmount();
 		}
 		
-		return (maxLoanAmount - actualUsedAmount > 0 ) ? maxLoanAmount - actualUsedAmount : 0;
+		return (maxLoanAmount - actualUsedAmount > 0 ) ? new Double(maxLoanAmount - actualUsedAmount) : new Double(0);
 	}
 	
 	public Loan getLoanById(String id){

@@ -8,11 +8,11 @@ import it.spaghettisource.navaltrader.game.model.Loan;
 public class LoanTableRow {
 
 	private String id;
-	private String amount;
-	private String interest;
-	private String dailyPayment;	
+	private Double amount;
+	private Double interest;
+	private Double dailyPayment;	
 	
-	public LoanTableRow(String id, String amount, String interest,String dailyPayment) {
+	public LoanTableRow(String id, Double amount, Double interest,Double dailyPayment) {
 		super();
 		this.id = id;
 		this.amount = amount;
@@ -24,15 +24,15 @@ public class LoanTableRow {
 		return id;
 	}
 
-	public String getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public String getInterest() {
+	public Double getInterest() {
 		return interest;
 	}
 	
-	public String getDailyPayment() {
+	public Double getDailyPayment() {
 		return dailyPayment;
 	}
 
@@ -40,7 +40,7 @@ public class LoanTableRow {
 		
 		List<LoanTableRow> LoanTableRow = new ArrayList<LoanTableRow>();
 		for (Loan loan : listOfLoans) {
-			LoanTableRow.add(new LoanTableRow(loan.getId(), Integer.toString(loan.getAmount()), Double.toString(loan.getInterest()*100)+"%",Double.toString(loan.calculateDailyInterest(1))));
+			LoanTableRow.add(new LoanTableRow(loan.getId(), loan.getAmount(), loan.getInterest(),loan.calculateDailyInterest(1)));
 		}
 		
 		return LoanTableRow;

@@ -10,10 +10,10 @@ import test.ButtonColumn;
 public class FinancialTableRow {
 
 	private String entry;
-	private String profit;
-	private String loss;
+	private Double profit;
+	private Double loss;
 	
-	public FinancialTableRow(String entry, String profit, String loss) {
+	public FinancialTableRow(String entry, Double profit, Double loss) {
 		super();
 		this.entry = entry;
 		this.profit = profit;
@@ -24,11 +24,11 @@ public class FinancialTableRow {
 		return entry;
 	}
 
-	public String getProfit() {
+	public Double getProfit() {
 		return profit;
 	}
 
-	public String getLoss() {
+	public Double getLoss() {
 		return loss;
 	}
 	
@@ -37,10 +37,10 @@ public class FinancialTableRow {
 		List<FinancialTableRow> entryList = new ArrayList<FinancialTableRow>();
 		
 		for (FinancialEntryType key : finance.getProfit().keySet()) {
-			entryList.add(new FinancialTableRow(key.toString(), Integer.toString(finance.getProfit().get(key)), "0"));
+			entryList.add(new FinancialTableRow(key.toString(), finance.getProfit().get(key), 0.0));
 		}
 		for (FinancialEntryType key : finance.getLoss().keySet()) {
-			entryList.add(new FinancialTableRow(key.toString(), "0", Integer.toString(finance.getLoss().get(key))));
+			entryList.add(new FinancialTableRow(key.toString(), 0.0, finance.getLoss().get(key)));
 		}
 		
 		return entryList;
