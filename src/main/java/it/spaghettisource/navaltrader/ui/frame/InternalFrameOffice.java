@@ -37,6 +37,7 @@ import it.spaghettisource.navaltrader.ui.InternalFrameAbstract;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 import it.spaghettisource.navaltrader.ui.model.FinancialTableRow;
 import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 
@@ -252,7 +253,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 			if(sliderAmountToRepair.getValue()>0 ){
 				try{
 					LoanTableRow data = tableBankLoan.get(loanTable.convertRowIndexToModel(loanTable.getSelectedRow()));
-					gameData.getBank().repairLoad(data.getId(), sliderAmountToRepair.getValue());				
+					gameData.getBank().repairLoad(data.getId(), sliderAmountToRepair.getValue(), gameData.getCompany());	
 					sliderAmountToRepair.setMaximum(0);					
 				}catch (Exception e) {}
 				

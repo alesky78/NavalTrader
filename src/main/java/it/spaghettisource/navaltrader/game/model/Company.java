@@ -7,6 +7,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
+import it.spaghettisource.navaltrader.ui.event.Event;
+import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
 public class Company implements Entity {
 
@@ -58,10 +61,12 @@ public class Company implements Entity {
 
 	public void addBudget(int toAdd) {
 		budget = budget + toAdd;
+		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));			
 	}
 
 	public void removeBudget(int toRemove) {
 		budget = budget - toRemove;
+		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));			
 	}
 
 	public int getBudget() {

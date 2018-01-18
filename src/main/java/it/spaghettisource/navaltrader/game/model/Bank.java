@@ -22,12 +22,13 @@ public class Bank implements Entity {
 	
 	public void createNewLoad(int amount,Company company){
 		loanList.add(new Loan(amount, interest));
+		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));		
+		
 		company.addBudget(amount);			
-		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));
-		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));
+
 	}
 	
-	public void repairLoad(String loanId, int amount){
+	public void repairLoad(String loanId, int amount,Company company){
 		Loan loan = getLoanById(loanId);
 		loan.repair(amount);
 		
@@ -35,7 +36,8 @@ public class Bank implements Entity {
 			loanList.remove(loan);
 		}	
 		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT));
-		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));		
+		
+		company.removeBudget(amount);		
 	}	
 	
 	public double getActualInterest(Company company){

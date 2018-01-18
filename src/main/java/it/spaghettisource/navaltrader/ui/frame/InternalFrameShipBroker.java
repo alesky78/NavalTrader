@@ -1,8 +1,11 @@
 package it.spaghettisource.navaltrader.ui.frame;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.apache.commons.logging.Log;
@@ -26,21 +29,32 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 	
 	public InternalFrameShipBroker(GameManager gameManager) {
 		super(gameManager, "ship broker");
-		setSize(500,450);   
+		setSize(600,300);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/justice.png"));
 
 		initValuesFromModel();
 
 		tabbedPane = new JTabbedPane();		
 
-		tabbedPane.addTab(TAB_BUY_SHIP, ImageIconFactory.getForTab("/icon/cart-buy.png"),null);
-		tabbedPane.addTab(TAB_SELL_SHIP, ImageIconFactory.getForTab("/icon/cart-sell.png"),null);		
+		tabbedPane.addTab(TAB_BUY_SHIP, ImageIconFactory.getForTab("/icon/cart-buy.png"),createBuyShipPanel());
+		tabbedPane.addTab(TAB_SELL_SHIP, ImageIconFactory.getForTab("/icon/cart-sell.png"),createSellShipPanel());		
 				
 
 		getContentPane().add(tabbedPane);
 
 		
 	}
+
+
+	private Component createBuyShipPanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+		return panel;
+	}
+	
+	private Component createSellShipPanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+		return panel;
+	}	
 
 
 	private void initValuesFromModel() {

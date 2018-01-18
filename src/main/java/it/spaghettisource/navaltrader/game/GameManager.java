@@ -4,6 +4,7 @@ import it.spaghettisource.navaltrader.game.loop.LoopManager;
 import it.spaghettisource.navaltrader.game.model.Bank;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
+import it.spaghettisource.navaltrader.game.model.ShipBroker;
 
 public class GameManager {
 
@@ -14,10 +15,11 @@ public class GameManager {
 	public void newGame(String companyName) {
 
 		GameTime gameTime = new GameTime();
+		ShipBroker shipBroker = new ShipBroker();		
 		Company company = new Company(companyName, 4000000);
 		Bank bank = new Bank(0.08);
 
-		gameData = new GameData(company,gameTime,bank);
+		gameData = new GameData(company,gameTime,bank,shipBroker);
 		loopManager = new LoopManager(gameData);
 		
 	}

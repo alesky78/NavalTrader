@@ -195,7 +195,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 				
 				
 				for (Loan loan : bank.getLoanList()) {
-					bank.repairLoad(loan.getId(), 1);
+					bank.repairLoad(loan.getId(), 1,company);
 				}
 				
 				InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT));
