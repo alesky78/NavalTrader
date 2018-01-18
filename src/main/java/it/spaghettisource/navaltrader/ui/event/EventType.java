@@ -12,6 +12,8 @@ public class EventType {
 	public static final EventType RATING_EVENT = new EventType("RATING_EVENT");						//company rating change
 	public static final EventType BANK_CHANGE_EVENT = new EventType("BANK_CHANGE_EVENT");			//interest or max accepted amount for load change
 	public static final EventType LOAN_EVENT = new EventType("LOAN_EVENT");							//loan change: added, removed, repair
+	public static final EventType BUY_SHIP_EVENT = new EventType("BUY_SHIP_EVENT");					//list of ship change
+	public static final EventType SELL_SHIP_EVENT = new EventType("SELL_SHIP_EVENT");				//list of ship change
 	
 
 	private String id;

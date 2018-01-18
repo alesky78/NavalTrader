@@ -22,7 +22,7 @@ public class InboundEventQueue {
 	private LinkedQueue linkedQueue = new LinkedQueue();
 	private InboundEventQueuePublisher processor = null;
 
-	private long millisBetweenUpdates = 1000;
+	private long millisBetweenUpdates = 500;
 	
 	public static InboundEventQueue getInstance(){
 		if(instance==null){
@@ -145,10 +145,12 @@ public class InboundEventQueue {
 				
 				lastPass = System.currentTimeMillis();				
 
-				event = poll(millisBetweenUpdates);
-
-				if(event!=null){
-					fireEvent(event);					
+				//until queue is not empy process all messages possible
+				while(!isEmpty()){
+					event = poll(millisBetweenUpdates);
+					if(event!=null){
+						fireEvent(event);	//TOOD check performances fo application: may be all the event in one thread instead that single event per single thread					
+					}					
 				}
 
 				now = System.currentTimeMillis();

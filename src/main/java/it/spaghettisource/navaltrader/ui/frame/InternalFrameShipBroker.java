@@ -63,19 +63,16 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 
 
 	public void eventReceived(Event event) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	public EventType[] getEventsOfInterest() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
