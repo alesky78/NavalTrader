@@ -28,6 +28,7 @@ import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameOffice;
+import it.spaghettisource.navaltrader.ui.frame.InternalFrameShipBroker;
 
 public class MainFrame extends JFrame  implements ActionListener{
 
@@ -108,6 +109,11 @@ public class MainFrame extends JFrame  implements ActionListener{
 		menuItem.addActionListener(this);
 		menu.add(menuItem);
 		
+		menuItem = new JMenuItem("Ship Broker");
+		menuItem.setActionCommand("Ship Broker");
+		menuItem.addActionListener(this);
+		menu.add(menuItem);		
+		
 		return menuBar;
 	}
 
@@ -134,13 +140,19 @@ public class MainFrame extends JFrame  implements ActionListener{
 			
 		}else if ("Office".equals(event.getActionCommand())) { 
 			InternalFrameOffice frame = new InternalFrameOffice(gameManager);
-			EventPublisher.getInstance().register(frame);
 			frame.setVisible(true);
 			desktop.add(frame);
 	        try {
 	            frame.setSelected(true);
 	        } catch (java.beans.PropertyVetoException e) {}			
-		}    
+		}else if ("Ship Broker".equals(event.getActionCommand())) { 
+			InternalFrameShipBroker frame = new InternalFrameShipBroker(gameManager);
+			frame.setVisible(true);
+			desktop.add(frame);
+	        try {
+	            frame.setSelected(true);
+	        } catch (java.beans.PropertyVetoException e) {}			
+		}     
 		
 		
 	}	 	

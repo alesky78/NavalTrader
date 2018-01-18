@@ -40,13 +40,12 @@ import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.FinancialTableRow;
 import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 
-public class InternalFrameOffice extends InternalFrameAbstract  implements ChangeListener,ActionListener {
+public class InternalFrameOffice extends InternalFrameAbstract  implements ActionListener {
 
 	static Log log = LogFactory.getLog(InternalFrameOffice.class.getName());
 
 	private final static String TAB_FINANCIAL_STATUS = "financial status";
-	private final static String TAB_BANK = "bank";
-	private final static String TAB_SHIP_BROKER = "ship broker";		
+	private final static String TAB_BANK = "bank";		
 
 	private final static String ACTION_NEW_LOAN = "new loan";
 	private final static String ACTION_REPAIR_LOAN = "repair loan";	
@@ -78,11 +77,9 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 		initValuesFromModel();
 
 		tabbedPane = new JTabbedPane();		
-		tabbedPane.addChangeListener(this);
 
 		tabbedPane.addTab(TAB_FINANCIAL_STATUS, ImageIconFactory.getForTab("/icon/pie-chart.png"),createFinancialStatusPanel());
-		tabbedPane.addTab(TAB_BANK, ImageIconFactory.getForTab("/icon/bank.png"),createBankPanel());
-		tabbedPane.addTab(TAB_SHIP_BROKER, ImageIconFactory.getForTab("/icon/justice.png"),createShipBrokerPanel());				
+		tabbedPane.addTab(TAB_BANK, ImageIconFactory.getForTab("/icon/bank.png"),createBankPanel());				
 
 		getContentPane().add(tabbedPane);
 
@@ -243,12 +240,6 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Chang
 
 		return panel;
 	}	
-
-
-	public void stateChanged(ChangeEvent arg0) {
-		// TODO what if tab change?
-
-	}
 
 
 	public void actionPerformed(ActionEvent event) {
