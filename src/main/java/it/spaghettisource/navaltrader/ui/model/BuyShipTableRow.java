@@ -53,7 +53,7 @@ public class BuyShipTableRow {
 		
 		List<BuyShipTableRow> LoanTableRow = new ArrayList<BuyShipTableRow>();
 		for (Ship ship : listOfShip) {
-			LoanTableRow.add(new BuyShipTableRow(ship.getType(), ship.getPrice(), ship.getHull(), ship.getCargoSpace(), ship.getMaxFuel(), ship.getMaxSpeed()));
+			LoanTableRow.add(new BuyShipTableRow(ship.getType(), ship.getBasePrice(), ship.getHull(), ship.getCargoSpace(), ship.getMaxFuel(), ship.getMaxSpeed()));
 		}
 		
 		return LoanTableRow;

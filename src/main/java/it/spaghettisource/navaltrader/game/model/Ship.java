@@ -49,7 +49,7 @@ public class Ship implements Entity{
 	private String name;	
 	private Finance finance;
 	
-	private double price;	
+	private double basePrice;	
 	
 	private String status;
 	
@@ -62,7 +62,7 @@ public class Ship implements Entity{
 	
 	
 	
-	public Ship(String type, double hull, int cargoSpace, double maxFuel,  double maxSpeed, double price) {
+	public Ship(String type, double hull, int cargoSpace, double maxFuel,  double maxSpeed, double basePrice) {
 		this.type = type;
 
 		this.status = SHIP_STATUS_IDLE;
@@ -70,25 +70,35 @@ public class Ship implements Entity{
 		this.maxFuel = maxFuel;
 		this.maxSpeed = maxSpeed;
 		this.hull = hull;		
-		this.price = price;
+		this.basePrice = basePrice;
 		
 		actualFuel = 0;		
 		actualSpeed = 0;		
 		name = "";		
-		finance = new Finance();
-		finance.init();		
+	}
+	
+	public static Ship factoryShip(String type,String name){
+		Ship modelShip = null;
+		Ship newShip = null;
+		
+		//find ship to copy
+		for (Ship ship : getListSellShip()) {
+			if(ship.getType().equals(type)){
+				modelShip = ship;
+			}
+		}
+		newShip = new Ship(modelShip.getType(), modelShip.getHull(), modelShip.getCargoSpace(), modelShip.getMaxFuel(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
+		newShip.setName(name);
+		Finance finance = new Finance();
+		finance.init();
+		newShip.setFinance(finance);
+		return newShip;
 	}
 	
 	public static List<Ship> getListSellShip(){
 		return Arrays.asList(shipArray);
 	}
 
-
-	public Ship(String ShipName) {
-		name = ShipName;
-		finance = new Finance();
-		finance.init();
-	}
 	
 	public String getType() {
 		return type;
@@ -114,12 +124,12 @@ public class Ship implements Entity{
 		this.finance = finance;
 	}
 
-	public double getPrice() {
-		return price;
+	public double getBasePrice() {
+		return basePrice;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setBasePrice(double basePrice) {
+		this.basePrice = basePrice;
 	}
 
 	public String getStatus() {

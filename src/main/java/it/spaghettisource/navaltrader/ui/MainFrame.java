@@ -177,8 +177,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 		public void run() {
 			
 			Company company = gameManager.getGameData().getCompany();
-			company.addShip(new Ship("testShip-1"));
-			
 			Bank bank = gameManager.getGameData().getBank();
 			
 			while(!stop){
@@ -189,10 +187,12 @@ public class MainFrame extends JFrame  implements ActionListener{
 				}
 				
 				company.addBudget(random.nextInt(200));
-				company.getShipByName("testShip-1").getFinance().addEntry(FinancialEntryType.SHIP_INCOME, random.nextInt(50));
-				company.getShipByName("testShip-1").getFinance().addEntry(FinancialEntryType.SHIP_MAINTAINANCE, -random.nextInt(50));
-				company.getShipByName("testShip-1").getFinance().addEntry(FinancialEntryType.SHIP_FUEL, -random.nextInt(50));		
 				
+				for (Ship ship : company.getShips()) {
+					ship.getFinance().addEntry(FinancialEntryType.SHIP_INCOME, random.nextInt(50));
+					ship.getFinance().addEntry(FinancialEntryType.SHIP_MAINTAINANCE, -random.nextInt(50));
+					ship.getFinance().addEntry(FinancialEntryType.SHIP_FUEL, -random.nextInt(50));			
+				}
 				
 				for (Loan loan : bank.getLoanList()) {
 					bank.repairLoad(loan.getId(), 1,company);

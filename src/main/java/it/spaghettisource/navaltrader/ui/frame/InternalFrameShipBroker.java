@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -33,7 +34,6 @@ import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.BuyShipTableRow;
-import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 
 public class InternalFrameShipBroker extends InternalFrameAbstract  implements ActionListener  {
 
@@ -41,6 +41,9 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 
 	private final static String TAB_BUY_SHIP = "buy ship";
 	private final static String TAB_SELL_SHIP = "sell ship";	
+	
+	private final static String ACTION_BUY_SHIP = "buy ship";
+	private final static String ACTION_SELL_SHIP = "sell ship";		
 
 	//UI components
 	private JTabbedPane tabbedPane;	
@@ -116,7 +119,12 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		///////////////////////////		
 		//create the table of new ships
 		JPanel chooseShipPanel = new JPanel(new SpringLayout());
-		chooseShipPanel.setBorder(BorderFactory.createTitledBorder("selected ship"));						
+		chooseShipPanel.setBorder(BorderFactory.createTitledBorder("selected ship"));
+		
+		JButton buyShipButton = new JButton(ImageIconFactory.getForTab("/icon/investment.png"));
+		buyShipButton.setActionCommand(ACTION_BUY_SHIP);
+		buyShipButton.addActionListener(this);
+		
 		chooseShipPanel.add(new Label("type"));
 		chooseShipPanel.add(newShipType);
 		chooseShipPanel.add(new Label("name"));
@@ -125,7 +133,9 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		chooseShipPanel.add(newShipPrice);
 		chooseShipPanel.add(new Label("new budget"));
 		chooseShipPanel.add(newNetBudget);
-		SpringLayoutUtilities.makeGrid(chooseShipPanel,4, 2,5, 5,5, 5);	
+		chooseShipPanel.add(new Label("buy"));
+		chooseShipPanel.add(buyShipButton);				
+		SpringLayoutUtilities.makeCompactGrid(chooseShipPanel,5, 2,5, 5,5, 5);	
 
 		//add all together
 		panel.add(buyShipTablePanel, BorderLayout.CENTER);
@@ -140,8 +150,19 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 	}	
 
 
+	public void actionPerformed(ActionEvent event) {
+		String command = event.getActionCommand();
+		if(ACTION_BUY_SHIP.equals(command)){
+			if(newNetBudget.getValue()>0 && !newShipType.getText().equals("")){	//buy if mony and name
+				gameData.getCompany().buyShip(newShipType.getText(), newShipName.getText(), newShipPrice.getValue());
+				newShipType.setText("");
+			}
+		}else if(ACTION_SELL_SHIP.equals(command)){
+			
+		}
+	}
 
-
+	
 	public void eventReceived(Event event) {
 
 		EventType eventType = event.getEventType(); 
@@ -158,8 +179,6 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 	}
 
 
-	public void actionPerformed(ActionEvent e) {
 
-	}
 
 }
