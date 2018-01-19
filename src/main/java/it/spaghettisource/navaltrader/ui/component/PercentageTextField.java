@@ -9,7 +9,7 @@ public class PercentageTextField extends JFormattedTextField {
 	public PercentageTextField(Double amount){
 		super(NumberFormat.getPercentInstance());
 		setValue(amount);
-
+		setEditable(false);		
 	}
 	
 	

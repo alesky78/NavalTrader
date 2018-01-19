@@ -79,7 +79,7 @@ public class Ship implements Entity{
 		finance.init();		
 	}
 	
-	public List<Ship> getListSellShip(){
+	public static List<Ship> getListSellShip(){
 		return Arrays.asList(shipArray);
 	}
 

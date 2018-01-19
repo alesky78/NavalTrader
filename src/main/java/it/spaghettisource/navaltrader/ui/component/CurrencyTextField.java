@@ -10,7 +10,7 @@ public class CurrencyTextField extends JFormattedTextField {
 	public CurrencyTextField(Double amount){
 		super(NumberFormat.getCurrencyInstance());
 		setValue(amount);
-		
+		setEditable(false);
 	}
 	
 	public void setValue(Double amount){
@@ -21,5 +21,17 @@ public class CurrencyTextField extends JFormattedTextField {
 			setForeground(Color.RED);
 		}		
 	}
+	
+	public void setValue(Integer amount){
+		super.setValue((double)amount);
+	}	
+	
+	public void setValue(Object value){
+		throw new UnsupportedOperationException();
+	}	
+	
+	public Double getValue(){
+		return (Double) super.getValue();
+	}	
 	
 }

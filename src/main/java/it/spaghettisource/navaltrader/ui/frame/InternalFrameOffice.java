@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -164,7 +163,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		JPanel repairLoanPanel = new JPanel(new SpringLayout());
 		repairLoanPanel.setBorder(BorderFactory.createTitledBorder("repair loan"));		
 		sliderAmountToRepair = new JSlider(JSlider.HORIZONTAL,0, 0, 0);			
-		JFormattedTextField amountToRepair = new CurrencyTextField(0.0);
+		CurrencyTextField amountToRepair = new CurrencyTextField(0.0);
 
 		sliderAmountToRepair.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -225,18 +224,18 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		//prepare new load panel	
 		JPanel newLoanPanel = new JPanel(new SpringLayout());
 		newLoanPanel.setBorder(BorderFactory.createTitledBorder("request new loan"));
-		JFormattedTextField newLoanAmount = new CurrencyTextField(0.0);
+		CurrencyTextField newLoanAmount = new CurrencyTextField(0.0);
 
 		sliderNewLoanAmount.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider)e.getSource();
 				if (!source.getValueIsAdjusting()) {
-					newLoanAmount.setValue( source.getValue());
+					newLoanAmount.setValue(source.getValue());
 				}
 			}
 		});
 
-		JButton newLoanButton = new JButton(ImageIconFactory.getForTab("/icon/money.png"));
+		JButton newLoanButton = new JButton(ImageIconFactory.getForTab("/icon/investment.png"));
 		newLoanButton.setActionCommand(ACTION_NEW_LOAN);
 		newLoanButton.addActionListener(this);
 
@@ -279,21 +278,23 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 	public void eventReceived(Event event) {
 
-		if(event.getEventType().equals(EventType.FINANCIAL_EVENT)){
+		EventType eventType = event.getEventType(); 
+		
+		if(eventType.equals(EventType.FINANCIAL_EVENT)){
 			Finance finance = gameData.getCompany().getCompanyFinance();
 			netProfit.setValue(finance.getNetProfit());
 			listFinancialData.clear();	
 			listFinancialData.addAll(FinancialTableRow.mapData(finance)); 
-		}else if(event.getEventType().equals(EventType.RATING_EVENT)){
+		}else if(eventType.equals(EventType.RATING_EVENT)){
 			companyRating.setText(gameData.getCompany().getRating());
-		}else if(event.getEventType().equals(EventType.BUDGET_EVENT)){
+		}else if(eventType.equals(EventType.BUDGET_EVENT)){
 			budget.setValue(gameData.getCompany().getBudget());
-		}else if(event.getEventType().equals(EventType.LOAN_EVENT)){
+		}else if(eventType.equals(EventType.LOAN_EVENT)){
 			listBankLoan.clear();
 			listBankLoan.addAll(LoanTableRow.mapData(gameData.getBank().getLoanList()));
 			maxLoanAmount.setValue(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
 			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());
-		}else if(event.getEventType().equals(EventType.BANK_CHANGE_EVENT)){
+		}else if(eventType.equals(EventType.BANK_CHANGE_EVENT)){
 			maxLoanAmount.setValue(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
 			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());			
 		}				
