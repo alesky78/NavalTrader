@@ -1,7 +1,9 @@
 package it.spaghettisource.navaltrader.ui.component;
 
+import java.awt.Color;
 import java.text.Format;
 import java.text.NumberFormat;
+import java.util.PrimitiveIterator.OfDouble;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -23,9 +25,19 @@ public class TableCellCurrentyRenderer extends DefaultTableCellRenderer{
 	public void setValue(Object value){
 
 		try{
+				
+			if(value instanceof Double ){
+				if((Double)value >= 0){
+					setForeground(new Color(2657556));
+				}else{
+					setForeground(Color.RED);
+				}		
+			}			
+			
 			if (value != null){
 				value = formatter.format(value);
 			}
+			
 		}
 		catch(IllegalArgumentException e) {}
 

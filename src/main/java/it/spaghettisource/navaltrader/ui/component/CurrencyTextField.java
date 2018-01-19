@@ -17,7 +17,7 @@ public class CurrencyTextField extends JFormattedTextField {
 		super.setValue(amount);
 		if(amount>=0){
 			setForeground(new Color(2657556));
-		}else if(amount < 0){
+		}else{
 			setForeground(Color.RED);
 		}		
 	}
