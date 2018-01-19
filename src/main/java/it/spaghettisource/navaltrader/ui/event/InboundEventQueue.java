@@ -16,30 +16,30 @@ import EDU.oswego.cs.dl.util.concurrent.LinkedQueue;
 public class InboundEventQueue {
 
 	static Log log = LogFactory.getLog(InboundEventQueue.class.getName());
-	
+
 	private static InboundEventQueue instance;
-	
+
 	private LinkedQueue linkedQueue = new LinkedQueue();
 	private InboundEventQueuePublisher processor = null;
 
 	private long millisBetweenUpdates = 500;
-	
+
 	public static InboundEventQueue getInstance(){
 		if(instance==null){
 			instance = new InboundEventQueue();
 		}
 		return instance;
 	}
-	
+
 	private InboundEventQueue() {
 		processor = new InboundEventQueuePublisher();	
 	}
-	
+
 	public void startQueuePublisher() {
 		processor.startThread();
 		log.info("start inboud event queue");	
 	}	
-	
+
 	public void stopQueuePublisher(){
 		processor.stopThread();
 		linkedQueue = new LinkedQueue();		
@@ -115,8 +115,8 @@ public class InboundEventQueue {
 			thread.setDaemon(true);
 			thread.start();			
 		}
-		
-		
+
+
 
 		/**
 		 * Fires the event
@@ -136,22 +136,19 @@ public class InboundEventQueue {
 			long lastPass = 0;
 			long now = 0;
 			long elapsed = 0;
-			
+
 			Event event = null;
 
 			while (!shutdown) {
 
 				log.debug("check for a new event");
-				
+
 				lastPass = System.currentTimeMillis();				
 
-				//until queue is not empy process all messages possible
-				while(!isEmpty()){
-					event = poll(millisBetweenUpdates);
-					if(event!=null){
-						fireEvent(event);	//TOOD check performances fo application: may be all the event in one thread instead that single event per single thread					
-					}					
-				}
+				event = poll(millisBetweenUpdates);
+				if(event!=null){
+					fireEvent(event);	//TOOD check performances fo application: may be all the event in one thread instead that single event per single thread					
+				}					
 
 				now = System.currentTimeMillis();
 
@@ -166,7 +163,7 @@ public class InboundEventQueue {
 				catch (InterruptedException e) {
 					log.error("error sleeping queue thread ",e);
 				}
-				
+
 			}
 		}
 	}
