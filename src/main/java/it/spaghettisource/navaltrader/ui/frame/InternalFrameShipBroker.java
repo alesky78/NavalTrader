@@ -34,6 +34,8 @@ import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.BuyShipTableRow;
+import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
+import it.spaghettisource.navaltrader.ui.model.SellShipTableRow;
 
 public class InternalFrameShipBroker extends InternalFrameAbstract  implements ActionListener  {
 
@@ -41,7 +43,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 
 	private final static String TAB_BUY_SHIP = "buy ship";
 	private final static String TAB_SELL_SHIP = "sell ship";	
-	
+
 	private final static String ACTION_BUY_SHIP = "buy ship";
 	private final static String ACTION_SELL_SHIP = "sell ship";		
 
@@ -53,7 +55,14 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 	private JTextField newShipName;
 	private JTextField newShipType;		
 	private CurrencyTextField newShipPrice;		
-	private CurrencyTextField newNetBudget;	
+	private CurrencyTextField newShipNetBudget;	
+
+	//sell ship tab
+	private EventList<SellShipTableRow> listSellShipData;
+	private JTextField sellShipType;			
+	private JTextField sellShipName;		
+	private CurrencyTextField sellShipPrice;
+	private CurrencyTextField sellShipNetBudget;		
 
 
 	public InternalFrameShipBroker(GameManager gameManager) {
@@ -85,7 +94,18 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		newShipType = new JTextField("");
 		newShipType.setEditable(false);
 		newShipPrice = new CurrencyTextField(0.0);		
-		newNetBudget = new CurrencyTextField(company.getBudget());
+		newShipNetBudget = new CurrencyTextField(company.getBudget());
+
+		//sell ship tab
+		listSellShipData = GlazedLists.threadSafeList(new BasicEventList<SellShipTableRow>());
+		listSellShipData.addAll(SellShipTableRow.mapData(company.getShips())); 		
+		
+		sellShipType = new JTextField("");		
+		sellShipType.setEditable(false);		
+		sellShipName = new JTextField("");	
+		sellShipName.setEditable(false);			
+		sellShipPrice = new CurrencyTextField(0.0);			
+		sellShipNetBudget = new CurrencyTextField(company.getBudget());
 	}
 
 
@@ -106,10 +126,11 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 			public void valueChanged(ListSelectionEvent event) {
 				try{
 					BuyShipTableRow data = listBuyShipData.get(table.convertRowIndexToModel(table.getSelectedRow()));
+					table.clearSelection();					
 					newShipType.setText(data.getType());
 					newShipName.setText("");					
 					newShipPrice.setValue(data.getPrice());
-					newNetBudget.setValue(gameData.getCompany().getBudget()-data.getPrice());
+					newShipNetBudget.setValue(gameData.getCompany().getBudget()-data.getPrice());
 
 				}catch (Exception e) {}
 			}
@@ -120,11 +141,11 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		//create the table of new ships
 		JPanel chooseShipPanel = new JPanel(new SpringLayout());
 		chooseShipPanel.setBorder(BorderFactory.createTitledBorder("selected ship"));
-		
+
 		JButton buyShipButton = new JButton(ImageIconFactory.getForTab("/icon/investment.png"));
 		buyShipButton.setActionCommand(ACTION_BUY_SHIP);
 		buyShipButton.addActionListener(this);
-		
+
 		chooseShipPanel.add(new Label("type"));
 		chooseShipPanel.add(newShipType);
 		chooseShipPanel.add(new Label("name"));
@@ -132,7 +153,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		chooseShipPanel.add(new Label("price"));
 		chooseShipPanel.add(newShipPrice);
 		chooseShipPanel.add(new Label("new budget"));
-		chooseShipPanel.add(newNetBudget);
+		chooseShipPanel.add(newShipNetBudget);
 		chooseShipPanel.add(new Label("buy"));
 		chooseShipPanel.add(buyShipButton);				
 		SpringLayoutUtilities.makeCompactGrid(chooseShipPanel,5, 2,5, 5,5, 5);	
@@ -146,36 +167,107 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 
 	private Component createSellShipPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-		return panel;
+
+		///////////////////////////		
+		//create the table of new ships
+		JPanel sellShipTablePanel = new JPanel(new BorderLayout());
+		sellShipTablePanel.setBorder(BorderFactory.createTitledBorder("owned ship"));			
+		JTable table;		
+		String[] propertyNames = new String[] { "name","type", "status", "price", "hull", "cargoSpace", "actualFuel"};
+		String[] columnLabels = new String[] { "name","type", "status", "price", "hull", "cargoSpace", "actualFuel"};
+		TableFormat<SellShipTableRow> tf = GlazedLists.tableFormat(SellShipTableRow.class, propertyNames, columnLabels);
+		table = new JTable(new EventTableModel<SellShipTableRow>(listSellShipData, tf));	
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			public void valueChanged(ListSelectionEvent event) {
+				try{
+					SellShipTableRow data = listSellShipData.get(table.convertRowIndexToModel(table.getSelectedRow()));
+					table.clearSelection();					
+					sellShipType.setText(data.getType());
+					sellShipName.setText(data.getName());					
+					sellShipPrice.setValue(data.getPrice());
+					sellShipNetBudget.setValue(gameData.getCompany().getBudget()+data.getPrice());					
+
+				}catch (Exception e) {}
+			}
+		});	
+		sellShipTablePanel.add(new JScrollPane(table), BorderLayout.CENTER);		
+
+
+		///////////////////////////		
+		//create the table of new ships
+		JPanel chooseShipPanel = new JPanel(new SpringLayout());
+		chooseShipPanel.setBorder(BorderFactory.createTitledBorder("selected ship"));
+
+		JButton selShipButton = new JButton(ImageIconFactory.getForTab("/icon/investment.png"));
+		selShipButton.setActionCommand(ACTION_SELL_SHIP);
+		selShipButton.addActionListener(this);
+
+		
+		chooseShipPanel.add(new Label("type"));
+		chooseShipPanel.add(sellShipType);
+		chooseShipPanel.add(new Label("name"));
+		chooseShipPanel.add(sellShipName);
+		chooseShipPanel.add(new Label("price"));
+		chooseShipPanel.add(sellShipPrice);
+		chooseShipPanel.add(new Label("new budget"));
+		chooseShipPanel.add(sellShipNetBudget);		
+		chooseShipPanel.add(new Label("sell"));
+		chooseShipPanel.add(selShipButton);				
+		SpringLayoutUtilities.makeCompactGrid(chooseShipPanel,5, 2,5, 5,5, 5);			
+
+		//add all together
+		panel.add(sellShipTablePanel, BorderLayout.CENTER);		
+		panel.add(chooseShipPanel, BorderLayout.SOUTH);			
+
+		return panel;		
 	}	
 
 
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if(ACTION_BUY_SHIP.equals(command)){
-			if(newNetBudget.getValue()>0 && !newShipType.getText().equals("")){	//buy if mony and name
+			if(newShipNetBudget.getValue()>0 && !newShipName.getText().trim().equals("") && !newShipType.getText().trim().equals("")){	//buy if money and valid name
 				gameData.getCompany().buyShip(newShipType.getText(), newShipName.getText(), newShipPrice.getValue());
+
+				newShipPrice.setValue(0.0);
 				newShipType.setText("");
+				newShipName.setText("");				
+				newShipNetBudget.setValue(gameData.getCompany().getBudget());				
 			}
 		}else if(ACTION_SELL_SHIP.equals(command)){
-			
+			if(!sellShipName.getText().trim().equals("")){	//if ship is choose
+				gameData.getCompany().sellShip(sellShipName.getText(),sellShipPrice.getValue());
+
+				sellShipPrice.setValue(0.0);
+				sellShipType.setText("");
+				sellShipName.setText("");				
+				sellShipNetBudget.setValue(gameData.getCompany().getBudget());				
+			}
 		}
 	}
 
-	
+
 	public void eventReceived(Event event) {
 
 		EventType eventType = event.getEventType(); 
 
 		if(eventType.equals(EventType.BUDGET_EVENT)){
-			newNetBudget.setValue(gameData.getCompany().getBudget()-newShipPrice.getValue());
-		}		
+			newShipNetBudget.setValue(gameData.getCompany().getBudget()-newShipPrice.getValue());
+			sellShipNetBudget.setValue(gameData.getCompany().getBudget()+sellShipPrice.getValue());			
+			
+		}else if(eventType.equals(EventType.BUY_SHIP_EVENT)){
+			listSellShipData.clear();
+			listSellShipData.addAll(SellShipTableRow.mapData(gameData.getCompany().getShips()));
+		}else if(eventType.equals(EventType.SELL_SHIP_EVENT)){
+			listSellShipData.clear();
+			listSellShipData.addAll(SellShipTableRow.mapData(gameData.getCompany().getShips()));
+		}			
 
 	}
 
 
 	public EventType[] getEventsOfInterest() {
-		return new EventType[]{EventType.BUDGET_EVENT};
+		return new EventType[]{EventType.BUY_SHIP_EVENT,EventType.SELL_SHIP_EVENT,EventType.BUDGET_EVENT};
 	}
 
 
