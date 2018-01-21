@@ -38,7 +38,7 @@ import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
 import it.spaghettisource.navaltrader.ui.component.PercentageTextField;
 import it.spaghettisource.navaltrader.ui.component.TableCellCurrentyRenderer;
-import it.spaghettisource.navaltrader.ui.component.TableCellProgressBarPercentageRenderer;
+import it.spaghettisource.navaltrader.ui.component.TableCellPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.FinancialTableRow;
@@ -207,7 +207,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 			}
 		});		
 		loanTable.getColumnModel().getColumn(0).setCellRenderer(TableCellCurrentyRenderer.getRenderer());
-		loanTable.getColumnModel().getColumn(1).setCellRenderer(TableCellProgressBarPercentageRenderer.getRenderer());
+		loanTable.getColumnModel().getColumn(1).setCellRenderer(TableCellPercentageRenderer.getRenderer());
 		loanTable.getColumnModel().getColumn(2).setCellRenderer(TableCellCurrentyRenderer.getRenderer());		
 
 		loanPanel.add(new JScrollPane(loanTable),BorderLayout.CENTER);

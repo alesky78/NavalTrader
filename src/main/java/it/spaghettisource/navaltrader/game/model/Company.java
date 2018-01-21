@@ -48,10 +48,13 @@ public class Company implements Entity {
 	
 	public void sellShip(String name, double shipPrice) {
 		Ship toTemove = getShipByName(name);
-		ships.remove(toTemove);
-		InboundEventQueue.getInstance().put(new Event(EventType.SELL_SHIP_EVENT));	
 		
-		addBudget(shipPrice);
+		if(toTemove != null) {
+			ships.remove(toTemove);
+			InboundEventQueue.getInstance().put(new Event(EventType.SELL_SHIP_EVENT));	
+			addBudget(shipPrice);			
+		}
+
 	}	
 
 	public List<Ship> getShips() {

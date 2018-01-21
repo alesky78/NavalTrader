@@ -22,7 +22,7 @@ public class InboundEventQueue {
 	private LinkedQueue linkedQueue = new LinkedQueue();
 	private InboundEventQueuePublisher processor = null;
 
-	private long millisBetweenUpdates = 500;
+	private long millisBetweenUpdates = 300;
 
 	public static InboundEventQueue getInstance(){
 		if(instance==null){
@@ -141,7 +141,6 @@ public class InboundEventQueue {
 
 			while (!shutdown) {
 
-				log.debug("check for a new event");
 
 				lastPass = System.currentTimeMillis();				
 

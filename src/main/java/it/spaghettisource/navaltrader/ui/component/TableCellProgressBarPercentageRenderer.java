@@ -8,6 +8,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import it.spaghettisource.navaltrader.ui.ColorUtils;
+
 public class TableCellProgressBarPercentageRenderer extends DefaultTableCellRenderer{
 
 	private Format formatter;
@@ -21,13 +23,19 @@ public class TableCellProgressBarPercentageRenderer extends DefaultTableCellRend
 		bar = new JProgressBar();		
 		bar.setStringPainted(true);
 		this.formatter = formatter;
+		
 	}
 
 
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		
-		bar.setValue(new Double(((Double)value)*100).intValue());
+		Double newValue = (Double)value;
+		
+		bar.setValue(new Double(newValue*100).intValue());
 		bar.setString(formatter.format(value));
+	
+		bar.setForeground(ColorUtils.getTransitionRedToGreen(newValue));		
+		
 		return bar;
 	}	
 

@@ -32,6 +32,7 @@ import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
+import it.spaghettisource.navaltrader.ui.component.TableCellProgressBarPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.BuyShipTableRow;
@@ -135,6 +136,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				}catch (Exception e) {}
 			}
 		});	
+		table.getColumnModel().getColumn(2).setCellRenderer(TableCellProgressBarPercentageRenderer.getRenderer());
+		
 		buyShipTablePanel.add(new JScrollPane(table), BorderLayout.CENTER);		
 
 		///////////////////////////		
@@ -190,6 +193,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				}catch (Exception e) {}
 			}
 		});	
+		table.getColumnModel().getColumn(4).setCellRenderer(TableCellProgressBarPercentageRenderer.getRenderer());		
+		
 		sellShipTablePanel.add(new JScrollPane(table), BorderLayout.CENTER);		
 
 

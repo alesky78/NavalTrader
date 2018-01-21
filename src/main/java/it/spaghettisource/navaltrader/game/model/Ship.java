@@ -33,13 +33,13 @@ public class Ship implements Entity{
 	private static final int SHIP_CARGO_HUGE = 6000;		
 		
 	//customized ship
-	private static final Ship SHIP_OLD_LITTLE = 	new Ship(SHIP_TYPE_OLD_LITTLE	, 60.0,	 SHIP_CARGO_LITTLE	, 3000, 15,1000000);
-	private static final Ship SHIP_OLD_LARGE = 	new Ship(SHIP_TYPE_OLD_LARGE	, 60.0,	 SHIP_CARGO_LARGE	, 3500, 15,2000000);	
-	private static final Ship SHIP_NORMAL_LITTLE = new Ship(SHIP_TYPE_NORMAL_LITTLE, 80.0,	 SHIP_CARGO_LITTLE	, 3500, 17,4000000);
-	private static final Ship SHIP_NORMAL_LARGE = 	new Ship(SHIP_TYPE_NORMAL_LARGE	, 80.0,	 SHIP_CARGO_LARGE	, 4000, 17,5000000);
-	private static final Ship SHIP_HITECH_LITTLE = new Ship(SHIP_TYPE_HITECH_LITTLE, 100.0, SHIP_CARGO_LITTLE	, 4000, 21,10000000);
-	private static final Ship SHIP_HITECH_LARGE = 	new Ship(SHIP_TYPE_HITECH_LARGE	, 100.0, SHIP_CARGO_LARGE	, 5000, 21,15000000);
-	private static final Ship SHIP_HITECH_HUGE= 	new Ship(SHIP_TYPE_HITECH_HUGE	, 100.0, SHIP_CARGO_HUGE	, 6000, 21,25000000);	
+	private static final Ship SHIP_OLD_LITTLE = 	new Ship(SHIP_TYPE_OLD_LITTLE	, 0.1,	 SHIP_CARGO_LITTLE	, 3000, 15,1000000);
+	private static final Ship SHIP_OLD_LARGE = 	new Ship(SHIP_TYPE_OLD_LARGE	, 0.3,	 SHIP_CARGO_LARGE	, 3500, 15,2000000);	
+	private static final Ship SHIP_NORMAL_LITTLE = new Ship(SHIP_TYPE_NORMAL_LITTLE, 0.5,	 SHIP_CARGO_LITTLE	, 3500, 17,4000000);
+	private static final Ship SHIP_NORMAL_LARGE = 	new Ship(SHIP_TYPE_NORMAL_LARGE	, 0.7,	 SHIP_CARGO_LARGE	, 4000, 17,5000000);
+	private static final Ship SHIP_HITECH_LITTLE = new Ship(SHIP_TYPE_HITECH_LITTLE, 0.8, SHIP_CARGO_LITTLE	, 4000, 21,10000000);
+	private static final Ship SHIP_HITECH_LARGE = 	new Ship(SHIP_TYPE_HITECH_LARGE	, 1.0, SHIP_CARGO_LARGE	, 5000, 21,15000000);
+	private static final Ship SHIP_HITECH_HUGE= 	new Ship(SHIP_TYPE_HITECH_HUGE	, 1.0, SHIP_CARGO_HUGE	, 6000, 21,25000000);	
 	
 	private static final Ship[] shipArray = new Ship[]{SHIP_OLD_LITTLE,SHIP_OLD_LARGE,SHIP_NORMAL_LITTLE,SHIP_NORMAL_LARGE,SHIP_HITECH_LITTLE,SHIP_HITECH_LARGE,SHIP_HITECH_HUGE};	
 	private static double priceIndex = 1.0;

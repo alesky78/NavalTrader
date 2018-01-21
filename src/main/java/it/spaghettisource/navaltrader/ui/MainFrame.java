@@ -29,11 +29,20 @@ import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameOffice;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameShipBroker;
+import it.spaghettisource.navaltrader.ui.frame.InternalFrameShipList;
 
 public class MainFrame extends JFrame  implements ActionListener{
 
 	static Log log = LogFactory.getLog(MainFrame.class.getName());
 
+	private static final String MENU_ACTION_NEW_GAME = "new";
+	private static final String MENU_ACTION_QUIT_GAME = "quit";
+	private static final String MENU_ACTION_FRAME_OFFICE = "office";
+	private static final String MENU_ACTION_FRAME_BROKER = "ship Broker";
+	private static final String MENU_ACTION_FRAME_SHIP = "ship list";
+
+	
+	
 	//ui components
 	private MainDesktopPane desktop;
 	private JMenuBar menuBar;
@@ -88,14 +97,14 @@ public class MainFrame extends JFrame  implements ActionListener{
 		menuItem = new JMenuItem("New");
 		menuItem.setMnemonic(KeyEvent.VK_N);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-		menuItem.setActionCommand("New");
+		menuItem.setActionCommand(MENU_ACTION_NEW_GAME);
 		menuItem.addActionListener(this);
 		menu.add(menuItem);
 
 		menuItem = new JMenuItem("Quit");
 		menuItem.setMnemonic(KeyEvent.VK_N);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
-		menuItem.setActionCommand("Quit");
+		menuItem.setActionCommand(MENU_ACTION_QUIT_GAME);
 		menuItem.addActionListener(this);
 		menu.add(menuItem);		
 
@@ -104,31 +113,36 @@ public class MainFrame extends JFrame  implements ActionListener{
 		menuBar.add(menu);
 
 		menuItem = new JMenuItem("Office");
-		menuItem.setActionCommand("Office");
+		menuItem.setActionCommand(MENU_ACTION_FRAME_OFFICE);
 		menuItem.addActionListener(this);
 		menu.add(menuItem);
 		
 		menuItem = new JMenuItem("Ship Broker");
-		menuItem.setActionCommand("Ship Broker");
+		menuItem.setActionCommand(MENU_ACTION_FRAME_BROKER);
 		menuItem.addActionListener(this);
 		menu.add(menuItem);		
 		
+		menuItem = new JMenuItem("Ship List");
+		menuItem.setActionCommand(MENU_ACTION_FRAME_SHIP);
+		menuItem.addActionListener(this);
+		menu.add(menuItem);		
+				
 		return menuBar;
 	}
 
 
 
 	public void actionPerformed(ActionEvent event) {
-		if ("New".equals(event.getActionCommand())) { 
+		if (MENU_ACTION_NEW_GAME.equals(event.getActionCommand())) { 
 			
 			//start the new game
 			gameManager.newGame("test");			
 			gameManager.startGame();
 			InboundEventQueue.getInstance().startQueuePublisher();
 			
-			testThread.start();
+			//testThread.start();
 			
-		}else if ("Quit".equals(event.getActionCommand())) {
+		}else if (MENU_ACTION_QUIT_GAME.equals(event.getActionCommand())) {
 			
 			gameManager.quitGame();
 			InboundEventQueue.getInstance().stopQueuePublisher();		
@@ -136,21 +150,33 @@ public class MainFrame extends JFrame  implements ActionListener{
 			
 			testThread.stop();
 			
+		}else if (MENU_ACTION_FRAME_OFFICE.equals(event.getActionCommand())) { 
 			
-		}else if ("Office".equals(event.getActionCommand())) { 
 			InternalFrameOffice frame = new InternalFrameOffice(desktop,gameManager);
 			frame.setVisible(true);
 			desktop.add(frame);
 	        try {
 	            frame.setSelected(true);
-	        } catch (java.beans.PropertyVetoException e) {}			
-		}else if ("Ship Broker".equals(event.getActionCommand())) { 
+	        } catch (java.beans.PropertyVetoException e) {}
+	        
+		}else if (MENU_ACTION_FRAME_BROKER.equals(event.getActionCommand())) { 
+			
 			InternalFrameShipBroker frame = new InternalFrameShipBroker(desktop,gameManager);
 			frame.setVisible(true);
 			desktop.add(frame);
 	        try {
 	            frame.setSelected(true);
-	        } catch (java.beans.PropertyVetoException e) {}			
+	        } catch (java.beans.PropertyVetoException e) {}
+	        
+		}else if (MENU_ACTION_FRAME_SHIP.equals(event.getActionCommand())) { 
+			
+			InternalFrameShipList frame = new InternalFrameShipList(desktop,gameManager);
+			frame.setVisible(true);
+			desktop.add(frame);
+	        try {
+	            frame.setSelected(true);
+	        } catch (java.beans.PropertyVetoException e) {}
+	        
 		}     
 		
 		
