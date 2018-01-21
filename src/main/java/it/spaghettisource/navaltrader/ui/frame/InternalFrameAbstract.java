@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameData;
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.event.EventListener;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 
@@ -18,15 +19,19 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 
 	static Log log = LogFactory.getLog(InternalFrameAbstract.class.getName());
 	
+	protected MainDesktopPane parentDesktopPane;
+	
 	protected GameManager gameManager;
 	protected GameData gameData; 
+
 	
 	protected NumberFormat percentageFormat = NumberFormat.getPercentInstance();		
 	
-	public InternalFrameAbstract(GameManager gameManager, String name) {
+	public InternalFrameAbstract(MainDesktopPane parentDesktopPane,GameManager gameManager, String name) {
 		super(name, true, true, true, true);
         this.gameManager = gameManager; 
         this.gameData = gameManager.getGameData();
+        this.parentDesktopPane = parentDesktopPane;
         
         //register to receive event
 		log.debug("register listener: "+title);        

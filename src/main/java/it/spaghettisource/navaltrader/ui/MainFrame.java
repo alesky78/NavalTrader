@@ -35,7 +35,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 	static Log log = LogFactory.getLog(MainFrame.class.getName());
 
 	//ui components
-	private JDesktopPane desktop;
+	private MainDesktopPane desktop;
 	private JMenuBar menuBar;
 	
 	//game components
@@ -49,7 +49,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 		setIconImage(ImageIconFactory.getAppImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		desktop = new JDesktopPane();
+		desktop = new MainDesktopPane();
 		//Make dragging a little faster but perhaps uglier.
 		desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);	        
 
@@ -66,7 +66,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 		log.debug("frame width:"+getSize().width+" height:"+getSize().height);
 		int inset = 200;
 		setBounds(inset, inset,screenSize.width  - inset*2,screenSize.height - inset*2);
-
 
 		setJMenuBar(createMenuBar());
 
@@ -101,7 +100,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 		menu.add(menuItem);		
 
 		//Set up the Game menu.
-		menu = new JMenu("Report");
+		menu = new JMenu("Manage");
 		menuBar.add(menu);
 
 		menuItem = new JMenuItem("Office");
@@ -139,14 +138,14 @@ public class MainFrame extends JFrame  implements ActionListener{
 			
 			
 		}else if ("Office".equals(event.getActionCommand())) { 
-			InternalFrameOffice frame = new InternalFrameOffice(gameManager);
+			InternalFrameOffice frame = new InternalFrameOffice(desktop,gameManager);
 			frame.setVisible(true);
 			desktop.add(frame);
 	        try {
 	            frame.setSelected(true);
 	        } catch (java.beans.PropertyVetoException e) {}			
 		}else if ("Ship Broker".equals(event.getActionCommand())) { 
-			InternalFrameShipBroker frame = new InternalFrameShipBroker(gameManager);
+			InternalFrameShipBroker frame = new InternalFrameShipBroker(desktop,gameManager);
 			frame.setVisible(true);
 			desktop.add(frame);
 	        try {

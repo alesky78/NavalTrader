@@ -33,6 +33,7 @@ import it.spaghettisource.navaltrader.game.model.Bank;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Finance;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
+import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
 import it.spaghettisource.navaltrader.ui.component.PercentageTextField;
@@ -74,8 +75,8 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 
 
-	public InternalFrameOffice(GameManager gameManager) {
-		super(gameManager,"Office");
+	public InternalFrameOffice(MainDesktopPane parentDesktopPane,GameManager gameManager) {
+		super(parentDesktopPane,gameManager,"Office");
 		setSize(500,450);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/desk.png"));
 

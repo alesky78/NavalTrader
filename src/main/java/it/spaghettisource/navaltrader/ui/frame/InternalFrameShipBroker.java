@@ -29,12 +29,12 @@ import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
+import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.BuyShipTableRow;
-import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 import it.spaghettisource.navaltrader.ui.model.SellShipTableRow;
 
 public class InternalFrameShipBroker extends InternalFrameAbstract  implements ActionListener  {
@@ -65,8 +65,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 	private CurrencyTextField sellShipNetBudget;		
 
 
-	public InternalFrameShipBroker(GameManager gameManager) {
-		super(gameManager, "ship broker");
+	public InternalFrameShipBroker(MainDesktopPane parentDesktopPane,GameManager gameManager) {
+		super(parentDesktopPane,gameManager, "ship broker");
 		setSize(600,400);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/justice.png"));
 
