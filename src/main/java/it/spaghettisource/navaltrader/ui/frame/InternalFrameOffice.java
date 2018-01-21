@@ -116,11 +116,6 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 	}
 
-	private Component createShipBrokerPanel() {
-		JPanel panel = new JPanel();
-		return panel;
-	}
-
 
 	private JPanel createFinancialStatusPanel(){
 		JPanel panel = new JPanel(new BorderLayout());

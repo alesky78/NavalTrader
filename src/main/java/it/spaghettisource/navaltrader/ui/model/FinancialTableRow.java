@@ -5,7 +5,6 @@ import java.util.List;
 
 import it.spaghettisource.navaltrader.game.model.Finance;
 import it.spaghettisource.navaltrader.game.model.FinancialEntryType;
-import test.TableCellButtonRenderer;
 
 public class FinancialTableRow {
 

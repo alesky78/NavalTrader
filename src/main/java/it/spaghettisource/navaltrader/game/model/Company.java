@@ -90,6 +90,10 @@ public class Company implements Entity {
 		return rating;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
 	public Finance getCompanyFinance(){
 		Finance global = new Finance();
 		global.init();
