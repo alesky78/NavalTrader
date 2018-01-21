@@ -3,7 +3,6 @@ package it.spaghettisource.navaltrader.ui.component;
 import java.awt.Color;
 import java.text.Format;
 import java.text.NumberFormat;
-import java.util.PrimitiveIterator.OfDouble;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
