@@ -14,7 +14,6 @@ public class Application {
 
 	static Log log = LogFactory.getLog(Application.class.getName());
 
-	
 	public static boolean nimbus = false;
 
 	public static void main(String[] args){
@@ -26,9 +25,7 @@ public class Application {
 			activateNimbus();
 		}else {
 			JFrame.setDefaultLookAndFeelDecorated(true);   			
-		}
-		
-		activateNimbus();        
+		}    
 		
 		//Schedule a job for the event-dispatching thread:
 		//creating and showing this application's GUI.

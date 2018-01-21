@@ -21,6 +21,15 @@ public class EventPublisher {
 	
 	private static EventPublisher instance;
 	
+	/**
+	 * A map of listeners
+	 */
+	private Map<EventType, List<EventListener>> listeners = new HashMap<EventType, List<EventListener>>();
+	
+	
+	private EventPublisher(){
+	}
+	
 	public static EventPublisher getInstance(){
 		if(instance==null){
 			instance = new EventPublisher();
@@ -28,14 +37,6 @@ public class EventPublisher {
 		return instance;
 	}
 	
-	private EventPublisher(){
-	}
-	
-	/**
-	 * A map of listeners
-	 */
-	private Map<EventType, List<EventListener>> listeners = new HashMap<EventType, List<EventListener>>();
-
 
 	/**
 	 * Removes all listeners
