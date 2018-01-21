@@ -226,7 +226,10 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if(ACTION_BUY_SHIP.equals(command)){
-			if(newShipNetBudget.getValue()>0 && !newShipName.getText().trim().equals("") && !newShipType.getText().trim().equals("")){	//buy if money and valid name
+			if(newShipName.getText().trim().equals("")) {
+				parentDesktopPane.showErrorMessageDialog("set a name to the ship to buy it");
+			}
+			else if(newShipNetBudget.getValue()>0  && !newShipType.getText().trim().equals("")){	//buy if money and valid name
 				gameData.getCompany().buyShip(newShipType.getText(), newShipName.getText(), newShipPrice.getValue());
 
 				newShipPrice.setValue(0.0);

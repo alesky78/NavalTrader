@@ -14,7 +14,7 @@ public class MainDesktopPane extends JDesktopPane {
 
 	public void showErrorMessageDialog(String message) {
 		//TODO add the icon here		
-		JOptionPane.showInternalMessageDialog(this, message,"info",JOptionPane.ERROR_MESSAGE,  null);
+		JOptionPane.showInternalMessageDialog(this, message,"error",JOptionPane.ERROR_MESSAGE,  null);
 	}	
 	
 	
