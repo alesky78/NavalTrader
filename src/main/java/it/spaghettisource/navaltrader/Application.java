@@ -1,5 +1,6 @@
 package it.spaghettisource.navaltrader;
 
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -21,11 +22,10 @@ public class Application {
 		//initialize game structure
 		GameManager gameManager = new GameManager();
 
-		//Make sure we have nice window decorations.
-        //JFrame.setDefaultLookAndFeelDecorated(true);   
-        
 		if(nimbus) {
 			activateNimbus();
+		}else {
+			JFrame.setDefaultLookAndFeelDecorated(true);   			
 		}
 		
 		activateNimbus();        
