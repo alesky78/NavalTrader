@@ -233,8 +233,9 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		if(ACTION_BUY_SHIP.equals(command)){
 			if(newShipName.getText().trim().equals("")) {
 				parentDesktopPane.showErrorMessageDialog("set a name to the ship to buy it");
-			}
-			else if(newShipNetBudget.getValue()>0  && !newShipType.getText().trim().equals("")){	//buy if money and valid name
+			}else if(gameData.getCompany().getShipByName(newShipName.getText())!=null) {
+				parentDesktopPane.showErrorMessageDialog("ship wiht this name alrady exsist");
+			}else if(newShipNetBudget.getValue()>0  && !newShipType.getText().trim().equals("")){	//buy if money and valid name
 				gameData.getCompany().buyShip(newShipType.getText(), newShipName.getText(), newShipPrice.getValue());
 
 				newShipPrice.setValue(0.0);
@@ -262,13 +263,13 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		if(eventType.equals(EventType.BUDGET_EVENT)){
 			newShipNetBudget.setValue(gameData.getCompany().getBudget()-newShipPrice.getValue());
 			sellShipNetBudget.setValue(gameData.getCompany().getBudget()+sellShipPrice.getValue());			
-			
 		}else if(eventType.equals(EventType.BUY_SHIP_EVENT)){
-			listSellShipData.clear();
-			listSellShipData.addAll(SellShipTableRow.mapData(gameData.getCompany().getShips()));
+			listSellShipData.add(SellShipTableRow.mapData((Ship)event.getSource()));
 		}else if(eventType.equals(EventType.SELL_SHIP_EVENT)){
-			listSellShipData.clear();
-			listSellShipData.addAll(SellShipTableRow.mapData(gameData.getCompany().getShips()));
+			int index = listSellShipData.indexOf(SellShipTableRow.mapData((Ship)event.getSource()));
+			if(index>-1){
+				listSellShipData.remove(index);				
+			}
 		}			
 
 	}

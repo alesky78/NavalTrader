@@ -58,10 +58,24 @@ public class ShipListTableRow {
 		
 		List<ShipListTableRow> LoanTableRow = new ArrayList<ShipListTableRow>();
 		for (Ship ship : listOfShip) {
-			LoanTableRow.add(new ShipListTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getBasePrice(), ship.getHull(), ship.getCargoSpace(), ship.getActualFuel()));
+			LoanTableRow.add(mapData(ship));
 		}
 		
 		return LoanTableRow;
 	}
+	
+	public static ShipListTableRow mapData(Ship ship){
+		return new ShipListTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getBasePrice(), ship.getHull(), ship.getCargoSpace(), ship.getActualFuel());
+	}	
+	
+	public boolean equals(Object obj){
+		if(obj==null){
+			return false;
+		}else if(!(obj instanceof ShipListTableRow)){
+			return false;
+		}else{
+			return name.equals(((ShipListTableRow)obj).getName());
+		}	
+	}	
 	
 }

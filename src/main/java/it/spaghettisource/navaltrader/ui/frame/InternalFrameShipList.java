@@ -24,11 +24,13 @@ import ca.odell.glazedlists.gui.TableFormat;
 import ca.odell.glazedlists.swing.EventTableModel;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.model.Company;
+import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.component.TableCellProgressBarPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.model.SellShipTableRow;
 import it.spaghettisource.navaltrader.ui.model.ShipListTableRow;
 
 public class InternalFrameShipList extends InternalFrameAbstract  implements ActionListener  {
@@ -47,13 +49,13 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 	public InternalFrameShipList(MainDesktopPane parentDesktopPane,GameManager gameManager) {
 		super(parentDesktopPane,gameManager, "ship list");
 		setSize(600,300);   
-		setFrameIcon(ImageIconFactory.getForFrame("/icon/justice.png"));
+		setFrameIcon(ImageIconFactory.getForFrame("/icon/agenda.png"));
 
 		initValuesFromModel();
 
 		tabbedPane = new JTabbedPane();		
 
-		tabbedPane.addTab(TAB_SHIP_LIST, ImageIconFactory.getForTab("/icon/cart-buy.png"),createShipListPanel());
+		tabbedPane.addTab(TAB_SHIP_LIST, ImageIconFactory.getForTab("/icon/ship list.png"),createShipListPanel());
 
 
 		getContentPane().add(tabbedPane);
@@ -137,11 +139,12 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		EventType eventType = event.getEventType(); 
 
 		if(eventType.equals(EventType.BUY_SHIP_EVENT)){
-			listShipData.clear();
-			listShipData.addAll(ShipListTableRow.mapData(gameData.getCompany().getShips()));
+			listShipData.add(ShipListTableRow.mapData((Ship)event.getSource()));
 		}else if(eventType.equals(EventType.SELL_SHIP_EVENT)){
-			listShipData.clear();
-			listShipData.addAll(ShipListTableRow.mapData(gameData.getCompany().getShips()));
+			int index = listShipData.indexOf(ShipListTableRow.mapData((Ship)event.getSource()));
+			if(index>-1){
+				listShipData.remove(index);				
+			}			
 		}			
 
 	}

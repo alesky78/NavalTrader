@@ -12,19 +12,17 @@ import javax.swing.JTabbedPane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ca.odell.glazedlists.EventList;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.model.ShipListTableRow;
 
 public class InternalFrameShipDetail extends InternalFrameAbstract  implements ActionListener  {
 
 	static Log log = LogFactory.getLog(InternalFrameShipDetail.class.getName());
 
-	private final static String TAB_SHIP_LIST = "ship list";	
+	private final static String TAB_SHIP_STATUS = "status";	
 
 
 	
@@ -39,12 +37,12 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		super(parentDesktopPane,gameManager, shipName);
 		this.shipName = shipName;
 		setSize(500,300);   
-		setFrameIcon(ImageIconFactory.getForFrame("/icon/justice.png"));
+		setFrameIcon(ImageIconFactory.getForFrame("/icon/ship list.png"));
 
 		initValuesFromModel();
 
 		tabbedPane = new JTabbedPane();		
-		tabbedPane.addTab(TAB_SHIP_LIST, ImageIconFactory.getForTab("/icon/cart-buy.png"),createPanel());
+		tabbedPane.addTab(TAB_SHIP_STATUS, ImageIconFactory.getForTab("/icon/ship list.png"),createStatusPanel());
 
 		getContentPane().add(tabbedPane);
 
@@ -58,7 +56,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 
 
 
-	private Component createPanel() {
+	private Component createStatusPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		return panel;		
 	}	
@@ -73,15 +71,12 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		EventType eventType = event.getEventType(); 
 
 		if(eventType.equals(EventType.SELL_SHIP_EVENT)){
-			//if the ship related to this pannel is sell close the pannel
+			//if the ship related to this panel is sell close the panel
 			log.debug("delete request");
 			if(gameData.getCompany().getShipByName(shipName)==null) {
-				log.debug("delete request accepted");
 				try {
 					this.setClosed(true);
-				} catch (PropertyVetoException e) {
-					log.error(e);
-				}
+				} catch (PropertyVetoException e) {}
 			}
 		}	
 

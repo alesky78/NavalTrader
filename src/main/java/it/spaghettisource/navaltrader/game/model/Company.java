@@ -39,9 +39,9 @@ public class Company implements Entity {
 	}
 
 	public void buyShip(String shipType, String name, double shipPrice) {
-		
-		ships.add(Ship.factoryShip(shipType, name));
-		InboundEventQueue.getInstance().put(new Event(EventType.BUY_SHIP_EVENT));				
+		Ship newShip = Ship.factoryShip(shipType, name);
+		ships.add(newShip);
+		InboundEventQueue.getInstance().put(new Event(EventType.BUY_SHIP_EVENT,newShip));				
 		
 		removeBudget(shipPrice);
 	}
@@ -51,7 +51,7 @@ public class Company implements Entity {
 		
 		if(toTemove != null) {
 			ships.remove(toTemove);
-			InboundEventQueue.getInstance().put(new Event(EventType.SELL_SHIP_EVENT));	
+			InboundEventQueue.getInstance().put(new Event(EventType.SELL_SHIP_EVENT,toTemove));	
 			addBudget(shipPrice);			
 		}
 
