@@ -60,7 +60,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 	private JSlider amountToRefuelSlider;	
 	private DoubleTextField amountToRefuel;
 	private CurrencyTextField amountToPayForRefuel;
-	private CurrencyTextField amountToPerUnitOfRefuel;	
+	private CurrencyTextField priceUnitOfFuel;	
 	
 		
 
@@ -101,7 +101,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		amountToRefuelSlider = new JSlider(0, (int)(ship.getMaxFuel()-ship.getActualFuel()), 0);
 		amountToRefuel = new DoubleTextField(0.0);
 		amountToPayForRefuel = new CurrencyTextField(0.0);
-		amountToPerUnitOfRefuel =  new CurrencyTextField(700.0);	//TODO where to get fuel price? maybe FUEL_PRICE_CHANGE EVENT
+		priceUnitOfFuel =  new CurrencyTextField(700.0);	//TODO where to get fuel price? maybe FUEL_PRICE_CHANGE EVENT
 
 		
 	}
@@ -150,7 +150,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 				JSlider source = (JSlider)e.getSource();
 				if (!source.getValueIsAdjusting()) {
 					amountToRefuel.setValue(source.getValue());
-					amountToPayForRefuel.setValue(source.getValue()*amountToPerUnitOfRefuel.getValue());
+					amountToPayForRefuel.setValue(source.getValue()*priceUnitOfFuel.getValue());
 				}
 			}
 		});
@@ -163,7 +163,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		refuelPanel.add(new Label("requested amount"));		
 		refuelPanel.add(amountToRefuel);
 		refuelPanel.add(new Label("price per t of fuel"));		
-		refuelPanel.add(amountToPerUnitOfRefuel);
+		refuelPanel.add(priceUnitOfFuel);
 		refuelPanel.add(new Label("total price"));		
 		refuelPanel.add(amountToPayForRefuel);		
 		
