@@ -13,7 +13,7 @@ public class Ship implements Entity{
 	private static Log log = LogFactory.getLog(Ship.class.getName());
 
 	//ship status
-	public static final String SHIP_STATUS_IDLE = "idle";
+	public static final String SHIP_STATUS_DOCKED = "docked";
 	public static final String SHIP_STATUS_REPAIRING = "repairing";
 	public static final String SHIP_STATUS_NAVIGATION = "navigation";
 	public static final String SHIP_STATUS_DOCKING = "docking";
@@ -65,7 +65,7 @@ public class Ship implements Entity{
 	public Ship(String type, double hull, int cargoSpace, double maxFuel,  double maxSpeed, double basePrice) {
 		this.type = type;
 
-		this.status = SHIP_STATUS_IDLE;
+		this.status = SHIP_STATUS_DOCKED;
 		this.cargoSpace = cargoSpace;
 		this.maxFuel = maxFuel;
 		this.maxSpeed = maxSpeed;
