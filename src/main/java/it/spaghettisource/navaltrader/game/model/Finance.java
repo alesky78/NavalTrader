@@ -16,7 +16,7 @@ public class Finance {
 		entry.clear();
 		entry.put(FinancialEntryType.SHIP_INCOME, 0.0);
 		entry.put(FinancialEntryType.SHIP_REPAIR, 0.0);
-		entry.put(FinancialEntryType.SHIP_MAINTAINANCE, 0.0);
+		entry.put(FinancialEntryType.SHIP_OPERATING_COST, 0.0);
 		entry.put(FinancialEntryType.SHIP_FUEL, 0.0);		
 	}
 	

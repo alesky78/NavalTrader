@@ -14,9 +14,10 @@ public class SellShipTableRow {
 	private double hull;	
 	private int cargoSpace;		
 	private int teu;		
-	private double actualFuel;			
+	private double actualFuel;	
+	private double operatingCost;	
 	
-	public SellShipTableRow(String name,String type,String status, double price, double hull, int cargoSpace, int teu, double actualFuel) {
+	public SellShipTableRow(String name,String type,String status, double price, double operatingCost,double hull, int cargoSpace, int teu, double actualFuel) {
 		super();
 		this.name = name;
 		this.status = status;
@@ -26,6 +27,7 @@ public class SellShipTableRow {
 		this.cargoSpace = cargoSpace;
 		this.teu = teu;
 		this.actualFuel = actualFuel;
+		this.operatingCost = operatingCost;
 	}
 
 	public String getType() {
@@ -60,6 +62,10 @@ public class SellShipTableRow {
 		return name;
 	}
 
+	public double getOperatingCost() {
+		return operatingCost;
+	}
+
 	public static List<SellShipTableRow> mapData(List<Ship> listOfShip){
 		
 		List<SellShipTableRow> LoanTableRow = new ArrayList<SellShipTableRow>();
@@ -71,7 +77,7 @@ public class SellShipTableRow {
 	}
 	
 	public static SellShipTableRow mapData(Ship ship){
-		return new SellShipTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getBasePrice(), ship.getHull(), ship.getCargoSpace(),ship.getTeu(), ship.getActualFuel());
+		return new SellShipTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getBasePrice(), ship.getOperatingCost(), ship.getHull(), ship.getCargoSpace(),ship.getTeu(), ship.getActualFuel());
 	}	
 	
 	public boolean equals(Object obj){

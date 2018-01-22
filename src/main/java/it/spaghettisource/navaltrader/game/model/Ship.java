@@ -36,13 +36,13 @@ public class Ship implements Entity{
 	private static final int SHIP_CARGO_HUGE = 6000;		
 		
 	//customized ship
-	private static final Ship SHIP_OLD_LITTLE = 	new Ship(SHIP_TYPE_OLD_LITTLE	, 0.1,	 SHIP_CARGO_LITTLE	, 700, 3000, 15,1000000);
-	private static final Ship SHIP_OLD_LARGE = 	new Ship(SHIP_TYPE_OLD_LARGE	, 0.3,	 SHIP_CARGO_LARGE	, 700, 3500, 15,2000000);	
-	private static final Ship SHIP_NORMAL_LITTLE = new Ship(SHIP_TYPE_NORMAL_LITTLE, 0.5,	 SHIP_CARGO_LITTLE	, 700, 3500, 17,4000000);
-	private static final Ship SHIP_NORMAL_LARGE = 	new Ship(SHIP_TYPE_NORMAL_LARGE	, 0.7,	 SHIP_CARGO_LARGE	, 700, 4000, 17,5000000);
-	private static final Ship SHIP_HITECH_LITTLE = new Ship(SHIP_TYPE_HITECH_LITTLE, 0.8, SHIP_CARGO_LITTLE	, 700, 4000, 21,10000000);
-	private static final Ship SHIP_HITECH_LARGE = 	new Ship(SHIP_TYPE_HITECH_LARGE	, 1.0, SHIP_CARGO_LARGE	, 700, 5000, 21,15000000);
-	private static final Ship SHIP_HITECH_HUGE= 	new Ship(SHIP_TYPE_HITECH_HUGE	, 1.0, SHIP_CARGO_HUGE	, 700, 6000, 21,25000000);	
+	private static final Ship SHIP_OLD_LITTLE = 	new Ship(SHIP_TYPE_OLD_LITTLE	, 0.1,	 SHIP_CARGO_LITTLE	, 700, 3000,2000, 15,1000000);
+	private static final Ship SHIP_OLD_LARGE = 	new Ship(SHIP_TYPE_OLD_LARGE	, 0.3,	 SHIP_CARGO_LARGE	, 700, 3500, 2000,15,2000000);	
+	private static final Ship SHIP_NORMAL_LITTLE = new Ship(SHIP_TYPE_NORMAL_LITTLE, 0.5,	 SHIP_CARGO_LITTLE	, 700, 3500, 2000,17,4000000);
+	private static final Ship SHIP_NORMAL_LARGE = 	new Ship(SHIP_TYPE_NORMAL_LARGE	, 0.7,	 SHIP_CARGO_LARGE	, 700, 4000, 2000,17,5000000);
+	private static final Ship SHIP_HITECH_LITTLE = new Ship(SHIP_TYPE_HITECH_LITTLE, 0.8, SHIP_CARGO_LITTLE	, 700, 4000, 2000,21,10000000);
+	private static final Ship SHIP_HITECH_LARGE = 	new Ship(SHIP_TYPE_HITECH_LARGE	, 1.0, SHIP_CARGO_LARGE	, 700, 5000, 2000,21,15000000);
+	private static final Ship SHIP_HITECH_HUGE= 	new Ship(SHIP_TYPE_HITECH_HUGE	, 1.0, SHIP_CARGO_HUGE	, 700, 6000, 2000,21,25000000);	
 	
 	private static final Ship[] shipArray = new Ship[]{SHIP_OLD_LITTLE,SHIP_OLD_LARGE,SHIP_NORMAL_LITTLE,SHIP_NORMAL_LARGE,SHIP_HITECH_LITTLE,SHIP_HITECH_LARGE,SHIP_HITECH_HUGE};	
 	private static double priceIndex = 1.0;
@@ -57,7 +57,7 @@ public class Ship implements Entity{
 	private String status;
 	private double hull;	
 	
-	private double operatingCost;	//TODO set this property wherever
+	private double operatingCost;
 	
 	private int cargoSpace;
 	private int teu;		
@@ -68,7 +68,7 @@ public class Ship implements Entity{
 	
 	
 	
-	public Ship(String type, double hull, int cargoSpace,int teu, double maxFuel,  double maxSpeed, double basePrice) {
+	public Ship(String type, double hull, int cargoSpace,int teu, double maxFuel, double operatingCost, double maxSpeed, double basePrice) {
 		this.type = type;
 
 		this.status = SHIP_STATUS_DOCKED;
@@ -78,6 +78,7 @@ public class Ship implements Entity{
 		this.maxSpeed = maxSpeed;
 		this.hull = hull;		
 		this.basePrice = basePrice;
+		this.operatingCost = operatingCost;
 		
 		actualFuel = 0;		
 		actualSpeed = 0;		
@@ -94,7 +95,7 @@ public class Ship implements Entity{
 				modelShip = ship;
 			}
 		}
-		newShip = new Ship(modelShip.getType(), modelShip.getHull(), modelShip.getCargoSpace(), modelShip.getTeu(),  modelShip.getMaxFuel(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
+		newShip = new Ship(modelShip.getType(), modelShip.getHull(), modelShip.getCargoSpace(), modelShip.getTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
 		Finance finance = new Finance();
 		finance.init();
@@ -169,6 +170,15 @@ public class Ship implements Entity{
 
 	public void setTeu(int teu) {
 		this.teu = teu;
+	}
+
+	
+	public double getOperatingCost() {
+		return operatingCost;
+	}
+
+	public void setOperatingCost(double operatingCost) {
+		this.operatingCost = operatingCost;
 	}
 
 	public double getActualFuel() {

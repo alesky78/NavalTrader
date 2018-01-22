@@ -69,7 +69,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 
 	public InternalFrameShipBroker(MainDesktopPane parentDesktopPane,GameManager gameManager) {
 		super(parentDesktopPane,gameManager, "ship broker");
-		setSize(600,400);   
+		setSize(650,450);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/justice.png"));
 
 		initValuesFromModel();
@@ -120,8 +120,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		JPanel buyShipTablePanel = new JPanel(new BorderLayout());
 		buyShipTablePanel.setBorder(BorderFactory.createTitledBorder("available ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "type", "price", "hull", "cargoSpace", "teu", "maxFuel", "maxSpeed"};
-		String[] columnLabels = new String[] { "type", "price", "hull", "cargoSpace",  "teu", "maxFuel", "maxSpeed"};
+		String[] propertyNames = new String[] { "type", "price","operatingCost", "hull", "cargoSpace", "teu", "maxFuel", "maxSpeed"};
+		String[] columnLabels = new String[] { "type", "price","operatingCost", "hull", "cargoSpace",  "teu", "maxFuel", "maxSpeed"};
 		TableFormat<BuyShipTableRow> tf = GlazedLists.tableFormat(BuyShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<BuyShipTableRow>(listBuyShipData, tf));	
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -137,7 +137,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				}catch (Exception e) {}
 			}
 		});	
-		table.getColumnModel().getColumn(2).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
+		table.getColumnModel().getColumn(3).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
 		
 		buyShipTablePanel.add(new JScrollPane(table), BorderLayout.CENTER);		
 
@@ -177,8 +177,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		JPanel sellShipTablePanel = new JPanel(new BorderLayout());
 		sellShipTablePanel.setBorder(BorderFactory.createTitledBorder("owned ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "name","type", "status", "price", "hull", "cargoSpace",  "teu", "actualFuel"};
-		String[] columnLabels = new String[] { "name","type", "status", "price", "hull", "cargoSpace",   "teu", "actualFuel"};
+		String[] propertyNames = new String[] { "name","type", "status", "price", "operatingCost", "hull", "cargoSpace",  "teu", "actualFuel"};
+		String[] columnLabels = new String[] {  "name","type", "status", "price", "operatingCost", "hull", "cargoSpace",   "teu", "actualFuel"};
 		TableFormat<SellShipTableRow> tf = GlazedLists.tableFormat(SellShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<SellShipTableRow>(listSellShipData, tf));	
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -194,7 +194,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				}catch (Exception e) {}
 			}
 		});	
-		table.getColumnModel().getColumn(4).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());		
+		table.getColumnModel().getColumn(5).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());		
 		
 		sellShipTablePanel.add(new JScrollPane(table), BorderLayout.CENTER);		
 
