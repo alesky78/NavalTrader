@@ -140,15 +140,11 @@ public class MainFrame extends JFrame  implements ActionListener{
 			gameManager.startGame();
 			InboundEventQueue.getInstance().startQueuePublisher();
 			
-			//testThread.start();
-			
 		}else if (MENU_ACTION_QUIT_GAME.equals(event.getActionCommand())) {
 			
 			gameManager.quitGame();
 			InboundEventQueue.getInstance().stopQueuePublisher();		
 			EventPublisher.getInstance().clearAllListeners();
-			
-			testThread.stop();
 			
 		}else if (MENU_ACTION_FRAME_OFFICE.equals(event.getActionCommand())) { 
 			
@@ -175,60 +171,9 @@ public class MainFrame extends JFrame  implements ActionListener{
 			desktop.add(frame);
 	        try {
 	            frame.setSelected(true);
-	        } catch (java.beans.PropertyVetoException e) {}
-	        
+	        } catch (java.beans.PropertyVetoException e) {}	        
 		}     
 		
-		
 	}	 	
-	
-	private TestThread testThread = new TestThread();
-	
-	class TestThread implements Runnable{
-
-		private boolean stop = false;
-		private int timeSleep = 2000;	
-		private Random random = new Random();
-		
-		public void start(){
-			stop = false;
-			(new Thread(this)).start();
-		}
-		
-		public void stop(){
-			stop = true;
-		}		
-		
-		public void run() {
-			
-			Company company = gameManager.getGameData().getCompany();
-			Bank bank = gameManager.getGameData().getBank();
-			
-			while(!stop){
-				try {
-					Thread.sleep(timeSleep);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				company.addBudget(random.nextInt(200));
-				
-				for (Ship ship : company.getShips()) {
-					ship.getFinance().addEntry(FinancialEntryType.SHIP_INCOME, random.nextInt(50));
-					ship.getFinance().addEntry(FinancialEntryType.SHIP_MAINTAINANCE, -random.nextInt(50));
-					ship.getFinance().addEntry(FinancialEntryType.SHIP_FUEL, -random.nextInt(50));			
-				}
-				
-				for (Loan loan : bank.getLoanList()) {
-					bank.repairLoad(loan.getId(), 1,company);
-				}
-				
-				InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT));		
-				
-			}
-			
-		}
-		
-	}
 
 }

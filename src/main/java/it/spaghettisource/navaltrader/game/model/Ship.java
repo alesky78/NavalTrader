@@ -7,6 +7,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
+import it.spaghettisource.navaltrader.ui.event.Event;
+import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
 public class Ship implements Entity{
 
@@ -188,9 +191,30 @@ public class Ship implements Entity{
 		this.maxSpeed = maxSpeed;
 	}
 
+	
 	@Override	
 	public void update(int minutsPassed) {
-		// TODO business logic for ship
+
+		
+			
+			if(hull > 1.0){
+				hull = 0;
+				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_HULL_CHANGE_EVENT,this));	
+			}
+			else{
+				hull = hull + 0.01;				
+				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_HULL_CHANGE_EVENT,this));	
+			}
+			
+			if(actualFuel>maxFuel){
+				actualFuel = 0;
+				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));
+			}else{
+				actualFuel = actualFuel + 100;				
+				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));
+			}			
+			
+		
 		
 	}
 	

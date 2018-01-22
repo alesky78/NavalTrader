@@ -27,7 +27,7 @@ import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
-import it.spaghettisource.navaltrader.ui.component.TableCellProgressBarPercentageRenderer;
+import it.spaghettisource.navaltrader.ui.component.HullTableCellProgressBarPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.SellShipTableRow;
@@ -83,11 +83,11 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		JPanel shipListTablePanel = new JPanel(new BorderLayout());
 		shipListTablePanel.setBorder(BorderFactory.createTitledBorder("owned ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "name","type", "status", "price", "hull", "cargoSpace", "actualFuel"};
-		String[] columnLabels = new String[] { "name","type", "status", "price", "hull", "cargoSpace", "actualFuel"};
+		String[] propertyNames = new String[] { "name","type", "status",  "hull", "cargoSpace", "actualFuel"};
+		String[] columnLabels = new String[] { "name","type", "status", "hull", "cargoSpace", "actualFuel"};
 		TableFormat<ShipListTableRow> tf = GlazedLists.tableFormat(ShipListTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<ShipListTableRow>(listShipData, tf));
-		table.getColumnModel().getColumn(4).setCellRenderer(TableCellProgressBarPercentageRenderer.getRenderer());
+		table.getColumnModel().getColumn(3).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
 
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {

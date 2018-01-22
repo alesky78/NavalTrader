@@ -86,8 +86,12 @@ public class EventPublisher {
 	 */
 	public void fireEvent(Event event) {
 
-		LogEventDispatcher dispatcher = new LogEventDispatcher(event);
-		dispatcher.execute();
+		if(!getListeners(event.getEventType()).isEmpty()){
+			LogEventDispatcher dispatcher = new LogEventDispatcher(event);
+			dispatcher.execute();			
+		}else{
+			log.debug("there are not listener for "+event.getEventType());
+		}
 
 	}
 

@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameData;
+import it.spaghettisource.navaltrader.game.model.Ship;
 
 public class LoopManager implements  Runnable {
 
@@ -21,7 +22,7 @@ public class LoopManager implements  Runnable {
 		this.gameData = gameData;
 		pause = false;
 		shutdown = false;
-		timeSleep = 5000;
+		timeSleep = 2000;
 		timePass = 20;		
 	}
 
@@ -37,10 +38,15 @@ public class LoopManager implements  Runnable {
 					
 					gameData.getTime().addMinuts(timePass);
 					log.debug("time:"+gameData.getTime().getTime());			
-					//TODO add the loop to update all the entities
-//					for (Updatable updatable : entities) {
-//						updatable.update(timePass);
-//					}
+
+					for (Ship ship : gameData.getCompany().getShips()) {
+						ship.update(timePass);
+					}
+					
+					gameData.getCompany().update(timePass);
+					
+					gameData.getBank().update(timePass);
+					
 				}
 
 			} catch (InterruptedException e) {
