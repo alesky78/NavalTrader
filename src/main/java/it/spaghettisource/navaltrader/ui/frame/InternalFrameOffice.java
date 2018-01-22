@@ -296,7 +296,9 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());
 		}else if(eventType.equals(EventType.BANK_CHANGE_EVENT)){
 			maxLoanAmount.setValue(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
-			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());			
+			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());	
+			interest.setValue(gameData.getBank().getActualInterest(gameData.getCompany()));
+			
 		}				
 
 

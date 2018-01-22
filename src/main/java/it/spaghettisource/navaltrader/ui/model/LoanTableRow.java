@@ -40,10 +40,24 @@ public class LoanTableRow {
 		
 		List<LoanTableRow> LoanTableRow = new ArrayList<LoanTableRow>();
 		for (Loan loan : listOfLoans) {
-			LoanTableRow.add(new LoanTableRow(loan.getId(), loan.getAmount(), loan.getInterest(),loan.calculateDailyInterest(1)));
+			LoanTableRow.add(mapData(loan));
 		}
 		
 		return LoanTableRow;
 	}
+	
+	public static LoanTableRow mapData(Loan loan){
+		return new LoanTableRow(loan.getId(), loan.getAmount(), loan.getInterest(),loan.calculateDailyInterest(1));
+	}	
+	
+	public boolean equals(Object obj){
+		if(obj==null){
+			return false;
+		}else if(!(obj instanceof LoanTableRow)){
+			return false;
+		}else{
+			return id.equals(((LoanTableRow)obj).getId());
+		}	
+	}		
 	
 }
