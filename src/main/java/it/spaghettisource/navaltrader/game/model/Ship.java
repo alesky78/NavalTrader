@@ -166,6 +166,11 @@ public class Ship implements Entity{
 	public void setActualFuel(double actualFuel) {
 		this.actualFuel = actualFuel;
 	}
+	
+	public void addFuel(double toAdd) {
+		this.actualFuel = actualFuel + toAdd;
+		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));
+	}	
 
 	public double getMaxFuel() {
 		return maxFuel;
@@ -206,7 +211,7 @@ public class Ship implements Entity{
 				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_HULL_CHANGE_EVENT,this));	
 			}
 			
-			if(actualFuel>maxFuel){
+			if(actualFuel>=maxFuel){
 				actualFuel = 0;
 				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));
 			}else{

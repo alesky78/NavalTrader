@@ -2,6 +2,7 @@ package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -99,8 +100,12 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 					for (JInternalFrame frame : frames) {
 						if(frame.getTitle().equals(data.getName())) {
 							exist = true;
+							if(frame.isIcon()) {
+								frame.setIcon(false);
+							}
+							
 							frame.moveToFront(); 
-							frame.setSelected(true);							
+							frame.setSelected(true);			
 						};
 					}
 					

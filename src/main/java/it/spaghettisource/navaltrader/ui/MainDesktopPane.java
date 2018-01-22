@@ -3,7 +3,6 @@ package it.spaghettisource.navaltrader.ui;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 
-//TODO verify where the messages are open if put logic to center them
 public class MainDesktopPane extends JDesktopPane {
 
 	
