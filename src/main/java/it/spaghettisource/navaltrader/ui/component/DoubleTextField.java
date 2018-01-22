@@ -16,6 +16,9 @@ public class DoubleTextField  extends JFormattedTextField{
 		super.setValue(amount);		
 	}
 	
+	public void setValue(Integer amount){
+		super.setValue((double)amount);
+	}	
 	
 	public void setValue(Object value){
 		throw new UnsupportedOperationException();

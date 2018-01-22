@@ -70,7 +70,15 @@ public class Company implements Entity {
 		return null;
 	}	
 	
-
+	
+	public void refuelShip(String shipName,Double amountToRefuel,Double priceToPay) {
+		Ship ship = getShipByName(shipName);
+		ship.addFuel(amountToRefuel);
+		removeBudget(priceToPay);
+		
+	}
+	
+	
 
 	public void addBudget(double toAdd) {
 		budget = budget + toAdd;
