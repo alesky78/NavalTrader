@@ -37,6 +37,8 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 
 	private final static String TAB_SHIP_STATUS = "status";	
 	private final static String TAB_SHIP_REFUEL = "refuel";		
+	private final static String TAB_SHIP_REPAIR = "repair";	
+	
 	
 	private final static String ACTION_REFUEL = "refuel";
 
@@ -73,12 +75,12 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		tabbedPane = new JTabbedPane();		
 		tabbedPane.addTab(TAB_SHIP_STATUS, ImageIconFactory.getForTab("/icon/clipboard.png"),createStatusPanel());
 		tabbedPane.addTab(TAB_SHIP_REFUEL, ImageIconFactory.getForTab("/icon/gasoline.png"),createRefuelPanel());		
+		tabbedPane.addTab(TAB_SHIP_REPAIR, ImageIconFactory.getForTab("/icon/tools.png"),createRepairPanel());				
 
 		getContentPane().add(tabbedPane);
 
 
 	}
-
 
 
 	private void initValuesFromModel() {
@@ -161,8 +163,6 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		refuelPanel.add(new Label("total price"));		
 		refuelPanel.add(amountToPayForRefuel);		
 		
-		
-		
 		SpringLayoutUtilities.makeCompactGrid(refuelPanel,5, 2,5, 5,5, 5);	
 		
 		//add all together
@@ -171,6 +171,15 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		return panel;			
 	}	
 
+	
+	private Component createRepairPanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBorder(BorderFactory.createTitledBorder("ship repair"));	
+		return panel;	
+	}
+	
+	
+	
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if(ACTION_REFUEL.equals(command)){
