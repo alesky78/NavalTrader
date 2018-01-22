@@ -114,24 +114,27 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 				} catch (PropertyVetoException e) {}
 			}
 		}else if(eventType.equals(EventType.SHIP_FUEL_CHANGE_EVENT)){
-			//if the ship related to this panel is sell close the panel
 			Ship source = (Ship) event.getSource();			
 			if(source.getName().equals(shipName)) {
 				shipActualFuel.setValue(source.getActualFuel());
 			}
 		}else if(eventType.equals(EventType.SHIP_HULL_CHANGE_EVENT)){
-			//if the ship related to this panel is sell close the panel
 			Ship source = (Ship) event.getSource();			
 			if(source.getName().equals(shipName)) {
 				shipHull.setValue(source.getHull());
 			}
-		}		
+		}else if(eventType.equals(EventType.SHIP_STATUS_CHANGE_EVENT)){
+			Ship source = (Ship) event.getSource();			
+			if(source.getName().equals(shipName)) {
+				shipStatus.setText(source.getStatus());
+			}
+		}			
 
 	}
 
 
 	public EventType[] getEventsOfInterest() {
-		return new EventType[]{EventType.SELL_SHIP_EVENT,EventType.SHIP_STATUS_CHANGE_EVENT,EventType.SHIP_FUEL_CHANGE_EVENT,EventType.SHIP_HULL_CHANGE_EVENT};
+		return new EventType[]{EventType.SELL_SHIP_EVENT,EventType.SHIP_STATUS_CHANGE_EVENT,EventType.SHIP_FUEL_CHANGE_EVENT,EventType.SHIP_HULL_CHANGE_EVENT,EventType.SHIP_STATUS_CHANGE_EVENT};
 	}
 
 

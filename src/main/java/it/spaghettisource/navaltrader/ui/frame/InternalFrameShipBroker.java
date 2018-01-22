@@ -37,6 +37,7 @@ import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.BuyShipTableRow;
 import it.spaghettisource.navaltrader.ui.model.SellShipTableRow;
+import it.spaghettisource.navaltrader.ui.model.ShipListTableRow;
 
 public class InternalFrameShipBroker extends InternalFrameAbstract  implements ActionListener  {
 
@@ -270,13 +271,17 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 			if(index>-1){
 				listSellShipData.remove(index);				
 			}
-		}			
+		}else if(eventType.equals(EventType.SHIP_FUEL_CHANGE_EVENT) || eventType.equals(EventType.SHIP_HULL_CHANGE_EVENT) || eventType.equals(EventType.SHIP_STATUS_CHANGE_EVENT)) {
+			SellShipTableRow replaceElement = SellShipTableRow.mapData((Ship)event.getSource());
+			int index = listSellShipData.indexOf( replaceElement);
+			listSellShipData.set(index, replaceElement);
+		}				
 
 	}
 
 
 	public EventType[] getEventsOfInterest() {
-		return new EventType[]{EventType.BUY_SHIP_EVENT,EventType.SELL_SHIP_EVENT,EventType.BUDGET_EVENT};
+		return new EventType[]{EventType.BUY_SHIP_EVENT,EventType.SELL_SHIP_EVENT,EventType.BUDGET_EVENT,EventType.SHIP_FUEL_CHANGE_EVENT,EventType.SHIP_HULL_CHANGE_EVENT,EventType.SHIP_STATUS_CHANGE_EVENT};
 	}
 
 

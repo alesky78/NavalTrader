@@ -25,29 +25,63 @@ public class ShipListTableRow {
 		this.actualFuel = actualFuel;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getType() {
 		return type;
 	}
 
-	public double getHull() {
-		return hull;
-	}
-
-	public int getCargoSpace() {
-		return cargoSpace;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getStatus() {
 		return status;
 	}
 
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public double getHull() {
+		return hull;
+	}
+
+	public void setHull(double hull) {
+		this.hull = hull;
+	}
+
+	public int getCargoSpace() {
+		return cargoSpace;
+	}
+
+	public void setCargoSpace(int cargoSpace) {
+		this.cargoSpace = cargoSpace;
+	}
+
 	public double getActualFuel() {
 		return actualFuel;
 	}
-	
-	public String getName() {
-		return name;
+
+	public void setActualFuel(double actualFuel) {
+		this.actualFuel = actualFuel;
 	}
+
+	public boolean equals(Object obj){
+		if(obj==null){
+			return false;
+		}else if(!(obj instanceof ShipListTableRow)){
+			return false;
+		}else{
+			return name.equals(((ShipListTableRow)obj).getName());
+		}	
+	}	
 
 	public static List<ShipListTableRow> mapData(List<Ship> listOfShip){
 		
@@ -63,14 +97,6 @@ public class ShipListTableRow {
 		return new ShipListTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getHull(), ship.getCargoSpace(), ship.getActualFuel());
 	}	
 	
-	public boolean equals(Object obj){
-		if(obj==null){
-			return false;
-		}else if(!(obj instanceof ShipListTableRow)){
-			return false;
-		}else{
-			return name.equals(((ShipListTableRow)obj).getName());
-		}	
-	}	
+
 	
 }

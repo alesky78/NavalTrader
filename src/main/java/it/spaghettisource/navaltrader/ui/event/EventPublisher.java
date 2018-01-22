@@ -90,7 +90,7 @@ public class EventPublisher {
 			LogEventDispatcher dispatcher = new LogEventDispatcher(event);
 			dispatcher.execute();			
 		}else{
-			log.debug("there are not listener for "+event.getEventType());
+			log.debug("discard event, there are not listener for "+event.getEventType());
 		}
 
 	}

@@ -30,7 +30,6 @@ import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.component.HullTableCellProgressBarPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.model.SellShipTableRow;
 import it.spaghettisource.navaltrader.ui.model.ShipListTableRow;
 
 public class InternalFrameShipList extends InternalFrameAbstract  implements ActionListener  {
@@ -145,13 +144,17 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 			if(index>-1){
 				listShipData.remove(index);				
 			}			
-		}			
+		}else if(eventType.equals(EventType.SHIP_FUEL_CHANGE_EVENT) || eventType.equals(EventType.SHIP_HULL_CHANGE_EVENT) || eventType.equals(EventType.SHIP_STATUS_CHANGE_EVENT)) {
+			ShipListTableRow replaceElement = ShipListTableRow.mapData((Ship)event.getSource());
+			int index = listShipData.indexOf( replaceElement);
+			listShipData.set(index, replaceElement);
+		}		
 
 	}
 
 
 	public EventType[] getEventsOfInterest() {
-		return new EventType[]{EventType.BUY_SHIP_EVENT,EventType.SELL_SHIP_EVENT};
+		return new EventType[]{EventType.BUY_SHIP_EVENT,EventType.SELL_SHIP_EVENT,EventType.SHIP_FUEL_CHANGE_EVENT,EventType.SHIP_HULL_CHANGE_EVENT,EventType.SHIP_STATUS_CHANGE_EVENT};
 	}
 
 
