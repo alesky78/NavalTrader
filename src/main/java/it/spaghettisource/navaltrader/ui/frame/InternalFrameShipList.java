@@ -6,10 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -83,7 +86,36 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		TableFormat<ShipListTableRow> tf = GlazedLists.tableFormat(ShipListTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<ShipListTableRow>(listShipData, tf));
 		table.getColumnModel().getColumn(4).setCellRenderer(TableCellProgressBarPercentageRenderer.getRenderer());
-		
+
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			public void valueChanged(ListSelectionEvent event) {
+				try{
+					ShipListTableRow data = listShipData.get(table.convertRowIndexToModel(table.getSelectedRow()));
+					table.clearSelection();					
+
+					JInternalFrame[] frames =  parentDesktopPane.getAllFrames();
+					boolean exist = false;
+					for (JInternalFrame frame : frames) {
+						if(frame.getTitle().equals(data.getName())) {
+							exist = true;
+							frame.moveToFront(); 
+							frame.setSelected(true);							
+						};
+					}
+					
+					if(!exist) {
+						//open frame for specific ship
+						InternalFrameShipDetail newFrame = new InternalFrameShipDetail(parentDesktopPane,gameManager,data.getName());
+						newFrame.setVisible(true);
+						parentDesktopPane.add(newFrame);
+						newFrame.setSelected(true);
+					}
+
+
+				}catch (Exception e) {}
+			}
+		});		
+
 		shipListTablePanel.add(new JScrollPane(table), BorderLayout.CENTER);		
 
 		//add all together
