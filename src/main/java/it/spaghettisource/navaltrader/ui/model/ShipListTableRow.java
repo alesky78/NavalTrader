@@ -10,12 +10,12 @@ public class ShipListTableRow {
 	private String name;
 	private String type;
 	private String status;	
-	private double hull;	
+	private int hull;	
 	private int cargoSpace;	
 	private int teu;		
 	private double actualFuel;			
 	
-	public ShipListTableRow(String name,String type,String status, double hull, int cargoSpace,int teu, double actualFuel) {
+	public ShipListTableRow(String name,String type,String status, int hull, int cargoSpace,int teu, double actualFuel) {
 		super();
 		this.name = name;
 		this.status = status;
@@ -51,11 +51,11 @@ public class ShipListTableRow {
 		this.status = status;
 	}
 
-	public double getHull() {
+	public int getHull() {
 		return hull;
 	}
 
-	public void setHull(double hull) {
+	public void setHull(int hull) {
 		this.hull = hull;
 	}
 

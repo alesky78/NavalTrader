@@ -11,13 +11,13 @@ public class SellShipTableRow {
 	private String type;
 	private double price;	
 	private String status;	
-	private double hull;	
+	private int hull;	
 	private int cargoSpace;		
 	private int teu;		
 	private double actualFuel;	
 	private double operatingCost;	
 	
-	public SellShipTableRow(String name,String type,String status, double price, double operatingCost,double hull, int cargoSpace, int teu, double actualFuel) {
+	public SellShipTableRow(String name,String type,String status, double price, double operatingCost,int hull, int cargoSpace, int teu, double actualFuel) {
 		super();
 		this.name = name;
 		this.status = status;
@@ -38,7 +38,7 @@ public class SellShipTableRow {
 		return price;
 	}
 
-	public double getHull() {
+	public int getHull() {
 		return hull;
 	}
 

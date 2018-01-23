@@ -28,6 +28,7 @@ import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
 import it.spaghettisource.navaltrader.ui.component.DoubleTextField;
 import it.spaghettisource.navaltrader.ui.component.HullProgressBarField;
+import it.spaghettisource.navaltrader.ui.component.IntegerTextField;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 
@@ -65,7 +66,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 
 	//ship repair tab
 	private JSlider amountToRepairSlider;	
-	private DoubleTextField amountToRepair;
+	private IntegerTextField amountToRepair;
 	private CurrencyTextField amountToPayForRepair;
 	private CurrencyTextField priceUnitOfRepair;		
 
@@ -110,8 +111,8 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		priceUnitOfFuel =  new CurrencyTextField(700.0);	//TODO where to get fuel price? maybe FUEL_PRICE_CHANGE EVENT
 
 		//ship repair
-		amountToRepairSlider = new JSlider(0, (int)(100.0-ship.getHull()*100), 0);
-		amountToRepair = new DoubleTextField(0.0);
+		amountToRepairSlider = new JSlider(0, 100-ship.getHull(), 0);
+		amountToRepair = new IntegerTextField(0);
 		amountToPayForRepair = new CurrencyTextField(0.0);
 		priceUnitOfRepair =  new CurrencyTextField(25000.0);	//TODO where to get repair price? maybe REPIAR_PRICE_CHANGE EVENT
 
@@ -234,14 +235,16 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 				gameData.getCompany().refuelShip(shipName, amountToRefuel.getValue(), amountToPayForRefuel.getValue());	
 				//reset ui before the event to avoid multiple click
 				amountToRefuelSlider.setMaximum((int)(ship.getMaxFuel()-ship.getActualFuel()));
+				amountToRefuelSlider.setValue(0);
 			}else{
 				parentDesktopPane.showErrorMessageDialog("not enought money");
 			}
 		}else if(ACTION_REPAIR.equals(command)){
 			if(gameData.getCompany().getBudget()>amountToPayForRepair.getValue()) {
-				gameData.getCompany().repairShip(shipName, amountToRepair.getValue()/100, amountToPayForRepair.getValue());	
+				gameData.getCompany().repairShip(shipName, amountToRepair.getValue(), amountToPayForRepair.getValue());	
 				//reset ui before the event to avoid multiple click
-				amountToRepairSlider.setMaximum((int)(100.0-ship.getHull()*100));
+				amountToRepairSlider.setMaximum(100-ship.getHull());
+				amountToRepairSlider.setValue(0);
 			}else{
 				parentDesktopPane.showErrorMessageDialog("not enought money");
 			}
@@ -270,7 +273,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 			Ship source = (Ship) event.getSource();			
 			if(source.getName().equals(shipName)) {
 				shipHull.setValue(source.getHull());
-				amountToRepairSlider.setMaximum((int)(100.0-ship.getHull()*100));
+				amountToRepairSlider.setMaximum(100-ship.getHull());
 			}
 		}else if(eventType.equals(EventType.SHIP_STATUS_CHANGE_EVENT)){
 			Ship source = (Ship) event.getSource();			

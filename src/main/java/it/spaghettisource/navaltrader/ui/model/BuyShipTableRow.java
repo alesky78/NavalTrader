@@ -9,14 +9,14 @@ public class BuyShipTableRow {
 
 	private String type;
 	private double price;	
-	private double hull;	
+	private int hull;	
 	private int teu;		
 	private int cargoSpace;		
 	private double maxFuel;		
 	private double maxSpeed;	
 	private double operatingCost;
 	
-	public BuyShipTableRow(String type, double price, double hull, int cargoSpace,int teu, double operatingCost, double maxFuel, double maxSpeed) {
+	public BuyShipTableRow(String type, double price, int hull, int cargoSpace,int teu, double operatingCost, double maxFuel, double maxSpeed) {
 		super();
 		this.type = type;
 		this.price = price;
@@ -36,7 +36,7 @@ public class BuyShipTableRow {
 		return price;
 	}
 
-	public double getHull() {
+	public int getHull() {
 		return hull;
 	}
 
