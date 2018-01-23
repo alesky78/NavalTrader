@@ -2,12 +2,12 @@ package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -37,7 +37,6 @@ import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.BuyShipTableRow;
 import it.spaghettisource.navaltrader.ui.model.SellShipTableRow;
-import it.spaghettisource.navaltrader.ui.model.ShipListTableRow;
 
 public class InternalFrameShipBroker extends InternalFrameAbstract  implements ActionListener  {
 
@@ -150,15 +149,15 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		buyShipButton.setActionCommand(ACTION_BUY_SHIP);
 		buyShipButton.addActionListener(this);
 
-		chooseShipPanel.add(new Label("type"));
+		chooseShipPanel.add(new JLabel("type"));
 		chooseShipPanel.add(newShipType);
-		chooseShipPanel.add(new Label("name"));
+		chooseShipPanel.add(new JLabel("name"));
 		chooseShipPanel.add(newShipName);
-		chooseShipPanel.add(new Label("price"));
+		chooseShipPanel.add(new JLabel("price"));
 		chooseShipPanel.add(newShipPrice);
-		chooseShipPanel.add(new Label("new budget"));
+		chooseShipPanel.add(new JLabel("new budget"));
 		chooseShipPanel.add(newShipNetBudget);
-		chooseShipPanel.add(new Label("buy"));
+		chooseShipPanel.add(new JLabel("buy"));
 		chooseShipPanel.add(buyShipButton);				
 		SpringLayoutUtilities.makeCompactGrid(chooseShipPanel,5, 2,5, 5,5, 5);	
 
@@ -209,15 +208,15 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		selShipButton.addActionListener(this);
 
 		
-		chooseShipPanel.add(new Label("type"));
+		chooseShipPanel.add(new JLabel("type"));
 		chooseShipPanel.add(sellShipType);
-		chooseShipPanel.add(new Label("name"));
+		chooseShipPanel.add(new JLabel("name"));
 		chooseShipPanel.add(sellShipName);
-		chooseShipPanel.add(new Label("price"));
+		chooseShipPanel.add(new JLabel("price"));
 		chooseShipPanel.add(sellShipPrice);
-		chooseShipPanel.add(new Label("new budget"));
+		chooseShipPanel.add(new JLabel("new budget"));
 		chooseShipPanel.add(sellShipNetBudget);		
-		chooseShipPanel.add(new Label("sell"));
+		chooseShipPanel.add(new JLabel("sell"));
 		chooseShipPanel.add(selShipButton);				
 		SpringLayoutUtilities.makeCompactGrid(chooseShipPanel,5, 2,5, 5,5, 5);			
 

@@ -2,13 +2,13 @@ package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
@@ -128,15 +128,15 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		///////////////////////////		
 		//create ship status info
 		JPanel statusPanel = new JPanel(new SpringLayout());		
-		statusPanel.add(new Label("ship status"));
+		statusPanel.add(new JLabel("ship status"));
 		statusPanel.add(shipStatus);
-		statusPanel.add(new Label("ship type"));
+		statusPanel.add(new JLabel("ship type"));
 		statusPanel.add(shipType);
-		statusPanel.add(new Label("daily operating cost"));
+		statusPanel.add(new JLabel("daily operating cost"));
 		statusPanel.add(operatingCost);		
-		statusPanel.add(new Label("actual fuel"));
+		statusPanel.add(new JLabel("actual fuel"));
 		statusPanel.add(shipActualFuel);		
-		statusPanel.add(new Label("hull status"));
+		statusPanel.add(new JLabel("hull status"));
 		statusPanel.add(shipHull);		
 
 		SpringLayoutUtilities.makeCompactGrid(statusPanel,5, 2,5, 5,5, 5);		
@@ -169,15 +169,15 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		});
 
 		JPanel refuelPanel = new JPanel(new SpringLayout());	
-		refuelPanel.add(new Label("max fuel"));
+		refuelPanel.add(new JLabel("max fuel"));
 		refuelPanel.add(shipMaxFuel);		
 		refuelPanel.add(amountToRefuelSlider);	
 		refuelPanel.add(amountToRefuelButton)	;	
-		refuelPanel.add(new Label("requested amount"));		
+		refuelPanel.add(new JLabel("requested amount"));		
 		refuelPanel.add(amountToRefuel);
-		refuelPanel.add(new Label("price per t of fuel"));		
+		refuelPanel.add(new JLabel("price per t of fuel"));		
 		refuelPanel.add(priceUnitOfFuel);
-		refuelPanel.add(new Label("total price"));		
+		refuelPanel.add(new JLabel("total price"));		
 		refuelPanel.add(amountToPayForRefuel);		
 
 		SpringLayoutUtilities.makeCompactGrid(refuelPanel,5, 2,5, 5,5, 5);	
@@ -212,11 +212,11 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		JPanel repairPanel = new JPanel(new SpringLayout());			
 		repairPanel.add(amountToRepairSlider);	
 		repairPanel.add(amountToRepairlButton)	;	
-		repairPanel.add(new Label("requested amount"));		
+		repairPanel.add(new JLabel("requested amount"));		
 		repairPanel.add(amountToRepair);
-		repairPanel.add(new Label("price per 1% of repair"));		
+		repairPanel.add(new JLabel("price per 1% of repair"));		
 		repairPanel.add(priceUnitOfRepair);
-		repairPanel.add(new Label("total price"));		
+		repairPanel.add(new JLabel("total price"));		
 		repairPanel.add(amountToPayForRepair);		
 
 		SpringLayoutUtilities.makeCompactGrid(repairPanel,4, 2,5, 5,5, 5);	

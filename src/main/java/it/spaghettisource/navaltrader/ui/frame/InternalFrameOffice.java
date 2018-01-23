@@ -2,12 +2,12 @@ package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -134,11 +134,11 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		///////////////////////////		
 		//create financial info
 		JPanel financialPanel = new JPanel(new SpringLayout());		
-		financialPanel.add(new Label("Net profit"));
+		financialPanel.add(new JLabel("Net profit"));
 		financialPanel.add(netProfit);
-		financialPanel.add(new Label("company rating"));
+		financialPanel.add(new JLabel("company rating"));
 		financialPanel.add(companyRating);
-		financialPanel.add(new Label("budget"));
+		financialPanel.add(new JLabel("budget"));
 		financialPanel.add(budget);		
 
 		SpringLayoutUtilities.makeGrid(financialPanel,3, 2,5, 5,5, 5);		
@@ -176,7 +176,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 		repairLoanPanel.add(sliderAmountToRepair);		
 		repairLoanPanel.add(amountToRepairButton);
-		repairLoanPanel.add(new Label("repair loan"));		
+		repairLoanPanel.add(new JLabel("repair loan"));		
 		repairLoanPanel.add(amountToRepair);		
 		SpringLayoutUtilities.makeCompactGrid(repairLoanPanel,2, 2,5, 5,5, 5);
 
@@ -209,9 +209,9 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 		//create the interest data
 		JPanel interestPanel = new JPanel(new SpringLayout());
-		interestPanel.add(new Label("Proposed interest"));
+		interestPanel.add(new JLabel("Proposed interest"));
 		interestPanel.add(interest);
-		interestPanel.add(new Label("Max loan amount"));
+		interestPanel.add(new JLabel("Max loan amount"));
 		interestPanel.add(maxLoanAmount);				
 		SpringLayoutUtilities.makeGrid(interestPanel,2, 2,5, 5,5, 5);	
 		loanPanel.add(interestPanel,BorderLayout.SOUTH);
@@ -237,7 +237,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 		newLoanPanel.add(sliderNewLoanAmount);		
 		newLoanPanel.add(newLoanButton);
-		newLoanPanel.add(new Label("requested amount"));		
+		newLoanPanel.add(new JLabel("requested amount"));		
 		newLoanPanel.add(newLoanAmount);		
 		SpringLayoutUtilities.makeCompactGrid(newLoanPanel,2, 2,5, 5,5, 5);
 

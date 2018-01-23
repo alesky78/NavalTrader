@@ -31,7 +31,7 @@ public class GameManager {
 	}
 
 	public void startGame() {
-		(new Thread(loopManager)).start();
+		loopManager.startLoopManagerThread();
 	}
 	
 	public void quitGame() {
