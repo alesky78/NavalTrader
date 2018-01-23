@@ -41,7 +41,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 
 
 	private final static String ACTION_REFUEL = "refuel";
-	private final static String ACTION_REPAIR = "refuel";	
+	private final static String ACTION_REPAIR = "repair";	
 
 	private String shipName;
 	private Ship ship; 
@@ -239,9 +239,9 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 			}
 		}else if(ACTION_REPAIR.equals(command)){
 			if(gameData.getCompany().getBudget()>amountToPayForRepair.getValue()) {
-				gameData.getCompany().refuelShip(shipName, amountToRefuel.getValue(), amountToPayForRefuel.getValue());	
+				gameData.getCompany().repairShip(shipName, amountToRepair.getValue()/100, amountToPayForRepair.getValue());	
 				//reset ui before the event to avoid multiple click
-				amountToRefuelSlider.setMaximum((int)(ship.getMaxFuel()-ship.getActualFuel()));
+				amountToRepairSlider.setMaximum((int)(100.0-ship.getHull()*100));
 			}else{
 				parentDesktopPane.showErrorMessageDialog("not enought money");
 			}
