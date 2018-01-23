@@ -155,6 +155,11 @@ public class Ship implements Entity{
 	public void setHull(double hull) {
 		this.hull = hull;
 	}
+	
+	public void addHull(double toAdd) {
+		this.hull = hull + toAdd;
+		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_HULL_CHANGE_EVENT,this));		
+	}	
 
 	public int getCargoSpace() {
 		return cargoSpace;

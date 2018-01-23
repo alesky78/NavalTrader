@@ -78,6 +78,12 @@ public class Company implements Entity {
 		
 	}
 	
+	public void repairShip(String shipName,Double amountToRepair,Double priceToPay) {
+		Ship ship = getShipByName(shipName);
+		ship.addHull(amountToRepair);
+		removeBudget(priceToPay);
+	}	
+	
 	
 
 	public void addBudget(double toAdd) {

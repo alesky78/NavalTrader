@@ -38,9 +38,10 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 	private final static String TAB_SHIP_STATUS = "status";	
 	private final static String TAB_SHIP_REFUEL = "refuel";		
 	private final static String TAB_SHIP_REPAIR = "repair";	
-	
-	
+
+
 	private final static String ACTION_REFUEL = "refuel";
+	private final static String ACTION_REPAIR = "refuel";	
 
 	private String shipName;
 	private Ship ship; 
@@ -54,15 +55,20 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 	private HullProgressBarField shipHull;
 	private DoubleTextField shipActualFuel;
 	private CurrencyTextField operatingCost;	
-	
+
 	//ship refuel tab
 	private DoubleTextField shipMaxFuel;
 	private JSlider amountToRefuelSlider;	
 	private DoubleTextField amountToRefuel;
 	private CurrencyTextField amountToPayForRefuel;
 	private CurrencyTextField priceUnitOfFuel;	
-	
-		
+
+	//ship repair tab
+	private JSlider amountToRepairSlider;	
+	private DoubleTextField amountToRepair;
+	private CurrencyTextField amountToPayForRepair;
+	private CurrencyTextField priceUnitOfRepair;		
+
 
 
 	public InternalFrameShipDetail(MainDesktopPane parentDesktopPane,GameManager gameManager,String shipName) {
@@ -95,7 +101,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		shipHull = new HullProgressBarField(ship.getHull());
 		shipActualFuel = new DoubleTextField(ship.getActualFuel());
 		operatingCost = new CurrencyTextField(ship.getOperatingCost());
-		
+
 		//ship refuel
 		shipMaxFuel = new DoubleTextField(ship.getMaxFuel());
 		amountToRefuelSlider = new JSlider(0, (int)(ship.getMaxFuel()-ship.getActualFuel()), 0);
@@ -103,7 +109,13 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		amountToPayForRefuel = new CurrencyTextField(0.0);
 		priceUnitOfFuel =  new CurrencyTextField(700.0);	//TODO where to get fuel price? maybe FUEL_PRICE_CHANGE EVENT
 
-		
+		//ship repair
+		amountToRepairSlider = new JSlider(0, (int)(100.0-ship.getHull()*100), 0);
+		amountToRepair = new DoubleTextField(0.0);
+		amountToPayForRepair = new CurrencyTextField(0.0);
+		priceUnitOfRepair =  new CurrencyTextField(25000.0);	//TODO where to get repair price? maybe REPIAR_PRICE_CHANGE EVENT
+
+
 	}
 
 
@@ -111,7 +123,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 	private Component createStatusPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(BorderFactory.createTitledBorder("ship status"));	
-		
+
 		///////////////////////////		
 		//create ship status info
 		JPanel statusPanel = new JPanel(new SpringLayout());		
@@ -138,13 +150,13 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 	private Component createRefuelPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(BorderFactory.createTitledBorder("refuel ship"));	
-		
+
 		///////////////////////////		
 		//create ship refuel 
 		JButton amountToRefuelButton = new JButton(ImageIconFactory.getForTab("/icon/money.png"));
 		amountToRefuelButton.setActionCommand(ACTION_REFUEL);
 		amountToRefuelButton.addActionListener(this);	
-	
+
 		amountToRefuelSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				JSlider source = (JSlider)e.getSource();
@@ -154,7 +166,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 				}
 			}
 		});
-		
+
 		JPanel refuelPanel = new JPanel(new SpringLayout());	
 		refuelPanel.add(new Label("max fuel"));
 		refuelPanel.add(shipMaxFuel);		
@@ -166,28 +178,67 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		refuelPanel.add(priceUnitOfFuel);
 		refuelPanel.add(new Label("total price"));		
 		refuelPanel.add(amountToPayForRefuel);		
-		
+
 		SpringLayoutUtilities.makeCompactGrid(refuelPanel,5, 2,5, 5,5, 5);	
-		
+
 		//add all together
 		panel.add(refuelPanel, BorderLayout.NORTH);	
-		
+
 		return panel;			
 	}	
 
-	
+
 	private Component createRepairPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(BorderFactory.createTitledBorder("ship repair"));	
+
+		///////////////////////////		
+		//create ship repair 
+		JButton amountToRepairlButton = new JButton(ImageIconFactory.getForTab("/icon/money.png"));
+		amountToRepairlButton.setActionCommand(ACTION_REPAIR);
+		amountToRepairlButton.addActionListener(this);	
+
+		amountToRepairSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider)e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					amountToRepair.setValue(source.getValue());
+					amountToPayForRepair.setValue(source.getValue()*priceUnitOfRepair.getValue());
+				}
+			}
+		});
+
+		JPanel repairPanel = new JPanel(new SpringLayout());			
+		repairPanel.add(amountToRepairSlider);	
+		repairPanel.add(amountToRepairlButton)	;	
+		repairPanel.add(new Label("requested amount"));		
+		repairPanel.add(amountToRepair);
+		repairPanel.add(new Label("price per 1% of repair"));		
+		repairPanel.add(priceUnitOfRepair);
+		repairPanel.add(new Label("total price"));		
+		repairPanel.add(amountToPayForRepair);		
+
+		SpringLayoutUtilities.makeCompactGrid(repairPanel,4, 2,5, 5,5, 5);	
+
+		//add all together
+		panel.add(repairPanel, BorderLayout.NORTH);			
 		return panel;	
 	}
-	
-	
-	
+
+
+
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if(ACTION_REFUEL.equals(command)){
 			if(gameData.getCompany().getBudget()>amountToPayForRefuel.getValue()) {
+				gameData.getCompany().refuelShip(shipName, amountToRefuel.getValue(), amountToPayForRefuel.getValue());	
+				//reset ui before the event to avoid multiple click
+				amountToRefuelSlider.setMaximum((int)(ship.getMaxFuel()-ship.getActualFuel()));
+			}else{
+				parentDesktopPane.showErrorMessageDialog("not enought money");
+			}
+		}else if(ACTION_REPAIR.equals(command)){
+			if(gameData.getCompany().getBudget()>amountToPayForRepair.getValue()) {
 				gameData.getCompany().refuelShip(shipName, amountToRefuel.getValue(), amountToPayForRefuel.getValue());	
 				//reset ui before the event to avoid multiple click
 				amountToRefuelSlider.setMaximum((int)(ship.getMaxFuel()-ship.getActualFuel()));
@@ -219,6 +270,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 			Ship source = (Ship) event.getSource();			
 			if(source.getName().equals(shipName)) {
 				shipHull.setValue(source.getHull());
+				amountToRepairSlider.setMaximum((int)(100.0-ship.getHull()*100));
 			}
 		}else if(eventType.equals(EventType.SHIP_STATUS_CHANGE_EVENT)){
 			Ship source = (Ship) event.getSource();			
