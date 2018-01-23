@@ -228,25 +228,7 @@ public class Ship implements Entity{
 	public void update(int minutsPassed) {
 
 		
-			
-			if(hull > 1.0){
-				hull = 0;
-				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_HULL_CHANGE_EVENT,this));	
-			}
-			else{
-				hull = hull + 0.01;				
-				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_HULL_CHANGE_EVENT,this));	
-			}
-			
-			if(actualFuel>=maxFuel){
-				actualFuel = 0;
-				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));
-			}else{
-				actualFuel = actualFuel + 100;				
-				InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));
-			}			
-			
-		
+				
 		
 	}
 	

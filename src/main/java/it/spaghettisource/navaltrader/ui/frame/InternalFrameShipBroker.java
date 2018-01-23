@@ -69,7 +69,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 
 	public InternalFrameShipBroker(MainDesktopPane parentDesktopPane,GameManager gameManager) {
 		super(parentDesktopPane,gameManager, "ship broker");
-		setSize(650,450);   
+		setSize(850,450);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/justice.png"));
 
 		initValuesFromModel();
