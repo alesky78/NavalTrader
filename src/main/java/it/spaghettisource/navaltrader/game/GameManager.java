@@ -26,6 +26,10 @@ public class GameManager {
 		return gameData;
 	}
 
+	public LoopManager getLoopManager() {
+		return loopManager;
+	}
+
 	public void startGame() {
 		(new Thread(loopManager)).start();
 	}

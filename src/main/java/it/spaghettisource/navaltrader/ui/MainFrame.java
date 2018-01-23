@@ -30,6 +30,7 @@ import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameOffice;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameShipBroker;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameShipList;
+import it.spaghettisource.navaltrader.ui.frame.InternalFrameTimeSimulation;
 
 public class MainFrame extends JFrame  implements ActionListener{
 
@@ -40,13 +41,14 @@ public class MainFrame extends JFrame  implements ActionListener{
 	private static final String MENU_ACTION_FRAME_OFFICE = "office";
 	private static final String MENU_ACTION_FRAME_BROKER = "ship Broker";
 	private static final String MENU_ACTION_FRAME_SHIP = "ship list";
+	private static final String MENU_ACTION_TIME_SIMULAION = "time simultion";	
 
-	
-	
+
+
 	//ui components
 	private MainDesktopPane desktop;
 	private JMenuBar menuBar;
-	
+
 	//game components
 	private GameManager gameManager;
 
@@ -112,21 +114,26 @@ public class MainFrame extends JFrame  implements ActionListener{
 		menu = new JMenu("Manage");
 		menuBar.add(menu);
 
+		menuItem = new JMenuItem("Time simulation");
+		menuItem.setActionCommand(MENU_ACTION_TIME_SIMULAION);
+		menuItem.addActionListener(this);
+		menu.add(menuItem);
+
 		menuItem = new JMenuItem("Office");
 		menuItem.setActionCommand(MENU_ACTION_FRAME_OFFICE);
 		menuItem.addActionListener(this);
 		menu.add(menuItem);
-		
+
 		menuItem = new JMenuItem("Ship Broker");
 		menuItem.setActionCommand(MENU_ACTION_FRAME_BROKER);
 		menuItem.addActionListener(this);
 		menu.add(menuItem);		
-		
+
 		menuItem = new JMenuItem("Ship List");
 		menuItem.setActionCommand(MENU_ACTION_FRAME_SHIP);
 		menuItem.addActionListener(this);
 		menu.add(menuItem);		
-				
+
 		return menuBar;
 	}
 
@@ -134,46 +141,55 @@ public class MainFrame extends JFrame  implements ActionListener{
 
 	public void actionPerformed(ActionEvent event) {
 		if (MENU_ACTION_NEW_GAME.equals(event.getActionCommand())) { 
-			
+
 			//start the new game
 			gameManager.newGame("test");			
 			gameManager.startGame();
 			InboundEventQueue.getInstance().startQueuePublisher();
-			
+
 		}else if (MENU_ACTION_QUIT_GAME.equals(event.getActionCommand())) {
-			
+
 			gameManager.quitGame();
 			InboundEventQueue.getInstance().stopQueuePublisher();		
 			EventPublisher.getInstance().clearAllListeners();
+
+		}else if(MENU_ACTION_TIME_SIMULAION.equals(event.getActionCommand())){
+			
+			InternalFrameTimeSimulation frame = new InternalFrameTimeSimulation(desktop, gameManager);
+			frame.setVisible(true);
+			desktop.add(frame);
+			try {
+				frame.setSelected(true);
+			} catch (java.beans.PropertyVetoException e) {}		
 			
 		}else if (MENU_ACTION_FRAME_OFFICE.equals(event.getActionCommand())) { 
-			
+
 			InternalFrameOffice frame = new InternalFrameOffice(desktop,gameManager);
 			frame.setVisible(true);
 			desktop.add(frame);
-	        try {
-	            frame.setSelected(true);
-	        } catch (java.beans.PropertyVetoException e) {}
-	        
+			try {
+				frame.setSelected(true);
+			} catch (java.beans.PropertyVetoException e) {}
+
 		}else if (MENU_ACTION_FRAME_BROKER.equals(event.getActionCommand())) { 
-			
+
 			InternalFrameShipBroker frame = new InternalFrameShipBroker(desktop,gameManager);
 			frame.setVisible(true);
 			desktop.add(frame);
-	        try {
-	            frame.setSelected(true);
-	        } catch (java.beans.PropertyVetoException e) {}
-	        
+			try {
+				frame.setSelected(true);
+			} catch (java.beans.PropertyVetoException e) {}
+
 		}else if (MENU_ACTION_FRAME_SHIP.equals(event.getActionCommand())) { 
-			
+
 			InternalFrameShipList frame = new InternalFrameShipList(desktop,gameManager);
 			frame.setVisible(true);
 			desktop.add(frame);
-	        try {
-	            frame.setSelected(true);
-	        } catch (java.beans.PropertyVetoException e) {}	        
+			try {
+				frame.setSelected(true);
+			} catch (java.beans.PropertyVetoException e) {}	        
 		}     
-		
+
 	}	 	
 
 }

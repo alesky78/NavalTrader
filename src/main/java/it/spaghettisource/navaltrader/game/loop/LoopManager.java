@@ -37,7 +37,7 @@ public class LoopManager implements  Runnable {
 				if(!pause){
 					
 					gameData.getTime().addMinuts(timePass);
-					log.debug("time:"+gameData.getTime().getTime());			
+					log.debug("time:"+gameData.getTime().getFullDate());			
 
 					for (Ship ship : gameData.getCompany().getShips()) {
 						ship.update(timePass);
