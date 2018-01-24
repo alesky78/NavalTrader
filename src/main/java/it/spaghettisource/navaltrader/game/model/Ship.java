@@ -61,7 +61,7 @@ public class Ship implements Entity{
 	
 	private int cargoSpace;	//change variable name Deadweight tonnage 
 	private int teu;		
-	//private int maxTeu;	
+	private int maxTeu;	
 	private int fuel;	
 	private int maxFuel;	
 	private double speed;	
@@ -69,18 +69,19 @@ public class Ship implements Entity{
 	
 	
 	
-	public Ship(String type, int hull, int cargoSpace,int teu, int maxFuel, double operatingCost, double maxSpeed, double basePrice) {
+	public Ship(String type, int hull, int cargoSpace,int maxTeu, int maxFuel, double operatingCost, double maxSpeed, double basePrice) {
 		this.type = type;
 
 		this.status = SHIP_STATUS_DOCKED;
 		this.cargoSpace = cargoSpace;
-		this.teu = teu;
+		this.maxTeu = maxTeu;
 		this.maxFuel = maxFuel;
 		this.maxSpeed = maxSpeed;
 		this.hull = hull;		
 		this.basePrice = basePrice;
 		this.operatingCost = operatingCost;
 		
+		teu = 0;
 		fuel = 0;		
 		speed = 0;		
 		name = "";		
@@ -96,7 +97,7 @@ public class Ship implements Entity{
 				modelShip = ship;
 			}
 		}
-		newShip = new Ship(modelShip.getType(), modelShip.getHull(), modelShip.getCargoSpace(), modelShip.getTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
+		newShip = new Ship(modelShip.getType(), modelShip.getHull(), modelShip.getCargoSpace(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
 		Finance finance = new Finance();
 		finance.init();
@@ -178,7 +179,14 @@ public class Ship implements Entity{
 		this.teu = teu;
 	}
 
-	
+	public int getMaxTeu() {
+		return maxTeu;
+	}
+
+	public void setMaxTeu(int maxTeu) {
+		this.maxTeu = maxTeu;
+	}
+
 	public double getOperatingCost() {
 		return operatingCost;
 	}
@@ -229,9 +237,7 @@ public class Ship implements Entity{
 	@Override	
 	public void update(int minutsPassed) {
 
-		
-				
-		
+			
 	}
 	
 				

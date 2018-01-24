@@ -119,8 +119,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		JPanel buyShipTablePanel = new JPanel(new BorderLayout());
 		buyShipTablePanel.setBorder(BorderFactory.createTitledBorder("available ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "type", "price","operatingCost", "hull", "cargoSpace", "teu", "maxFuel", "maxSpeed"};
-		String[] columnLabels = new String[] { "type", "price","operatingCost", "hull", "cargoSpace",  "teu", "maxFuel", "maxSpeed"};
+		String[] propertyNames = new String[] { "type", "price","operatingCost", "hull", "cargoSpace", "maxTeu", "maxFuel", "maxSpeed"};
+		String[] columnLabels = new String[] { "type", "price","operating Cost", "hull", "cargo Space",  "max Teu", "max Fuel", "max Speed"};
 		TableFormat<BuyShipTableRow> tf = GlazedLists.tableFormat(BuyShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<BuyShipTableRow>(listBuyShipData, tf));	
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -176,8 +176,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		JPanel sellShipTablePanel = new JPanel(new BorderLayout());
 		sellShipTablePanel.setBorder(BorderFactory.createTitledBorder("owned ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "name","type", "status", "price", "operatingCost", "hull", "cargoSpace",  "teu", "actualFuel"};
-		String[] columnLabels = new String[] {  "name","type", "status", "price", "operatingCost", "hull", "cargoSpace",   "teu", "actualFuel"};
+		String[] propertyNames = new String[] { "name","type", "status", "price", "operatingCost", "hull", "cargoSpace",  "actualTeu", "actualFuel"};
+		String[] columnLabels = new String[] {  "name","type", "status", "price", "operatingCost", "hull", "cargoSpace",   "actualTeu", "actualFuel"};
 		TableFormat<SellShipTableRow> tf = GlazedLists.tableFormat(SellShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<SellShipTableRow>(listSellShipData, tf));	
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){

@@ -83,8 +83,8 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		JPanel shipListTablePanel = new JPanel(new BorderLayout());
 		shipListTablePanel.setBorder(BorderFactory.createTitledBorder("owned ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "name","type", "status",  "hull", "cargoSpace", "teu", "actualFuel"};
-		String[] columnLabels = new String[] { "name","type", "status", "hull", "cargoSpace",  "teu","actualFuel"};
+		String[] propertyNames = new String[] { "name","type", "status",  "hull", "cargoSpace", "actualTeu", "actualFuel"};
+		String[] columnLabels = new String[] { "name","type", "status", "hull", "cargoSpace",  "actualTeu","actualFuel"};
 		TableFormat<ShipListTableRow> tf = GlazedLists.tableFormat(ShipListTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<ShipListTableRow>(listShipData, tf));
 		table.getColumnModel().getColumn(3).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());

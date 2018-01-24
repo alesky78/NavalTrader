@@ -12,10 +12,10 @@ public class ShipListTableRow {
 	private String status;	
 	private int hull;	
 	private int cargoSpace;	
-	private int teu;		
+	private String actualTeu;		
 	private String actualFuel;			
 	
-	public ShipListTableRow(String name,String type,String status, int hull, int cargoSpace,int teu, String actualFuel) {
+	public ShipListTableRow(String name,String type,String status, int hull, int cargoSpace,String actualTeu, String actualFuel) {
 		super();
 		this.name = name;
 		this.status = status;
@@ -23,7 +23,7 @@ public class ShipListTableRow {
 
 		this.hull = hull;
 		this.cargoSpace = cargoSpace;
-		this.teu = teu;
+		this.actualTeu = actualTeu;
 		this.actualFuel = actualFuel;
 	}
 
@@ -67,12 +67,12 @@ public class ShipListTableRow {
 		this.cargoSpace = cargoSpace;
 	}
 
-	public int getTeu() {
-		return teu;
+	public String getActualTeu() {
+		return actualTeu;
 	}
 
-	public void setTeu(int teu) {
-		this.teu = teu;
+	public void setActualTeu(String actualTeu) {
+		this.actualTeu = actualTeu;
 	}
 
 	public String getActualFuel() {
@@ -104,7 +104,9 @@ public class ShipListTableRow {
 	}
 	
 	public static ShipListTableRow mapData(Ship ship){
-		return new ShipListTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getHull(), ship.getCargoSpace(),ship.getTeu(), ship.getFuel()+"/"+ship.getMaxFuel());
+		return new ShipListTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getHull(), ship.getCargoSpace(),
+									ship.getTeu()+"/"+ship.getMaxTeu(), 
+									ship.getFuel()+"/"+ship.getMaxFuel());
 	}	
 	
 

@@ -13,11 +13,11 @@ public class SellShipTableRow {
 	private String status;	
 	private int hull;	
 	private int cargoSpace;		
-	private int teu;		
+	private String actualTeu;		
 	private String actualFuel;	
 	private double operatingCost;	
 	
-	public SellShipTableRow(String name,String type,String status, double price, double operatingCost,int hull, int cargoSpace, int teu, String actualFuel) {
+	public SellShipTableRow(String name,String type,String status, double price, double operatingCost,int hull, int cargoSpace, String actualTeu, String actualFuel) {
 		super();
 		this.name = name;
 		this.status = status;
@@ -25,7 +25,7 @@ public class SellShipTableRow {
 		this.price = price;
 		this.hull = hull;
 		this.cargoSpace = cargoSpace;
-		this.teu = teu;
+		this.actualTeu = actualTeu;
 		this.actualFuel = actualFuel;
 		this.operatingCost = operatingCost;
 	}
@@ -46,8 +46,8 @@ public class SellShipTableRow {
 		return cargoSpace;
 	}
 	
-	public int getTeu() {
-		return teu;
+	public String getActualTeu() {
+		return actualTeu;
 	}
 
 	public String getStatus() {
@@ -77,7 +77,8 @@ public class SellShipTableRow {
 	}
 	
 	public static SellShipTableRow mapData(Ship ship){
-		return new SellShipTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getBasePrice(), ship.getOperatingCost(), ship.getHull(), ship.getCargoSpace(),ship.getTeu(), 
+		return new SellShipTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getBasePrice(), ship.getOperatingCost(), ship.getHull(), ship.getCargoSpace(),
+									ship.getTeu()+"/"+ship.getMaxTeu(), 
 									ship.getFuel()+"/"+ship.getMaxFuel());
 	}	
 	
