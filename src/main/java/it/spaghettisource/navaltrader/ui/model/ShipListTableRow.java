@@ -11,17 +11,19 @@ public class ShipListTableRow {
 	private String shipClass;		
 	private String model;
 	private String status;	
+	private double operatingCost;
 	private int hull;	
 	private String actualDwt;	
 	private String actualTeu;		
 	private String actualFuel;			
 	
-	public ShipListTableRow(String shipClass, String name,String model,String status, int hull, String actualDwt,String actualTeu, String actualFuel) {
+	public ShipListTableRow(String shipClass, String name,String model,String status, double operatingCost, int hull, String actualDwt,String actualTeu, String actualFuel) {
 		super();
 		this.name = name;
 		this.shipClass = shipClass;		
 		this.status = status;
 		this.model = model;
+		this.operatingCost = operatingCost;
 
 		this.hull = hull;
 		this.actualDwt = actualDwt;
@@ -43,6 +45,10 @@ public class ShipListTableRow {
 
 	public String getStatus() {
 		return status;
+	}
+	
+	public double getOperatingCost() {
+		return operatingCost;
 	}
 
 	public int getHull() {
@@ -82,7 +88,7 @@ public class ShipListTableRow {
 	}
 	
 	public static ShipListTableRow mapData(Ship ship){
-		return new ShipListTableRow(ship.getShipClass(), ship.getName(), ship.getModel(),ship.getStatus(), ship.getHull(), 
+		return new ShipListTableRow(ship.getShipClass(), ship.getName(), ship.getModel(),ship.getStatus(), ship.getOperatingCost(), ship.getHull(), 
 									ship.getDwt()+"/"+ship.getMaxDwt(),
 									ship.getTeu()+"/"+ship.getMaxTeu(), 
 									ship.getFuel()+"/"+ship.getMaxFuel());
