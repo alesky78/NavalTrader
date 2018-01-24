@@ -29,19 +29,19 @@ public class Ship implements Entity{
 	private static final int SHIP_CARGO_HUGE = 6000;		
 		
 	//customized ship
-	private static final Ship SHIP_OLD_LITTLE = 	new Ship("very old"	, 	50,	 SHIP_CARGO_LITTLE	, 700, 3000, 2000, 15, 1000000);
-	private static final Ship SHIP_OLD_LARGE = 		new Ship("very old", 	50,	 SHIP_CARGO_LARGE	, 700, 3500, 2000, 15, 2000000);	
-	private static final Ship SHIP_NORMAL_LITTLE = 	new Ship("old", 		60,	 SHIP_CARGO_LITTLE	, 700, 3500, 2000, 17, 4000000);
-	private static final Ship SHIP_NORMAL_LARGE = 	new Ship("old", 		70,	 SHIP_CARGO_LARGE	, 700, 4000, 2000, 17, 5000000);
-	private static final Ship SHIP_HITECH_LITTLE = 	new Ship("old", 		80, SHIP_CARGO_LITTLE	, 700, 4000, 2000, 21, 10000000);
-	private static final Ship SHIP_HITECH_LARGE = 	new Ship("new", 		90, SHIP_CARGO_LARGE	, 700, 5000, 2000, 21, 15000000);
-	private static final Ship SHIP_HITECH_HUGE= 	new Ship("new", 		100, SHIP_CARGO_HUGE	, 700, 6000, 2000, 21, 25000000);	
+	private static final Ship SHIP_OLD_LITTLE = 	new Ship("Small feeder", "nsr-32", 	50,	 SHIP_CARGO_LITTLE	, 1000,  3000, 2000, 15, 1000000);
+	private static final Ship SHIP_OLD_LARGE = 		new Ship("Feeder", 		 "xModel", 	50,	 SHIP_CARGO_LARGE	, 2000,  3500, 2000, 15, 2000000);	
+	private static final Ship SHIP_NORMAL_LITTLE = 	new Ship("Feedermax", 	 "SS32", 	60,	 SHIP_CARGO_LITTLE	, 3000,  3500, 2000, 17, 4000000);
+	private static final Ship SHIP_NORMAL_LARGE = 	new Ship("Panamax",		 "FastS", 	70,	 SHIP_CARGO_LARGE	, 5100,  4000, 2000, 17, 5000000);
+	private static final Ship SHIP_HITECH_LITTLE = 	new Ship("Post-Panamax", "FastSS",	80, SHIP_CARGO_LITTLE	, 10000, 4000, 2000, 21, 10000000);
+	private static final Ship SHIP_HITECH_LARGE = 	new Ship("New Panamax",	 "tornato", 90, SHIP_CARGO_LARGE	, 14500, 5000, 2000, 21, 15000000);
+	private static final Ship SHIP_HITECH_HUGE= 	new Ship("ULCV",		 "spaceX", 	100, SHIP_CARGO_HUGE	, 18270, 6000, 2000, 21, 25000000);	
 	
 	private static final Ship[] shipArray = new Ship[]{SHIP_OLD_LITTLE,SHIP_OLD_LARGE,SHIP_NORMAL_LITTLE,SHIP_NORMAL_LARGE,SHIP_HITECH_LITTLE,SHIP_HITECH_LARGE,SHIP_HITECH_HUGE};	
 	private static double priceIndex = 1.0;
 	
 	
-	private String type;	
+	
 	
 	
 	//http://www.dizionariologistica.com/index.html
@@ -50,17 +50,17 @@ public class Ship implements Entity{
 	//https://en.wikipedia.org/wiki/Cargo_ship
 	//http://maritime-connector.com/wiki/ship-sizes/
 	
-	
+
 	private String name;	
-	private Finance finance;
-	
-	private double basePrice;	
-	
+	private String model;
 	private String status;
-	private int hull;	
+	private String shipClass;	
 	
+	private Finance finance;
+	private double basePrice;	
 	private double operatingCost;
 	
+	private int hull;	
 	private int dwt;
 	private int maxDwt;	
 	private int teu;		
@@ -72,8 +72,10 @@ public class Ship implements Entity{
 	
 	
 	
-	public Ship(String type, int hull, int maxDwt,int maxTeu, int maxFuel, double operatingCost, double maxSpeed, double basePrice) {
-		this.type = type;
+	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, int maxFuel, double operatingCost, double maxSpeed, double basePrice) {
+		
+		this.shipClass = shipClass;
+		this.model = model;
 
 		this.status = SHIP_STATUS_DOCKED;
 		this.maxDwt = maxDwt;
@@ -91,17 +93,17 @@ public class Ship implements Entity{
 		name = "";		
 	}
 	
-	public static Ship factoryShip(String type,String name){
+	public static Ship factoryShip(String model,String name){
 		Ship modelShip = null;
 		Ship newShip = null;
 		
 		//find ship to copy
 		for (Ship ship : getListSellShip()) {
-			if(ship.getType().equals(type)){
+			if(ship.getModel().equals(model)){
 				modelShip = ship;
 			}
 		}
-		newShip = new Ship(modelShip.getType(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
+		newShip = new Ship(modelShip.getShipClass(), modelShip.getModel(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
 		Finance finance = new Finance();
 		finance.init();
@@ -114,12 +116,21 @@ public class Ship implements Entity{
 	}
 
 	
-	public String getType() {
-		return type;
+	
+	public String getShipClass() {
+		return shipClass;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setShipClass(String shipClass) {
+		this.shipClass = shipClass;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
 	}
 
 	public String getName() {

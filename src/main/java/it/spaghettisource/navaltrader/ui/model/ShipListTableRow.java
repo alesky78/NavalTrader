@@ -8,18 +8,20 @@ import it.spaghettisource.navaltrader.game.model.Ship;
 public class ShipListTableRow {
 
 	private String name;
-	private String type;
+	private String shipClass;		
+	private String model;
 	private String status;	
 	private int hull;	
 	private String actualDwt;	
 	private String actualTeu;		
 	private String actualFuel;			
 	
-	public ShipListTableRow(String name,String type,String status, int hull, String actualDwt,String actualTeu, String actualFuel) {
+	public ShipListTableRow(String shipClass, String name,String model,String status, int hull, String actualDwt,String actualTeu, String actualFuel) {
 		super();
 		this.name = name;
+		this.shipClass = shipClass;		
 		this.status = status;
-		this.type = type;
+		this.model = model;
 
 		this.hull = hull;
 		this.actualDwt = actualDwt;
@@ -31,8 +33,12 @@ public class ShipListTableRow {
 		return name;
 	}
 
-	public String getType() {
-		return type;
+	public String getShipClass() {
+		return shipClass;
+	}
+
+	public String getModel() {
+		return model;
 	}
 
 	public String getStatus() {
@@ -76,7 +82,7 @@ public class ShipListTableRow {
 	}
 	
 	public static ShipListTableRow mapData(Ship ship){
-		return new ShipListTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getHull(), 
+		return new ShipListTableRow(ship.getShipClass(), ship.getName(), ship.getModel(),ship.getStatus(), ship.getHull(), 
 									ship.getDwt()+"/"+ship.getMaxDwt(),
 									ship.getTeu()+"/"+ship.getMaxTeu(), 
 									ship.getFuel()+"/"+ship.getMaxFuel());

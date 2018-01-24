@@ -52,7 +52,8 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 
 	//ship status tab
 	private JTextField shipStatus;
-	private JTextField shipType;
+	private JTextField shipModel;
+	private JTextField shipClass;	
 	private HullProgressBarField shipHull;
 	private IntegerTextField shipActualFuel;
 	private CurrencyTextField operatingCost;	
@@ -97,8 +98,10 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		//ship status
 		shipStatus = new JTextField(ship.getStatus());
 		shipStatus.setEditable(false);		
-		shipType = new JTextField(ship.getType());
-		shipType.setEditable(false);
+		shipModel = new JTextField(ship.getModel());
+		shipModel.setEditable(false);		
+		shipClass = new JTextField(ship.getShipClass());		
+		shipClass.setEditable(false);
 		shipHull = new HullProgressBarField(ship.getHull());
 		shipActualFuel = new IntegerTextField(ship.getFuel());
 		operatingCost = new CurrencyTextField(ship.getOperatingCost());
@@ -130,8 +133,10 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		JPanel statusPanel = new JPanel(new SpringLayout());		
 		statusPanel.add(new JLabel("ship status"));
 		statusPanel.add(shipStatus);
-		statusPanel.add(new JLabel("ship type"));
-		statusPanel.add(shipType);
+		statusPanel.add(new JLabel("ship class"));
+		statusPanel.add(shipClass);		
+		statusPanel.add(new JLabel("ship model"));
+		statusPanel.add(shipModel);
 		statusPanel.add(new JLabel("daily operating cost"));
 		statusPanel.add(operatingCost);		
 		statusPanel.add(new JLabel("actual fuel"));
@@ -139,7 +144,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		statusPanel.add(new JLabel("hull status"));
 		statusPanel.add(shipHull);		
 
-		SpringLayoutUtilities.makeCompactGrid(statusPanel,5, 2,5, 5,5, 5);		
+		SpringLayoutUtilities.makeCompactGrid(statusPanel,6, 2,5, 5,5, 5);		
 
 		//add all together
 		panel.add(statusPanel, BorderLayout.NORTH);	

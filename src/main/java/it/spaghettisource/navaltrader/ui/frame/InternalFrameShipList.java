@@ -48,7 +48,7 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 
 	public InternalFrameShipList(MainDesktopPane parentDesktopPane,GameManager gameManager) {
 		super(parentDesktopPane,gameManager, "ship list");
-		setSize(600,300);   
+		setSize(700,300);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/agenda.png"));
 
 		initValuesFromModel();
@@ -83,11 +83,11 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		JPanel shipListTablePanel = new JPanel(new BorderLayout());
 		shipListTablePanel.setBorder(BorderFactory.createTitledBorder("owned ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "name","type", "status",  "hull", "actualDwt", "actualTeu", "actualFuel"};
-		String[] columnLabels = new String[] { "name","type", "status", "hull", "actual Dwt",  "actual Teu","actual Fuel"};
+		String[] propertyNames = new String[] { "name", "shipClass", "model", "status",  "hull", "actualDwt", "actualTeu", "actualFuel"};
+		String[] columnLabels = new String[] { "name", "class", "model", "status", "hull", "actual Dwt",  "actual Teu","actual Fuel"};
 		TableFormat<ShipListTableRow> tf = GlazedLists.tableFormat(ShipListTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<ShipListTableRow>(listShipData, tf));
-		table.getColumnModel().getColumn(3).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
+		table.getColumnModel().getColumn(4).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
 
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {

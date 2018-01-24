@@ -7,7 +7,8 @@ import it.spaghettisource.navaltrader.game.model.Ship;
 
 public class BuyShipTableRow {
 
-	private String type;
+	private String model;
+	private String shipClass;	
 	private double price;	
 	private int hull;	
 	private int maxTeu;		
@@ -16,9 +17,10 @@ public class BuyShipTableRow {
 	private double maxSpeed;	
 	private double operatingCost;
 	
-	public BuyShipTableRow(String type, double price, int hull, int maxDwt,int maxTeu, double operatingCost, double maxFuel, double maxSpeed) {
+	public BuyShipTableRow(String shipClass, String type, double price, int hull, int maxDwt,int maxTeu, double operatingCost, double maxFuel, double maxSpeed) {
 		super();
-		this.type = type;
+		this.shipClass = shipClass;
+		this.model = type;
 		this.price = price;
 		this.hull = hull;
 		this.maxDwt = maxDwt;
@@ -28,8 +30,16 @@ public class BuyShipTableRow {
 		this.operatingCost = operatingCost;
 	}
 
-	public String getType() {
-		return type;
+	public String getShipClass() {
+		return shipClass;
+	}
+
+	public void setShipClass(String shipClass) {
+		this.shipClass = shipClass;
+	}
+
+	public String getModel() {
+		return model;
 	}
 
 	public double getPrice() {
@@ -64,7 +74,7 @@ public class BuyShipTableRow {
 		
 		List<BuyShipTableRow> LoanTableRow = new ArrayList<BuyShipTableRow>();
 		for (Ship ship : listOfShip) {
-			LoanTableRow.add(new BuyShipTableRow(ship.getType(), ship.getBasePrice(), ship.getHull(), ship.getMaxDwt(), ship.getMaxTeu(), ship.getOperatingCost(), ship.getMaxFuel(), ship.getMaxSpeed()));
+			LoanTableRow.add(new BuyShipTableRow(ship.getShipClass(), ship.getModel(), ship.getBasePrice(), ship.getHull(), ship.getMaxDwt(), ship.getMaxTeu(), ship.getOperatingCost(), ship.getMaxFuel(), ship.getMaxSpeed()));
 		}
 		
 		return LoanTableRow;

@@ -54,7 +54,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 	//buy ship tab
 	private EventList<BuyShipTableRow> listBuyShipData;
 	private JTextField newShipName;
-	private JTextField newShipType;		
+	private JTextField newShipModel;		
 	private CurrencyTextField newShipPrice;		
 	private CurrencyTextField newShipNetBudget;	
 
@@ -92,8 +92,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		listBuyShipData = GlazedLists.threadSafeList(new BasicEventList<BuyShipTableRow>());	
 		listBuyShipData.addAll(BuyShipTableRow.mapData(Ship.getListSellShip())); 
 		newShipName = new JTextField("");
-		newShipType = new JTextField("");
-		newShipType.setEditable(false);
+		newShipModel = new JTextField("");
+		newShipModel.setEditable(false);
 		newShipPrice = new CurrencyTextField(0.0);		
 		newShipNetBudget = new CurrencyTextField(company.getBudget());
 
@@ -119,8 +119,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		JPanel buyShipTablePanel = new JPanel(new BorderLayout());
 		buyShipTablePanel.setBorder(BorderFactory.createTitledBorder("available ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "type", "price","operatingCost", "hull", "maxDwt", "maxTeu", "maxFuel", "maxSpeed"};
-		String[] columnLabels = new String[] { "type", "price","operating Cost", "hull", "max Dwt",  "max Teu", "max Fuel", "max Speed"};
+		String[] propertyNames = new String[] { "shipClass", "model", "price","operatingCost", "hull", "maxDwt", "maxTeu", "maxFuel", "maxSpeed"};
+		String[] columnLabels = new String[] { "class", "model", "price","operating Cost", "hull", "max Dwt",  "max Teu", "max Fuel", "max Speed"};
 		TableFormat<BuyShipTableRow> tf = GlazedLists.tableFormat(BuyShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<BuyShipTableRow>(listBuyShipData, tf));	
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -128,7 +128,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				try{
 					BuyShipTableRow data = listBuyShipData.get(table.convertRowIndexToModel(table.getSelectedRow()));
 					table.clearSelection();					
-					newShipType.setText(data.getType());
+					newShipModel.setText(data.getModel());
 					newShipName.setText("");					
 					newShipPrice.setValue(data.getPrice());
 					newShipNetBudget.setValue(gameData.getCompany().getBudget()-data.getPrice());
@@ -136,7 +136,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				}catch (Exception e) {}
 			}
 		});	
-		table.getColumnModel().getColumn(3).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
+		table.getColumnModel().getColumn(4).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
 		
 		buyShipTablePanel.add(new JScrollPane(table), BorderLayout.CENTER);		
 
@@ -150,7 +150,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		buyShipButton.addActionListener(this);
 
 		chooseShipPanel.add(new JLabel("type"));
-		chooseShipPanel.add(newShipType);
+		chooseShipPanel.add(newShipModel);
 		chooseShipPanel.add(new JLabel("name"));
 		chooseShipPanel.add(newShipName);
 		chooseShipPanel.add(new JLabel("price"));
@@ -176,8 +176,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		JPanel sellShipTablePanel = new JPanel(new BorderLayout());
 		sellShipTablePanel.setBorder(BorderFactory.createTitledBorder("owned ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "name","type", "status", "price", "operatingCost", "hull", "actualDwt",  "actualTeu", "actualFuel"};
-		String[] columnLabels = new String[] {  "name","type", "status", "price", "operatingCost", "hull", "actualDwt",   "actualTeu", "actualFuel"};
+		String[] propertyNames = new String[] { "name","shipClass","model", "status", "price", "operatingCost", "hull", "actualDwt",  "actualTeu", "actualFuel"};
+		String[] columnLabels = new String[] {  "name","class","model", "status", "price", "operatingCost", "hull", "actualDwt",   "actualTeu", "actualFuel"};
 		TableFormat<SellShipTableRow> tf = GlazedLists.tableFormat(SellShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<SellShipTableRow>(listSellShipData, tf));	
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -185,7 +185,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				try{
 					SellShipTableRow data = listSellShipData.get(table.convertRowIndexToModel(table.getSelectedRow()));
 					table.clearSelection();					
-					sellShipType.setText(data.getType());
+					sellShipType.setText(data.getModel());
 					sellShipName.setText(data.getName());					
 					sellShipPrice.setValue(data.getPrice());
 					sellShipNetBudget.setValue(gameData.getCompany().getBudget()+data.getPrice());					
@@ -193,7 +193,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				}catch (Exception e) {}
 			}
 		});	
-		table.getColumnModel().getColumn(5).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());		
+		table.getColumnModel().getColumn(6).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());		
 		
 		sellShipTablePanel.add(new JScrollPane(table), BorderLayout.CENTER);		
 
@@ -235,11 +235,11 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				parentDesktopPane.showErrorMessageDialog("set a name to the ship to buy it");
 			}else if(gameData.getCompany().getShipByName(newShipName.getText())!=null) {
 				parentDesktopPane.showErrorMessageDialog("ship wiht this name alrady exsist");
-			}else if(newShipNetBudget.getValue()>0  && !newShipType.getText().trim().equals("")){	//buy if money and valid name
-				gameData.getCompany().buyShip(newShipType.getText(), newShipName.getText(), newShipPrice.getValue());
+			}else if(newShipNetBudget.getValue()>0  && !newShipModel.getText().trim().equals("")){	//buy if money and valid name
+				gameData.getCompany().buyShip(newShipModel.getText(), newShipName.getText(), newShipPrice.getValue());
 
 				newShipPrice.setValue(0.0);
-				newShipType.setText("");
+				newShipModel.setText("");
 				newShipName.setText("");				
 				newShipNetBudget.setValue(gameData.getCompany().getBudget());				
 			}
