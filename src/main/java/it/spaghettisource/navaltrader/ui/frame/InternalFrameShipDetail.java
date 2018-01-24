@@ -26,7 +26,6 @@ import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
-import it.spaghettisource.navaltrader.ui.component.DoubleTextField;
 import it.spaghettisource.navaltrader.ui.component.HullProgressBarField;
 import it.spaghettisource.navaltrader.ui.component.IntegerTextField;
 import it.spaghettisource.navaltrader.ui.event.Event;
