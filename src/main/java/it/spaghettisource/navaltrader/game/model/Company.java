@@ -25,12 +25,15 @@ public class Company implements Entity {
 	private List<Ship> ships;
 	private double budget;	
 	private String rating;		
+	private Finance companyFinance;	
 	
 	public Company(String companyName, int initialBudget) {
 		name = companyName;
 		ships = new ArrayList<Ship>();
 		budget = initialBudget;
 		rating = RATING_NORAL;
+		companyFinance = new Finance();
+		
 	}
 	
 	@Override
@@ -41,7 +44,9 @@ public class Company implements Entity {
 	public void buyShip(String shipType, String name, double shipPrice) {
 		Ship newShip = Ship.factoryShip(shipType, name);
 		ships.add(newShip);
+		
 		InboundEventQueue.getInstance().put(new Event(EventType.BUY_SHIP_EVENT,newShip));				
+		companyFinance.addEntry(FinancialEntryType.SHIP_BUY, -shipPrice);
 		
 		removeBudget(shipPrice);
 	}
@@ -50,7 +55,11 @@ public class Company implements Entity {
 		Ship toTemove = getShipByName(name);
 		
 		if(toTemove != null) {
+			//add finance of this ship to company other way we lost it forever when delete the ship
+			companyFinance.add(toTemove.getFinance()); 
+			
 			ships.remove(toTemove);
+			companyFinance.addEntry(FinancialEntryType.SHIP_SELL, shipPrice);			
 			InboundEventQueue.getInstance().put(new Event(EventType.SELL_SHIP_EVENT,toTemove));	
 			addBudget(shipPrice);			
 		}
@@ -74,6 +83,8 @@ public class Company implements Entity {
 	public void refuelShip(String shipName,int amountToRefuel,Double priceToPay) {
 		Ship ship = getShipByName(shipName);
 		ship.addFuel(amountToRefuel);
+		ship.getFinance().addEntry(FinancialEntryType.SHIP_FUEL, -priceToPay);
+		
 		removeBudget(priceToPay);
 		
 	}
@@ -81,6 +92,7 @@ public class Company implements Entity {
 	public void repairShip(String shipName,int amountToRepair,Double priceToPay) {
 		Ship ship = getShipByName(shipName);
 		ship.addHull(amountToRepair);
+		ship.getFinance().addEntry(FinancialEntryType.SHIP_REPAIR, -priceToPay);		
 		removeBudget(priceToPay);
 	}	
 	
@@ -109,14 +121,16 @@ public class Company implements Entity {
 	}
 
 	public Finance getCompanyFinance(){
-		Finance global = new Finance();
-		global.init();
+
+		Finance finance = new Finance();	
+		
+		finance.add(companyFinance);
 		
 		for (Ship ship : ships) {
-			global.add(ship.getFinance());
+			finance.add(ship.getFinance());
 		}
 		
-		return global;
+		return finance;
 	}
 
 

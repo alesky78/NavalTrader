@@ -3,6 +3,10 @@ package it.spaghettisource.navaltrader.game.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.spaghettisource.navaltrader.ui.event.Event;
+import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
+
 public class Finance {
 
 	private Map<FinancialEntryType,Double> entry;
@@ -11,21 +15,16 @@ public class Finance {
 	public Finance() {
 		entry = new HashMap<FinancialEntryType,Double>();
 	}
-	
-	public void init() {
-		entry.clear();
-		entry.put(FinancialEntryType.SHIP_INCOME, 0.0);
-		entry.put(FinancialEntryType.SHIP_REPAIR, 0.0);
-		entry.put(FinancialEntryType.SHIP_OPERATING_COST, 0.0);
-		entry.put(FinancialEntryType.SHIP_FUEL, 0.0);		
-	}
-	
+		
 	public void addEntry(FinancialEntryType type,double amount) {
 		Double actual = entry.get(type);
 		if(actual == null){
-			actual = new Double(0);
-		}		
-		entry.put(type, actual+amount);
+			entry.put(type, amount);			
+		}else{
+			entry.put(type, amount+actual);			
+		}
+
+		InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT));	
 	}
 
 	

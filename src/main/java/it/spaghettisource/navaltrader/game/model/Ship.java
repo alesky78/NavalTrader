@@ -91,6 +91,8 @@ public class Ship implements Entity{
 		fuel = 0;		
 		speed = 0;		
 		name = "";		
+		finance = new Finance();
+		
 	}
 	
 	public static Ship factoryShip(String model,String name){
@@ -105,9 +107,7 @@ public class Ship implements Entity{
 		}
 		newShip = new Ship(modelShip.getShipClass(), modelShip.getModel(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
-		Finance finance = new Finance();
-		finance.init();
-		newShip.setFinance(finance);
+		
 		return newShip;
 	}
 	
@@ -115,7 +115,6 @@ public class Ship implements Entity{
 		return Arrays.asList(shipArray);
 	}
 
-	
 	
 	public String getShipClass() {
 		return shipClass;
