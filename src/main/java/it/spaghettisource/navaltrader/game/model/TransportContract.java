@@ -13,7 +13,9 @@ public class TransportContract {
 	private int clauseDay;	
 	
 	
-	
+	public void generate(){
+		
+	}
 	
 	
 }
