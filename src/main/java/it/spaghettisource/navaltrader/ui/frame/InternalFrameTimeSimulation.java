@@ -26,12 +26,16 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 
 	static Log log = LogFactory.getLog(InternalFrameTimeSimulation.class.getName());
 
+	private int refreshTime = 500;
+	
 	private GameTime gameTime;
 	private LoopManager loopManager;
 	
 	private TimeRefreshThread refreshThread;
 	private JLabel date;	
 	private JLabel simulationSpeed;		
+	
+	
 	
 	private final static String ACTION_PAUSE = "pause";
 	private final static String ACTION_PLAY = "play";	
@@ -121,7 +125,7 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 
 	public void updateTime(String time) {
 		date.setText(time);
-		simulationSpeed.setText("simulation speed: "+loopManager.getMultiplicator());
+		simulationSpeed.setText("simulation speed: x"+loopManager.getMultiplicator());
 	}
 	
 	@Override
@@ -152,7 +156,7 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 
 				updateTime("date: "+gameTime.getDate());
 				try {
-					Thread.sleep(100);
+					Thread.sleep(refreshTime);
 				} catch (InterruptedException e) {
 					log.error(e);
 				}

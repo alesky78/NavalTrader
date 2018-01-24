@@ -22,33 +22,33 @@ public class Ship implements Entity{
 	public static final String SHIP_STATUS_DOCKING = "docking";
 
 	//ship type
-	private static final String SHIP_TYPE_OLD_LITTLE = "old little";	
-	private static final String SHIP_TYPE_OLD_LARGE = "old large";	
-	private static final String SHIP_TYPE_NORMAL_LITTLE = "normal little";
-	private static final String SHIP_TYPE_NORMAL_LARGE = "normal large";
-	private static final String SHIP_TYPE_HITECH_LITTLE = "HiTech little";
-	private static final String SHIP_TYPE_HITECH_LARGE = "HiTech large";		
-	private static final String SHIP_TYPE_HITECH_HUGE = "HiTech huge";	
-	
+
 	//ship cargo
 	private static final int SHIP_CARGO_LITTLE = 3000;	
 	private static final int SHIP_CARGO_LARGE = 4000;
 	private static final int SHIP_CARGO_HUGE = 6000;		
 		
 	//customized ship
-	private static final Ship SHIP_OLD_LITTLE = 	new Ship(SHIP_TYPE_OLD_LITTLE	, 10,	 SHIP_CARGO_LITTLE	, 700, 3000,2000, 15,1000000);
-	private static final Ship SHIP_OLD_LARGE = 	new Ship(SHIP_TYPE_OLD_LARGE	, 30,	 SHIP_CARGO_LARGE	, 700, 3500, 2000,15,2000000);	
-	private static final Ship SHIP_NORMAL_LITTLE = new Ship(SHIP_TYPE_NORMAL_LITTLE, 50,	 SHIP_CARGO_LITTLE	, 700, 3500, 2000,17,4000000);
-	private static final Ship SHIP_NORMAL_LARGE = 	new Ship(SHIP_TYPE_NORMAL_LARGE	, 70,	 SHIP_CARGO_LARGE	, 700, 4000, 2000,17,5000000);
-	private static final Ship SHIP_HITECH_LITTLE = new Ship(SHIP_TYPE_HITECH_LITTLE, 80, SHIP_CARGO_LITTLE	, 700, 4000, 2000,21,10000000);
-	private static final Ship SHIP_HITECH_LARGE = 	new Ship(SHIP_TYPE_HITECH_LARGE	, 100, SHIP_CARGO_LARGE	, 700, 5000, 2000,21,15000000);
-	private static final Ship SHIP_HITECH_HUGE= 	new Ship(SHIP_TYPE_HITECH_HUGE	, 100, SHIP_CARGO_HUGE	, 700, 6000, 2000,21,25000000);	
+	private static final Ship SHIP_OLD_LITTLE = 	new Ship("very old"	, 	50,	 SHIP_CARGO_LITTLE	, 700, 3000, 2000, 15, 1000000);
+	private static final Ship SHIP_OLD_LARGE = 		new Ship("very old", 	50,	 SHIP_CARGO_LARGE	, 700, 3500, 2000, 15, 2000000);	
+	private static final Ship SHIP_NORMAL_LITTLE = 	new Ship("old", 		60,	 SHIP_CARGO_LITTLE	, 700, 3500, 2000, 17, 4000000);
+	private static final Ship SHIP_NORMAL_LARGE = 	new Ship("old", 		70,	 SHIP_CARGO_LARGE	, 700, 4000, 2000, 17, 5000000);
+	private static final Ship SHIP_HITECH_LITTLE = 	new Ship("old", 		80, SHIP_CARGO_LITTLE	, 700, 4000, 2000, 21, 10000000);
+	private static final Ship SHIP_HITECH_LARGE = 	new Ship("new", 		90, SHIP_CARGO_LARGE	, 700, 5000, 2000, 21, 15000000);
+	private static final Ship SHIP_HITECH_HUGE= 	new Ship("new", 		100, SHIP_CARGO_HUGE	, 700, 6000, 2000, 21, 25000000);	
 	
 	private static final Ship[] shipArray = new Ship[]{SHIP_OLD_LITTLE,SHIP_OLD_LARGE,SHIP_NORMAL_LITTLE,SHIP_NORMAL_LARGE,SHIP_HITECH_LITTLE,SHIP_HITECH_LARGE,SHIP_HITECH_HUGE};	
 	private static double priceIndex = 1.0;
 	
 	
-	private String type;
+	private String type;	
+	
+	//private String shipClass; --> PANAMAX ETC....	
+	//https://en.wikipedia.org/wiki/Container_ship
+	//https://en.wikipedia.org/wiki/Cargo_ship
+	//http://maritime-connector.com/wiki/ship-sizes/
+	
+	
 	private String name;	
 	private Finance finance;
 	
@@ -59,16 +59,17 @@ public class Ship implements Entity{
 	
 	private double operatingCost;
 	
-	private int cargoSpace;
+	private int cargoSpace;	//change variable name Deadweight tonnage 
 	private int teu;		
-	private double actualFuel;	
-	private double maxFuel;	
-	private double actualSpeed;	
+	//private int maxTeu;	
+	private int fuel;	
+	private int maxFuel;	
+	private double speed;	
 	private double maxSpeed;	
 	
 	
 	
-	public Ship(String type, int hull, int cargoSpace,int teu, double maxFuel, double operatingCost, double maxSpeed, double basePrice) {
+	public Ship(String type, int hull, int cargoSpace,int teu, int maxFuel, double operatingCost, double maxSpeed, double basePrice) {
 		this.type = type;
 
 		this.status = SHIP_STATUS_DOCKED;
@@ -80,8 +81,8 @@ public class Ship implements Entity{
 		this.basePrice = basePrice;
 		this.operatingCost = operatingCost;
 		
-		actualFuel = 0;		
-		actualSpeed = 0;		
+		fuel = 0;		
+		speed = 0;		
 		name = "";		
 	}
 	
@@ -186,33 +187,34 @@ public class Ship implements Entity{
 		this.operatingCost = operatingCost;
 	}
 
-	public double getActualFuel() {
-		return actualFuel;
+	public int getFuel() {
+		return fuel;
 	}
 
-	public void setActualFuel(double actualFuel) {
-		this.actualFuel = actualFuel;
+	public void setFuel(int fuel) {
+		this.fuel = fuel;
 	}
-	
-	public void addFuel(double toAdd) {
-		this.actualFuel = actualFuel + toAdd;
+
+	public void addFuel(int toAdd) {
+		this.fuel = fuel + toAdd;
 		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));
 	}	
+	
+	
+	public double getSpeed() {
+		return speed;
+	}
 
-	public double getMaxFuel() {
+	public void setSpeed(double speed) {
+		this.speed = speed;
+	}
+
+	public int getMaxFuel() {
 		return maxFuel;
 	}
 
-	public void setMaxFuel(double maxFuel) {
+	public void setMaxFuel(int maxFuel) {
 		this.maxFuel = maxFuel;
-	}
-
-	public double getActualSpeed() {
-		return actualSpeed;
-	}
-
-	public void setActualSpeed(double actualSpeed) {
-		this.actualSpeed = actualSpeed;
 	}
 
 	public double getMaxSpeed() {

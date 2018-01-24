@@ -14,10 +14,10 @@ public class SellShipTableRow {
 	private int hull;	
 	private int cargoSpace;		
 	private int teu;		
-	private double actualFuel;	
+	private String actualFuel;	
 	private double operatingCost;	
 	
-	public SellShipTableRow(String name,String type,String status, double price, double operatingCost,int hull, int cargoSpace, int teu, double actualFuel) {
+	public SellShipTableRow(String name,String type,String status, double price, double operatingCost,int hull, int cargoSpace, int teu, String actualFuel) {
 		super();
 		this.name = name;
 		this.status = status;
@@ -54,7 +54,7 @@ public class SellShipTableRow {
 		return status;
 	}
 
-	public double getActualFuel() {
+	public String getActualFuel() {
 		return actualFuel;
 	}
 	
@@ -77,7 +77,8 @@ public class SellShipTableRow {
 	}
 	
 	public static SellShipTableRow mapData(Ship ship){
-		return new SellShipTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getBasePrice(), ship.getOperatingCost(), ship.getHull(), ship.getCargoSpace(),ship.getTeu(), ship.getActualFuel());
+		return new SellShipTableRow(ship.getName(), ship.getType(),ship.getStatus(), ship.getBasePrice(), ship.getOperatingCost(), ship.getHull(), ship.getCargoSpace(),ship.getTeu(), 
+									ship.getFuel()+"/"+ship.getMaxFuel());
 	}	
 	
 	public boolean equals(Object obj){

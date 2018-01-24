@@ -27,7 +27,7 @@ public class LoopManager implements  Runnable {
 		shutdown = false;
 		timeSleep = 2000;
 		timeSleepMultiplicator = 1;
-		timePass = 20;		
+		timePass = 60;		
 	}
 
 	public void startLoopManagerThread() {
@@ -37,7 +37,7 @@ public class LoopManager implements  Runnable {
 
 
 	public void goFast() {
-		if(timeSleepMultiplicator>0.125) {
+		if(timeSleepMultiplicator>0.0625) {
 			timeSleepMultiplicator = timeSleepMultiplicator / 2;
 			owner.interrupt();
 		}

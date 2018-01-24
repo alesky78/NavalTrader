@@ -54,13 +54,13 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 	private JTextField shipStatus;
 	private JTextField shipType;
 	private HullProgressBarField shipHull;
-	private DoubleTextField shipActualFuel;
+	private IntegerTextField shipActualFuel;
 	private CurrencyTextField operatingCost;	
 
 	//ship refuel tab
-	private DoubleTextField shipMaxFuel;
+	private IntegerTextField shipMaxFuel;
 	private JSlider amountToRefuelSlider;	
-	private DoubleTextField amountToRefuel;
+	private IntegerTextField amountToRefuel;
 	private CurrencyTextField amountToPayForRefuel;
 	private CurrencyTextField priceUnitOfFuel;	
 
@@ -100,13 +100,13 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		shipType = new JTextField(ship.getType());
 		shipType.setEditable(false);
 		shipHull = new HullProgressBarField(ship.getHull());
-		shipActualFuel = new DoubleTextField(ship.getActualFuel());
+		shipActualFuel = new IntegerTextField(ship.getFuel());
 		operatingCost = new CurrencyTextField(ship.getOperatingCost());
 
 		//ship refuel
-		shipMaxFuel = new DoubleTextField(ship.getMaxFuel());
-		amountToRefuelSlider = new JSlider(0, (int)(ship.getMaxFuel()-ship.getActualFuel()), 0);
-		amountToRefuel = new DoubleTextField(0.0);
+		shipMaxFuel = new IntegerTextField(ship.getMaxFuel());
+		amountToRefuelSlider = new JSlider(0, ship.getMaxFuel()-ship.getFuel(), 0);
+		amountToRefuel = new IntegerTextField(0);
 		amountToPayForRefuel = new CurrencyTextField(0.0);
 		priceUnitOfFuel =  new CurrencyTextField(700.0);	//TODO where to get fuel price? maybe FUEL_PRICE_CHANGE EVENT
 
@@ -234,7 +234,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 			if(gameData.getCompany().getBudget()>amountToPayForRefuel.getValue()) {
 				gameData.getCompany().refuelShip(shipName, amountToRefuel.getValue(), amountToPayForRefuel.getValue());	
 				//reset ui before the event to avoid multiple click
-				amountToRefuelSlider.setMaximum((int)(ship.getMaxFuel()-ship.getActualFuel()));
+				amountToRefuelSlider.setMaximum((int)(ship.getMaxFuel()-ship.getFuel()));
 				amountToRefuelSlider.setValue(0);
 			}else{
 				parentDesktopPane.showErrorMessageDialog("not enought money");
@@ -266,8 +266,8 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 		}else if(eventType.equals(EventType.SHIP_FUEL_CHANGE_EVENT)){
 			Ship source = (Ship) event.getSource();			
 			if(source.getName().equals(shipName)) {
-				shipActualFuel.setValue(source.getActualFuel());
-				amountToRefuelSlider.setMaximum((int)(source.getMaxFuel()-source.getActualFuel()));
+				shipActualFuel.setValue(source.getFuel());
+				amountToRefuelSlider.setMaximum(source.getMaxFuel()-source.getFuel());
 			}
 		}else if(eventType.equals(EventType.SHIP_HULL_CHANGE_EVENT)){
 			Ship source = (Ship) event.getSource();			

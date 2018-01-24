@@ -71,7 +71,7 @@ public class Company implements Entity {
 	}	
 	
 	
-	public void refuelShip(String shipName,Double amountToRefuel,Double priceToPay) {
+	public void refuelShip(String shipName,int amountToRefuel,Double priceToPay) {
 		Ship ship = getShipByName(shipName);
 		ship.addFuel(amountToRefuel);
 		removeBudget(priceToPay);
