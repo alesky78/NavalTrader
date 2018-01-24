@@ -43,6 +43,8 @@ public class Ship implements Entity{
 	
 	private String type;	
 	
+	
+	//http://www.dizionariologistica.com/index.html
 	//private String shipClass; --> PANAMAX ETC....	
 	//https://en.wikipedia.org/wiki/Container_ship
 	//https://en.wikipedia.org/wiki/Cargo_ship
@@ -59,7 +61,8 @@ public class Ship implements Entity{
 	
 	private double operatingCost;
 	
-	private int cargoSpace;	//change variable name Deadweight tonnage 
+	private int dwt;
+	private int maxDwt;	
 	private int teu;		
 	private int maxTeu;	
 	private int fuel;	
@@ -69,11 +72,11 @@ public class Ship implements Entity{
 	
 	
 	
-	public Ship(String type, int hull, int cargoSpace,int maxTeu, int maxFuel, double operatingCost, double maxSpeed, double basePrice) {
+	public Ship(String type, int hull, int maxDwt,int maxTeu, int maxFuel, double operatingCost, double maxSpeed, double basePrice) {
 		this.type = type;
 
 		this.status = SHIP_STATUS_DOCKED;
-		this.cargoSpace = cargoSpace;
+		this.maxDwt = maxDwt;
 		this.maxTeu = maxTeu;
 		this.maxFuel = maxFuel;
 		this.maxSpeed = maxSpeed;
@@ -81,6 +84,7 @@ public class Ship implements Entity{
 		this.basePrice = basePrice;
 		this.operatingCost = operatingCost;
 		
+		dwt = 0; 
 		teu = 0;
 		fuel = 0;		
 		speed = 0;		
@@ -97,7 +101,7 @@ public class Ship implements Entity{
 				modelShip = ship;
 			}
 		}
-		newShip = new Ship(modelShip.getType(), modelShip.getHull(), modelShip.getCargoSpace(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
+		newShip = new Ship(modelShip.getType(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
 		Finance finance = new Finance();
 		finance.init();
@@ -163,12 +167,20 @@ public class Ship implements Entity{
 		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_HULL_CHANGE_EVENT,this));		
 	}	
 
-	public int getCargoSpace() {
-		return cargoSpace;
+	public int getDwt() {
+		return dwt;
 	}
 
-	public void setCargoSpace(int cargoSpace) {
-		this.cargoSpace = cargoSpace;
+	public void setDwt(int dwt) {
+		this.dwt = dwt;
+	}
+
+	public int getMaxDwt() {
+		return maxDwt;
+	}
+
+	public void setMaxDwt(int maxDwt) {
+		this.maxDwt = maxDwt;
 	}
 
 	public int getTeu() {

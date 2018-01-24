@@ -11,17 +11,17 @@ public class BuyShipTableRow {
 	private double price;	
 	private int hull;	
 	private int maxTeu;		
-	private int cargoSpace;		
+	private int maxDwt;		
 	private double maxFuel;		
 	private double maxSpeed;	
 	private double operatingCost;
 	
-	public BuyShipTableRow(String type, double price, int hull, int cargoSpace,int maxTeu, double operatingCost, double maxFuel, double maxSpeed) {
+	public BuyShipTableRow(String type, double price, int hull, int maxDwt,int maxTeu, double operatingCost, double maxFuel, double maxSpeed) {
 		super();
 		this.type = type;
 		this.price = price;
 		this.hull = hull;
-		this.cargoSpace = cargoSpace;
+		this.maxDwt = maxDwt;
 		this.maxTeu = maxTeu;
 		this.maxFuel = maxFuel;
 		this.maxSpeed = maxSpeed;
@@ -40,8 +40,8 @@ public class BuyShipTableRow {
 		return hull;
 	}
 
-	public int getCargoSpace() {
-		return cargoSpace;
+	public int getMaxDwt() {
+		return maxDwt;
 	}
 
 	public int getMaxTeu() {
@@ -64,7 +64,7 @@ public class BuyShipTableRow {
 		
 		List<BuyShipTableRow> LoanTableRow = new ArrayList<BuyShipTableRow>();
 		for (Ship ship : listOfShip) {
-			LoanTableRow.add(new BuyShipTableRow(ship.getType(), ship.getBasePrice(), ship.getHull(), ship.getCargoSpace(), ship.getMaxTeu(), ship.getOperatingCost(), ship.getMaxFuel(), ship.getMaxSpeed()));
+			LoanTableRow.add(new BuyShipTableRow(ship.getType(), ship.getBasePrice(), ship.getHull(), ship.getMaxDwt(), ship.getMaxTeu(), ship.getOperatingCost(), ship.getMaxFuel(), ship.getMaxSpeed()));
 		}
 		
 		return LoanTableRow;
