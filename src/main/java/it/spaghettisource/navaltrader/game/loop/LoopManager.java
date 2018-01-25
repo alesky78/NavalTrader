@@ -81,11 +81,9 @@ public class LoopManager implements  Runnable {
 				if(!pause){
  
 					gameTime.addMinuts(timePass);
-					log.debug("time:"+gameData.getTime().getFullDate());			
-
-					for (Ship ship : gameData.getCompany().getShips()) {
-						ship.update(timePass,isNewDate);
-					}
+					isNewDate = gameTime.isDayChanged();					
+					
+					log.debug("time:"+gameData.getTime().getFullDate()+" new date:"+isNewDate );			
 
 					gameData.getCompany().update(timePass,isNewDate);
 

@@ -39,6 +39,10 @@ public class Company implements Entity {
 	@Override
 	public void update(int minutsPassed, boolean isNewDate) {
 		
+		for (Ship ship : ships) {
+			ship.update(minutsPassed, isNewDate);
+		}
+		
 	}
 
 	public void buyShip(String shipType, String name, double shipPrice) {
