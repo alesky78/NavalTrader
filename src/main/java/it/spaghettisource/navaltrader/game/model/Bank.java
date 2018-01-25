@@ -68,7 +68,7 @@ public class Bank implements Entity {
 	}
 
 
-	public void update(int minutsPassed, boolean isNewDate) {
+	public void update(int minutsPassed, boolean isNewDate, boolean isNewMonth) {
 		// TODO business logic for bank
 		
 	}

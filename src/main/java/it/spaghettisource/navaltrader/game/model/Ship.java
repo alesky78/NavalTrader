@@ -257,7 +257,7 @@ public class Ship implements Entity{
 
 	
 	@Override	
-	public void update(int minutsPassed, boolean isNewDate) {
+	public void update(int minutsPassed, boolean isNewDate, boolean isNewMonth) {
 
 			
 	}

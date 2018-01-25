@@ -27,7 +27,7 @@ public class Port  implements Entity{
 		contracts = TransportContract.generateNewContract(10);
 	}
 
-	public void update(int minutsPassed, boolean isNewDate) {
+	public void update(int minutsPassed, boolean isNewDate, boolean isNewMonth) {
 	
 		
 	}
