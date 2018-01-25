@@ -37,7 +37,7 @@ public class Company implements Entity {
 	}
 	
 	@Override
-	public void update(int minutsPassed) {
+	public void update(int minutsPassed, boolean isNewDate) {
 		
 	}
 

@@ -15,15 +15,21 @@ public class GameTime {
 	
 	private DateFormat fullDateFormat;	
 	private DateFormat dateFormat;	
-	private Calendar calendar;
+	
+	private Calendar actualDate;
+	private int actualDay;	
+	private boolean dayChanged;	
+	
 	
 	public GameTime() {
 		super();
 		fullDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");	
 		dateFormat = new SimpleDateFormat("dd/MM/yyyy");	
-		calendar = Calendar.getInstance();
+		actualDate = Calendar.getInstance();
 		try {
-			calendar.setTime(fullDateFormat.parse("01/01/2000 00:00"));
+			actualDate.setTime(fullDateFormat.parse("01/01/2000 00:00"));
+			dayChanged = false;
+			actualDay = actualDate.get(Calendar.DAY_OF_MONTH);
 		} catch (ParseException e) {
 			log.error(e);
 		}		
@@ -31,16 +37,31 @@ public class GameTime {
 	
 	
 	public void addMinuts(int toAdd){
-		calendar.add(Calendar.MINUTE, toAdd);
+
+		actualDate.add(Calendar.MINUTE, toAdd);
+		
+		int newDate = actualDate.get(Calendar.DAY_OF_MONTH);
+		if(actualDay != newDate){
+			actualDay = newDate;
+			dayChanged = true;
+		}else{
+			dayChanged = false;
+		}		
 	}
+	
+
+	public boolean isDayChanged(){
+		return dayChanged;
+	}	
 
 
+	
 	public String getFullDate(){
-		return fullDateFormat.format(calendar.getTime());
+		return fullDateFormat.format(actualDate.getTime());
 	}
 	
 	public String getDate(){
-		return dateFormat.format(calendar.getTime());
+		return dateFormat.format(actualDate.getTime());
 	}	
 	
 	

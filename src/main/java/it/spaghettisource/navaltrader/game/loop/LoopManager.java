@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameData;
+import it.spaghettisource.navaltrader.game.model.GameTime;
 import it.spaghettisource.navaltrader.game.model.Ship;
 
 public class LoopManager implements  Runnable {
@@ -65,24 +66,30 @@ public class LoopManager implements  Runnable {
 
 	public void run() {
 
+		GameTime gameTime;
+		boolean isNewDate;
+		
 		while(!shutdown){
 
+			gameTime = gameData.getTime(); 
+			isNewDate = gameTime.isDayChanged();
+			
 			try {
 				Thread.currentThread();
 				Thread.sleep((long)(timeSleep*timeSleepMultiplicator));
 
 				if(!pause){
-
-					gameData.getTime().addMinuts(timePass);
+ 
+					gameTime.addMinuts(timePass);
 					log.debug("time:"+gameData.getTime().getFullDate());			
 
 					for (Ship ship : gameData.getCompany().getShips()) {
-						ship.update(timePass);
+						ship.update(timePass,isNewDate);
 					}
 
-					gameData.getCompany().update(timePass);
+					gameData.getCompany().update(timePass,isNewDate);
 
-					gameData.getBank().update(timePass);
+					gameData.getBank().update(timePass,isNewDate);
 
 				}
 
