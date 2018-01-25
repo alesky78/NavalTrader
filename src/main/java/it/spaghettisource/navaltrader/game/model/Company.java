@@ -155,7 +155,14 @@ public class Company implements Entity {
 			ship.update(minutsPassed, isNewDate,isNewMonth);
 		}
 		
-		bank.update(minutsPassed, isNewDate, isNewMonth);
+		if(isNewDate){
+			//pay ship operational cost
+		}
+		
+		if(isNewMonth){
+			//pay bank loans
+		}
+		
 		
 	}
 

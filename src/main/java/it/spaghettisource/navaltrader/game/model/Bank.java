@@ -3,12 +3,7 @@ package it.spaghettisource.navaltrader.game.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.spaghettisource.navaltrader.game.loop.Entity;
-import it.spaghettisource.navaltrader.ui.event.Event;
-import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
-
-public class Bank implements Entity {
+public class Bank {
 
 	private List<Loan> loanList;
 	private double interest;
@@ -60,15 +55,6 @@ public class Bank implements Entity {
 
 	public List<Loan> getLoanList() {
 		return  new ArrayList(loanList);
-	}
-
-
-	public void update(int minutsPassed, boolean isNewDate, boolean isNewMonth) {
-		// TODO business logic for bank
-		
-	}
-	
-	
-	
+	}	
 	
 }
