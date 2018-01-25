@@ -94,7 +94,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 	private void initValuesFromModel() {
 
 		Company company = gameData.getCompany();
-		Finance finance = company.getCompanyFinance();
+		Finance finance = company.getGlobalCompanyFinance();
 		Bank bank = gameData.getBank();		
 
 		//financial tab
@@ -281,7 +281,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		EventType eventType = event.getEventType(); 
 
 		if(eventType.equals(EventType.FINANCIAL_EVENT)){
-			Finance finance = gameData.getCompany().getCompanyFinance();
+			Finance finance = gameData.getCompany().getGlobalCompanyFinance();
 			netProfit.setValue(finance.getNetProfit());
 			listFinancialData.clear();	
 			listFinancialData.addAll(FinancialTableRow.mapData(finance)); 

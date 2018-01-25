@@ -11,13 +11,7 @@ import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
-public class Company implements Entity {
-
-	public final static String RATING_VPOOR = "very poor";
-	public final static String RATING_POOR = "poor";	
-	public final static String RATING_NORAL = "normal";
-	public final static String RATING_GOOD = "good";		
-	public final static String RATING_VGOOD = "very good";	
+public class Company implements Entity {	
 	
 	static Log log = LogFactory.getLog(Company.class.getName());
 	
@@ -31,18 +25,8 @@ public class Company implements Entity {
 		name = companyName;
 		ships = new ArrayList<Ship>();
 		budget = initialBudget;
-		rating = RATING_NORAL;
+		rating = "unknow";	//TODO how to manage rating?
 		companyFinance = new Finance();
-		
-	}
-	
-	@Override
-	public void update(int minutsPassed, boolean isNewDate, boolean isNewMonth) {
-		
-		for (Ship ship : ships) {
-			ship.update(minutsPassed, isNewDate,isNewMonth);
-		}
-		
 	}
 
 	public void buyShip(String shipType, String name, double shipPrice) {
@@ -67,7 +51,6 @@ public class Company implements Entity {
 			InboundEventQueue.getInstance().put(new Event(EventType.SELL_SHIP_EVENT,toTemove));	
 			addBudget(shipPrice);			
 		}
-
 	}	
 
 	public List<Ship> getShips() {
@@ -82,7 +65,6 @@ public class Company implements Entity {
 		}
 		return null;
 	}	
-	
 	
 	public void refuelShip(String shipName,int amountToRefuel,Double priceToPay) {
 		Ship ship = getShipByName(shipName);
@@ -100,8 +82,6 @@ public class Company implements Entity {
 		removeBudget(priceToPay);
 	}	
 	
-	
-
 	public void addBudget(double toAdd) {
 		budget = budget + toAdd;
 		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));			
@@ -124,7 +104,7 @@ public class Company implements Entity {
 		return name;
 	}
 
-	public Finance getCompanyFinance(){
+	public Finance getGlobalCompanyFinance(){
 
 		Finance finance = new Finance();	
 		
@@ -138,7 +118,14 @@ public class Company implements Entity {
 	}
 
 
-	
+	@Override
+	public void update(int minutsPassed, boolean isNewDate, boolean isNewMonth) {
+		
+		for (Ship ship : ships) {
+			ship.update(minutsPassed, isNewDate,isNewMonth);
+		}
+		
+	}
 
 	
 }
