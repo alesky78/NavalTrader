@@ -4,8 +4,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameData;
+import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
-import it.spaghettisource.navaltrader.game.model.Ship;
 
 public class LoopManager implements  Runnable {
 
@@ -66,13 +66,13 @@ public class LoopManager implements  Runnable {
 
 	public void run() {
 
-		GameTime gameTime;
+		GameTime gameTime = gameData.getGameTime(); 	
+		Company company = gameData.getCompany();
 		boolean isNewDate;
 		boolean isNewMonth;		
 		
 		while(!shutdown){
 
-			gameTime = gameData.getGameTime(); 
 			isNewDate = gameTime.isDayChanged();
 			isNewMonth = gameTime.isMonthChanged();
 			
@@ -85,11 +85,9 @@ public class LoopManager implements  Runnable {
 					gameTime.addMinuts(timePass);
 					isNewDate = gameTime.isDayChanged();					
 					
-					log.debug("time:"+gameData.getGameTime().getFullDate()+" new date:"+isNewDate+" new month:"+isNewMonth );			
+					log.debug("time:"+gameTime.getFullDate()+" new date:"+isNewDate+" new month:"+isNewMonth );			
 
-					gameData.getCompany().update(timePass,isNewDate,isNewMonth);
-
-					gameData.getBank().update(timePass,isNewDate,isNewMonth);
+					company.update(timePass,isNewDate,isNewMonth);
 
 				}
 

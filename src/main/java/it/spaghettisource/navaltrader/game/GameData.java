@@ -11,13 +11,12 @@ public class GameData implements Serializable {
 
 	private Company company;
 	private GameTime time;
-	private Bank bank;
+
 	
-	public GameData(Company company,GameTime time,Bank bank) {
+	public GameData(Company company,GameTime time) {
 		super();
 		this.company = company;
 		this.time = time;
-		this.bank = bank;
 	}
 
 	public Company getCompany() {
@@ -27,10 +26,5 @@ public class GameData implements Serializable {
 	public GameTime getGameTime() {
 		return time;
 	}
-
-	public Bank getBank() {
-		return bank;
-	}
-
 		
 }

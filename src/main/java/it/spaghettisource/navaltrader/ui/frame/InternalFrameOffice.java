@@ -95,7 +95,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 		Company company = gameData.getCompany();
 		Finance finance = company.getGlobalCompanyFinance();
-		Bank bank = gameData.getBank();		
+		Bank bank = company.getBank();		
 
 		//financial tab
 
@@ -256,16 +256,16 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		String command = event.getActionCommand();
 		if(ACTION_NEW_LOAN.equals(command)){
 			if(sliderNewLoanAmount.getValue()>0 ){
-				gameData.getBank().createNewLoad(sliderNewLoanAmount.getValue() , gameData.getCompany());
+				gameData.getCompany().createNewLoad(sliderNewLoanAmount.getValue());
 
-				maxLoanAmount.setValue(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
-				sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());					
+				maxLoanAmount.setValue(gameData.getCompany().getBank().getMaxAcceptedAmount(gameData.getCompany()));
+				sliderNewLoanAmount.setMaximum(gameData.getCompany().getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());					
 			}
 		}else if(ACTION_REPAIR_LOAN.equals(command)){
 			if(sliderAmountToRepair.getValue()>0){
 				try{
 					LoanTableRow data = listBankLoan.get(loanTable.convertRowIndexToModel(loanTable.getSelectedRow()));
-					gameData.getBank().repairLoad(data.getId(), sliderAmountToRepair.getValue(), gameData.getCompany());	
+					gameData.getCompany().repairLoad(data.getId(), sliderAmountToRepair.getValue());	
 
 					sliderAmountToRepair.setMaximum(0);					
 				}catch (Exception e) {}
@@ -291,13 +291,13 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 			budget.setValue(gameData.getCompany().getBudget());
 		}else if(eventType.equals(EventType.LOAN_EVENT)){
 			listBankLoan.clear();
-			listBankLoan.addAll(LoanTableRow.mapData(gameData.getBank().getLoanList()));
-			maxLoanAmount.setValue(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
-			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());
+			listBankLoan.addAll(LoanTableRow.mapData(gameData.getCompany().getBank().getLoanList()));
+			maxLoanAmount.setValue(gameData.getCompany().getBank().getMaxAcceptedAmount(gameData.getCompany()));
+			sliderNewLoanAmount.setMaximum(gameData.getCompany().getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());
 		}else if(eventType.equals(EventType.BANK_CHANGE_EVENT)){
-			maxLoanAmount.setValue(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()));
-			sliderNewLoanAmount.setMaximum(gameData.getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());	
-			interest.setValue(gameData.getBank().getActualInterest(gameData.getCompany()));
+			maxLoanAmount.setValue(gameData.getCompany().getBank().getMaxAcceptedAmount(gameData.getCompany()));
+			sliderNewLoanAmount.setMaximum(gameData.getCompany().getBank().getMaxAcceptedAmount(gameData.getCompany()).intValue());	
+			interest.setValue(gameData.getCompany().getBank().getActualInterest(gameData.getCompany()));
 			
 		}				
 

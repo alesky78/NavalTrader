@@ -15,9 +15,9 @@ public class GameManager {
 
 		GameTime gameTime = new GameTime();		
 		Company company = new Company(companyName, 4000000);
-		Bank bank = new Bank(0.08);
+		
 
-		gameData = new GameData(company,gameTime,bank);
+		gameData = new GameData(company,gameTime);
 		loopManager = new LoopManager(gameData);
 		
 	}

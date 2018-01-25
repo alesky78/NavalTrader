@@ -16,10 +16,11 @@ public class Company implements Entity {
 	static Log log = LogFactory.getLog(Company.class.getName());
 	
 	private String name;
-	private List<Ship> ships;
 	private double budget;	
 	private String rating;		
 	private Finance companyFinance;	
+	private Bank bank;	
+	private List<Ship> ships;	
 	
 	public Company(String companyName, int initialBudget) {
 		name = companyName;
@@ -27,6 +28,7 @@ public class Company implements Entity {
 		budget = initialBudget;
 		rating = "unknow";	//TODO how to manage rating?
 		companyFinance = new Finance();
+		bank = new Bank(0.08);
 	}
 
 	public void buyShip(String shipType, String name, double shipPrice) {
@@ -82,6 +84,21 @@ public class Company implements Entity {
 		removeBudget(priceToPay);
 	}	
 	
+	public Bank getBank() {
+		return bank;
+	}
+
+	public void repairLoad(String loanId, int amount){
+		bank.repairLoad(loanId, amount);
+		removeBudget(amount);		
+	}	
+
+	public void createNewLoad(int amount){
+		bank.createNewLoad(amount);
+		addBudget(amount);			
+	}
+	
+	
 	public void addBudget(double toAdd) {
 		budget = budget + toAdd;
 		InboundEventQueue.getInstance().put(new Event(EventType.BUDGET_EVENT));			
@@ -124,6 +141,8 @@ public class Company implements Entity {
 		for (Ship ship : ships) {
 			ship.update(minutsPassed, isNewDate,isNewMonth);
 		}
+		
+		bank.update(minutsPassed, isNewDate, isNewMonth);
 		
 	}
 
