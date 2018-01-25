@@ -12,16 +12,6 @@ public class Event {
 	private final EventType eventType;
 	private final Object source;
 
-
-	/**
-	 * Constructs a new event with the requested event id
-	 * @param eventId the event id for this event
-	 */
-	public Event(EventType type) {
-		this.eventType = type;
-		this.source = null;
-	}
-
 	public Event(EventType type,Object source) {
 		this.eventType = type;
 		this.source = source;

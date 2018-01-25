@@ -20,20 +20,20 @@ public class Bank implements Entity {
 		this.interest = interest;
 	}
 	
-	public void createNewLoad(int amount){
+	public Loan createNewLoad(int amount){
 		Loan newLoan = new Loan(amount, interest); 
 		loanList.add(newLoan);
-		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT,newLoan));		
+		return newLoan;
 	}
 	
-	public void repairLoad(String loanId, int amount){
+	public Loan repairLoad(String loanId, int amount){
 		Loan loan = getLoanById(loanId);
 		loan.repair(amount);
 		
 		if(loan.isTotalyRepair()){
 			loanList.remove(loan);
 		}	
-		InboundEventQueue.getInstance().put(new Event(EventType.LOAN_EVENT,loan));
+		return loan;		
 	}	
 	
 	public double getActualInterest(Company company){

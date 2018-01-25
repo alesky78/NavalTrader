@@ -174,7 +174,6 @@ public class Ship implements Entity{
 	
 	public void addHull(int toAdd) {
 		this.hull = hull + toAdd;
-		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_HULL_CHANGE_EVENT,this));		
 	}	
 
 	public int getDwt() {
@@ -227,7 +226,6 @@ public class Ship implements Entity{
 
 	public void addFuel(int toAdd) {
 		this.fuel = fuel + toAdd;
-		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));
 	}	
 	
 	

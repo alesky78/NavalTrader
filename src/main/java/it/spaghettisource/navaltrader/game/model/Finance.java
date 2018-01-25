@@ -23,8 +23,6 @@ public class Finance {
 		}else{
 			entry.put(type, amount+actual);			
 		}
-
-		InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT));	
 	}
 
 	
