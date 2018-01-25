@@ -149,13 +149,13 @@ public class Company implements Entity {
 
 
 	@Override
-	public void update(int minutsPassed, boolean isNewDate, boolean isNewMonth) {
+	public void update(int minutsPassed, boolean isNewDay, boolean isNewMonth) {
 		
 		for (Ship ship : ships) {
-			ship.update(minutsPassed, isNewDate,isNewMonth);
+			ship.update(minutsPassed, isNewDay,isNewMonth);
 		}
 		
-		if(isNewDate){
+		if(isNewDay){
 			//pay ship operational cost
 		}
 		
