@@ -48,7 +48,7 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 	public InternalFrameTimeSimulation(MainDesktopPane parentDesktopPane, GameManager gameManager) {
 		super(parentDesktopPane, gameManager, "simulation time");
 		setSize(270,120);   
-		this.gameTime = gameManager.getGameData().getTime();
+		this.gameTime = gameManager.getGameData().getGameTime();
 		this.loopManager = gameManager.getLoopManager();
 		
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/clock.png"));

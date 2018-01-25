@@ -24,7 +24,7 @@ public class GameData implements Serializable {
 		return company;
 	}
 
-	public GameTime getTime() {
+	public GameTime getGameTime() {
 		return time;
 	}
 
