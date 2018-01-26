@@ -2,7 +2,6 @@ package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -95,29 +94,32 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 					ShipListTableRow data = listShipData.get(table.convertRowIndexToModel(table.getSelectedRow()));
 					table.clearSelection();					
 
-					JInternalFrame[] frames =  parentDesktopPane.getAllFrames();
-					boolean exist = false;
-					for (JInternalFrame frame : frames) {
-						if(frame.getTitle().equals(data.getName())) {
-							exist = true;
-							if(frame.isIcon()) {
-								frame.setIcon(false);
-							}
-							
-							frame.moveToFront(); 
-							frame.setSelected(true);			
-						};
+					//enter in port onyl if the ship is doked
+					if(data.getStatus().equals(Ship.SHIP_STATUS_DOCKED)){
+						JInternalFrame[] frames =  parentDesktopPane.getAllFrames();
+						boolean exist = false;
+						for (JInternalFrame frame : frames) {
+							if(frame.getTitle().equals(data.getPort())) {
+								exist = true;
+								if(frame.isIcon()) {
+									frame.setIcon(false);
+								}
+								
+								frame.moveToFront(); 
+								frame.setSelected(true);			
+							};
+						}
+						
+						if(!exist) {
+							//open frame for specific ship
+							InternalFramePort newFrame = new InternalFramePort(parentDesktopPane,gameManager,data.getPort(),data.getName());
+							newFrame.setVisible(true);
+							parentDesktopPane.add(newFrame);
+							newFrame.setSelected(true);
+						}
 					}
 					
-					if(!exist) {
-						//open frame for specific ship
-						InternalFrameShipDetail newFrame = new InternalFrameShipDetail(parentDesktopPane,gameManager,data.getName());
-						newFrame.setVisible(true);
-						parentDesktopPane.add(newFrame);
-						newFrame.setSelected(true);
-					}
-
-
+					
 				}catch (Exception e) {}
 			}
 		});		

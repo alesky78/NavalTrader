@@ -17,6 +17,17 @@ public class World implements Entity {
 		
 	}
 
+	public Port getPortByName(String name) {
+		for (Port port : ports) {
+			if(port.getName().equals(name)) {
+				return port;
+			}
+		}
+		
+		return null;
+	}
+	
+	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 			
 		for (Port port : ports) {

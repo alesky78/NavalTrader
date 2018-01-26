@@ -1,5 +1,6 @@
 package it.spaghettisource.navaltrader.game.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,6 +69,8 @@ public class Ship implements Entity{
 	private double speed;	
 	private double maxSpeed;	
 	
+	private List<TransportContract> transportContracts;
+	
 	
 	
 	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, int maxFuel, double operatingCost, double maxSpeed, double basePrice) {
@@ -90,6 +93,7 @@ public class Ship implements Entity{
 		speed = 0;		
 		name = "";		
 		finance = new Finance();
+		transportContracts = new ArrayList<TransportContract>();
 		
 	}
 	
@@ -115,6 +119,16 @@ public class Ship implements Entity{
 	}
 
 	
+	
+	
+	public List<TransportContract> getTransportContracts() {
+		return transportContracts;
+	}
+
+	public void addContract(TransportContract contract) {
+		transportContracts.add(contract);
+	}
+
 	public String getShipClass() {
 		return shipClass;
 	}

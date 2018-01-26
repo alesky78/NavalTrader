@@ -28,11 +28,25 @@ public class Port  implements Entity{
 		
 	}
 
-	
+	public String getName() {
+		return name;
+	}
+
+	public int getClassAccepted() {
+		return classAccepted;
+	}
+
+	public double getDailyFeeCost() {
+		return dailyFeeCost;
+	}
+
+	public int getDayContractRegeneration() {
+		return dayContractRegeneration;
+	}
+
 	private void generateContracts(){
 		contracts = TransportContract.generateNewContract(10);
 	}
-
 	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 	

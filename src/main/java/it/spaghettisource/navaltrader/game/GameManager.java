@@ -19,7 +19,7 @@ public class GameManager {
 		World world = new World();
 		
 		
-		gameData = new GameData(company,gameTime);
+		gameData = new GameData(company,gameTime,world);
 		loopManager = new LoopManager(gameData);
 		
 	}
