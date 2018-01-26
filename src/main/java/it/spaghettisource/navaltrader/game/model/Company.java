@@ -80,7 +80,7 @@ public class Company implements Entity {
 		ship.getFinance().addEntry(FinancialEntryType.SHIP_FUEL, -priceToPay);
 		removeBudget(priceToPay);
 		
-		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));	
+		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,ship));	
 		InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,ship));		
 		
 	}

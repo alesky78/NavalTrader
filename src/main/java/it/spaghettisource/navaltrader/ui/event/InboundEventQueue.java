@@ -1,5 +1,8 @@
 package it.spaghettisource.navaltrader.ui.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -60,6 +63,8 @@ public class InboundEventQueue {
 		Event event = null;
 
 		try {
+		
+			
 			event = (Event) linkedQueue.take();
 		}
 		catch (InterruptedException e) {
@@ -90,18 +95,21 @@ public class InboundEventQueue {
 
 
 	/**
-	 * processor from the inbounds event queue
-	 *
-	 * this class is responsible to push the event
-	 *
+	 * processor from the inbounds event
+	 * this class is responsible to trigger the execution of the events
 	 *
 	 */
 	private class InboundEventQueuePublisher implements Runnable {
 
+		private boolean processMultypleEventInThisThread;	//TODO this variable is a test, im not sure that work in this way, in case set false to return previous implementation
+		
 		private boolean shutdown;
+		private List<Event> eventsToProcess;
 
 		public InboundEventQueuePublisher() {
 			shutdown = false;
+			processMultypleEventInThisThread = true;			
+			eventsToProcess = new ArrayList<Event>();
 		}
 
 
@@ -118,13 +126,43 @@ public class InboundEventQueue {
 
 
 
+		protected void fireEvent(List<Event> events) {
+			
+		}
+		
+
 		/**
-		 * Fires the event
+		 * Fires this event in a new thread
 		 * @param loggingEvent the event to fire
 		 */
-		protected void fireEvent(Event event) {
-			EventPublisher.getInstance().fireEvent(event);
+		private void processEvent() {
+			Event event;
+			event = poll(millisBetweenUpdates);
+			if(event!=null){
+				EventPublisher.getInstance().fireEvent(event);					
+			}
 		}
+		
+		/**
+		 * Fires all the events directly by this thread wihtout create a new one
+		 * @param loggingEvent the event to fire
+		 */
+		private void processEvents() {
+			while(!isEmpty()) {
+				eventsToProcess.add(take());
+			}
+			
+			if(!eventsToProcess.isEmpty()){
+				for (Event event : eventsToProcess) {
+					if(EventPublisher.getInstance().hasListner(event)) {
+						EventPublisher.getInstance().doFireEventForEachListner(event);						
+					}
+
+				}
+				eventsToProcess.clear();				
+			}
+		}
+		
 
 		/**
 		 * Grab events from the queue not processing events faster than this
@@ -144,10 +182,12 @@ public class InboundEventQueue {
 
 				lastPass = System.currentTimeMillis();				
 
-				event = poll(millisBetweenUpdates);
-				if(event!=null){
-					fireEvent(event);	//TOOD check performances fo application: may be all the event in one thread instead that single event per single thread					
-				}					
+				if(processMultypleEventInThisThread) {
+					processEvents();
+				}else {
+					processEvent();					
+				}
+					
 
 				now = System.currentTimeMillis();
 
@@ -165,6 +205,10 @@ public class InboundEventQueue {
 
 			}
 		}
+
+
+
+		
 	}
 
 }

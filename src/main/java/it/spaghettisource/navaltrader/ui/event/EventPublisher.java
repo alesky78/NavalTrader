@@ -86,13 +86,23 @@ public class EventPublisher {
 	 */
 	public void fireEvent(Event event) {
 
-		if(!getListeners(event.getEventType()).isEmpty()){
+		if(hasListner(event)){
 			LogEventDispatcher dispatcher = new LogEventDispatcher(event);
 			dispatcher.execute();			
-		}else{
-			log.debug("discard event, there are not listener for "+event.getEventType());
 		}
-
+	}
+	
+	/**
+	 * return true if there is a listner for this event
+	 * @param event the event to fire
+	 */
+	public boolean hasListner(Event event) {
+		if(!getListeners(event.getEventType()).isEmpty()){
+			return true;
+		}else {
+			log.debug("there are not listener for "+event.getEventType());			
+			return false;
+		}
 	}
 
 
@@ -112,6 +122,21 @@ public class EventPublisher {
 
 		return listenerList;
 	}
+	
+
+	/**
+	 * fire the event for each register listener related to the specific event type
+	 *
+	 * @param event the event to dispatch
+	 */
+	protected void doFireEventForEachListner(Event event) {
+		List<EventListener> listenersList = getListeners(event.getEventType());
+
+		for (int i = 0; i < listenersList.size(); i++) {
+			EventListener listener = (EventListener) listenersList.get(i);
+			listener.eventReceived(event);
+		}
+	}	
 
 	/**
 	 * implementation of the dispatching thread
@@ -142,20 +167,6 @@ public class EventPublisher {
 			log.debug("process event: "+event.getEventType());
 			doFireEventForEachListner(event);
 			return null;
-		}
-
-		/**
-		 * fire the event for each register listener related to the specific event type
-		 *
-		 * @param event the event to dispatch
-		 */
-		protected void doFireEventForEachListner(Event event) {
-			List<EventListener> listenersList = getListeners(event.getEventType());
-
-			for (int i = 0; i < listenersList.size(); i++) {
-				EventListener listener = (EventListener) listenersList.get(i);
-				listener.eventReceived(event);
-			}
 		}
 
 	}
