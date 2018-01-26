@@ -151,13 +151,16 @@ public class Company implements Entity {
 	@Override
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewMonth) {
 		
-		for (Ship ship : ships) {
-			//move ship or change status
-			ship.update(minutsPassed, isNewDay,isNewMonth);
-		}
+		double totalBudgetReduction = 0;
 		
+		////////////////////////////
+		//-pay ship operative cost
 		if(isNewDay){
-			//pay ship operational cost
+			double totalOperationalCost = 0;
+			for (Ship ship : ships) {
+				totalBudgetReduction += ship.getOperatingCost();
+				ship.getFinance().addEntry(FinancialEntryType.SHIP_OPERATING_COST, -ship.getOperatingCost());
+			}
 		}
 		
 		if(isNewMonth){

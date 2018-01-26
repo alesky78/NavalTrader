@@ -25,7 +25,7 @@ public class InboundEventQueue {
 	private LinkedQueue linkedQueue = new LinkedQueue();
 	private InboundEventQueuePublisher processor = null;
 
-	private long millisBetweenUpdates = 300;
+	private long millisBetweenUpdates = 50;
 
 	public static InboundEventQueue getInstance(){
 		if(instance==null){
@@ -104,6 +104,7 @@ public class InboundEventQueue {
 		private boolean processMultypleEventInThisThread;	//TODO this variable is a test, im not sure that work in this way, in case set false to return previous implementation
 		
 		private boolean shutdown;
+		Event event = null;
 		private List<Event> eventsToProcess;
 
 		public InboundEventQueuePublisher() {
@@ -122,21 +123,14 @@ public class InboundEventQueue {
 			Thread thread = new Thread(processor);
 			thread.setDaemon(true);
 			thread.start();			
-		}
-
-
-
-		protected void fireEvent(List<Event> events) {
-			
-		}
-		
+		}		
 
 		/**
 		 * Fires this event in a new thread
 		 * @param loggingEvent the event to fire
 		 */
 		private void processEvent() {
-			Event event;
+			event = null;
 			event = poll(millisBetweenUpdates);
 			if(event!=null){
 				EventPublisher.getInstance().fireEvent(event);					
@@ -174,8 +168,6 @@ public class InboundEventQueue {
 			long lastPass = 0;
 			long now = 0;
 			long elapsed = 0;
-
-			Event event = null;
 
 			while (!shutdown) {
 
