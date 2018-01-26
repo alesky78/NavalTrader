@@ -152,6 +152,7 @@ public class Company implements Entity {
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewMonth) {
 		
 		for (Ship ship : ships) {
+			//move ship or change status
 			ship.update(minutsPassed, isNewDay,isNewMonth);
 		}
 		
