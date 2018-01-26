@@ -6,25 +6,26 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import EDU.oswego.cs.dl.util.concurrent.misc.Fraction;
-import it.spaghettisource.navaltrader.game.loop.Entity;
+import it.spaghettisource.navaltrader.game.loop.Updatable;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
-public class Company implements Entity {	
+public class Company implements Updatable {	
 	
 	static Log log = LogFactory.getLog(Company.class.getName());
 	
 	private String name;
+	private String port;	
 	private double budget;	
 	private String rating;		
 	private Finance companyFinance;	
 	private Bank bank;	
 	private List<Ship> ships;	
 	
-	public Company(String companyName, int initialBudget) {
+	public Company(String companyName, String registerPort, int initialBudget) {
 		name = companyName;
+		port = registerPort; 
 		ships = new ArrayList<Ship>();
 		budget = initialBudget;
 		rating = "unknow";	//TODO how to manage rating?
@@ -33,7 +34,7 @@ public class Company implements Entity {
 	}
 
 	public void buyShip(String shipType, String name, double shipPrice) {
-		Ship newShip = Ship.factoryShip(shipType, name);
+		Ship newShip = Ship.factoryShip(shipType, name,port);
 		ships.add(newShip);
 				
 		companyFinance.addEntry(FinancialEntryType.SHIP_BUY, -shipPrice);

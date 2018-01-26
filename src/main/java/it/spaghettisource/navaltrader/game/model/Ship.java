@@ -7,9 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
-import it.spaghettisource.navaltrader.ui.event.Event;
-import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
 public class Ship implements Entity{
 
@@ -55,6 +52,7 @@ public class Ship implements Entity{
 	private String model;
 	private String status;
 	private String shipClass;	
+	private String port;
 	
 	private Finance finance;
 	private double basePrice;	
@@ -95,7 +93,7 @@ public class Ship implements Entity{
 		
 	}
 	
-	public static Ship factoryShip(String model,String name){
+	public static Ship factoryShip(String model,String name,String port){
 		Ship modelShip = null;
 		Ship newShip = null;
 		
@@ -107,6 +105,7 @@ public class Ship implements Entity{
 		}
 		newShip = new Ship(modelShip.getShipClass(), modelShip.getModel(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
+		newShip.setPort(port);
 		
 		return newShip;
 	}
@@ -138,6 +137,14 @@ public class Ship implements Entity{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
 	}
 
 	public Finance getFinance() {

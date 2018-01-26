@@ -1,9 +1,9 @@
 package it.spaghettisource.navaltrader.game;
 
 import it.spaghettisource.navaltrader.game.loop.LoopManager;
-import it.spaghettisource.navaltrader.game.model.Bank;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
+import it.spaghettisource.navaltrader.game.model.World;
 
 public class GameManager {
 
@@ -14,9 +14,11 @@ public class GameManager {
 	public void newGame(String companyName) {
 
 		GameTime gameTime = new GameTime();		
-		Company company = new Company(companyName, 4000000);
-		
+		Company company = new Company(companyName, "porto A", 4000000);
 
+		World world = new World();
+		
+		
 		gameData = new GameData(company,gameTime);
 		loopManager = new LoopManager(gameData);
 		
@@ -41,11 +43,4 @@ public class GameManager {
 
 	}	
 
-	
-	public static void main(String[] args){
-		GameManager manager = new GameManager();
-		manager.newGame("test");
-		manager.startGame();
-		
-	}
 }
