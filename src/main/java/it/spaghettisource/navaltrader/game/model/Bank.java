@@ -32,7 +32,7 @@ public class Bank {
 	}	
 	
 	public double getActualInterest(Company company){
-		return 0.08;
+		return interest;
 	}
 
 	public Double getMaxAcceptedAmount(Company company){

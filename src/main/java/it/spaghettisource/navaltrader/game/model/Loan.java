@@ -40,17 +40,17 @@ public class Loan {
 	
 	public double calculateDailyInterest(int daysPass){
 		//I = Crd/36.500
-		return  amount*interest*daysPass/36500;
+		return  amount*interest*daysPass/365;
 	}
 
 	public double calculateMontlyInterest(int monthsPass){
 		//I = Crm/1200
-		return amount*interest*monthsPass/1200;
+		return amount*interest*monthsPass/12;
 	}
 	
 	public double calculateYearlyInterest(int yearsPass){
 		//I = Cry/100
-		return amount*interest*yearsPass/100;
+		return amount*interest*yearsPass;
 	}	
 		
 }

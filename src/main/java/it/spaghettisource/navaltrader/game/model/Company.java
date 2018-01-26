@@ -28,7 +28,7 @@ public class Company implements Entity {
 		budget = initialBudget;
 		rating = "unknow";	//TODO how to manage rating?
 		companyFinance = new Finance();
-		bank = new Bank(0.08);
+		bank = new Bank(0.1);
 	}
 
 	public void buyShip(String shipType, String name, double shipPrice) {
