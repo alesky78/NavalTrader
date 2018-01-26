@@ -32,7 +32,7 @@ public class Port  implements Entity{
 	}
 
 	
-	public void update(int minutsPassed, boolean isNewDate, boolean isNewMonth) {
+	public void update(int minutsPassed, boolean isNewDate, boolean isNewWeek, boolean isNewMonth) {
 	
 		if(isNewDate){
 			dayToNextContractRegeneration = dayToNextContractRegeneration-1;

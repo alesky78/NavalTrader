@@ -24,6 +24,9 @@ public class GameTime {
 	private int actualMonth;
 	private int newMonth;	
 	private boolean monthChanged;
+	private int actualWeek;
+	private int newWeek;	
+	private boolean weekChanged;	
 
 
 	public GameTime() {
@@ -34,9 +37,11 @@ public class GameTime {
 		try {
 			actualDate.setTime(fullDateFormat.parse("01/01/2000 00:00"));
 			dayChanged = false;
+			weekChanged = false;			
 			monthChanged = false;			
 			actualDay = actualDate.get(Calendar.DAY_OF_MONTH);
-			actualMonth = actualDate.get(Calendar.MONTH);			
+			actualWeek = actualDate.get(Calendar.WEEK_OF_YEAR);			
+			actualMonth = actualDate.get(Calendar.MONTH);
 
 		} catch (ParseException e) {
 			log.error(e);
@@ -49,6 +54,7 @@ public class GameTime {
 		actualDate.add(Calendar.MINUTE, toAdd);
 
 		newDay = actualDate.get(Calendar.DAY_OF_MONTH);
+		newWeek = actualDate.get(Calendar.WEEK_OF_YEAR);			
 		newMonth = actualDate.get(Calendar.MONTH);		
 
 		//check day
@@ -59,6 +65,14 @@ public class GameTime {
 			dayChanged = false;
 		}
 
+		//check week
+		if(actualWeek != newWeek){
+			actualWeek = newWeek;
+			weekChanged = true;
+		}else{
+			weekChanged = false;
+		}			
+		
 		//check month
 		if(actualMonth != newMonth){
 			actualMonth = newMonth;
@@ -72,6 +86,10 @@ public class GameTime {
 	public boolean isDayChanged(){
 		return dayChanged;
 	}	
+	
+	public boolean isWeekChanged(){
+		return weekChanged;
+	}		
 	
 	public boolean isMonthChanged(){
 		return monthChanged;

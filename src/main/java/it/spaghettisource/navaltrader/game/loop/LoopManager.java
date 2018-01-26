@@ -69,11 +69,13 @@ public class LoopManager implements  Runnable {
 		GameTime gameTime = gameData.getGameTime(); 	
 		Company company = gameData.getCompany();
 		boolean isNewDate;
+		boolean isNewWeek;		
 		boolean isNewMonth;		
 		
 		while(!shutdown){
 
 			isNewDate = gameTime.isDayChanged();
+			isNewWeek = gameTime.isWeekChanged();
 			isNewMonth = gameTime.isMonthChanged();
 			
 			try {
@@ -82,12 +84,11 @@ public class LoopManager implements  Runnable {
 
 				if(!pause){
  
-					gameTime.addMinuts(timePass);
-					isNewDate = gameTime.isDayChanged();					
+					gameTime.addMinuts(timePass);				
 					
-					log.debug("time:"+gameTime.getFullDate()+" new date:"+isNewDate+" new month:"+isNewMonth );			
+					log.debug("time:"+gameTime.getFullDate()+" new date:"+isNewDate+" new week:"+isNewWeek+" new month:"+isNewMonth );			
 
-					company.update(timePass,isNewDate,isNewMonth);
+					company.update(timePass,isNewDate,isNewWeek,isNewMonth);
 
 				}
 
