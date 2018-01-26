@@ -158,7 +158,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 
 		///////////////////////////		
 		//create ship refuel 
-		JButton amountToRefuelButton = new JButton(ImageIconFactory.getForTab("/icon/money.png"));
+		JButton amountToRefuelButton = new JButton(ImageIconFactory.getForTab("/icon/gasoline.png"));
 		amountToRefuelButton.setActionCommand(ACTION_REFUEL);
 		amountToRefuelButton.addActionListener(this);	
 
@@ -199,7 +199,7 @@ public class InternalFrameShipDetail extends InternalFrameAbstract  implements A
 
 		///////////////////////////		
 		//create ship repair 
-		JButton amountToRepairlButton = new JButton(ImageIconFactory.getForTab("/icon/money.png"));
+		JButton amountToRepairlButton = new JButton(ImageIconFactory.getForTab("/icon/tools.png"));
 		amountToRepairlButton.setActionCommand(ACTION_REPAIR);
 		amountToRepairlButton.addActionListener(this);	
 

@@ -12,13 +12,17 @@ public class World implements Entity {
 	public World() {
 		ports = new ArrayList<Port>();
 		
-		ports.add(new Port("porto A", 4, 1));
-		ports.add(new Port("porto B", 5, 2));		
+		ports.add(new Port("porto A", 3000.0, 4, 1));
+		ports.add(new Port("porto B", 4000.0, 5, 2));		
 		
 	}
 
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 			
+		for (Port port : ports) {
+			port.update(minutsPassed, isNewDay, isNewWeek, isNewMonth);
+		}
+		
 	}
 	
 }

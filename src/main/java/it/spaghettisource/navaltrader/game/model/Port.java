@@ -9,15 +9,17 @@ public class Port  implements Entity{
 
 	private String name;
 	private int classAccepted;
+	private double dailyFeeCost;	
 	private int dayContractRegeneration;	
 	private int dayToNextContractRegeneration;
 	private List<TransportContract> contracts;
 
 	
 	
-	public Port(String name, int classAccepted,int dayContractRegeneration) {
+	public Port(String name, double dailyFeeCost, int classAccepted,int dayContractRegeneration) {
 		super();
 		this.name = name;
+		this.dailyFeeCost = dailyFeeCost;
 		this.classAccepted = classAccepted;
 		this.dayContractRegeneration = dayContractRegeneration;
 		this.dayToNextContractRegeneration = dayContractRegeneration;
@@ -32,9 +34,9 @@ public class Port  implements Entity{
 	}
 
 	
-	public void update(int minutsPassed, boolean isNewDate, boolean isNewWeek, boolean isNewMonth) {
+	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 	
-		if(isNewDate){
+		if(isNewDay){
 			dayToNextContractRegeneration = dayToNextContractRegeneration-1;
 		}
 

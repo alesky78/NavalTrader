@@ -176,7 +176,10 @@ public class Company implements Updatable {
 			for (Loan loan : bank.getLoanList()) {
 				totalInstallmentCost += loan.calculateDailyInterest(7);
 			}
-			companyFinance.addEntry(FinancialEntryType.PAY_INSTALLMEN, -totalInstallmentCost);
+			if(totalInstallmentCost>0) {
+				companyFinance.addEntry(FinancialEntryType.PAY_INSTALLMEN, -totalInstallmentCost);				
+			}
+
 		}
 		
 		
