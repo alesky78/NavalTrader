@@ -185,8 +185,8 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		//create the table of loans		
 		JPanel loanPanel = new JPanel(new BorderLayout());
 		loanPanel.setBorder(BorderFactory.createTitledBorder("loans open"));			
-		String[] propertyNames = new String[] { "amount", "interest","dailyPayment"};
-		String[] columnLabels = new String[] { "amount", "interest","daily instalment"};
+		String[] propertyNames = new String[] { "amount", "interest","weeklyPayment"};
+		String[] columnLabels = new String[] { "amount", "interest","weekly instalment"};
 		TableFormat<LoanTableRow> tf = GlazedLists.tableFormat(LoanTableRow.class, propertyNames, columnLabels);
 		loanTable = new JTable(new EventTableModel<LoanTableRow>(listBankLoan, tf));	
 		loanTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){

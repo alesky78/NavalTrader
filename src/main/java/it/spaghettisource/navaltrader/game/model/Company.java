@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import EDU.oswego.cs.dl.util.concurrent.misc.Fraction;
 import it.spaghettisource.navaltrader.game.loop.Entity;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
@@ -151,22 +152,43 @@ public class Company implements Entity {
 	@Override
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 		
-		double totalBudgetReduction = 0;
+		double totalLostBudget = 0;
+		double totalOperationalCost = 0;
+		double totalInstallmentCost = 0;		
 		
 		////////////////////////////
-		//-pay ship operative cost
+		//- update ship
+		//- pay ship operative cost
 		if(isNewDay){
-			double totalOperationalCost = 0;
 			for (Ship ship : ships) {
-				totalBudgetReduction += ship.getOperatingCost();
+				//update ship
+				ship.update(minutsPassed, isNewDay, isNewWeek, isNewMonth);
+				//pay ship operative cost
+				totalOperationalCost += ship.getOperatingCost();
 				ship.getFinance().addEntry(FinancialEntryType.SHIP_OPERATING_COST, -ship.getOperatingCost());
 			}
 		}
 		
-		if(isNewMonth){
-			//pay bank loans
+		////////////////////////////
+		//- pay loan Installment
+		if(isNewWeek) {
+			for (Loan loan : bank.getLoanList()) {
+				totalInstallmentCost += loan.calculateDailyInterest(7);
+			}
+			companyFinance.addEntry(FinancialEntryType.PAY_INSTALLMEN, -totalInstallmentCost);
 		}
 		
+		
+		//controll the events
+		if(totalOperationalCost>0 || totalInstallmentCost>0) {
+			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));	
+		}
+		
+		
+		totalLostBudget = totalOperationalCost + totalInstallmentCost;
+		if(totalLostBudget>0) {
+			removeBudget(totalLostBudget);
+		}
 		
 	}
 

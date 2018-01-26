@@ -10,14 +10,14 @@ public class LoanTableRow {
 	private String id;
 	private Double amount;
 	private Double interest;
-	private Double dailyPayment;	
+	private Double weeklyPayment;	
 	
-	public LoanTableRow(String id, Double amount, Double interest,Double dailyPayment) {
+	public LoanTableRow(String id, Double amount, Double interest,Double weeklyPayment) {
 		super();
 		this.id = id;
 		this.amount = amount;
 		this.interest = interest;
-		this.dailyPayment = dailyPayment;
+		this.weeklyPayment = weeklyPayment;
 	}
 
 	public String getId() {
@@ -32,8 +32,8 @@ public class LoanTableRow {
 		return interest;
 	}
 	
-	public Double getDailyPayment() {
-		return dailyPayment;
+	public Double getWeeklyPayment() {
+		return weeklyPayment;
 	}
 
 	public static List<LoanTableRow> mapData(List<Loan> listOfLoans){
@@ -47,7 +47,7 @@ public class LoanTableRow {
 	}
 	
 	public static LoanTableRow mapData(Loan loan){
-		return new LoanTableRow(loan.getId(), loan.getAmount(), loan.getInterest(),loan.calculateDailyInterest(1));
+		return new LoanTableRow(loan.getId(), loan.getAmount(), loan.getInterest(),loan.calculateDailyInterest(7));
 	}	
 	
 	public boolean equals(Object obj){
