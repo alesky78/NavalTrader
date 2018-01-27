@@ -15,6 +15,8 @@ public class Company implements Updatable {
 	
 	static Log log = LogFactory.getLog(Company.class.getName());
 	
+	private World world;
+	
 	private String name;
 	private String port;	
 	private double budget;	
@@ -23,7 +25,8 @@ public class Company implements Updatable {
 	private Bank bank;	
 	private List<Ship> ships;	
 	
-	public Company(String companyName, String registerPort, int initialBudget) {
+	public Company(String companyName, String registerPort, int initialBudget,World world) {
+		this.world = world;
 		name = companyName;
 		port = registerPort; 
 		ships = new ArrayList<Ship>();
@@ -155,11 +158,13 @@ public class Company implements Updatable {
 		
 		double totalLostBudget = 0;
 		double totalOperationalCost = 0;
+		double totalPortFeeCost = 0;		
 		double totalInstallmentCost = 0;		
 		
 		////////////////////////////
 		//- update ship
 		//- pay ship operative cost
+		//- pay ship daily Fee Cost
 		if(isNewDay){
 			for (Ship ship : ships) {
 				//update ship
@@ -167,6 +172,11 @@ public class Company implements Updatable {
 				//pay ship operative cost
 				totalOperationalCost += ship.getOperatingCost();
 				ship.getFinance().addEntry(FinancialEntryType.SHIP_OPERATING_COST, -ship.getOperatingCost());
+				
+				if(ship.getStatus().equals(Ship.SHIP_STATUS_DOCKED)) {
+					totalPortFeeCost += world.getPortByName(ship.getPort()).getDailyFeeCost();
+					ship.getFinance().addEntry(FinancialEntryType.SHIP_PORT_FEE_COST, - world.getPortByName(ship.getPort()).getDailyFeeCost());
+				}
 			}
 		}
 		
@@ -184,12 +194,12 @@ public class Company implements Updatable {
 		
 		
 		//controll the events
-		if(totalOperationalCost>0 || totalInstallmentCost>0) {
+		if(totalOperationalCost>0 || totalInstallmentCost>0 || totalPortFeeCost>0) {
 			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));	
 		}
 		
 		
-		totalLostBudget = totalOperationalCost + totalInstallmentCost;
+		totalLostBudget = totalOperationalCost + totalInstallmentCost +totalPortFeeCost;
 		if(totalLostBudget>0) {
 			removeBudget(totalLostBudget);
 		}

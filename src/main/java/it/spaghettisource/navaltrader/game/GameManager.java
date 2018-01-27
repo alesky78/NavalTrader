@@ -13,10 +13,11 @@ public class GameManager {
 
 	public void newGame(String companyName) {
 
-		GameTime gameTime = new GameTime();		
-		Company company = new Company(companyName, "porto A", 4000000);
+		GameTime gameTime = new GameTime();
+		World world = new World();		
+		Company company = new Company(companyName, "porto A", 4000000,world);
 
-		World world = new World();
+
 		
 		
 		gameData = new GameData(company,gameTime,world);
