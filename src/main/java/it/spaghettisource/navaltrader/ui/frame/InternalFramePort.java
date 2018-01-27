@@ -36,8 +36,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 	static Log log = LogFactory.getLog(InternalFramePort.class.getName());
 
-	private final static String TAB_SHIP_STATUS = "status";	
-	private final static String TAB_SHIP_MAINTAINACE = "maitainance";		
+	private final static String TAB_SHIP_STATUS = "ship status";	
+	private final static String TAB_SHIP_MAINTAINACE = "maitainance";	
+	private final static String TAB_TRANSPORT_CONTRACT = "contract";	
 
 
 	private final static String ACTION_REFUEL = "refuel";
@@ -83,7 +84,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		tabbedPane = new JTabbedPane();		
 		tabbedPane.addTab(TAB_SHIP_STATUS, ImageIconFactory.getForTab("/icon/clipboard.png"),createStatusPanel());
-		tabbedPane.addTab(TAB_SHIP_MAINTAINACE, ImageIconFactory.getForTab("/icon/clipboard.png"),createMaintainancePanel());		
+		tabbedPane.addTab(TAB_SHIP_MAINTAINACE, ImageIconFactory.getForTab("/icon/clipboard.png"),createMaintainancePanel());
+		tabbedPane.addTab(TAB_TRANSPORT_CONTRACT, ImageIconFactory.getForTab("/icon/investment.png"),createTransportContractPanel());				
 		getContentPane().add(tabbedPane);
 
 
@@ -124,7 +126,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 
-	private Component createStatusPanel() {
+	private JPanel createStatusPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBorder(BorderFactory.createTitledBorder("ship status"));	
 
@@ -153,7 +155,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	}	
 
 
-	private Component createMaintainancePanel() {
+	private JPanel createMaintainancePanel() {
 		JPanel maintainancePanel = new JPanel(new BorderLayout());
 		maintainancePanel.setBorder(BorderFactory.createTitledBorder("maintainance ship"));
 		
@@ -235,6 +237,14 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	
 	
 	
+	private JPanel createTransportContractPanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBorder(BorderFactory.createTitledBorder("ship status"));	
+		
+		
+		
+		return panel;
+	}	
 
 
 
