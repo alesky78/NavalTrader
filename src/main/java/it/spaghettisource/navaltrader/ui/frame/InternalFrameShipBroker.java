@@ -123,6 +123,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		String[] columnLabels = new String[] { "class", "model", "price","operating Cost", "hull", "max Dwt",  "max Teu", "max Fuel", "max Speed"};
 		TableFormat<BuyShipTableRow> tf = GlazedLists.tableFormat(BuyShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<BuyShipTableRow>(listBuyShipData, tf));	
+		table.setAutoCreateRowSorter(true);			
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {
 				try{
@@ -180,6 +181,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		String[] columnLabels = new String[] {  "name","class","model", "status", "price", "operatingCost", "hull", "actualDwt",   "actualTeu", "actualFuel"};
 		TableFormat<SellShipTableRow> tf = GlazedLists.tableFormat(SellShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<SellShipTableRow>(listSellShipData, tf));	
+		table.setAutoCreateRowSorter(true);			
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {
 				try{

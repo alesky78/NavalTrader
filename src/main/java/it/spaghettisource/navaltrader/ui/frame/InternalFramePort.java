@@ -15,6 +15,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -264,7 +265,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		String[] columnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> tf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		contractTable = new JTable(new EventTableModel<TransportContractTableRow>(listContractData, tf));			
-		
+		contractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		contractTable.setAutoCreateRowSorter(true);		
+	
 		contractTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {
 				try{

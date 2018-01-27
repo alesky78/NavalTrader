@@ -86,6 +86,7 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		String[] columnLabels = new String[] { "name", "class", "model", "port", "status", "operating Cost", "hull", "actual Dwt",  "actual Teu","actual Fuel"};
 		TableFormat<ShipListTableRow> tf = GlazedLists.tableFormat(ShipListTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<ShipListTableRow>(listShipData, tf));
+		table.setAutoCreateRowSorter(true);			
 		table.getColumnModel().getColumn(6).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
 
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){

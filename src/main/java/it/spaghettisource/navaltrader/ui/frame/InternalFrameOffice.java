@@ -189,6 +189,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		String[] columnLabels = new String[] { "amount", "interest","weekly instalment"};
 		TableFormat<LoanTableRow> tf = GlazedLists.tableFormat(LoanTableRow.class, propertyNames, columnLabels);
 		loanTable = new JTable(new EventTableModel<LoanTableRow>(listBankLoan, tf));	
+		loanTable.setAutoCreateRowSorter(true);				
 		loanTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {
 				try{
