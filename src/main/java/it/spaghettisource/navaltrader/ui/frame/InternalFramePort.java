@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -83,26 +84,32 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private CurrencyTextField amountToPayForRepair;
 	private CurrencyTextField priceUnitOfRepair;		
 
-	
+
 	//ship contract tab
-	private EventList<TransportContractTableRow> listContractData;	
+	private EventList<TransportContractTableRow> listNewContractData;	
+	private EventList<TransportContractTableRow> listAcceptedContractData;		
+	private IntegerTextField acceptedMaxTeu;
+	private IntegerTextField acceptedMaxDwt;		
 
 
 	public InternalFramePort(MainDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
 		super(parentDesktopPane,gameManager, portName);
-		this.shipName = shipName;
-		this.portName = portName;
-		setSize(650,500);   
-		setFrameIcon(ImageIconFactory.getForFrame("/icon/ship list.png"));
+		try {		
+			this.shipName = shipName;
+			this.portName = portName;
+			setSize(650,500);   
+			setFrameIcon(ImageIconFactory.getForFrame("/icon/ship list.png"));
 
-		initValuesFromModel();
+			initValuesFromModel();
 
-		tabbedPane = new JTabbedPane();		
-		tabbedPane.addTab(TAB_SHIP_STATUS, ImageIconFactory.getForTab("/icon/clipboard.png"),createStatusPanel());
-		tabbedPane.addTab(TAB_SHIP_MAINTAINACE, ImageIconFactory.getForTab("/icon/clipboard.png"),createMaintainancePanel());
-		tabbedPane.addTab(TAB_TRANSPORT_CONTRACT, ImageIconFactory.getForTab("/icon/investment.png"),createTransportContractPanel());				
-		getContentPane().add(tabbedPane);
-
+			tabbedPane = new JTabbedPane();		
+			tabbedPane.addTab(TAB_SHIP_STATUS, ImageIconFactory.getForTab("/icon/clipboard.png"),createStatusPanel());
+			tabbedPane.addTab(TAB_SHIP_MAINTAINACE, ImageIconFactory.getForTab("/icon/clipboard.png"),createMaintainancePanel());
+			tabbedPane.addTab(TAB_TRANSPORT_CONTRACT, ImageIconFactory.getForTab("/icon/investment.png"),createTransportContractPanel());				
+			getContentPane().add(tabbedPane);
+		}catch (Exception e) {
+			log.error("error creating port internal frame",e);
+		}
 
 	}
 
@@ -135,9 +142,15 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		priceUnitOfRepair =  new CurrencyTextField(25000.0);	//TODO where to get repair price? maybe REPIAR_PRICE_CHANGE EVENT
 
 		//transport contract
-		listContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
-		listContractData.addAll(TransportContractTableRow.mapData(port.getContracts()));
+		listNewContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
+		listNewContractData.addAll(TransportContractTableRow.mapData(port.getContracts()));
 
+		listAcceptedContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
+		listNewContractData.addAll(TransportContractTableRow.mapData(ship.getTransportContracts()));
+
+		acceptedMaxTeu = new IntegerTextField(ship.getAcceptedTeu());
+		acceptedMaxDwt = new IntegerTextField(ship.getAcceptedDwt());
+		
 	}
 
 
@@ -254,41 +267,83 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 	private JPanel createTransportContractPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
-		//panel.setBorder(BorderFactory.createTitledBorder("transport contract"));	
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));		
+		panel.setBorder(BorderFactory.createTitledBorder("transport contract"));	
 
+		
+		///////////////
+		//control of fuel teu and load weight		
+		JPanel controPanel = new JPanel(new SpringLayout());	
+		controPanel.add(new JLabel("load status"));
+		controPanel.add(acceptedMaxTeu);		
+		controPanel.add(new JLabel("weight status"));	
+		controPanel.add(acceptedMaxDwt);
+		controPanel.add(new JLabel("fuel status"));	
+		controPanel.add(new JLabel("missing control"));			
+		SpringLayoutUtilities.makeCompactGrid(controPanel,3, 2,5, 5,5, 5);			
+
+		
+		///////////////////////////////////
+		//word map port
+		JPanel mapOfPortPanel = new JPanel(new BorderLayout());
+		JLabel picture = new JLabel(ImageIconFactory.getForTab("/icon/warning.png"));
+        picture.setHorizontalAlignment(JLabel.CENTER);		
+        JScrollPane pictureScrollPane = new JScrollPane(picture);        
+		mapOfPortPanel.add(pictureScrollPane,BorderLayout.CENTER);
+
+		///////////////
 		//port contract
-		JPanel portContractPanel = new JPanel(new BorderLayout());
+		JPanel portContractPanel = new JPanel();
 		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));
-		JTable contractTable;	
-		String[] propertyNames = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] columnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		TableFormat<TransportContractTableRow> tf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
-		contractTable = new JTable(new EventTableModel<TransportContractTableRow>(listContractData, tf));			
-		contractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		contractTable.setAutoCreateRowSorter(true);		
-	
-		contractTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+		JTable newContractTable;	
+		String[] newContractpropertyNames = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] newContractcolumnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		TableFormat<TransportContractTableRow> newContractTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
+		newContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listNewContractData, newContractTf));			
+		newContractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		newContractTable.setAutoCreateRowSorter(true);		
+
+		newContractTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {
 				try{
-					TransportContractTableRow data = listContractData.get(contractTable.convertRowIndexToModel(contractTable.getSelectedRow()));
-					
+					int[] selected = newContractTable.getSelectedRows();
+					//TODO male calcul on the controll based on the selected row
+					TransportContractTableRow data = listNewContractData.get(newContractTable.convertRowIndexToModel(newContractTable.getSelectedRow()));
+
 				}catch (Exception e) {}
 			}
 		});		
 
-		portContractPanel.add(new JScrollPane(contractTable), BorderLayout.CENTER);
-		
-		//word map port
-		JPanel mapOfPortPanel = new JPanel(new BorderLayout());		
-		
+		portContractPanel.add(new JScrollPane(newContractTable), BorderLayout.CENTER);
+
+	
 		//split pane with the contract and port
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,portContractPanel);
+		JPanel MapControPanel = new JPanel(new BorderLayout()); 
+		MapControPanel.add(mapOfPortPanel, BorderLayout.NORTH);
+		MapControPanel.add(controPanel, BorderLayout.SOUTH);		
+		
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,MapControPanel,portContractPanel);
 		splitPane.setDividerLocation(150);
-		
-		
+
+
+		///////////////	
+		//accepted contract
+		JPanel acceptedContractPanel = new JPanel(new BorderLayout());
+		acceptedContractPanel.setBorder(BorderFactory.createTitledBorder("accepted contract"));
+		JTable acceptedContractTable;	
+		String[] propertyNames = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] columnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		TableFormat<TransportContractTableRow> acceptedContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
+		acceptedContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listAcceptedContractData, newContractTf));	
+		acceptedContractTable.setAutoCreateRowSorter(true);		
+		acceptedContractTable.setRowSelectionAllowed(false);
+		acceptedContractPanel.add(new JScrollPane(acceptedContractTable), BorderLayout.CENTER);		
+
+
 		//put all togheter
-		panel.add(splitPane, BorderLayout.CENTER);
+		panel.add(splitPane);
+		panel.add(acceptedContractPanel);		
 
 		return panel;
 	}	

@@ -18,29 +18,33 @@ import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 public abstract class InternalFrameAbstract extends JInternalFrame implements EventListener,InternalFrameListener {
 
 	static Log log = LogFactory.getLog(InternalFrameAbstract.class.getName());
-	
+
 	protected MainDesktopPane parentDesktopPane;
-	
+
 	protected GameManager gameManager;
 	protected GameData gameData; 
 
-	
+
 	protected NumberFormat percentageFormat = NumberFormat.getPercentInstance();		
-	
+
 	public InternalFrameAbstract(MainDesktopPane parentDesktopPane,GameManager gameManager, String name) {
 		super(name, true, true, true, true);
-        this.gameManager = gameManager; 
-        this.gameData = gameManager.getGameData();
-        this.parentDesktopPane = parentDesktopPane;
-        
-        //register to receive event
-		log.debug("register listener: "+title);        
-        EventPublisher.getInstance().register(this);
-        
-        //Set the window's location.
-        setLocation(30,30);
+		try {		
+			this.gameManager = gameManager; 
+			this.gameData = gameManager.getGameData();
+			this.parentDesktopPane = parentDesktopPane;
 
-        addInternalFrameListener(this);
+			//register to receive event
+			log.debug("register listener: "+title);        
+			EventPublisher.getInstance().register(this);
+
+			//Set the window's location.
+			setLocation(30,30);
+
+			addInternalFrameListener(this);
+		}catch (Exception e) {
+			log.error("error creating internal frame",e);
+		}
 	}
 
 	public void internalFrameActivated(InternalFrameEvent arg0) {	
@@ -65,6 +69,6 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 
 	public void internalFrameOpened(InternalFrameEvent arg0) {
 	}
-	
-	
+
+
 }

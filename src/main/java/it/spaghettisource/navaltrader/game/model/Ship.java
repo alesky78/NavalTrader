@@ -204,6 +204,10 @@ public class Ship implements Entity{
 	public void setDwt(int dwt) {
 		this.dwt = dwt;
 	}
+	
+	public int getAcceptedDwt() {
+		return maxDwt-dwt;
+	}	
 
 	public int getMaxDwt() {
 		return maxDwt;
@@ -221,6 +225,10 @@ public class Ship implements Entity{
 		this.teu = teu;
 	}
 
+	public int getAcceptedTeu() {
+		return maxTeu-teu;
+	}	
+	
 	public int getMaxTeu() {
 		return maxTeu;
 	}
