@@ -44,6 +44,11 @@ public class Port  implements Entity{
 		return dayContractRegeneration;
 	}
 
+	public List<TransportContract> getContracts() {
+		return contracts;
+	}
+
+	
 	private void generateContracts(){
 		contracts = TransportContract.generateNewContract(10);
 	}

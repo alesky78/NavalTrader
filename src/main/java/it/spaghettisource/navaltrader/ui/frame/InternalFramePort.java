@@ -1,7 +1,6 @@
 package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
@@ -10,16 +9,26 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.gui.TableFormat;
+import ca.odell.glazedlists.swing.EventTableModel;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Ship;
@@ -31,6 +40,8 @@ import it.spaghettisource.navaltrader.ui.component.HullProgressBarField;
 import it.spaghettisource.navaltrader.ui.component.IntegerTextField;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
+import it.spaghettisource.navaltrader.ui.model.TransportContractTableRow;
 
 public class InternalFramePort extends InternalFrameAbstract  implements ActionListener  {
 
@@ -71,13 +82,16 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private CurrencyTextField amountToPayForRepair;
 	private CurrencyTextField priceUnitOfRepair;		
 
+	
+	//ship contract tab
+	private EventList<TransportContractTableRow> listContractData;	
 
 
 	public InternalFramePort(MainDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
 		super(parentDesktopPane,gameManager, portName);
 		this.shipName = shipName;
 		this.portName = portName;
-		setSize(500,500);   
+		setSize(650,500);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/ship list.png"));
 
 		initValuesFromModel();
@@ -96,7 +110,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		ship = gameData.getCompany().getShipByName(shipName);
 		port = gameData.getWorld().getPortByName(portName);
-	
+
 		//ship status
 		shipStatus = new JTextField(ship.getStatus());
 		shipStatus.setEditable(false);		
@@ -108,19 +122,20 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		shipActualFuel = new IntegerTextField(ship.getFuel());
 		operatingCost = new CurrencyTextField(ship.getOperatingCost());
 
-		//ship refuel
+		//ship maintainance
 		shipMaxFuel = new IntegerTextField(ship.getMaxFuel());
 		amountToRefuelSlider = new JSlider(0, ship.getMaxFuel()-ship.getFuel(), 0);
 		amountToRefuel = new IntegerTextField(0);
 		amountToPayForRefuel = new CurrencyTextField(0.0);
 		priceUnitOfFuel =  new CurrencyTextField(700.0);	//TODO where to get fuel price? maybe FUEL_PRICE_CHANGE EVENT
-
-		//ship repair
 		amountToRepairSlider = new JSlider(0, 100-ship.getHull(), 0);
 		amountToRepair = new IntegerTextField(0);
 		amountToPayForRepair = new CurrencyTextField(0.0);
 		priceUnitOfRepair =  new CurrencyTextField(25000.0);	//TODO where to get repair price? maybe REPIAR_PRICE_CHANGE EVENT
 
+		//transport contract
+		listContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
+		listContractData.addAll(TransportContractTableRow.mapData(port.getContracts()));
 
 	}
 
@@ -158,7 +173,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private JPanel createMaintainancePanel() {
 		JPanel maintainancePanel = new JPanel(new BorderLayout());
 		maintainancePanel.setBorder(BorderFactory.createTitledBorder("maintainance ship"));
-		
+
 		//REFUEL PART
 		JPanel globalRefuelPanel = new JPanel(new BorderLayout());
 		globalRefuelPanel.setBorder(BorderFactory.createTitledBorder("refuel ship"));	
@@ -193,7 +208,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		SpringLayoutUtilities.makeCompactGrid(refuelPanel,5, 2,5, 5,5, 5);	
 		globalRefuelPanel.add(refuelPanel, BorderLayout.NORTH);	
-		
+
 		//REPAIR PART
 		JPanel globalShipRepairPanel = new JPanel(new BorderLayout());
 		globalShipRepairPanel.setBorder(BorderFactory.createTitledBorder("ship repair"));	
@@ -226,23 +241,52 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		SpringLayoutUtilities.makeCompactGrid(repairPanel,4, 2,5, 5,5, 5);	
 		globalShipRepairPanel.add(repairPanel, BorderLayout.NORTH);			
-		
-		
+
+
 		//put all togheter
 		maintainancePanel.add(globalRefuelPanel, BorderLayout.NORTH);
 		maintainancePanel.add(globalShipRepairPanel, BorderLayout.CENTER);		
-		
+
 		return maintainancePanel;	
 	}
-	
-	
-	
+
+
+
 	private JPanel createTransportContractPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(BorderFactory.createTitledBorder("ship status"));	
+		//panel.setBorder(BorderFactory.createTitledBorder("transport contract"));	
+
+		//port contract
+		JPanel portContractPanel = new JPanel(new BorderLayout());
+		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));
+		JTable contractTable;	
+		String[] propertyNames = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] columnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		TableFormat<TransportContractTableRow> tf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
+		contractTable = new JTable(new EventTableModel<TransportContractTableRow>(listContractData, tf));			
+		
+		contractTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+			public void valueChanged(ListSelectionEvent event) {
+				try{
+					TransportContractTableRow data = listContractData.get(contractTable.convertRowIndexToModel(contractTable.getSelectedRow()));
+					
+				}catch (Exception e) {}
+			}
+		});		
+
+		portContractPanel.add(new JScrollPane(contractTable), BorderLayout.CENTER);
+		
+		//word map port
+		JPanel mapOfPortPanel = new JPanel(new BorderLayout());		
+		
+		//split pane with the contract and port
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,portContractPanel);
+		splitPane.setDividerLocation(150);
 		
 		
-		
+		//put all togheter
+		panel.add(splitPane, BorderLayout.CENTER);
+
 		return panel;
 	}	
 
