@@ -13,11 +13,11 @@ public class BuyShipTableRow {
 	private int hull;	
 	private int maxTeu;		
 	private int maxDwt;		
-	private double maxFuel;		
-	private double maxSpeed;	
+	private int maxFuel;		
+	private int maxSpeed;	
 	private double operatingCost;
 	
-	public BuyShipTableRow(String shipClass, String type, double price, int hull, int maxDwt,int maxTeu, double operatingCost, double maxFuel, double maxSpeed) {
+	public BuyShipTableRow(String shipClass, String type, double price, int hull, int maxDwt,int maxTeu, double operatingCost, int maxFuel, int maxSpeed) {
 		super();
 		this.shipClass = shipClass;
 		this.model = type;
@@ -58,11 +58,11 @@ public class BuyShipTableRow {
 		return maxTeu;
 	}
 
-	public double getMaxFuel() {
+	public int getMaxFuel() {
 		return maxFuel;
 	}
 
-	public double getMaxSpeed() {
+	public int getMaxSpeed() {
 		return maxSpeed;
 	}
 	

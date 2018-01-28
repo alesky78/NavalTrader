@@ -92,6 +92,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private IntegerTextField controlTeu;
 	private IntegerTextField controlDwt;	
 	private IntegerTextField controlFuel;	
+	
 
 
 	public InternalFramePort(MainDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
@@ -153,7 +154,6 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		controlTeu = new IntegerTextField(ship.getAcceptedTeu());
 		controlDwt = new IntegerTextField(ship.getAcceptedDwt());
 		controlFuel = new IntegerTextField(ship.getFuel());
-		
 	}
 
 
@@ -274,7 +274,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));		
 		panel.setBorder(BorderFactory.createTitledBorder("transport contract"));	
 
-		
+
 		///////////////
 		//control of fuel teu and dwt				
 		JPanel controPanel = new JPanel(new SpringLayout());	
@@ -286,13 +286,13 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		controPanel.add(controlFuel);
 		SpringLayoutUtilities.makeCompactGrid(controPanel,3, 2,5, 5,5, 5);	
 
-		
+
 		///////////////////////////////////
 		//word map port
 		JPanel mapOfPortPanel = new JPanel(new BorderLayout());
 		JLabel picture = new JLabel(ImageIconFactory.getForTab("/icon/warning.png"));
-        picture.setHorizontalAlignment(JLabel.CENTER);		
-        JScrollPane pictureScrollPane = new JScrollPane(picture);        
+		picture.setHorizontalAlignment(JLabel.CENTER);		
+		JScrollPane pictureScrollPane = new JScrollPane(picture);        
 		mapOfPortPanel.add(pictureScrollPane,BorderLayout.CENTER);
 
 		///////////////
@@ -320,7 +320,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 						newMaxDwt -= data.getTotalDwt();
 						//TODO add fuel cotrol here and set new value
 					}
-					
+
 					controlTeu.setValue(newMaxTeu); 
 					controlDwt.setValue(newMaxDwt); 
 
@@ -333,12 +333,12 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		portContractPanel.add(new JScrollPane(newContractTable), BorderLayout.CENTER);
 		portContractPanel.add(controPanel, BorderLayout.SOUTH);		
 
-	
+
 		//split pane with the contract and port
-//		JPanel MapControPanel = new JPanel(new BorderLayout()); 
-//		MapControPanel.add(mapOfPortPanel, BorderLayout.NORTH);
-//		MapControPanel.add(controPanel, BorderLayout.SOUTH);		
-		
+		//		JPanel MapControPanel = new JPanel(new BorderLayout()); 
+		//		MapControPanel.add(mapOfPortPanel, BorderLayout.NORTH);
+		//		MapControPanel.add(controPanel, BorderLayout.SOUTH);		
+
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,portContractPanel);
 		splitPane.setDividerLocation(200);
 
@@ -354,12 +354,31 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		acceptedContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listAcceptedContractData, newContractTf));	
 		acceptedContractTable.setAutoCreateRowSorter(true);		
 		acceptedContractTable.setRowSelectionAllowed(false);
-		acceptedContractPanel.add(new JScrollPane(acceptedContractTable), BorderLayout.CENTER);		
+
+		///////////////
+		//control of fuel and speed
+		int startSpeed = 5;
+		JTextField selectedSpeed = new JTextField();
+		selectedSpeed.setText(startSpeed+"/"+ship.getMaxSpeed()+" nd");
+		selectedSpeed.setEditable(false);		
+		JSlider sliderNavigationSpeed;			
+		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);		
+		//TODO add action to change value of selected speed and change date to arrive to the port in the table newContractTable
+
+		JPanel speedControlPanel = new JPanel(new SpringLayout());	
+		speedControlPanel.add(new JLabel("speed selection"));		
+		speedControlPanel.add(selectedSpeed);		
+		speedControlPanel.add(sliderNavigationSpeed);	
+		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,1, 3,5, 5,5, 5);	
+
+		acceptedContractPanel.add(new JScrollPane(acceptedContractTable), BorderLayout.CENTER);	
+		acceptedContractPanel.add(speedControlPanel, BorderLayout.CENTER);			
 
 
 		//put all togheter
-		panel.add(splitPane, BorderLayout.CENTER);
+		panel.add(splitPane, BorderLayout.CENTER);			
 		panel.add(acceptedContractPanel, BorderLayout.SOUTH);		
+
 
 		return panel;
 	}	
@@ -406,13 +425,13 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			if(source.getName().equals(shipName)) {
 				shipActualFuel.setValue(source.getFuel());
 				amountToRefuelSlider.setMaximum(source.getMaxFuel()-source.getFuel());
-				
+
 				//reset the fuel controll becouse fuel is changed
 				controlTeu.setValue(ship.getAcceptedTeu());
 				controlDwt.setValue(ship.getAcceptedDwt());
 				controlFuel.setValue(ship.getFuel());
 				newContractTable.clearSelection();
-				
+
 			}
 		}else if(eventType.equals(EventType.SHIP_HULL_CHANGE_EVENT)){
 			Ship source = (Ship) event.getSource();			

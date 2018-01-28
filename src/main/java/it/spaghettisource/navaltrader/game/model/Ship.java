@@ -66,14 +66,14 @@ public class Ship implements Entity{
 	private int maxTeu;	
 	private int fuel;	
 	private int maxFuel;	
-	private double speed;	
-	private double maxSpeed;	
+	private int speed;	
+	private int maxSpeed;	
 	
 	private List<TransportContract> transportContracts;
 	
 	
 	
-	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, int maxFuel, double operatingCost, double maxSpeed, double basePrice) {
+	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, int maxFuel, double operatingCost, int maxSpeed, double basePrice) {
 		
 		this.shipClass = shipClass;
 		this.model = model;
@@ -258,11 +258,11 @@ public class Ship implements Entity{
 	}	
 	
 	
-	public double getSpeed() {
+	public int getSpeed() {
 		return speed;
 	}
 
-	public void setSpeed(double speed) {
+	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
 
@@ -274,11 +274,11 @@ public class Ship implements Entity{
 		this.maxFuel = maxFuel;
 	}
 
-	public double getMaxSpeed() {
+	public int getMaxSpeed() {
 		return maxSpeed;
 	}
 
-	public void setMaxSpeed(double maxSpeed) {
+	public void setMaxSpeed(int maxSpeed) {
 		this.maxSpeed = maxSpeed;
 	}
 
