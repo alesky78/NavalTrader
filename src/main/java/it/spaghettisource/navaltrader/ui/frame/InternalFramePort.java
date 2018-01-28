@@ -88,8 +88,10 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	//ship contract tab
 	private EventList<TransportContractTableRow> listNewContractData;	
 	private EventList<TransportContractTableRow> listAcceptedContractData;		
-	private IntegerTextField acceptedMaxTeu;
-	private IntegerTextField acceptedMaxDwt;		
+	private JTable newContractTable;	
+	private IntegerTextField controlTeu;
+	private IntegerTextField controlDwt;	
+	private IntegerTextField controlFuel;	
 
 
 	public InternalFramePort(MainDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
@@ -148,8 +150,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		listAcceptedContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
 		listNewContractData.addAll(TransportContractTableRow.mapData(ship.getTransportContracts()));
 
-		acceptedMaxTeu = new IntegerTextField(ship.getAcceptedTeu());
-		acceptedMaxDwt = new IntegerTextField(ship.getAcceptedDwt());
+		controlTeu = new IntegerTextField(ship.getAcceptedTeu());
+		controlDwt = new IntegerTextField(ship.getAcceptedDwt());
+		controlFuel = new IntegerTextField(ship.getFuel());
 		
 	}
 
@@ -276,11 +279,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//control of fuel teu and load weight		
 		JPanel controPanel = new JPanel(new SpringLayout());	
 		controPanel.add(new JLabel("teu status"));
-		controPanel.add(acceptedMaxTeu);		
+		controPanel.add(controlTeu);		
 		controPanel.add(new JLabel("dwt status"));	
-		controPanel.add(acceptedMaxDwt);
+		controPanel.add(controlDwt);
 		controPanel.add(new JLabel("fuel status"));	
-		controPanel.add(new JLabel("missing control"));		//TODO add the fuel control	
+		controPanel.add(controlFuel);
 		SpringLayoutUtilities.makeCompactGrid(controPanel,3, 2,5, 5,5, 5);			
 
 		
@@ -295,8 +298,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		///////////////
 		//port contract
 		JPanel portContractPanel = new JPanel();
-		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));
-		JTable newContractTable;	
+		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));	
 		String[] newContractpropertyNames = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		String[] newContractcolumnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> newContractTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
@@ -316,11 +318,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 						data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
 						newMaxTeu -= data.getTotalTeu();
 						newMaxDwt -= data.getTotalDwt();
-						//TODO add fuel cotrol value
+						//TODO add fuel cotrol here and set new value
 					}
 					
-					acceptedMaxTeu.setValue(newMaxTeu); 
-					acceptedMaxDwt.setValue(newMaxDwt); 
+					controlTeu.setValue(newMaxTeu); 
+					controlDwt.setValue(newMaxDwt); 
 
 				}catch (Exception e) {
 					log.error("error chosing contract", e);
@@ -403,6 +405,13 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			if(source.getName().equals(shipName)) {
 				shipActualFuel.setValue(source.getFuel());
 				amountToRefuelSlider.setMaximum(source.getMaxFuel()-source.getFuel());
+				
+				//reset the fuel controll becouse fuel is changed
+				controlTeu.setValue(ship.getAcceptedTeu());
+				controlDwt.setValue(ship.getAcceptedDwt());
+				controlFuel.setValue(ship.getFuel());
+				newContractTable.clearSelection();
+				
 			}
 		}else if(eventType.equals(EventType.SHIP_HULL_CHANGE_EVENT)){
 			Ship source = (Ship) event.getSource();			
