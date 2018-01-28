@@ -37,14 +37,6 @@ public class Ship implements Entity{
 	
 	private static final Ship[] shipArray = new Ship[]{SHIP_OLD_LITTLE,SHIP_OLD_LARGE,SHIP_NORMAL_LITTLE,SHIP_NORMAL_LARGE,SHIP_HITECH_LITTLE,SHIP_HITECH_LARGE,SHIP_HITECH_HUGE};	
 	private static double priceIndex = 1.0;
-	
-	//TODO informazioni sulle navi
-	//http://www.dizionariologistica.com/index.html
-	//private String shipClass; --> PANAMAX ETC....	
-	//https://en.wikipedia.org/wiki/Container_ship
-	//https://en.wikipedia.org/wiki/Cargo_ship
-	//http://maritime-connector.com/wiki/ship-sizes/
-	
 
 	private String name;	
 	private String model;

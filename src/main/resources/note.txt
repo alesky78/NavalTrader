@@ -1,0 +1,11 @@
+path finding alghoritm
+https://www.raywenderlich.com/4946/introduction-to-a-pathfinding
+
+
+
+container ship info
+http://www.dizionariologistica.com/index.html
+private String shipClass; --> PANAMAX ETC....	
+https://en.wikipedia.org/wiki/Container_ship
+https://en.wikipedia.org/wiki/Cargo_ship
+http://maritime-connector.com/wiki/ship-sizes/
