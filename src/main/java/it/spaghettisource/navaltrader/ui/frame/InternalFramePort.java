@@ -270,13 +270,13 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 	private JPanel createTransportContractPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));		
+		JPanel panel = new JPanel(new BorderLayout());
+		//panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));		
 		panel.setBorder(BorderFactory.createTitledBorder("transport contract"));	
 
 		
 		///////////////
-		//control of fuel teu and load weight		
+		//control of fuel teu and dwt				
 		JPanel controPanel = new JPanel(new SpringLayout());	
 		controPanel.add(new JLabel("teu status"));
 		controPanel.add(controlTeu);		
@@ -284,7 +284,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		controPanel.add(controlDwt);
 		controPanel.add(new JLabel("fuel status"));	
 		controPanel.add(controlFuel);
-		SpringLayoutUtilities.makeCompactGrid(controPanel,3, 2,5, 5,5, 5);			
+		SpringLayoutUtilities.makeCompactGrid(controPanel,3, 2,5, 5,5, 5);	
 
 		
 		///////////////////////////////////
@@ -297,7 +297,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		///////////////
 		//port contract
-		JPanel portContractPanel = new JPanel();
+		JPanel portContractPanel = new JPanel(new BorderLayout());
 		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));	
 		String[] newContractpropertyNames = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		String[] newContractcolumnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
@@ -331,15 +331,16 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		});		
 
 		portContractPanel.add(new JScrollPane(newContractTable), BorderLayout.CENTER);
+		portContractPanel.add(controPanel, BorderLayout.SOUTH);		
 
 	
 		//split pane with the contract and port
-		JPanel MapControPanel = new JPanel(new BorderLayout()); 
-		MapControPanel.add(mapOfPortPanel, BorderLayout.NORTH);
-		MapControPanel.add(controPanel, BorderLayout.SOUTH);		
+//		JPanel MapControPanel = new JPanel(new BorderLayout()); 
+//		MapControPanel.add(mapOfPortPanel, BorderLayout.NORTH);
+//		MapControPanel.add(controPanel, BorderLayout.SOUTH);		
 		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,MapControPanel,portContractPanel);
-		splitPane.setDividerLocation(150);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,portContractPanel);
+		splitPane.setDividerLocation(200);
 
 
 		///////////////	
@@ -357,8 +358,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 		//put all togheter
-		panel.add(splitPane);
-		panel.add(acceptedContractPanel);		
+		panel.add(splitPane, BorderLayout.CENTER);
+		panel.add(acceptedContractPanel, BorderLayout.SOUTH);		
 
 		return panel;
 	}	
