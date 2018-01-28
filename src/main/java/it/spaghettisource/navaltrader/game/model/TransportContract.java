@@ -37,9 +37,9 @@ public class TransportContract {
 		List<TransportContract> contracts = new ArrayList<TransportContract>(maxGenerated);
 
 		for (int i = 0; i< maxGenerated; i++) {
-			int teu = ThreadLocalRandom.current().nextInt(100, 999+1 );
+			int teu = ThreadLocalRandom.current().nextInt(50, 999+1 );
 			int dwt = ThreadLocalRandom.current().nextInt(2, 10+1 );
-			int price = ThreadLocalRandom.current().nextInt(1000, 3500+1 );			
+			int price = ThreadLocalRandom.current().nextInt(1000, 12000+1 );			
 
 			contracts.add(new TransportContract("wood", teu, dwt, price, "port x"));			
 		}

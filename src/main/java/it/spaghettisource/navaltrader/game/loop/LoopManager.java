@@ -86,7 +86,8 @@ public class LoopManager implements  Runnable {
  
 					gameTime.addMinuts(timePass);				
 					
-					log.debug("time:"+gameTime.getFullDate()+" new date:"+isNewDate+" new week:"+isNewWeek+" new month:"+isNewMonth );			
+					//log.debug("time:"+gameTime.getFullDate()+" new date:"+isNewDate+" new week:"+isNewWeek+" new month:"+isNewMonth );
+					//TODO remove log for test
 
 					company.update(timePass,isNewDate,isNewWeek,isNewMonth);
 

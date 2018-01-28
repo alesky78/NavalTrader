@@ -275,12 +275,12 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		///////////////
 		//control of fuel teu and load weight		
 		JPanel controPanel = new JPanel(new SpringLayout());	
-		controPanel.add(new JLabel("load status"));
+		controPanel.add(new JLabel("teu status"));
 		controPanel.add(acceptedMaxTeu);		
-		controPanel.add(new JLabel("weight status"));	
+		controPanel.add(new JLabel("dwt status"));	
 		controPanel.add(acceptedMaxDwt);
 		controPanel.add(new JLabel("fuel status"));	
-		controPanel.add(new JLabel("missing control"));			
+		controPanel.add(new JLabel("missing control"));		//TODO add the fuel control	
 		SpringLayoutUtilities.makeCompactGrid(controPanel,3, 2,5, 5,5, 5);			
 
 		
@@ -308,10 +308,23 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			public void valueChanged(ListSelectionEvent event) {
 				try{
 					int[] selected = newContractTable.getSelectedRows();
-					//TODO male calcul on the controll based on the selected row
-					TransportContractTableRow data = listNewContractData.get(newContractTable.convertRowIndexToModel(newContractTable.getSelectedRow()));
+					//calculation on the control based on the selected rows
+					TransportContractTableRow data;
+					int newMaxTeu = ship.getAcceptedTeu();
+					int newMaxDwt = ship.getAcceptedDwt();					
+					for (int i = 0; i < selected.length; i++) {
+						data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
+						newMaxTeu -= data.getTotalTeu();
+						newMaxDwt -= data.getTotalDwt();
+						//TODO add fuel cotrol value
+					}
+					
+					acceptedMaxTeu.setValue(newMaxTeu); 
+					acceptedMaxDwt.setValue(newMaxDwt); 
 
-				}catch (Exception e) {}
+				}catch (Exception e) {
+					log.error("error chosing contract", e);
+				}
 			}
 		});		
 
