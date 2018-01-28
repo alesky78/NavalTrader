@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.game.graphic;
+package it.spaghettisource.navaltrader.graphic;
 
 import java.awt.Graphics;
 import java.util.*;
