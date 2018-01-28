@@ -10,6 +10,8 @@ public class Port  implements Entity{
 	private String name;
 	private int classAccepted;
 	private double dailyFeeCost;	
+	private double fuelPrice;
+	private double repairPrice;	
 	private int dayContractRegeneration;	
 	private int dayToNextContractRegeneration;
 	private List<TransportContract> contracts;
@@ -24,6 +26,8 @@ public class Port  implements Entity{
 		this.dayContractRegeneration = dayContractRegeneration;
 		this.dayToNextContractRegeneration = dayContractRegeneration;
 		this.contracts = new ArrayList<TransportContract>(0);
+		this.fuelPrice = 700.0;
+		this.repairPrice = 25000.0;		
 		generateContracts();
 		
 	}
@@ -48,7 +52,14 @@ public class Port  implements Entity{
 		return contracts;
 	}
 
-	
+	public double getFuelPrice() {
+		return fuelPrice;	//TODO implement logic to calculate fuel price
+	}
+
+	public double getRepairPrice() {
+		return repairPrice;	//TODO implement logic to calculate repari price
+	}
+
 	private void generateContracts(){
 		contracts = TransportContract.generateNewContract(10);
 	}

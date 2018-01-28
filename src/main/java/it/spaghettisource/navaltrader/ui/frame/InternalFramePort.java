@@ -99,7 +99,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		try {		
 			this.shipName = shipName;
 			this.portName = portName;
-			setSize(650,500);   
+			setSize(700,500);   
 			setFrameIcon(ImageIconFactory.getForFrame("/icon/ship list.png"));
 
 			initValuesFromModel();
@@ -137,11 +137,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		amountToRefuelSlider = new JSlider(0, ship.getMaxFuel()-ship.getFuel(), 0);
 		amountToRefuel = new IntegerTextField(0);
 		amountToPayForRefuel = new CurrencyTextField(0.0);
-		priceUnitOfFuel =  new CurrencyTextField(700.0);	//TODO where to get fuel price? maybe FUEL_PRICE_CHANGE EVENT
+		priceUnitOfFuel =  new CurrencyTextField(port.getFuelPrice()); 
 		amountToRepairSlider = new JSlider(0, 100-ship.getHull(), 0);
 		amountToRepair = new IntegerTextField(0);
 		amountToPayForRepair = new CurrencyTextField(0.0);
-		priceUnitOfRepair =  new CurrencyTextField(25000.0);	//TODO where to get repair price? maybe REPIAR_PRICE_CHANGE EVENT
+		priceUnitOfRepair =  new CurrencyTextField(port.getRepairPrice()); 
 
 		//transport contract
 		listNewContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
