@@ -339,14 +339,13 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//		MapControPanel.add(mapOfPortPanel, BorderLayout.NORTH);
 		//		MapControPanel.add(controPanel, BorderLayout.SOUTH);		
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,portContractPanel);
-		splitPane.setDividerLocation(200);
+		JSplitPane newContractAndMapPortPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,portContractPanel);
+		newContractAndMapPortPanel.setDividerLocation(200);
 
 
 		///////////////	
 		//accepted contract
-		JPanel acceptedContractPanel = new JPanel(new BorderLayout());
-		acceptedContractPanel.setBorder(BorderFactory.createTitledBorder("accepted contract"));
+		
 		JTable acceptedContractTable;	
 		String[] propertyNames = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		String[] columnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
@@ -362,22 +361,37 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		selectedSpeed.setText(startSpeed+"/"+ship.getMaxSpeed()+" nd");
 		selectedSpeed.setEditable(false);		
 		JSlider sliderNavigationSpeed;			
-		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);		
-		//TODO add action to change value of selected speed and change date to arrive to the port in the table newContractTable
+		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);	
+		
+		sliderNavigationSpeed.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider)e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					selectedSpeed.setText(source.getValue()+"/"+ship.getMaxSpeed()+" nd");
+					//TODO modify the date to arrive to the ports in the table newContractTable					
+				}
+			}
+		});		
+		
 
 		JPanel speedControlPanel = new JPanel(new SpringLayout());	
+		speedControlPanel.setBorder(BorderFactory.createTitledBorder("navigation speed"));		
 		speedControlPanel.add(new JLabel("speed selection"));		
 		speedControlPanel.add(selectedSpeed);		
 		speedControlPanel.add(sliderNavigationSpeed);	
 		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,1, 3,5, 5,5, 5);	
 
-		acceptedContractPanel.add(new JScrollPane(acceptedContractTable), BorderLayout.CENTER);	
-		acceptedContractPanel.add(speedControlPanel, BorderLayout.CENTER);			
+		//accepted contract and speed panels
+		JPanel acceptedContractAndSelectSpeedPanel = new JPanel(new BorderLayout());
+		JScrollPane acceptedContract = new JScrollPane(acceptedContractTable);
+		acceptedContract.setBorder(BorderFactory.createTitledBorder("accepted contract"));	
+		acceptedContractAndSelectSpeedPanel.add(speedControlPanel, BorderLayout.NORTH);		
+		acceptedContractAndSelectSpeedPanel.add(acceptedContract, BorderLayout.CENTER);			
 
 
 		//put all togheter
-		panel.add(splitPane, BorderLayout.CENTER);			
-		panel.add(acceptedContractPanel, BorderLayout.SOUTH);		
+		panel.add(newContractAndMapPortPanel, BorderLayout.CENTER);			
+		panel.add(acceptedContractAndSelectSpeedPanel, BorderLayout.SOUTH);		
 
 
 		return panel;
@@ -426,7 +440,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 				shipActualFuel.setValue(source.getFuel());
 				amountToRefuelSlider.setMaximum(source.getMaxFuel()-source.getFuel());
 
-				//reset the fuel controll becouse fuel is changed
+				//reset the fuel control because fuel is changed
 				controlTeu.setValue(ship.getAcceptedTeu());
 				controlDwt.setValue(ship.getAcceptedDwt());
 				controlFuel.setValue(ship.getFuel());
