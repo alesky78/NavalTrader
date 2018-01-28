@@ -50,7 +50,6 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 	static Log log = LogFactory.getLog(InternalFramePort.class.getName());
 
-	private final static String TAB_SHIP_STATUS = "ship status";	
 	private final static String TAB_SHIP_MAINTAINACE = "maitainance";	
 	private final static String TAB_TRANSPORT_CONTRACT = "contract";	
 
@@ -108,7 +107,6 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			initValuesFromModel();
 
 			tabbedPane = new JTabbedPane();		
-			tabbedPane.addTab(TAB_SHIP_STATUS, ImageIconFactory.getForTab("/icon/clipboard.png"),createStatusPanel());
 			tabbedPane.addTab(TAB_SHIP_MAINTAINACE, ImageIconFactory.getForTab("/icon/clipboard.png"),createMaintainancePanel());
 			tabbedPane.addTab(TAB_TRANSPORT_CONTRACT, ImageIconFactory.getForTab("/icon/investment.png"),createTransportContractPanel());				
 			getContentPane().add(tabbedPane);
@@ -160,10 +158,15 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 
-	private JPanel createStatusPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(BorderFactory.createTitledBorder("ship status"));	
+	private JPanel createMaintainancePanel() {
+		JPanel maintainancePanel = new JPanel(new BorderLayout());
+		maintainancePanel.setBorder(BorderFactory.createTitledBorder("maintainance ship"));
 
+		
+		//STATUS PART
+		JPanel globalStatusPanel = new JPanel(new BorderLayout());
+		globalStatusPanel.setBorder(BorderFactory.createTitledBorder("status ship"));
+		
 		///////////////////////////		
 		//create ship status info
 		JPanel statusPanel = new JPanel(new SpringLayout());		
@@ -180,19 +183,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		statusPanel.add(new JLabel("hull status"));
 		statusPanel.add(shipHull);		
 
-		SpringLayoutUtilities.makeCompactGrid(statusPanel,6, 2,5, 5,5, 5);		
-
-		//add all together
-		panel.add(statusPanel, BorderLayout.NORTH);	
-
-		return panel;		
-	}	
-
-
-	private JPanel createMaintainancePanel() {
-		JPanel maintainancePanel = new JPanel(new BorderLayout());
-		maintainancePanel.setBorder(BorderFactory.createTitledBorder("maintainance ship"));
-
+		SpringLayoutUtilities.makeCompactGrid(statusPanel,6, 2,5, 5,5, 5);			
+		globalStatusPanel.add(statusPanel, BorderLayout.NORTH);	
+		
 		//REFUEL PART
 		JPanel globalRefuelPanel = new JPanel(new BorderLayout());
 		globalRefuelPanel.setBorder(BorderFactory.createTitledBorder("refuel ship"));	
@@ -230,7 +223,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		//REPAIR PART
 		JPanel globalShipRepairPanel = new JPanel(new BorderLayout());
-		globalShipRepairPanel.setBorder(BorderFactory.createTitledBorder("ship repair"));	
+		globalShipRepairPanel.setBorder(BorderFactory.createTitledBorder("repair ship"));	
 
 		///////////////////////////		
 		//create ship repair 
@@ -262,9 +255,10 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		globalShipRepairPanel.add(repairPanel, BorderLayout.NORTH);			
 
 
-		//put all togheter
-		maintainancePanel.add(globalRefuelPanel, BorderLayout.NORTH);
-		maintainancePanel.add(globalShipRepairPanel, BorderLayout.CENTER);		
+		//put all together
+		maintainancePanel.add(globalStatusPanel, BorderLayout.NORTH);		
+		maintainancePanel.add(globalRefuelPanel, BorderLayout.CENTER);
+		maintainancePanel.add(globalShipRepairPanel, BorderLayout.SOUTH);		
 
 		return maintainancePanel;	
 	}
@@ -321,6 +315,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 						newMaxTeu -= data.getTotalTeu();
 						newMaxDwt -= data.getTotalDwt();
 						//TODO add fuel cotrol here and set new value
+						//TODO add point in the map where is the port
 					}
 
 					controlTeu.setValue(newMaxTeu); 

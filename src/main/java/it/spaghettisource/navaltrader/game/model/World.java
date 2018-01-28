@@ -10,6 +10,8 @@ public class World implements Entity {
 	private List<Port> ports;
 
 	public World() {
+		
+		//TODO implement configuration of the ports and the word
 		ports = new ArrayList<Port>();
 		
 		ports.add(new Port("porto A", 3000.0, 4, 1));
