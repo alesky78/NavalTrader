@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
+
 public class TransportContract {
 
 	private String id;
@@ -91,5 +93,14 @@ public class TransportContract {
 		this.destinationPort = destinationPort;
 	}
 
+	public boolean equals(Object obj){
+		if(obj==null){
+			return false;
+		}else if(!(obj instanceof TransportContract)){
+			return false;
+		}else{
+			return id.equals(((TransportContract)obj).getId());
+		}	
+	}	
 
 }

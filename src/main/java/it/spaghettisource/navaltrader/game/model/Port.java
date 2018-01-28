@@ -51,6 +51,21 @@ public class Port  implements Entity{
 	public List<TransportContract> getContracts() {
 		return contracts;
 	}
+	
+	public TransportContract removeContractById(String contractId) {
+		TransportContract selected = null;
+		for (TransportContract transportContract : contracts) {
+			if(transportContract.getId().equals(contractId)) {
+				selected = transportContract;
+			}
+		}
+		
+		if(selected!=null) {
+			contracts.remove(selected);			
+		}
+		return selected;
+	}
+		
 
 	public double getFuelPrice() {
 		return fuelPrice;	//TODO implement logic to calculate fuel price

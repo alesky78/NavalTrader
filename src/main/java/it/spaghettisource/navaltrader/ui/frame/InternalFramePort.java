@@ -4,9 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,6 +35,7 @@ import ca.odell.glazedlists.swing.EventTableModel;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Ship;
+import it.spaghettisource.navaltrader.game.model.TransportContract;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
@@ -42,7 +44,6 @@ import it.spaghettisource.navaltrader.ui.component.HullProgressBarField;
 import it.spaghettisource.navaltrader.ui.component.IntegerTextField;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 import it.spaghettisource.navaltrader.ui.model.TransportContractTableRow;
 
 public class InternalFramePort extends InternalFrameAbstract  implements ActionListener  {
@@ -56,6 +57,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 	private final static String ACTION_REFUEL = "refuel";
 	private final static String ACTION_REPAIR = "repair";	
+	private final static String ACTION_ACCEPT_CONTRACT = "accept contract";		
 
 	private String shipName;
 	private String portName;	
@@ -322,7 +324,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					}
 
 					controlTeu.setValue(newMaxTeu); 
-					controlDwt.setValue(newMaxDwt); 
+					controlDwt.setValue(newMaxDwt);
+					//controlFuel.setValue(XXXX); TODO set value for fuel cotrol 					
 
 				}catch (Exception e) {
 					log.error("error chosing contract", e);
@@ -354,7 +357,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		acceptedContractTable.setRowSelectionAllowed(false);
 
 		///////////////
-		//configure fuel used and speed
+		//configure fuel used and speed and accept contract
 		int startSpeed = 5;
 		JTextField selectedSpeed = new JTextField();
 		selectedSpeed.setText(startSpeed+"/"+ship.getMaxSpeed()+" nd");
@@ -372,16 +375,20 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 				}
 			}
 		});		
-		
+
+		JButton acceptContractButton = new JButton(ImageIconFactory.getForTab("/icon/investment.png"));
+		acceptContractButton.setActionCommand(ACTION_ACCEPT_CONTRACT);
+		acceptContractButton.addActionListener(this);
 
 		JPanel speedControlPanel = new JPanel(new SpringLayout());	
 		speedControlPanel.setBorder(BorderFactory.createTitledBorder("navigation speed"));		
 		speedControlPanel.add(new JLabel("speed selection"));		
 		speedControlPanel.add(selectedSpeed);		
 		speedControlPanel.add(sliderNavigationSpeed);	
-		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,1, 3,5, 5,5, 5);	
+		speedControlPanel.add(acceptContractButton);		
+		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,1, 4,5, 5,5, 5);	
 
-		//accepted contract and speed panels
+		//accepted contract and speed panels join
 		JPanel acceptedContractAndSelectSpeedPanel = new JPanel(new BorderLayout());
 		JScrollPane acceptedContract = new JScrollPane(acceptedContractTable);
 		acceptedContract.setBorder(BorderFactory.createTitledBorder("accepted contract"));	
@@ -419,6 +426,36 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			}else{
 				parentDesktopPane.showErrorMessageDialog("not enought money");
 			}
+		}else if(ACTION_ACCEPT_CONTRACT.equals(command)) {
+			//accept contract 
+			if(controlTeu.getValue()>=0 && controlDwt.getValue()>=0 && controlFuel.getValue()>=0) {
+				int[] selected = newContractTable.getSelectedRows();
+				TransportContractTableRow data;		
+				List<TransportContractTableRow> selectedContract = new ArrayList<TransportContractTableRow>();				
+				TransportContract contract;
+				for (int i = 0; i < selected.length; i++) {
+					data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
+					selectedContract.add(data);
+					contract = port.removeContractById(data.getId());
+					ship.addContract(contract);	
+					listAcceptedContractData.add(data);
+				}
+				
+				for (TransportContractTableRow transportContractTableRow : selectedContract) {
+					listNewContractData.remove(transportContractTableRow);
+				}
+				
+				int newMaxTeu = ship.getAcceptedTeu();
+				int newMaxDwt = ship.getAcceptedDwt();	
+				controlTeu.setValue(newMaxTeu); 
+				controlDwt.setValue(newMaxDwt);			
+				//controlFuel.setValue(XXXX); TODO set value for fuel cotrol 					
+				
+			}else {
+				parentDesktopPane.showErrorMessageDialog("the contract cannot be signed, not enought space or fuel");
+			}
+			
+
 		}
 
 	}
