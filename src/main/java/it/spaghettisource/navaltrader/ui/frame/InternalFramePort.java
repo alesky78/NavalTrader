@@ -345,17 +345,16 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		///////////////	
 		//accepted contract
-		
 		JTable acceptedContractTable;	
 		String[] propertyNames = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		String[] columnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		TableFormat<TransportContractTableRow> acceptedContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
+		TableFormat<TransportContractTableRow> acceptedContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		acceptedContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listAcceptedContractData, newContractTf));	
 		acceptedContractTable.setAutoCreateRowSorter(true);		
 		acceptedContractTable.setRowSelectionAllowed(false);
 
 		///////////////
-		//control of fuel and speed
+		//configure fuel used and speed
 		int startSpeed = 5;
 		JTextField selectedSpeed = new JTextField();
 		selectedSpeed.setText(startSpeed+"/"+ship.getMaxSpeed()+" nd");
@@ -368,7 +367,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 				JSlider source = (JSlider)e.getSource();
 				if (!source.getValueIsAdjusting()) {
 					selectedSpeed.setText(source.getValue()+"/"+ship.getMaxSpeed()+" nd");
-					//TODO modify the date to arrive to the ports in the table newContractTable					
+					//TODO modify the date to arrive to the ports in the table newContractTable	
+					//TODO modify the fuel used to arrive to the ports						
 				}
 			}
 		});		
