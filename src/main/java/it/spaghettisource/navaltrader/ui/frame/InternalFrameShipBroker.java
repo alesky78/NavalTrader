@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -123,6 +124,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		String[] columnLabels = new String[] { "class", "model", "price","operating Cost", "hull", "max Dwt",  "max Teu", "max Fuel", "max Speed"};
 		TableFormat<BuyShipTableRow> tf = GlazedLists.tableFormat(BuyShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<BuyShipTableRow>(listBuyShipData, tf));	
+		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);		
 		table.setAutoCreateRowSorter(true);			
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {
@@ -181,6 +183,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		String[] columnLabels = new String[] {  "name","class","model", "status", "price", "operatingCost", "hull", "actualDwt",   "actualTeu", "actualFuel"};
 		TableFormat<SellShipTableRow> tf = GlazedLists.tableFormat(SellShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<SellShipTableRow>(listSellShipData, tf));	
+		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);			
 		table.setAutoCreateRowSorter(true);			
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -86,6 +87,7 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		String[] columnLabels = new String[] { "name", "class", "model", "port", "status", "operating Cost", "hull", "actual Dwt",  "actual Teu","actual Fuel"};
 		TableFormat<ShipListTableRow> tf = GlazedLists.tableFormat(ShipListTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<ShipListTableRow>(listShipData, tf));
+		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);			
 		table.setAutoCreateRowSorter(true);			
 		table.getColumnModel().getColumn(6).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
 
