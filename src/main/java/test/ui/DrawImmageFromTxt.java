@@ -29,7 +29,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */ 
 
-package test;
+package test.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
