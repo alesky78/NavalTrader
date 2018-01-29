@@ -45,38 +45,33 @@ public class Grid {
 		return grid[x][y];
 	}
 	
-
-	public List<Cell> getAdjacentcells(Cell actualCell) {
-
+	
+	public List<Cell> getAdjacentcells(Cell actualCell, boolean allowDiagonal){
 		List<Cell> adjacent = new ArrayList<Cell>();
+		int x = actualCell.getX();
+		int y = actualCell.getY();
 		
-		//check up
-		if(actualCell.getY()>0 && actualCell.getY()<size) {
-			adjacent.add(grid[actualCell.getX()][actualCell.getY()-1]);
-		}
-		
-		//check down
-		if(actualCell.getY()>=0 && actualCell.getY()<size-1) {
-			adjacent.add(grid[actualCell.getX()][actualCell.getY()+1]);
-		}		
-		
-		//check left
-		if(actualCell.getX()>0 && actualCell.getX()<size) {
-			adjacent.add(grid[actualCell.getX()-1][actualCell.getY()]);
-		}
+		for (int i = x - 1; i <= x + 1; i++) {
+			for (int j = y - 1; j <= y + 1; j++) {
+				if ((i == x && j == y) || i < 0 || j < 0 || j >= size|| i >=size) {
+					continue;
+				}
 
-		//check right
-		if(actualCell.getX()>=0 && actualCell.getX()<size-1) {
-			adjacent.add(grid[actualCell.getX()+1][actualCell.getY()]);
-		}
+				if (!allowDiagonal && ((i < x && j < y) || (i > x && j > y) || (i > x && j < y) || (i < x && j > y))) {
+					continue;
+				}
 
+				adjacent.add(grid[i][j]);
+			}
+		}
+		
 		return adjacent;
 	}
 	
 	
-	public List<Cell> getAdjacentcellsNotVisited(Cell actualCell) {
+	public List<Cell> getAdjacentcellsNotVisited(Cell actualCell, boolean allowDiagonal) {
 		List<Cell> cells = new LinkedList<Cell>();  
-		for (Cell cell : getAdjacentcells(actualCell)) {
+		for (Cell cell : getAdjacentcells(actualCell,allowDiagonal)) {
 			if(!cell.isVisited()) {
 				cells.add(cell);
 			}

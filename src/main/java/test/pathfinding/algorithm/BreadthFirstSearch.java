@@ -31,7 +31,10 @@ public class BreadthFirstSearch {
 
 	public List<Cell> search(Grid grid, Cell start, Cell end) {
 		
+		boolean allowDiagonal = false;
+		
 		boolean found = false;
+		
 		int indexCounter = 0;
 		int totalCell = grid.totalCell();
 
@@ -58,7 +61,7 @@ public class BreadthFirstSearch {
 			if(actualCell.equals(start)) {
 				found = true;
 			}else {
-				newCell = grid.getAdjacentcellsNotVisited(actualCell);
+				newCell = grid.getAdjacentcellsNotVisited(actualCell,allowDiagonal);
 				for (Cell cell : newCell) {
 					cell.setVisited(true);
 					cell.setStep(actualCell.getStep()+1);						
@@ -73,7 +76,7 @@ public class BreadthFirstSearch {
 		if(found) { //crete reverse path
 			foundPath.add(actualCell);	//in this moment actualCell is valorized with the start node because found = true
 			for (int i = actualCell.getStep()-1; i >= 0; i--) {
-				newCell = grid.getAdjacentcells(actualCell);
+				newCell = grid.getAdjacentcells(actualCell,allowDiagonal);
 				for (Cell cell : newCell) {
 					if(cell.getStep()==i) {
 						foundPath.add(cell);

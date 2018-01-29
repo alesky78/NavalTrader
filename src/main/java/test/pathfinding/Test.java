@@ -13,7 +13,7 @@ public class Test {
 	
 	public static void main(String[] args) {
 		
-		int gridSize = 4000;
+		int gridSize = 4000 ;
 		
 		Grid grid = new Grid(gridSize);
 		
