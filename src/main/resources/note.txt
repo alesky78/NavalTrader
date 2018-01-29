@@ -1,8 +1,14 @@
+#######################
 path finding alghoritm
+
+--spiegazione
 https://www.raywenderlich.com/4946/introduction-to-a-pathfinding
 
+https://github.com/Ohohcakester?tab=overview&from=2017-12-01&to=2017-12-31	--> qui ci sono implementazioni java e forse rappresentazione
+https://github.com/aseber/PathFindingVisualization
 
 
+#######################
 container ship info
 http://www.dizionariologistica.com/index.html
 private String shipClass; --> PANAMAX ETC....	
