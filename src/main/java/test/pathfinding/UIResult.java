@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import test.pathfinding.algorithm.PathFinding;
+import test.pathfinding.algorithm.BreadthFirstSearch;
 
 public class UIResult  extends JPanel {
 
@@ -81,7 +81,7 @@ public class UIResult  extends JPanel {
 		
 		int gridSize = 100;
 		Grid grid = new Grid(gridSize);
-		PathFinding finder = new PathFinding();
+		BreadthFirstSearch finder = new BreadthFirstSearch();
 		double start  = System.currentTimeMillis();
 		List<Cell> path = finder.search(grid, new Cell(0, 0), new Cell(gridSize-1, gridSize-1));
 		double end  = System.currentTimeMillis();

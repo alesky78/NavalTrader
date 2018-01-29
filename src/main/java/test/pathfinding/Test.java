@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import test.pathfinding.algorithm.PathFinding;
+import test.pathfinding.algorithm.BreadthFirstSearch;
 
 public class Test {
 
@@ -17,7 +17,7 @@ public class Test {
 		
 		Grid grid = new Grid(gridSize);
 		
-		PathFinding finder = new PathFinding();
+		BreadthFirstSearch finder = new BreadthFirstSearch();
 		
 		double start  = System.currentTimeMillis();
 		

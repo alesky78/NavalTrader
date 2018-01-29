@@ -16,13 +16,13 @@ import test.pathfinding.Grid;
  * @author Alessandro
  *
  */
-public class PathFinding {
+public class BreadthFirstSearch {
 	
-	static Log log = LogFactory.getLog(PathFinding.class.getName());
+	static Log log = LogFactory.getLog(BreadthFirstSearch.class.getName());
 	
 	private List<Cell> open;
 	
-	public PathFinding() {
+	public BreadthFirstSearch() {
 		super();
 		open = new ArrayList<Cell>();
 	}
