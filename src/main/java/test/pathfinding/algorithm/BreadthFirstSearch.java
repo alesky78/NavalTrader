@@ -36,7 +36,7 @@ public class BreadthFirstSearch  implements PathFinding {
 		boolean found = false;
 		
 		int indexCounter = 0;
-		int totalCell = grid.totalCell();
+		int totalCell = grid.getTotalCell();
 
 		
 		Cell startCell = grid.getCell(end.getX(), end.getY());

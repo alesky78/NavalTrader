@@ -133,14 +133,14 @@ public class DrawImmageFromTxt {
 		//Create and set up the window.
 		JFrame frame = new JFrame("draw immage by txt demo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		frame.setSize(200, 200);
+		
 		DrawImmageFromTxt splitPaneDemo = new DrawImmageFromTxt();
 
 
 		frame.getContentPane().add(splitPaneDemo.createPanel());
 
 		//Display the window.
-		frame.pack();
 		frame.setVisible(true);
 	}
 

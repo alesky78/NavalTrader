@@ -11,6 +11,14 @@ https://github.com/Ohohcakester?tab=overview&from=2017-12-01&to=2017-12-31	--> q
 https://github.com/aseber/PathFindingVisualization
 
 
+
+#####################
+buffered strategy in java
+https://docs.oracle.com/javase/6/docs/api/java/awt/image/BufferStrategy.html
+http://www.cokeandcode.com/info/tut2d.html   --> exaplin whell the strategy
+https://www.codeproject.com/Articles/2136/Double-buffer-in-standard-Java-AWT
+
+
 #######################
 container ship info
 http://www.dizionariologistica.com/index.html

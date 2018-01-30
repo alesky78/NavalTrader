@@ -29,7 +29,12 @@ public class Grid {
 		totalCell = size*size;
 	}
 	
-	public int totalCell() {
+		
+	public int getSize() {
+		return size;
+	}
+
+	public int getTotalCell() {
 		return totalCell;
 	}
 	
