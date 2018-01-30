@@ -25,8 +25,11 @@ public class Cell implements Comparable<Cell>{
 	}
 	
 	public void reset() {
-		step = 0;
-		visited = false;	
+		this.step = 0;
+		gCosts = 0;
+		hCosts = 0;		
+		visited = false;
+		open = false;
 	}
 
 	public int getX() {

@@ -6,7 +6,7 @@ import test.ui.DrawImmageFromTxt;
 
 public class App {
 
-	static int INITIAL_SIZE = 1000;
+	static int INITIAL_SIZE = 500;
 	
 	public static void main(String[] args) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

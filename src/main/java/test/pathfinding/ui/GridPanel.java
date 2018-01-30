@@ -6,12 +6,15 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import test.pathfinding.Cell;
 import test.pathfinding.Grid;
 
 public class GridPanel extends JPanel {
@@ -20,12 +23,14 @@ public class GridPanel extends JPanel {
 	
 	private Grid grid;
 	private int size;
+	private List<Cell> path;
 
 
 	public GridPanel(Grid grid,int size){
 		super();
 		this.grid = grid;
 		this.size = size;
+		path = new LinkedList<Cell>();
 	}
 
 	public void paintComponent(Graphics g) {
@@ -38,6 +43,10 @@ public class GridPanel extends JPanel {
 		return new Dimension(size, size);
 	}
 
+	public void setPath(List<Cell> path){
+		this.path = path;
+		repaint();
+	}
 	
 	private void paintGrid(Graphics g) {
 
@@ -55,11 +64,20 @@ public class GridPanel extends JPanel {
 
 		float windowX = 0;
 		float windowY = 0;
-		
-		g2d.setColor(Color.BLACK);
+
+		Cell cell;
 		
 		for (int x = 0; x < grid.getSize(); x++) {
 			for (int y = 0; y < grid.getSize(); y++) {
+				
+				cell = grid.getCell(x, y);
+				
+				if(cell.isVisited()){
+					g2d.setColor(Color.RED);					
+				    g2d.fillRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);
+				}
+				
+				g2d.setColor(Color.BLACK);
 				g2d.drawRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);			
 				windowY = windowY + cellHeight;
 			}		
@@ -67,8 +85,14 @@ public class GridPanel extends JPanel {
 			windowY = 0;			
 		}
 		
-		log.info("window size:"+getWidth()+"/"+getHeight()+" deaw size:"+(grid.getSize()-1)*cellWidth+"/"+(grid.getSize()-1)*cellHeight);
+		//draw teh path
+		for (Cell cellPath : path) {
+			g2d.setColor(Color.BLUE);			
+			g2d.fillRect((int)(cellPath.getX()*cellWidth), (int)(cellPath.getY()*cellHeight), (int)cellWidth, (int)cellHeight);	
+			
+		}
 		
+				
 		
 		g.drawImage(bufferedImage,0,0,getWidth(),getHeight(),0,0,bufferedImage.getWidth(),bufferedImage.getHeight(),null);		
 	}

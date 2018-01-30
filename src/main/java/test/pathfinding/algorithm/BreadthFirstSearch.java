@@ -53,10 +53,6 @@ public class BreadthFirstSearch  implements PathFinding {
 			
 			actualCell = open.get(indexCounter);
 			indexCounter++;			
-//			if(indexCounter%1000==0) {
-//				log.debug("ceck:"+indexCounter+" of "+totalCell);				
-//			}
-			
 			
 			if(actualCell.equals(start)) {
 				found = true;
