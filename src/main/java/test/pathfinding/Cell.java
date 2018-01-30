@@ -3,8 +3,9 @@ package test.pathfinding;
 public class Cell implements Comparable<Cell>{
 
 	private int x,y;
-	private int step;
-	boolean visited;
+	private int step;	//for BreadthFirstSearch
+	
+	boolean visited;	//both A star and BreadthFirstSearch
 
 	//for A star
 	private Cell previous;
