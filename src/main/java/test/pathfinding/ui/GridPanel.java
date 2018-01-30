@@ -20,17 +20,19 @@ import test.pathfinding.Grid;
 public class GridPanel extends JPanel {
 
 	static Log log = LogFactory.getLog(GridPanel.class.getName());
-	
+
 	private Grid grid;
 	private int size;
 	private List<Cell> path;
-
+	private Cell startCell;
+	private Cell endCell;		
 
 	public GridPanel(Grid grid,int size){
 		super();
 		this.grid = grid;
 		this.size = size;
 		path = new LinkedList<Cell>();
+
 	}
 
 	public void paintComponent(Graphics g) {
@@ -47,17 +49,34 @@ public class GridPanel extends JPanel {
 		this.path = path;
 		repaint();
 	}
-	
+
+	public void setStartCell(Cell startCell) {
+		this.startCell = startCell;
+		repaint();		
+	}
+
+	public void setEndCell(Cell endCell) {
+		this.endCell = endCell;
+		repaint();		
+	}
+
+
+	public Cell getCellByScreenCoordinate(int x,int y){
+		float cellWidth = getWidth()/(float)grid.getSize();
+		float cellHeight = getHeight()/(float)grid.getSize();		
+		return grid.getCell((int)(x/cellWidth), (int)(y/cellHeight));
+	}
+
 	private void paintGrid(Graphics g) {
 
 		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-	    Graphics2D g2d = bufferedImage.createGraphics();
-	    g2d.setStroke(new BasicStroke(0.1f));
-	    
-	    g2d.setColor(Color.WHITE);	    
-	    g2d.fillRect(0, 0, getWidth(), getHeight());
-	    
-	    
+		Graphics2D g2d = bufferedImage.createGraphics();
+		g2d.setStroke(new BasicStroke(0.1f));
+
+		g2d.setColor(Color.WHITE);	    
+		g2d.fillRect(0, 0, getWidth(), getHeight());
+
+
 		float cellWidth = getWidth()/(float)grid.getSize();
 		float cellHeight = getHeight()/(float)grid.getSize();
 		log.info("cellWidth:"+cellWidth+" cellHeight:"+cellHeight);		
@@ -66,17 +85,17 @@ public class GridPanel extends JPanel {
 		float windowY = 0;
 
 		Cell cell;
-		
+
 		for (int x = 0; x < grid.getSize(); x++) {
 			for (int y = 0; y < grid.getSize(); y++) {
-				
+
 				cell = grid.getCell(x, y);
-				
+
 				if(cell.isVisited()){
 					g2d.setColor(Color.RED);					
-				    g2d.fillRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);
+					g2d.fillRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);
 				}
-				
+
 				g2d.setColor(Color.BLACK);
 				g2d.drawRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);			
 				windowY = windowY + cellHeight;
@@ -84,16 +103,30 @@ public class GridPanel extends JPanel {
 			windowX = windowX + cellWidth;		
 			windowY = 0;			
 		}
-		
-		//draw teh path
-		for (Cell cellPath : path) {
-			g2d.setColor(Color.BLUE);			
-			g2d.fillRect((int)(cellPath.getX()*cellWidth), (int)(cellPath.getY()*cellHeight), (int)cellWidth, (int)cellHeight);	
-			
+
+
+		//draw found path
+		if(path!=null && !path.isEmpty()){
+			for (Cell cellPath : path) {
+				g2d.setColor(Color.BLUE);			
+				g2d.fillRect((int)(cellPath.getX()*cellWidth), (int)(cellPath.getY()*cellHeight), (int)cellWidth, (int)cellHeight);	
+			}			
 		}
-		
-				
-		
+
+		//draw strat end point path
+		if(startCell!=null){
+			g2d.setColor(Color.GREEN);			
+			g2d.fillRect((int)(startCell.getX()*cellWidth), (int)(startCell.getY()*cellHeight), (int)cellWidth, (int)cellHeight);	
+		}
+
+		if(endCell!=null){
+			g2d.setColor(Color.ORANGE);			
+			g2d.fillRect((int)(endCell.getX()*cellWidth), (int)(endCell.getY()*cellHeight), (int)cellWidth, (int)cellHeight);	
+
+		}		
+
+
+
 		g.drawImage(bufferedImage,0,0,getWidth(),getHeight(),0,0,bufferedImage.getWidth(),bufferedImage.getHeight(),null);		
 	}
 

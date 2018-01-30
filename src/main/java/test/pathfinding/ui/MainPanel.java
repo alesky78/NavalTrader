@@ -23,7 +23,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 	static Log log = LogFactory.getLog(MainPanel.class.getName());
 
-	private JComboBox algorithmsList;
+	private JComboBox<String> algorithmsList;
 
 	private GridPanel gridPanel;
 	private Grid grid;
@@ -32,14 +32,21 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private String ACTION_RESET = "ACTION_RESET";
 	private String ACTION_START = "ACTION_START";
 
-
-
 	private String[] algorithms = { "AStar", "BreadthFirstSearch"};
+
+	private Cell startCell;
+	private Cell endCell;	
 
 	public MainPanel(int size) {
 		super();
 		setSize(size, size);
 		setLayout(new BorderLayout());
+		setFocusable(true);
+
+		UserActionListener listener = new UserActionListener(this); 
+
+		addMouseListener(listener);
+		addKeyListener(listener);
 
 		//initialize the grid
 		gridSize = size/10;
@@ -60,7 +67,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		buttonStart.setActionCommand(ACTION_START);		
 		buttonStart.addActionListener(this);
 
-		algorithmsList = new JComboBox(algorithms);
+		algorithmsList = new JComboBox<String>(algorithms);
 
 		controlPanel.add(buttonResetGrid);
 		controlPanel.add(buttonStart);		
@@ -72,6 +79,17 @@ public class MainPanel extends JPanel  implements ActionListener{
 	}
 
 
+	public void setStartPoint(int x,int y){
+		startCell = gridPanel.getCellByScreenCoordinate(x, y);
+		gridPanel.setStartCell(startCell);
+	}
+
+	public void setEndPoint(int x,int y){
+		endCell = gridPanel.getCellByScreenCoordinate(x, y);
+		gridPanel.setEndCell(endCell);	
+	}
+
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
@@ -79,7 +97,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 			grid.resetCells();
 			gridPanel.setPath(new ArrayList<Cell>());
 		}else if(ACTION_START.equals(command)){
-	
+
 			String algorithm = (String)algorithmsList.getSelectedItem();
 			PathFinding finder = null;
 			if(algorithm.equals("AStar")){
@@ -88,11 +106,17 @@ public class MainPanel extends JPanel  implements ActionListener{
 				finder = new BreadthFirstSearch();
 			}
 
-			List<Cell> path = finder.search(grid, new Cell(gridSize/2, gridSize/2), new Cell(gridSize-1, gridSize-1));
+			List<Cell> path = finder.search(grid, startCell, endCell);
 			gridPanel.setPath(path);
 		}
+		
+		requestFocus();
 
 	}
+
+
+
+
 
 
 
