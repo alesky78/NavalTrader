@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 
 import test.pathfinding.algorithm.AStar;
 import test.pathfinding.algorithm.BreadthFirstSearch;
+import test.pathfinding.algorithm.PathFinding;
 
 public class Test {
 
@@ -14,22 +15,36 @@ public class Test {
 	
 	public static void main(String[] args) {
 		
-		int gridSize = 7000;
-		
+		int gridSize = 5000;	//max size of the word in miles is 12000 ps out of memory????
+
+		double start  = System.currentTimeMillis();
 		Grid grid = new Grid(gridSize);
+		double end  = System.currentTimeMillis();		
+		log.info("total create grid seconds:"+(end-start)/1000);		
 		
-		grid.resetCells();
+		resetGrid(grid);
+		stratAStar(gridSize, grid);		
+		
+		resetGrid(grid);
 		stratBreadthFirstSearch(gridSize, grid);
 		
-		grid.resetCells();
-		stratAStar(gridSize, grid);
+
 		
 		
 	}
 
+	private static void resetGrid(Grid grid) {
+		double start;
+		double end;
+		start  = System.currentTimeMillis();
+		grid.resetCells();
+		end  = System.currentTimeMillis();		
+		log.info("total reset time seconds:"+(end-start)/1000);
+	}
+
 	private static void stratBreadthFirstSearch(int gridSize, Grid grid) {
 		log.info("strat BreadthFirstSearch");
-		BreadthFirstSearch finder = new BreadthFirstSearch();
+		PathFinding finder = new BreadthFirstSearch();
 		
 		double start  = System.currentTimeMillis();
 		
@@ -46,7 +61,7 @@ public class Test {
 	
 	private static void stratAStar(int gridSize, Grid grid) {
 		log.info("strat AStar");		
-		AStar finder = new AStar();
+		PathFinding finder = new AStar();
 		
 		double start  = System.currentTimeMillis();
 		

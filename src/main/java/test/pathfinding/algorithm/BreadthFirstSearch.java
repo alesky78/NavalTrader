@@ -16,7 +16,7 @@ import test.pathfinding.Grid;
  * @author Alessandro
  *
  */
-public class BreadthFirstSearch {
+public class BreadthFirstSearch  implements PathFinding {
 	
 	static Log log = LogFactory.getLog(BreadthFirstSearch.class.getName());
 	

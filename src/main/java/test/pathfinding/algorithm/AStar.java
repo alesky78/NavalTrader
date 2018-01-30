@@ -17,7 +17,7 @@ import test.pathfinding.Grid;
  * @author Alessandro
  *
  */
-public class AStar {
+public class AStar implements PathFinding {
 
 	static Log log = LogFactory.getLog(AStar.class.getName());
 
