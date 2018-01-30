@@ -4,11 +4,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class UserActionListener  implements MouseListener, KeyListener {
+public class UserActionListener  implements MouseListener, MouseMotionListener,KeyListener {
 
 	static Log log = LogFactory.getLog(UserActionListener.class.getName());
 
@@ -16,8 +17,8 @@ public class UserActionListener  implements MouseListener, KeyListener {
 	private boolean keyControlDown;	
 	private MainPanel panel;
 
-	
-	
+
+
 	public UserActionListener(MainPanel panel) {
 		super();
 		this.panel = panel;
@@ -43,8 +44,19 @@ public class UserActionListener  implements MouseListener, KeyListener {
 				panel.removeWall(mouseX,mouseY);
 			}
 		}	
-
 	}	
+
+	@Override
+	public void mouseDragged(MouseEvent event) {
+		int mouseX = event.getX();
+		int mouseY = event.getY();				
+		
+		if (keyControlDown) {
+			panel.addWall(mouseX,mouseY);
+		}else if (!keyControlDown) {
+			panel.removeWall(mouseX,mouseY);
+		}
+	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
@@ -87,6 +99,13 @@ public class UserActionListener  implements MouseListener, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
+
+	}
+
+
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
 
 	}
 

@@ -40,12 +40,14 @@ public class MainPanel extends JPanel  implements ActionListener{
 	public MainPanel(int size) {
 		super();
 		setSize(size, size);
+		
 		setLayout(new BorderLayout());
 		setFocusable(true);
 
 		UserActionListener listener = new UserActionListener(this); 
 
 		addMouseListener(listener);
+		addMouseMotionListener(listener);		
 		addKeyListener(listener);
 
 		//initialize the grid
@@ -68,6 +70,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		buttonStart.addActionListener(this);
 
 		algorithmsList = new JComboBox<String>(algorithms);
+		algorithmsList.addActionListener(this);
 
 		controlPanel.add(buttonResetGrid);
 		controlPanel.add(buttonStart);		
@@ -104,7 +107,6 @@ public class MainPanel extends JPanel  implements ActionListener{
 			grid.resetCells();
 			gridPanel.setPath(new ArrayList<Cell>());
 		}else if(ACTION_START.equals(command)){
-
 			String algorithm = (String)algorithmsList.getSelectedItem();
 			PathFinding finder = null;
 			if(algorithm.equals("AStar")){
