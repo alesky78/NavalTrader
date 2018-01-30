@@ -6,12 +6,21 @@ public class Cell implements Comparable<Cell>{
 	private int step;
 	boolean visited;
 
+	//for A star
+	private Cell previous;
+    private int gCosts;
+    private int hCosts;	
+    private boolean open;    
+	
 	public Cell(int x, int y) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.step = 0;
+		gCosts = 0;
+		hCosts = 0;		
 		visited = false;
+		open = false;
 	}
 	
 	public void reset() {
@@ -42,6 +51,14 @@ public class Cell implements Comparable<Cell>{
 	public void setVisited(boolean visited) {
 		this.visited = visited;
 	}
+	
+	public boolean isOpen() {
+		return open;
+	}
+
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
 
 	public int getStep() {
 		return step;
@@ -51,12 +68,47 @@ public class Cell implements Comparable<Cell>{
 		this.step = step;
 	}
 
+	public Cell getPrevious() {
+		return previous;
+	}
+
+	public void setPrevious(Cell previous) {
+		this.previous = previous;
+	}
+
+	public int getgCosts() {
+		return gCosts;
+	}
+
+	public void setgCosts(int gCosts) {
+		this.gCosts = gCosts;
+	}
+
+	public int gethCosts() {
+		return hCosts;
+	}
+	
+    public void sethCosts(int hCosts) {
+		this.hCosts = hCosts;
+	}
+
+	public void calculatehCosts(Cell cell) {
+        this.sethCosts((absolute(x - cell.x) + absolute(y - cell.y)));
+    }
+
+    public int getfCosts() {
+        return gCosts + hCosts;
+    }
+	
+    private int absolute(int a) {
+        return a > 0 ? a : -a;
+    }
+    
 	/**
-	 * less step is grather that high step
-	 * 
+	 * less is f more is good the node
 	 */
 	public int compareTo(Cell o) {
-		return -1 * (step - o.step);			
+		return  getfCosts() - o.getfCosts();			
 
 	}
 	
@@ -65,7 +117,7 @@ public class Cell implements Comparable<Cell>{
 	}
 	
 	public String toString() {
-		return "x:"+x+" y:"+y+" step:"+step;
+		return "{x:"+x+" y:"+y+" step:"+step +" f:"+getfCosts()+" g:"+getgCosts()+" h:"+gethCosts()+"}";
 	}
 
 

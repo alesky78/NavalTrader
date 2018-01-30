@@ -49,13 +49,13 @@ public class BreadthFirstSearch {
 		List<Cell> newCell;		
 			
 		
-		while(!found || indexCounter < totalCell) {
+		while(!found && indexCounter < totalCell) {
 			
 			actualCell = open.get(indexCounter);
 			indexCounter++;			
-			if(indexCounter%1000==0) {
-				log.debug("ceck:"+indexCounter+" of "+totalCell);				
-			}
+//			if(indexCounter%1000==0) {
+//				log.debug("ceck:"+indexCounter+" of "+totalCell);				
+//			}
 			
 			
 			if(actualCell.equals(start)) {
