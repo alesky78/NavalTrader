@@ -50,23 +50,42 @@ public class GridPanel extends JPanel {
 		repaint();
 	}
 
-	public void setStartCell(Cell startCell) {
-		this.startCell = startCell;
-		repaint();		
+	public Cell setStartCellByScreenCoordinate(int x,int y) {
+		startCell = getCellByScreenCoordinate(x, y);
+		repaint();	
+		return startCell;
 	}
 
-	public void setEndCell(Cell endCell) {
-		this.endCell = endCell;
-		repaint();		
+	public Cell setEndCellByScreenCoordinate(int x,int y) {
+		endCell = getCellByScreenCoordinate(x, y);
+		repaint();
+		return endCell;		
 	}
+	
+	public Cell addWallByScreenCoordinate(int x,int y) {
+		Cell wall = getCellByScreenCoordinate(x, y);
+		wall.setWall(true);
+		repaint();
+		return endCell;		
+	}	
 
+	public Cell removeWallByScreenCoordinate(int x, int y) {
+		Cell wall = getCellByScreenCoordinate(x, y);
+		wall.setWall(false);
+		repaint();
+		return endCell;	
+	}	
 
-	public Cell getCellByScreenCoordinate(int x,int y){
+	
+	private Cell getCellByScreenCoordinate(int x,int y){
 		float cellWidth = getWidth()/(float)grid.getSize();
 		float cellHeight = getHeight()/(float)grid.getSize();		
 		return grid.getCell((int)(x/cellWidth), (int)(y/cellHeight));
 	}
 
+
+
+	
 	private void paintGrid(Graphics g) {
 
 		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -75,7 +94,6 @@ public class GridPanel extends JPanel {
 
 		g2d.setColor(Color.WHITE);	    
 		g2d.fillRect(0, 0, getWidth(), getHeight());
-
 
 		float cellWidth = getWidth()/(float)grid.getSize();
 		float cellHeight = getHeight()/(float)grid.getSize();
@@ -93,6 +111,9 @@ public class GridPanel extends JPanel {
 
 				if(cell.isVisited()){
 					g2d.setColor(Color.RED);					
+					g2d.fillRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);
+				}else if(cell.isWall()){
+					g2d.setColor(Color.BLACK);
 					g2d.fillRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);
 				}
 
@@ -129,5 +150,7 @@ public class GridPanel extends JPanel {
 
 		g.drawImage(bufferedImage,0,0,getWidth(),getHeight(),0,0,bufferedImage.getWidth(),bufferedImage.getHeight(),null);		
 	}
+
+
 
 }

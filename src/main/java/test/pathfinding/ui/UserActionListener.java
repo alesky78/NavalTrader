@@ -13,6 +13,7 @@ public class UserActionListener  implements MouseListener, KeyListener {
 	static Log log = LogFactory.getLog(UserActionListener.class.getName());
 
 	private boolean keyShiftDown;
+	private boolean keyControlDown;	
 	private MainPanel panel;
 
 	
@@ -28,14 +29,18 @@ public class UserActionListener  implements MouseListener, KeyListener {
 		int mouseY = event.getY();
 
 		if (event.getButton() == MouseEvent.BUTTON1) {
+			log.info("BUTTON1 x:"+mouseX+" y:"+mouseY);
 			if (keyShiftDown) {
 				panel.setStartPoint(mouseX,mouseY);
-				log.info("BUTTON1 x:"+mouseX+" y:"+mouseY);
+			}else if (keyControlDown) {
+				panel.addWall(mouseX,mouseY);
 			}
 		}else if(event.getButton() == MouseEvent.BUTTON3) {
+			log.info("BUTTON3 x:"+mouseX+" y:"+mouseY);			
 			if (keyShiftDown) {
 				panel.setEndPoint(mouseX,mouseY);				
-				log.info("BUTTON3 x:"+mouseX+" y:"+mouseY);
+			}else if (keyControlDown) {
+				panel.removeWall(mouseX,mouseY);
 			}
 		}	
 
@@ -65,7 +70,9 @@ public class UserActionListener  implements MouseListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 			keyShiftDown = true;	
-		}	
+		}else if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+			keyControlDown = true;	
+		} 	
 
 	}
 
@@ -73,7 +80,9 @@ public class UserActionListener  implements MouseListener, KeyListener {
 	public void keyReleased(KeyEvent e) {	
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 			keyShiftDown = false;		
-		}	
+		}else if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+			keyControlDown = false;	
+		} 		
 	}
 
 	@Override

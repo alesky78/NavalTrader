@@ -80,16 +80,23 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 
 	public void setStartPoint(int x,int y){
-		startCell = gridPanel.getCellByScreenCoordinate(x, y);
-		gridPanel.setStartCell(startCell);
+		startCell = gridPanel.setStartCellByScreenCoordinate(x, y);
 	}
 
 	public void setEndPoint(int x,int y){
-		endCell = gridPanel.getCellByScreenCoordinate(x, y);
-		gridPanel.setEndCell(endCell);	
+		endCell = gridPanel.setEndCellByScreenCoordinate(x, y);	
+	}
+
+	public void addWall(int x, int y) {
+		gridPanel.addWallByScreenCoordinate(x, y);
 	}
 
 
+	public void removeWall(int x, int y) {
+		gridPanel.removeWallByScreenCoordinate(x, y);
+	}
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
@@ -113,6 +120,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 		requestFocus();
 
 	}
+
+
+
 
 
 

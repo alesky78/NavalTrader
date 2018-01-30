@@ -11,7 +11,9 @@ public class Cell implements Comparable<Cell>{
 	private Cell previous;
     private int gCosts;
     private int hCosts;	
-    private boolean open;    
+    private boolean open;
+
+    private boolean wall;	//a wall cell will be not returned as adjacent becouse cannot be used    
 	
 	public Cell(int x, int y) {
 		super();
@@ -22,6 +24,7 @@ public class Cell implements Comparable<Cell>{
 		hCosts = 0;		
 		visited = false;
 		open = false;
+		wall = false;
 	}
 	
 	public void reset() {
@@ -30,6 +33,7 @@ public class Cell implements Comparable<Cell>{
 		hCosts = 0;		
 		visited = false;
 		open = false;
+		wall = false;		
 	}
 
 	public int getX() {
@@ -50,6 +54,14 @@ public class Cell implements Comparable<Cell>{
 
 	public boolean isVisited() {
 		return visited;
+	}
+	
+	public boolean isWall() {
+		return wall;
+	}
+
+	public void setWall(boolean wall) {
+		this.wall = wall;
 	}
 
 	public void setVisited(boolean visited) {

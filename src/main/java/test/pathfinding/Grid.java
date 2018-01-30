@@ -65,8 +65,11 @@ public class Grid {
 				if (!allowDiagonal && ((i < x && j < y) || (i > x && j > y) || (i > x && j < y) || (i < x && j > y))) {
 					continue;
 				}
+				
+				if(!grid[i][j].isWall()){
+					adjacent.add(grid[i][j]);					
+				}
 
-				adjacent.add(grid[i][j]);
 			}
 		}
 		
