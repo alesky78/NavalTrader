@@ -17,6 +17,7 @@ import test.pathfinding.Cell;
 import test.pathfinding.Grid;
 import test.pathfinding.algorithm.AStar;
 import test.pathfinding.algorithm.BreadthFirstSearch;
+import test.pathfinding.algorithm.Dijkstra;
 import test.pathfinding.algorithm.PathFinding;
 
 public class MainPanel extends JPanel  implements ActionListener{
@@ -32,7 +33,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private String ACTION_RESET = "ACTION_RESET";
 	private String ACTION_START = "ACTION_START";
 
-	private String[] algorithms = { "AStar", "BreadthFirstSearch"};
+	private String[] algorithms = { "AStar", "BreadthFirstSearch", "Dijkstra"};
 
 	private Cell startCell;
 	private Cell endCell;	
@@ -109,11 +110,15 @@ public class MainPanel extends JPanel  implements ActionListener{
 		}else if(ACTION_START.equals(command)){
 			String algorithm = (String)algorithmsList.getSelectedItem();
 			PathFinding finder = null;
+			
 			if(algorithm.equals("AStar")){
 				finder = new AStar();
 			}else if(algorithm.equals("BreadthFirstSearch")){
 				finder = new BreadthFirstSearch();
+			}else if(algorithm.equals("Dijkstra")){
+				finder = new Dijkstra();
 			}
+				
 
 			List<Cell> path = finder.search(grid, startCell, endCell);
 			gridPanel.setPath(path);

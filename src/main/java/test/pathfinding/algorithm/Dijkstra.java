@@ -11,19 +11,23 @@ import test.pathfinding.Cell;
 import test.pathfinding.Grid;
 
 /**
- * simple algorithm 
+ * Dijkstra algorithm 
+ * 
+ * special case of A star that doesn't consider heuristic to evaluate the node
+ * but only the cost from the start node to the node where is arrived
+ * 
  * 
  * 
  * @author Alessandro
  *
  */
-public class AStar implements PathFinding {
+public class Dijkstra implements PathFinding {
 
-	static Log log = LogFactory.getLog(AStar.class.getName());
+	static Log log = LogFactory.getLog(Dijkstra.class.getName());
 
 	private PriorityQueue<Cell> open;
 
-	public AStar() {
+	public Dijkstra() {
 		super();
 		open = new PriorityQueue<Cell>();
 	}
@@ -38,7 +42,7 @@ public class AStar implements PathFinding {
 		Cell actualCell = grid.getCell(start.getX(), start.getY());
 		actualCell.setVisited(true);
 		actualCell.setOpen(true);
-		actualCell.calculatehCosts(end); 			
+		//actualCell.calculatehCosts(end); 			
 		open.add(actualCell);	//start from first node
 
 		while (!finish) {
@@ -54,12 +58,12 @@ public class AStar implements PathFinding {
 			for (Cell cell : adjacentNodes) {
 				if(!cell.isOpen()) {
 					cell.setPrevious(actualCell); 				// set current node as previous for this node
-					cell.calculatehCosts(end); 					// set h costs of this node (estimated costs to goal)
+					//cell.calculatehCosts(end); 				// set h costs of this node (estimated costs to goal)
 					cell.calculategCosts(actualCell); 			// set g costs of this node (costs from start to this node)
 					cell.setOpen(true);							//set node open		
 					open.add(cell);								// add node to openList
 				} else { // node is in openList
-					if (cell.getgCosts() > (actualCell.getgCosts()+cell.getNodeCost())) { 	// if cost was higher then arrive to this node... use this node
+					if (cell.getgCosts() > (actualCell.getgCosts()+cell.getNodeCost())) { 	// costs from current node are cheaper than previous costs
 						cell.setPrevious(actualCell);										// set current node as previous for this node
 						cell.calculategCosts(actualCell); 									// set g costs of this node (costs from start to this node)
 					}

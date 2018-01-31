@@ -3,18 +3,23 @@ package test.pathfinding;
 public class Cell implements Comparable<Cell>{
 
 	private int x,y;
+    private boolean wall;	//a wall cell will be not returned as adjacent becouse cannot be used
+	
+    //VARIABLE FOR ALGORITHM
+
+	boolean visited;	//for all A star and BreadthFirstSearch and Dijkstra
 	private int step;	//for BreadthFirstSearch
 	
-	boolean visited;	//both A star and BreadthFirstSearch
-
-	//for A star
+	//for A star  Dijkstra
 	private Cell previous;
-    private int gCosts;
-    private int hCosts;	
+    private double gCosts;	
     private boolean open;
+    private int nodeCost;	//INFO: is extremely important to have a node cost of 100 because in this way we don't lost the decimal part during the comparison between the nodes
+    						// check the calculatehCosts and compareTo methods.... if we lost decimal part compare will not able to recognise exactly better nodes
 
-    private boolean wall;	//a wall cell will be not returned as adjacent becouse cannot be used    
-	
+    //for A star
+    private double hCosts;
+        
 	public Cell(int x, int y) {
 		super();
 		this.x = x;
@@ -25,6 +30,7 @@ public class Cell implements Comparable<Cell>{
 		visited = false;
 		open = false;
 		wall = false;
+		nodeCost = 100;
 	}
 	
 	public void reset() {
@@ -92,27 +98,29 @@ public class Cell implements Comparable<Cell>{
 		this.previous = previous;
 	}
 
-	public int getgCosts() {
+	public int getNodeCost() {
+		return nodeCost;
+	}
+
+	public double getgCosts() {
 		return gCosts;
 	}
 
-	public void setgCosts(int gCosts) {
-		this.gCosts = gCosts;
+	public void calculategCosts(Cell cell) {
+		gCosts = cell.getgCosts() + nodeCost;
 	}
+	
 
-	public int gethCosts() {
+	public double gethCosts() {
 		return hCosts;
 	}
 	
-    public void sethCosts(int hCosts) {
-		this.hCosts = hCosts;
-	}
-
 	public void calculatehCosts(Cell cell) {
-        this.sethCosts((absolute(x - cell.x) + absolute(y - cell.y)));
+		hCosts = Math.hypot(x - cell.x, y - cell.y)*nodeCost;	
+		//hCosts = ((absolute(x - cell.x) + absolute(y - cell.y)))*nodeCost;
     }
 
-    public int getfCosts() {
+    public double getfCosts() {
         return gCosts + hCosts;
     }
 	
@@ -124,7 +132,7 @@ public class Cell implements Comparable<Cell>{
 	 * less is f more is good the node
 	 */
 	public int compareTo(Cell o) {
-		return  getfCosts() - o.getfCosts();			
+		return  (int)(getfCosts() - o.getfCosts()); 	
 
 	}
 	
