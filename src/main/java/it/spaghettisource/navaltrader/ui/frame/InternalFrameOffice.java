@@ -36,8 +36,8 @@ import it.spaghettisource.navaltrader.game.model.Finance;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
-import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
-import it.spaghettisource.navaltrader.ui.component.PercentageTextField;
+import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
+import it.spaghettisource.navaltrader.ui.component.TextFieldPercentage;
 import it.spaghettisource.navaltrader.ui.component.TableCellCurrentyRenderer;
 import it.spaghettisource.navaltrader.ui.component.TableCellPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
@@ -61,16 +61,16 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 	//financial data tab
 	private EventList<FinancialTableRow> listFinancialData;
-	private CurrencyTextField netProfit;
+	private TextFieldCurrency netProfit;
 	private JTextField companyRating;
-	private CurrencyTextField budget;		
+	private TextFieldCurrency budget;		
 
 
 	//bank event tab
 	private JTable loanTable;
 	private EventList<LoanTableRow> listBankLoan;
-	private PercentageTextField interest;		
-	private CurrencyTextField maxLoanAmount;	
+	private TextFieldPercentage interest;		
+	private TextFieldCurrency maxLoanAmount;	
 	private JSlider sliderNewLoanAmount;	
 	private JSlider sliderAmountToRepair;		
 
@@ -102,16 +102,16 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 		listFinancialData = GlazedLists.threadSafeList(new BasicEventList<FinancialTableRow>());	
 		listFinancialData.addAll(FinancialTableRow.mapData(finance)); 
-		netProfit = new CurrencyTextField(finance.getNetProfit());
+		netProfit = new TextFieldCurrency(finance.getNetProfit());
 		companyRating = new JTextField(company.getRating());	
 
-		budget = new CurrencyTextField(company.getBudget());
+		budget = new TextFieldCurrency(company.getBudget());
 
 		//bank tab
 		listBankLoan = GlazedLists.threadSafeList(new BasicEventList<LoanTableRow>());	
 		listBankLoan.addAll(LoanTableRow.mapData(bank.getLoanList()));
-		interest = new PercentageTextField(bank.getActualInterest(company));		
-		maxLoanAmount = new CurrencyTextField(bank.getMaxAcceptedAmount(company));
+		interest = new TextFieldPercentage(bank.getActualInterest(company));		
+		maxLoanAmount = new TextFieldCurrency(bank.getMaxAcceptedAmount(company));
 
 		sliderNewLoanAmount = new JSlider(JSlider.HORIZONTAL,0, bank.getMaxAcceptedAmount(company).intValue(), 0);	
 
@@ -160,7 +160,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		JPanel repairLoanPanel = new JPanel(new SpringLayout());
 		repairLoanPanel.setBorder(BorderFactory.createTitledBorder("repair loan"));		
 		sliderAmountToRepair = new JSlider(JSlider.HORIZONTAL,0, 0, 0);			
-		CurrencyTextField amountToRepair = new CurrencyTextField(0.0);
+		TextFieldCurrency amountToRepair = new TextFieldCurrency(0.0);
 
 		sliderAmountToRepair.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -223,7 +223,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 		//prepare new load panel	
 		JPanel newLoanPanel = new JPanel(new SpringLayout());
 		newLoanPanel.setBorder(BorderFactory.createTitledBorder("request new loan"));
-		CurrencyTextField newLoanAmount = new CurrencyTextField(0.0);
+		TextFieldCurrency newLoanAmount = new TextFieldCurrency(0.0);
 
 		sliderNewLoanAmount.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {

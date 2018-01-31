@@ -5,9 +5,9 @@ import java.text.NumberFormat;
 
 import javax.swing.JFormattedTextField;
 
-public class CurrencyTextField extends JFormattedTextField {
+public class TextFieldCurrency extends JFormattedTextField {
 
-	public CurrencyTextField(Double amount){
+	public TextFieldCurrency(Double amount){
 		super(NumberFormat.getCurrencyInstance());
 		setValue(amount);
 		setEditable(false);

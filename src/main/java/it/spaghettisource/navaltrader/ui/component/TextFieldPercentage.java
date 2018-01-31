@@ -4,9 +4,9 @@ import java.text.NumberFormat;
 
 import javax.swing.JFormattedTextField;
 
-public class PercentageTextField extends JFormattedTextField {
+public class TextFieldPercentage extends JFormattedTextField {
 
-	public PercentageTextField(Double amount){
+	public TextFieldPercentage(Double amount){
 		super(NumberFormat.getPercentInstance());
 		setValue(amount);
 		setEditable(false);		

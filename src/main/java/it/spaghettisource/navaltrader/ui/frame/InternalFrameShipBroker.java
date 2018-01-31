@@ -32,7 +32,7 @@ import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
-import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
+import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.TableCellHullProgressBarPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
@@ -56,15 +56,15 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 	private EventList<BuyShipTableRow> listBuyShipData;
 	private JTextField newShipName;
 	private JTextField newShipModel;		
-	private CurrencyTextField newShipPrice;		
-	private CurrencyTextField newShipNetBudget;	
+	private TextFieldCurrency newShipPrice;		
+	private TextFieldCurrency newShipNetBudget;	
 
 	//sell ship tab
 	private EventList<SellShipTableRow> listSellShipData;
 	private JTextField sellShipType;			
 	private JTextField sellShipName;		
-	private CurrencyTextField sellShipPrice;
-	private CurrencyTextField sellShipNetBudget;		
+	private TextFieldCurrency sellShipPrice;
+	private TextFieldCurrency sellShipNetBudget;		
 
 
 	public InternalFrameShipBroker(MainDesktopPane parentDesktopPane,GameManager gameManager) {
@@ -95,8 +95,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		newShipName = new JTextField("");
 		newShipModel = new JTextField("");
 		newShipModel.setEditable(false);
-		newShipPrice = new CurrencyTextField(0.0);		
-		newShipNetBudget = new CurrencyTextField(company.getBudget());
+		newShipPrice = new TextFieldCurrency(0.0);		
+		newShipNetBudget = new TextFieldCurrency(company.getBudget());
 
 		//sell ship tab
 		listSellShipData = GlazedLists.threadSafeList(new BasicEventList<SellShipTableRow>());
@@ -106,8 +106,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		sellShipType.setEditable(false);		
 		sellShipName = new JTextField("");	
 		sellShipName.setEditable(false);			
-		sellShipPrice = new CurrencyTextField(0.0);			
-		sellShipNetBudget = new CurrencyTextField(company.getBudget());
+		sellShipPrice = new TextFieldCurrency(0.0);			
+		sellShipNetBudget = new TextFieldCurrency(company.getBudget());
 	}
 
 

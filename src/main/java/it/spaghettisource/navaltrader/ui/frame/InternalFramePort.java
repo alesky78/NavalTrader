@@ -39,9 +39,9 @@ import it.spaghettisource.navaltrader.game.model.TransportContract;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
-import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
+import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.ProgressBarHull;
-import it.spaghettisource.navaltrader.ui.component.IntegerTextField;
+import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.TransportContractTableRow;
@@ -71,28 +71,28 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private JTextField shipModel;
 	private JTextField shipClass;	
 	private ProgressBarHull shipHull;
-	private IntegerTextField shipActualFuel;
-	private CurrencyTextField operatingCost;	
+	private TextFieldInteger shipActualFuel;
+	private TextFieldCurrency operatingCost;	
 
 	//ship maintainance tab
-	private IntegerTextField shipMaxFuel;
+	private TextFieldInteger shipMaxFuel;
 	private JSlider amountToRefuelSlider;	
-	private IntegerTextField amountToRefuel;
-	private CurrencyTextField amountToPayForRefuel;
-	private CurrencyTextField priceUnitOfFuel;	
+	private TextFieldInteger amountToRefuel;
+	private TextFieldCurrency amountToPayForRefuel;
+	private TextFieldCurrency priceUnitOfFuel;	
 	private JSlider amountToRepairSlider;	
-	private IntegerTextField amountToRepair;
-	private CurrencyTextField amountToPayForRepair;
-	private CurrencyTextField priceUnitOfRepair;		
+	private TextFieldInteger amountToRepair;
+	private TextFieldCurrency amountToPayForRepair;
+	private TextFieldCurrency priceUnitOfRepair;		
 
 
 	//ship contract tab
 	private EventList<TransportContractTableRow> listNewContractData;	
 	private EventList<TransportContractTableRow> listAcceptedContractData;		
 	private JTable newContractTable;	
-	private IntegerTextField controlTeu;
-	private IntegerTextField controlDwt;	
-	private IntegerTextField controlFuel;	
+	private TextFieldInteger controlTeu;
+	private TextFieldInteger controlDwt;	
+	private TextFieldInteger controlFuel;	
 	
 
 
@@ -130,19 +130,19 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		shipClass = new JTextField(ship.getShipClass());		
 		shipClass.setEditable(false);
 		shipHull = new ProgressBarHull(ship.getHull());
-		shipActualFuel = new IntegerTextField(ship.getFuel());
-		operatingCost = new CurrencyTextField(ship.getOperatingCost());
+		shipActualFuel = new TextFieldInteger(ship.getFuel());
+		operatingCost = new TextFieldCurrency(ship.getOperatingCost());
 
 		//ship maintainance
-		shipMaxFuel = new IntegerTextField(ship.getMaxFuel());
+		shipMaxFuel = new TextFieldInteger(ship.getMaxFuel());
 		amountToRefuelSlider = new JSlider(0, ship.getMaxFuel()-ship.getFuel(), 0);
-		amountToRefuel = new IntegerTextField(0);
-		amountToPayForRefuel = new CurrencyTextField(0.0);
-		priceUnitOfFuel =  new CurrencyTextField(port.getFuelPrice()); 
+		amountToRefuel = new TextFieldInteger(0);
+		amountToPayForRefuel = new TextFieldCurrency(0.0);
+		priceUnitOfFuel =  new TextFieldCurrency(port.getFuelPrice()); 
 		amountToRepairSlider = new JSlider(0, 100-ship.getHull(), 0);
-		amountToRepair = new IntegerTextField(0);
-		amountToPayForRepair = new CurrencyTextField(0.0);
-		priceUnitOfRepair =  new CurrencyTextField(port.getRepairPrice()); 
+		amountToRepair = new TextFieldInteger(0);
+		amountToPayForRepair = new TextFieldCurrency(0.0);
+		priceUnitOfRepair =  new TextFieldCurrency(port.getRepairPrice()); 
 
 		//transport contract
 		listNewContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
@@ -151,9 +151,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		listAcceptedContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
 		listNewContractData.addAll(TransportContractTableRow.mapData(ship.getTransportContracts()));
 
-		controlTeu = new IntegerTextField(ship.getAcceptedTeu());
-		controlDwt = new IntegerTextField(ship.getAcceptedDwt());
-		controlFuel = new IntegerTextField(ship.getFuel());
+		controlTeu = new TextFieldInteger(ship.getAcceptedTeu());
+		controlDwt = new TextFieldInteger(ship.getAcceptedDwt());
+		controlFuel = new TextFieldInteger(ship.getFuel());
 	}
 
 
