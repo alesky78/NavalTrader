@@ -28,7 +28,7 @@ import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
-import it.spaghettisource.navaltrader.ui.component.HullTableCellProgressBarPercentageRenderer;
+import it.spaghettisource.navaltrader.ui.component.TableCellHullProgressBarPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.ShipListTableRow;
@@ -89,7 +89,7 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		table = new JTable(new EventTableModel<ShipListTableRow>(listShipData, tf));
 		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);			
 		table.setAutoCreateRowSorter(true);			
-		table.getColumnModel().getColumn(6).setCellRenderer(HullTableCellProgressBarPercentageRenderer.getRenderer());
+		table.getColumnModel().getColumn(6).setCellRenderer(TableCellHullProgressBarPercentageRenderer.getRenderer());
 
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {

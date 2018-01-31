@@ -8,16 +8,16 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import it.spaghettisource.navaltrader.ui.ColorUtils;
 
-public class HullTableCellProgressBarPercentageRenderer extends DefaultTableCellRenderer{
+public class TableCellHullProgressBarPercentageRenderer extends DefaultTableCellRenderer{
 
 
 	private JProgressBar bar;
 
-	public static HullTableCellProgressBarPercentageRenderer getRenderer(){
-		return new HullTableCellProgressBarPercentageRenderer();
+	public static TableCellHullProgressBarPercentageRenderer getRenderer(){
+		return new TableCellHullProgressBarPercentageRenderer();
 	}	
 
-	public HullTableCellProgressBarPercentageRenderer(){
+	public TableCellHullProgressBarPercentageRenderer(){
 		bar = new JProgressBar();		
 		bar.setStringPainted(true);
 		

@@ -266,8 +266,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 	private JPanel createTransportContractPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
-		//panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));		
+		JPanel panel = new JPanel(new BorderLayout());	
 		panel.setBorder(BorderFactory.createTitledBorder("transport contract"));	
 
 
