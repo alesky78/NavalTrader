@@ -49,6 +49,15 @@ public class GridPanel extends JPanel {
 		this.path = path;
 		repaint();
 	}
+	
+	public void setGrid(Grid grid) {
+		this.grid = grid;
+		size = grid.getSize();
+		path = null;
+		startCell = null;
+		endCell = null;		
+		repaint();
+	}
 
 	public Cell setStartCellByScreenCoordinate(int x,int y) {
 		startCell = getCellByScreenCoordinate(x, y);

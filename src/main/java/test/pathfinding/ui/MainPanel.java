@@ -25,6 +25,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 	static Log log = LogFactory.getLog(MainPanel.class.getName());
 
 	private JComboBox<String> algorithmsList;
+	private JComboBox<Integer> gridSizeList;	
 
 	private GridPanel gridPanel;
 	private Grid grid;
@@ -32,8 +33,10 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 	private String ACTION_RESET = "ACTION_RESET";
 	private String ACTION_START = "ACTION_START";
+	private String ACTION_GRID_SIZE = "ACTION_GRID_SIZE";
 
-	private String[] algorithms = { "AStar", "BreadthFirstSearch", "Dijkstra"};
+	private String[] algorithmsValues = { "AStar", "BreadthFirstSearch", "Dijkstra"};
+	private Integer[] gridSizeValues = { 10, 100, 250};	
 
 	private Cell startCell;
 	private Cell endCell;	
@@ -41,7 +44,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 	public MainPanel(int size) {
 		super();
 		setSize(size, size);
-		
+
 		setLayout(new BorderLayout());
 		setFocusable(true);
 
@@ -52,7 +55,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		addKeyListener(listener);
 
 		//initialize the grid
-		gridSize = size/10;
+		gridSize = gridSizeValues[0];
 		grid = new Grid(gridSize);
 
 		//intialize the panel to drow the grid
@@ -70,12 +73,17 @@ public class MainPanel extends JPanel  implements ActionListener{
 		buttonStart.setActionCommand(ACTION_START);		
 		buttonStart.addActionListener(this);
 
-		algorithmsList = new JComboBox<String>(algorithms);
+		algorithmsList = new JComboBox<String>(algorithmsValues);
 		algorithmsList.addActionListener(this);
+
+		gridSizeList = new JComboBox<Integer>(gridSizeValues);
+		gridSizeList.setActionCommand(ACTION_GRID_SIZE);		
+		gridSizeList.addActionListener(this);		
 
 		controlPanel.add(buttonResetGrid);
 		controlPanel.add(buttonStart);		
 		controlPanel.add(algorithmsList);			
+		controlPanel.add(gridSizeList);		
 
 		//put all togheter
 		add(controlPanel, BorderLayout.SOUTH);		
@@ -99,8 +107,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 	public void removeWall(int x, int y) {
 		gridPanel.removeWallByScreenCoordinate(x, y);
 	}
-	
-	
+
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
@@ -108,22 +116,33 @@ public class MainPanel extends JPanel  implements ActionListener{
 			grid.resetCells();
 			gridPanel.setPath(new ArrayList<Cell>());
 		}else if(ACTION_START.equals(command)){
-			String algorithm = (String)algorithmsList.getSelectedItem();
-			PathFinding finder = null;
-			
-			if(algorithm.equals("AStar")){
-				finder = new AStar();
-			}else if(algorithm.equals("BreadthFirstSearch")){
-				finder = new BreadthFirstSearch();
-			}else if(algorithm.equals("Dijkstra")){
-				finder = new Dijkstra();
-			}
-				
 
-			List<Cell> path = finder.search(grid, startCell, endCell);
-			gridPanel.setPath(path);
+			if( startCell != null && endCell != null){
+
+				String algorithm = (String)algorithmsList.getSelectedItem();
+				PathFinding finder = null;
+
+				if(algorithm.equals("AStar")){
+					finder = new AStar();
+				}else if(algorithm.equals("BreadthFirstSearch")){
+					finder = new BreadthFirstSearch();
+				}else if(algorithm.equals("Dijkstra")){
+					finder = new Dijkstra();
+				}
+
+				List<Cell> path = finder.search(grid, startCell, endCell);
+				gridPanel.setPath(path);
+			}
+		}else if (ACTION_GRID_SIZE.equals(command)){
+			startCell = null;
+			endCell = null;
+
+			gridSize  = (int)gridSizeList.getSelectedItem();
+			grid = new Grid(gridSize);
+			gridPanel.setGrid(grid);
+
 		}
-		
+
 		requestFocus();
 
 	}

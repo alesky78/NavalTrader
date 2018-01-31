@@ -38,8 +38,7 @@ public class Cell implements Comparable<Cell>{
 		gCosts = 0;
 		hCosts = 0;		
 		visited = false;
-		open = false;
-		wall = false;		
+		open = false;	
 	}
 
 	public int getX() {
