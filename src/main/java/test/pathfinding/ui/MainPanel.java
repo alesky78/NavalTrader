@@ -25,7 +25,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 	static Log log = LogFactory.getLog(MainPanel.class.getName());
 
 	private JComboBox<String> algorithmsList;
-	private JComboBox<Integer> gridSizeList;	
+	private JComboBox<Integer> gridSizeList;
+	private JComboBox<String> drawGridList;		
 
 	private GridPanel gridPanel;
 	private Grid grid;
@@ -34,9 +35,12 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private String ACTION_RESET = "ACTION_RESET";
 	private String ACTION_START = "ACTION_START";
 	private String ACTION_GRID_SIZE = "ACTION_GRID_SIZE";
+	private String ACTION_DRAW_GRID = "ACTION_DRAW_GRID";	
+	
 
 	private String[] algorithmsValues = { "AStar", "BreadthFirstSearch", "Dijkstra"};
-	private Integer[] gridSizeValues = { 10, 100, 250};	
+	private Integer[] gridSizeValues = { 10, 50, 100, 250};
+	private String[] drawGridValues = { "draw grid", "remove grid"};		
 
 	private Cell startCell;
 	private Cell endCell;	
@@ -80,10 +84,16 @@ public class MainPanel extends JPanel  implements ActionListener{
 		gridSizeList.setActionCommand(ACTION_GRID_SIZE);		
 		gridSizeList.addActionListener(this);		
 
+		drawGridList = new JComboBox<String>(drawGridValues);
+		drawGridList.setActionCommand(ACTION_DRAW_GRID);		
+		drawGridList.addActionListener(this);		
+		
 		controlPanel.add(buttonResetGrid);
 		controlPanel.add(buttonStart);		
 		controlPanel.add(algorithmsList);			
 		controlPanel.add(gridSizeList);		
+		controlPanel.add(drawGridList);		
+		
 
 		//put all togheter
 		add(controlPanel, BorderLayout.SOUTH);		
@@ -141,6 +151,14 @@ public class MainPanel extends JPanel  implements ActionListener{
 			grid = new Grid(gridSize);
 			gridPanel.setGrid(grid);
 
+		}else if (ACTION_DRAW_GRID.equals(command)){
+			String chose  = (String)drawGridList.getSelectedItem();
+			if(chose.equals("draw grid")){
+				gridPanel.setDrawGrid(true);
+			}else if(chose.equals("remove grid")){
+				gridPanel.setDrawGrid(false);				
+				
+			}
 		}
 
 		requestFocus();

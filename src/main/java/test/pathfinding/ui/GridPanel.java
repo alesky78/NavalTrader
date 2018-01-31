@@ -25,14 +25,25 @@ public class GridPanel extends JPanel {
 	private int size;
 	private List<Cell> path;
 	private Cell startCell;
-	private Cell endCell;		
+	private Cell endCell;
+	private boolean drawGrid;		
 
 	public GridPanel(Grid grid,int size){
 		super();
 		this.grid = grid;
 		this.size = size;
 		path = new LinkedList<Cell>();
+		drawGrid = true;
 
+	}
+	
+	public boolean isDrawGrid() {
+		return drawGrid;
+	}
+	
+	public void setDrawGrid(boolean drawGrid) {
+		this.drawGrid = drawGrid;
+		repaint();		
 	}
 
 	public void paintComponent(Graphics g) {
@@ -118,17 +129,22 @@ public class GridPanel extends JPanel {
 
 				cell = grid.getCell(x, y);
 
-				if(cell.isVisited()){
-					g2d.setColor(Color.RED);					
-					g2d.fillRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);
-				}else if(cell.isWall()){
+				if(cell.isWall()){
 					g2d.setColor(Color.BLACK);
 					g2d.fillRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);
 				}
+				
+				if(cell.isVisited()){
+					g2d.setColor(Color.RED);					
+					g2d.fillRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);
+				}
+				
+				if(drawGrid){
+					g2d.setColor(Color.BLACK);
+					g2d.drawRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);							
+				}
 
-				g2d.setColor(Color.BLACK);
-				g2d.drawRect((int)windowX, (int)windowY, (int)cellWidth, (int)cellHeight);			
-				windowY = windowY + cellHeight;
+				windowY = windowY + cellHeight;	
 			}		
 			windowX = windowX + cellWidth;		
 			windowY = 0;			
