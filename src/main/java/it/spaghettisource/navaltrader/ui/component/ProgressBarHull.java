@@ -4,9 +4,9 @@ import javax.swing.JProgressBar;
 
 import it.spaghettisource.navaltrader.ui.ColorUtils;
 
-public class HullProgressBarField extends JProgressBar {
+public class ProgressBarHull extends JProgressBar {
 
-	public HullProgressBarField(Integer hull){
+	public ProgressBarHull(Integer hull){
 		setStringPainted(true);		
 		setValue(hull);
 	}

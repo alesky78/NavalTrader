@@ -40,7 +40,7 @@ import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.CurrencyTextField;
-import it.spaghettisource.navaltrader.ui.component.HullProgressBarField;
+import it.spaghettisource.navaltrader.ui.component.ProgressBarHull;
 import it.spaghettisource.navaltrader.ui.component.IntegerTextField;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
@@ -70,7 +70,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private JTextField shipStatus;
 	private JTextField shipModel;
 	private JTextField shipClass;	
-	private HullProgressBarField shipHull;
+	private ProgressBarHull shipHull;
 	private IntegerTextField shipActualFuel;
 	private CurrencyTextField operatingCost;	
 
@@ -129,7 +129,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		shipModel.setEditable(false);		
 		shipClass = new JTextField(ship.getShipClass());		
 		shipClass.setEditable(false);
-		shipHull = new HullProgressBarField(ship.getHull());
+		shipHull = new ProgressBarHull(ship.getHull());
 		shipActualFuel = new IntegerTextField(ship.getFuel());
 		operatingCost = new CurrencyTextField(ship.getOperatingCost());
 
