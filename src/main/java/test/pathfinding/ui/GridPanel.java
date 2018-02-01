@@ -5,9 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import org.apache.commons.logging.Log;
@@ -15,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import test.pathfinding.Cell;
 import test.pathfinding.Grid;
+import test.ui.SplitPaneDemoRenderingWihtGraphic;
 
 public class GridPanel extends JPanel {
 
@@ -143,9 +146,8 @@ public class GridPanel extends JPanel {
 		Graphics2D g2d = bufferedImage.createGraphics();
 		//g2d.setStroke(new BasicStroke(0.1f));
 
-		//clean the background of the screen
-		g2d.setColor(WHITE);	    
-		g2d.fillRect(0, 0, getWidth(), getHeight());
+		drawBackground(width, height, g2d);			
+		
 
 		int actualX = 0;
 		int actualY = 0;
@@ -208,6 +210,21 @@ public class GridPanel extends JPanel {
 		g.drawImage(bufferedImage,0,0,getWidth(),getHeight(),0,0,bufferedImage.getWidth(),bufferedImage.getHeight(),null);		
 	}
 
+	private void drawBackground(int width, int height, Graphics2D g2d) {
+		//clean the background of the screen
+		//g2d.setColor(WHITE);	    
+		//g2d.fillRect(0, 0, getWidth(), getHeight());
+		
+		try {
+			BufferedImage background = ImageIO.read(SplitPaneDemoRenderingWihtGraphic.class.getResourceAsStream("/scenario/world.png")); 	
+			g2d.drawImage(background,0,0,width,height,0,0,background.getWidth(),background.getHeight(),null);
+		} catch (IOException e) {
+			System.err.println("Couldn't find file: " + path);
 
+		}		
+		
+	}
+
+	
 
 }
