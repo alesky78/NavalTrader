@@ -147,8 +147,8 @@ public class GridPanel extends JPanel {
 		height = grid.getSize() * cellSize + 1;
 		
 		//the image of the grid is big exactly has the grid
-		BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphicsGrid = bufferedImage.createGraphics();
+		BufferedImage gridImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphicsGrid = gridImage.createGraphics();
 		//g2d.setStroke(new BasicStroke(0.1f));
 
 		drawBackground(width, height, graphicsGrid);			
@@ -212,17 +212,17 @@ public class GridPanel extends JPanel {
 
 		}		
 
-		graphicsPanel.drawImage(bufferedImage,0,0,getWidth(),getHeight(),0,0,bufferedImage.getWidth(),bufferedImage.getHeight(),null);		
+		graphicsPanel.drawImage(gridImage,0,0,getWidth(),getHeight(),0,0,gridImage.getWidth(),gridImage.getHeight(),null);		
 	}
 
-	private void drawBackground(int width, int height, Graphics2D g2d) {
+	private void drawBackground(int width, int height, Graphics2D graphicsGrid) {
 		//clean the background of the screen
 		//g2d.setColor(WHITE);	    
 		//g2d.fillRect(0, 0, getWidth(), getHeight());
 		
 		try {
 			BufferedImage background = ImageIO.read(SplitPaneDemoRenderingWihtGraphic.class.getResourceAsStream("/scenario/world.png")); 	
-			g2d.drawImage(background,0,0,width,height,0,0,background.getWidth(),background.getHeight(),null);
+			graphicsGrid.drawImage(background,0,0,width,height,0,0,background.getWidth(),background.getHeight(),null);
 		} catch (IOException e) {
 			System.err.println("Couldn't find file: " + foundPath);
 
