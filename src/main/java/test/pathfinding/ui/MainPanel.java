@@ -9,6 +9,9 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +30,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private JComboBox<String> algorithmsList;
 	private JComboBox<Integer> gridSizeList;
 	private JComboBox<String> drawGridList;		
+	private JSlider alphaColorSlider;
 
 	private GridPanel gridPanel;
 	private Grid grid;
@@ -88,11 +92,22 @@ public class MainPanel extends JPanel  implements ActionListener{
 		drawGridList.setActionCommand(ACTION_DRAW_GRID);		
 		drawGridList.addActionListener(this);		
 		
+		alphaColorSlider = new JSlider(JSlider.HORIZONTAL, 0, 256, 256);
+		alphaColorSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider)e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					gridPanel.setAlpha(source.getValue());
+				}
+			}
+		});		
+		
 		controlPanel.add(buttonResetGrid);
 		controlPanel.add(buttonStart);		
 		controlPanel.add(algorithmsList);			
 		controlPanel.add(gridSizeList);		
 		controlPanel.add(drawGridList);		
+		controlPanel.add(alphaColorSlider);		
 		
 
 		//put all togheter
