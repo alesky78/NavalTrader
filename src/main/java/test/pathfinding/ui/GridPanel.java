@@ -110,8 +110,8 @@ public class GridPanel extends JPanel {
 		int height = grid.getSize();		
 		
 		int cellSize = 6;
-		width = width * cellSize;
-		height = height * cellSize;
+		width = width * cellSize + 1;	//+1 because is not consider index 0 in the size of the immage
+		height = height * cellSize + 1;
 		
 		BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = bufferedImage.createGraphics();
@@ -158,6 +158,8 @@ public class GridPanel extends JPanel {
 			for (Cell cellPath : path) {
 				g2d.setColor(Color.BLUE);			
 				g2d.fillRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);	
+				g2d.setColor(Color.BLACK);
+				g2d.drawRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);							
 			}			
 		}
 
@@ -165,11 +167,15 @@ public class GridPanel extends JPanel {
 		if(startCell!=null){
 			g2d.setColor(Color.GREEN);			
 			g2d.fillRect(startCell.getX()*cellSize, startCell.getY()*cellSize, cellSize, cellSize);	
+			g2d.setColor(Color.BLACK);
+			g2d.drawRect(startCell.getX()*cellSize, startCell.getY()*cellSize, cellSize, cellSize);					
 		}
 
 		if(endCell!=null){
 			g2d.setColor(Color.ORANGE);			
 			g2d.fillRect(endCell.getX()*cellSize, endCell.getY()*cellSize, cellSize, cellSize);	
+			g2d.setColor(Color.BLACK);
+			g2d.drawRect(endCell.getX()*cellSize, endCell.getY()*cellSize, cellSize, cellSize);				
 
 		}		
 
