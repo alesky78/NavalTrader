@@ -43,7 +43,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 	
 
 	private String[] algorithmsValues = { "AStar", "BreadthFirstSearch", "Dijkstra"};
-	private Integer[] gridSizeValues = { 10, 50, 100, 250, 300, 400, 500};
+	private Integer[] gridSizeValues = { 10, 50, 100, 250, 300, 400, 500,1000};
 	private String[] drawGridValues = { "draw grid", "remove grid"};		
 
 	private Cell startCell;
@@ -73,7 +73,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		//control and actions
 		JPanel controlPanel = new JPanel();
 
-		JButton buttonResetGrid = new JButton("reset grid");
+		JButton buttonResetGrid = new JButton("reset result");
 		buttonResetGrid.setActionCommand(ACTION_RESET);
 		buttonResetGrid.addActionListener(this);
 
@@ -146,18 +146,22 @@ public class MainPanel extends JPanel  implements ActionListener{
 			if( startCell != null && endCell != null){
 
 				String algorithm = (String)algorithmsList.getSelectedItem();
-				PathFinding finder = null;
-
-				if(algorithm.equals("AStar")){
-					finder = new AStar();
-				}else if(algorithm.equals("BreadthFirstSearch")){
-					finder = new BreadthFirstSearch();
-				}else if(algorithm.equals("Dijkstra")){
-					finder = new Dijkstra();
-				}
-
-				List<Cell> path = finder.search(grid, startCell, endCell);
-				gridPanel.setPath(path);
+				(new Thread(new SearchThread(algorithm))).start();
+//				PathFinding finder = null;
+//
+//				if(algorithm.equals("AStar")){
+//					finder = new AStar();
+//				}else if(algorithm.equals("BreadthFirstSearch")){
+//					finder = new BreadthFirstSearch();
+//				}else if(algorithm.equals("Dijkstra")){
+//					finder = new Dijkstra();
+//				}
+//
+//				List<Cell> path = finder.search(grid, startCell, endCell);
+//				gridPanel.setPath(path);
+				
+				
+				
 			}
 		}else if (ACTION_GRID_SIZE.equals(command)){
 			startCell = null;
@@ -183,7 +187,33 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 
 
+	private class SearchThread implements Runnable {
 
+		String algorithm;
+		
+		public SearchThread(String algorithm){
+			this.algorithm = algorithm;
+		}
+		
+		@Override
+		public void run() {
+
+			PathFinding finder = null;
+
+			if(algorithm.equals("AStar")){
+				finder = new AStar();
+			}else if(algorithm.equals("BreadthFirstSearch")){
+				finder = new BreadthFirstSearch();
+			}else if(algorithm.equals("Dijkstra")){
+				finder = new Dijkstra();
+			}
+
+			List<Cell> path = finder.search(grid, startCell, endCell);
+			gridPanel.setPath(path);
+			
+		}
+		
+	}
 
 
 
