@@ -31,12 +31,12 @@ public class GridPanel extends JPanel {
 	private boolean drawGrid;		
 	
 	private Color BLACK; 
+	private Color GRAY;
 	private Color WHITE;	
 	private Color RED;
-	private Color BLUE;
+	private Color YELLOW;
 	private Color GREEN;
 	private Color ORANGE;
-	private int alpha = 256;
 
 	
 	public GridPanel(Grid grid,int size){
@@ -47,9 +47,10 @@ public class GridPanel extends JPanel {
 		drawGrid = true;
 		
 		BLACK = Color.BLACK;
+		GRAY = Color.GRAY;		
 		WHITE = Color.WHITE;
 		RED = Color.RED;		
-		BLUE = Color.BLUE;	
+		YELLOW = Color.YELLOW;	
 		GREEN = Color.GREEN;	
 		ORANGE = Color.ORANGE;	
 	}
@@ -64,11 +65,10 @@ public class GridPanel extends JPanel {
 	}
 
 	public void setAlpha(int alpha) {
-		this.alpha = alpha;
 		BLACK = new Color(BLACK.getRed(), BLACK.getGreen(), BLACK.getBlue(), alpha);
 		WHITE = new Color(WHITE.getRed(), WHITE.getGreen(), WHITE.getBlue(), alpha);
 		RED = new Color(RED.getRed(), RED.getGreen(), RED.getBlue(), alpha);
-		BLUE = new Color(BLUE.getRed(), BLUE.getGreen(), BLUE.getBlue(), alpha);
+		YELLOW = new Color(YELLOW.getRed(), YELLOW.getGreen(), YELLOW.getBlue(), alpha);
 		GREEN = new Color(GREEN.getRed(), GREEN.getGreen(), GREEN.getBlue(), alpha);
 		ORANGE = new Color(ORANGE.getRed(), ORANGE.getGreen(), ORANGE.getBlue(), alpha);		
 		repaint();	
@@ -160,7 +160,7 @@ public class GridPanel extends JPanel {
 				cell = grid.getCell(x, y);
 
 				if(cell.isWall()){
-					g2d.setColor(BLACK);
+					g2d.setColor(GRAY);
 					g2d.fillRect(actualX, actualY, cellSize, cellSize);
 				}
 				
@@ -184,7 +184,7 @@ public class GridPanel extends JPanel {
 		//draw found path
 		if(path!=null && !path.isEmpty()){
 			for (Cell cellPath : path) {
-				g2d.setColor(BLUE);			
+				g2d.setColor(YELLOW);			
 				g2d.fillRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);	
 				g2d.setColor(BLACK);
 				g2d.drawRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);							

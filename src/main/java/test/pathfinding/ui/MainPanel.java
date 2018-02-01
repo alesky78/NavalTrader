@@ -43,7 +43,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 	
 
 	private String[] algorithmsValues = { "AStar", "BreadthFirstSearch", "Dijkstra"};
-	private Integer[] gridSizeValues = { 10, 50, 100, 250};
+	private Integer[] gridSizeValues = { 10, 50, 100, 250, 300, 400, 500};
 	private String[] drawGridValues = { "draw grid", "remove grid"};		
 
 	private Cell startCell;
