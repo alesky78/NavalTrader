@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ComponentAdapter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -24,10 +25,13 @@ public class GridPanel extends JPanel {
 	static Log log = LogFactory.getLog(GridPanel.class.getName());
 
 	private Grid grid;
-	private int size;
-	private List<Cell> path;
+	private List<Cell> foundPath;
 	private Cell startCell;
 	private Cell endCell;
+	
+	private int panelSize;
+	private int cellSize;
+	
 	private boolean drawGrid;		
 	
 	private Color BLACK; 
@@ -42,8 +46,9 @@ public class GridPanel extends JPanel {
 	public GridPanel(Grid grid,int size){
 		super();
 		this.grid = grid;
-		this.size = size;
-		path = new LinkedList<Cell>();
+		this.panelSize = size;
+		cellSize = 6;
+		foundPath = new LinkedList<Cell>();
 		drawGrid = true;
 		
 		BLACK = Color.BLACK;
@@ -66,6 +71,7 @@ public class GridPanel extends JPanel {
 
 	public void setAlpha(int alpha) {
 		BLACK = new Color(BLACK.getRed(), BLACK.getGreen(), BLACK.getBlue(), alpha);
+		GRAY = new Color(GRAY.getRed(), GRAY.getGreen(), GRAY.getBlue(), alpha);
 		WHITE = new Color(WHITE.getRed(), WHITE.getGreen(), WHITE.getBlue(), alpha);
 		RED = new Color(RED.getRed(), RED.getGreen(), RED.getBlue(), alpha);
 		YELLOW = new Color(YELLOW.getRed(), YELLOW.getGreen(), YELLOW.getBlue(), alpha);
@@ -75,18 +81,17 @@ public class GridPanel extends JPanel {
 	}
 
 	public Dimension getPreferredSize() {
-		return new Dimension(size, size);
+		return new Dimension(panelSize, panelSize);
 	}
 
 	public void setPath(List<Cell> path){
-		this.path = path;
+		this.foundPath = path;
 		repaint();
 	}
 	
 	public void setGrid(Grid grid) {
 		this.grid = grid;
-		size = grid.getSize();
-		path = null;
+		foundPath = null;
 		startCell = null;
 		endCell = null;		
 		repaint();
@@ -133,20 +138,20 @@ public class GridPanel extends JPanel {
 	}
 
 		
-	private void paintGrid(Graphics g) {
+	private void paintGrid(Graphics graphicsPanel) {
 
 		int width = grid.getSize();
 		int height = grid.getSize();		
 		
-		int cellSize = 6;
-		width = width * cellSize + 1;	//+1 because is not consider index 0 in the size of the immage
-		height = height * cellSize + 1;
+		width = grid.getSize() * cellSize + 1;	//+1 because is not consider index 0 in the size of the immage
+		height = grid.getSize() * cellSize + 1;
 		
+		//the image of the grid is big exactly has the grid
 		BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = bufferedImage.createGraphics();
+		Graphics2D graphicsGrid = bufferedImage.createGraphics();
 		//g2d.setStroke(new BasicStroke(0.1f));
 
-		drawBackground(width, height, g2d);			
+		drawBackground(width, height, graphicsGrid);			
 		
 
 		int actualX = 0;
@@ -160,18 +165,18 @@ public class GridPanel extends JPanel {
 				cell = grid.getCell(x, y);
 
 				if(cell.isWall()){
-					g2d.setColor(GRAY);
-					g2d.fillRect(actualX, actualY, cellSize, cellSize);
+					graphicsGrid.setColor(GRAY);
+					graphicsGrid.fillRect(actualX, actualY, cellSize, cellSize);
 				}
 				
 				if(cell.isVisited()){
-					g2d.setColor(RED);					
-					g2d.fillRect(actualX, actualY, cellSize, cellSize);
+					graphicsGrid.setColor(RED);					
+					graphicsGrid.fillRect(actualX, actualY, cellSize, cellSize);
 				}
 				
 				if(drawGrid){
-					g2d.setColor(BLACK);
-					g2d.drawRect(actualX, actualY, cellSize, cellSize);							
+					graphicsGrid.setColor(BLACK);
+					graphicsGrid.drawRect(actualX, actualY, cellSize, cellSize);							
 				}
 
 				actualY = actualY + cellSize;	
@@ -182,32 +187,32 @@ public class GridPanel extends JPanel {
 
 
 		//draw found path
-		if(path!=null && !path.isEmpty()){
-			for (Cell cellPath : path) {
-				g2d.setColor(YELLOW);			
-				g2d.fillRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);	
-				g2d.setColor(BLACK);
-				g2d.drawRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);							
+		if(foundPath!=null && !foundPath.isEmpty()){
+			for (Cell cellPath : foundPath) {
+				graphicsGrid.setColor(YELLOW);			
+				graphicsGrid.fillRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);	
+				graphicsGrid.setColor(BLACK);
+				graphicsGrid.drawRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);							
 			}			
 		}
 
 		//draw strat end point path
 		if(startCell!=null){
-			g2d.setColor(GREEN);			
-			g2d.fillRect(startCell.getX()*cellSize, startCell.getY()*cellSize, cellSize, cellSize);	
-			g2d.setColor(BLACK);
-			g2d.drawRect(startCell.getX()*cellSize, startCell.getY()*cellSize, cellSize, cellSize);					
+			graphicsGrid.setColor(GREEN);			
+			graphicsGrid.fillRect(startCell.getX()*cellSize, startCell.getY()*cellSize, cellSize, cellSize);	
+			graphicsGrid.setColor(BLACK);
+			graphicsGrid.drawRect(startCell.getX()*cellSize, startCell.getY()*cellSize, cellSize, cellSize);					
 		}
 
 		if(endCell!=null){
-			g2d.setColor(ORANGE);			
-			g2d.fillRect(endCell.getX()*cellSize, endCell.getY()*cellSize, cellSize, cellSize);	
-			g2d.setColor(BLACK);
-			g2d.drawRect(endCell.getX()*cellSize, endCell.getY()*cellSize, cellSize, cellSize);				
+			graphicsGrid.setColor(ORANGE);			
+			graphicsGrid.fillRect(endCell.getX()*cellSize, endCell.getY()*cellSize, cellSize, cellSize);	
+			graphicsGrid.setColor(BLACK);
+			graphicsGrid.drawRect(endCell.getX()*cellSize, endCell.getY()*cellSize, cellSize, cellSize);				
 
 		}		
 
-		g.drawImage(bufferedImage,0,0,getWidth(),getHeight(),0,0,bufferedImage.getWidth(),bufferedImage.getHeight(),null);		
+		graphicsPanel.drawImage(bufferedImage,0,0,getWidth(),getHeight(),0,0,bufferedImage.getWidth(),bufferedImage.getHeight(),null);		
 	}
 
 	private void drawBackground(int width, int height, Graphics2D g2d) {
@@ -219,7 +224,7 @@ public class GridPanel extends JPanel {
 			BufferedImage background = ImageIO.read(SplitPaneDemoRenderingWihtGraphic.class.getResourceAsStream("/scenario/world.png")); 	
 			g2d.drawImage(background,0,0,width,height,0,0,background.getWidth(),background.getHeight(),null);
 		} catch (IOException e) {
-			System.err.println("Couldn't find file: " + path);
+			System.err.println("Couldn't find file: " + foundPath);
 
 		}		
 		
