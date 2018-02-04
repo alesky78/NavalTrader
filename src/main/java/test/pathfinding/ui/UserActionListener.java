@@ -58,6 +58,12 @@ public class UserActionListener  implements MouseListener, MouseMotionListener,K
 		}
 	}
 
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+
+	}
+	
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 
@@ -99,13 +105,6 @@ public class UserActionListener  implements MouseListener, MouseMotionListener,K
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-
-	}
-
-
-
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
 
 	}
 

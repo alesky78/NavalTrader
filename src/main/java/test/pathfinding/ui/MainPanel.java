@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -72,6 +73,10 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 		//control and actions
 		JPanel controlPanel = new JPanel();
+		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.PAGE_AXIS));
+		
+		JPanel controlPanel1 = new JPanel();
+		JPanel controlPanel2 = new JPanel();		
 
 		JButton buttonResetGrid = new JButton("reset result");
 		buttonResetGrid.setActionCommand(ACTION_RESET);
@@ -103,14 +108,17 @@ public class MainPanel extends JPanel  implements ActionListener{
 			}
 		});		
 		
-		controlPanel.add(buttonResetGrid);
-		controlPanel.add(buttonStart);		
-		controlPanel.add(algorithmsList);			
-		controlPanel.add(gridSizeList);		
-		controlPanel.add(drawGridList);		
-		controlPanel.add(alphaColorSlider);		
+		controlPanel1.add(buttonResetGrid);
+		controlPanel1.add(buttonStart);		
+		controlPanel1.add(algorithmsList);			
+		controlPanel1.add(gridSizeList);		
+		controlPanel2.add(drawGridList);		
+		controlPanel2.add(alphaColorSlider);		
 		
 
+		controlPanel.add(controlPanel1);
+		controlPanel.add(controlPanel2);		
+		
 		//put all togheter
 		add(controlPanel, BorderLayout.SOUTH);		
 		add(gridPanel, BorderLayout.CENTER);
