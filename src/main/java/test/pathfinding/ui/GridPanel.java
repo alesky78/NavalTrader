@@ -28,6 +28,8 @@ public class GridPanel extends JPanel {
 	private Cell startCell;
 	private Cell endCell;
 	
+	private BufferedImage background;
+	
 	private int panelSize;
 	private int cellSize;
 	
@@ -94,6 +96,11 @@ public class GridPanel extends JPanel {
 		startCell = null;
 		endCell = null;		
 		repaint();
+	}
+
+	public void setBackground(BufferedImage background) {
+		this.background = background;
+		repaint();		
 	}
 
 	public Cell setStartCellByScreenCoordinate(int x,int y) {
@@ -217,17 +224,20 @@ public class GridPanel extends JPanel {
 	}
 
 	private void drawBackground(int width, int height, Graphics2D graphicsGrid) {
-		//clean the background of the screen
-		//g2d.setColor(WHITE);	    
-		//g2d.fillRect(0, 0, getWidth(), getHeight());
+		if(background==null) {
+			//clean the background of the screen
+			graphicsGrid.setColor(WHITE);	    
+			graphicsGrid.fillRect(0, 0, getWidth(), getHeight());	
+		}else {
+			try {
+				background = ImageIO.read(GridPanel.class.getResourceAsStream("/scenario/world.png")); 	
+				graphicsGrid.drawImage(background,0,0,width,height,0,0,background.getWidth(),background.getHeight(),null);
+			} catch (IOException e) {
+				log.error("error creating background immage", e);
+			}		
+			
+		}
 		
-		try {
-			BufferedImage background = ImageIO.read(GridPanel.class.getResourceAsStream("/scenario/world.png")); 	
-			graphicsGrid.drawImage(background,0,0,width,height,0,0,background.getWidth(),background.getHeight(),null);
-		} catch (IOException e) {
-			System.err.println("Couldn't find file: " + foundPath);
-
-		}		
 		
 	}
 
