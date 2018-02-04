@@ -3,12 +3,14 @@ package test.pathfinding.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -20,6 +22,7 @@ import org.apache.commons.logging.LogFactory;
 
 import test.pathfinding.Cell;
 import test.pathfinding.Grid;
+import test.pathfinding.GridUtils;
 import test.pathfinding.algorithm.AStar;
 import test.pathfinding.algorithm.BreadthFirstSearch;
 import test.pathfinding.algorithm.Dijkstra;
@@ -43,7 +46,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private String ACTION_START = "ACTION_START";
 	private String ACTION_GRID_SIZE = "ACTION_GRID_SIZE";
 	private String ACTION_DRAW_GRID = "ACTION_DRAW_GRID";	
-	
+	private String ACTION_SAVE_GRID = "ACTION_SAVE_GRID";	
+	private String ACTION_LOAD_GRID = "ACTION_LOAD_GRID";	
+
 
 	private String[] algorithmsValues = { "AStar", "BreadthFirstSearch", "Dijkstra"};
 	private Integer[] gridSizeValues = { 10, 50, 100, 250, 300, 400, 500,1000};
@@ -76,7 +81,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		//control and actions
 		JPanel controlPanel = new JPanel();
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.PAGE_AXIS));
-		
+
 		JPanel controlPanel1 = new JPanel();
 		JPanel controlPanel2 = new JPanel();		
 
@@ -98,7 +103,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		drawGridList = new JComboBox<String>(drawGridValues);
 		drawGridList.setActionCommand(ACTION_DRAW_GRID);		
 		drawGridList.addActionListener(this);		
-		
+
 		alphaColorSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
 		alphaColorSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -109,12 +114,19 @@ public class MainPanel extends JPanel  implements ActionListener{
 				requestFocus();				
 			}
 		});		
-		
-		
+
+		JButton loadGrid = new JButton("load grid");
+		loadGrid.setActionCommand(ACTION_LOAD_GRID);
+		loadGrid.addActionListener(this);		
+
+		JButton saveGrid = new JButton("save grid");
+		saveGrid.setActionCommand(ACTION_SAVE_GRID);
+		saveGrid.addActionListener(this);
+
 		coordinatePointOnGrid = new JTextField("", 10);
 		coordinatePointOnGrid.setEditable(false);
-				
-		
+
+
 		//line 1
 		controlPanel1.add(buttonResetGrid);
 		controlPanel1.add(buttonStart);		
@@ -124,13 +136,15 @@ public class MainPanel extends JPanel  implements ActionListener{
 		//line 2
 		controlPanel2.add(drawGridList);		
 		controlPanel2.add(alphaColorSlider);	
-		controlPanel2.add(coordinatePointOnGrid);		
-		
-		
+		controlPanel2.add(coordinatePointOnGrid);
+		controlPanel2.add(loadGrid);		
+		controlPanel2.add(saveGrid);				
+
+
 
 		controlPanel.add(controlPanel1);
 		controlPanel.add(controlPanel2);		
-		
+
 		//put all togheter
 		add(controlPanel, BorderLayout.SOUTH);		
 		add(gridPanel, BorderLayout.CENTER);
@@ -153,9 +167,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 	public void removeWall(int x, int y) {
 		gridPanel.removeWallByScreenCoordinate(x, y);
 	}
-	
+
 	public void setGridPointCoordinate(int x, int y) {
-		
+
 		Cell selected = gridPanel.getCellByScreenCoordinate(x, y);
 		if(selected!=null) {
 			coordinatePointOnGrid.setText("Point x:"+selected.getX()+" y:"+selected.getY());			
@@ -175,21 +189,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 				String algorithm = (String)algorithmsList.getSelectedItem();
 				(new Thread(new SearchThread(algorithm))).start();
-//				PathFinding finder = null;
-//
-//				if(algorithm.equals("AStar")){
-//					finder = new AStar();
-//				}else if(algorithm.equals("BreadthFirstSearch")){
-//					finder = new BreadthFirstSearch();
-//				}else if(algorithm.equals("Dijkstra")){
-//					finder = new Dijkstra();
-//				}
-//
-//				List<Cell> path = finder.search(grid, startCell, endCell);
-//				gridPanel.setPath(path);
-				
-				
-				
+
 			}
 		}else if (ACTION_GRID_SIZE.equals(command)){
 			startCell = null;
@@ -205,8 +205,41 @@ public class MainPanel extends JPanel  implements ActionListener{
 				gridPanel.setDrawGrid(true);
 			}else if(chose.equals("remove grid")){
 				gridPanel.setDrawGrid(false);				
+
+			}
+		}else if (ACTION_SAVE_GRID.equals(command)){
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Specify the file to save");   
+			int userSelection = fileChooser.showSaveDialog(getParent());
+
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				File fileToSave = fileChooser.getSelectedFile();
+				GridUtils.convertToFile(fileToSave, grid);
+			}
+
+		}else if (ACTION_LOAD_GRID.equals(command)){
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Specify the file to load");   
+			int userSelection = fileChooser.showOpenDialog(getParent());
+
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				File fileToLoad= fileChooser.getSelectedFile();
+				grid = GridUtils.loadFromFile(fileToLoad);
+				
+				//set the correct grid value, but disabel the event
+				for (int index = 0; index < gridSizeValues.length; index++) {
+				if(gridSizeValues[index]==grid.getSize()) {
+						gridSizeList.removeActionListener(this);	//disable the event				
+						gridSizeList.setSelectedIndex(index);
+						gridSizeList.addActionListener(this);		//enable the event
+					}
+				}
+				
+				gridPanel.setGrid(grid);
+	
 				
 			}
+
 		}
 
 		requestFocus();
@@ -218,11 +251,11 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private class SearchThread implements Runnable {
 
 		String algorithm;
-		
+
 		public SearchThread(String algorithm){
 			this.algorithm = algorithm;
 		}
-		
+
 		@Override
 		public void run() {
 
@@ -238,9 +271,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 			List<Cell> path = finder.search(grid, startCell, endCell);
 			gridPanel.setPath(path);
-			
+
 		}
-		
+
 	}
 
 
