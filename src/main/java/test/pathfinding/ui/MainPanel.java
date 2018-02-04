@@ -16,6 +16,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -210,6 +211,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		}else if (ACTION_SAVE_GRID.equals(command)){
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle("Specify the file to save");   
+
 			int userSelection = fileChooser.showSaveDialog(getParent());
 
 			if (userSelection == JFileChooser.APPROVE_OPTION) {
@@ -225,19 +227,19 @@ public class MainPanel extends JPanel  implements ActionListener{
 			if (userSelection == JFileChooser.APPROVE_OPTION) {
 				File fileToLoad= fileChooser.getSelectedFile();
 				grid = GridUtils.loadFromFile(fileToLoad);
-				
+
 				//set the correct grid value, but disabel the event
 				for (int index = 0; index < gridSizeValues.length; index++) {
-				if(gridSizeValues[index]==grid.getSize()) {
+					if(gridSizeValues[index]==grid.getSize()) {
 						gridSizeList.removeActionListener(this);	//disable the event				
 						gridSizeList.setSelectedIndex(index);
 						gridSizeList.addActionListener(this);		//enable the event
 					}
 				}
-				
+
 				gridPanel.setGrid(grid);
-	
-				
+
+
 			}
 
 		}
