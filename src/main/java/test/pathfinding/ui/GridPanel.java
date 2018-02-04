@@ -124,7 +124,7 @@ public class GridPanel extends JPanel {
 	}	
 
 	
-	private Cell getCellByScreenCoordinate(int x,int y){
+	public Cell getCellByScreenCoordinate(int x,int y){
 		float cellWidth = getWidth()/(float)grid.getSize();
 		float cellHeight = getHeight()/(float)grid.getSize();		
 		return grid.getCell((int)(x/cellWidth), (int)(y/cellHeight));

@@ -60,8 +60,11 @@ public class UserActionListener  implements MouseListener, MouseMotionListener,K
 
 
 	@Override
-	public void mouseMoved(MouseEvent arg0) {
-
+	public void mouseMoved(MouseEvent event) {
+		int mouseX = event.getX();
+		int mouseY = event.getY();	
+		
+		panel.setGridPointCoordinate(mouseX, mouseY);
 	}
 	
 	@Override

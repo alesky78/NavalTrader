@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -32,6 +33,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private JComboBox<Integer> gridSizeList;
 	private JComboBox<String> drawGridList;		
 	private JSlider alphaColorSlider;
+	private JTextField coordinatePointOnGrid;	
 
 	private GridPanel gridPanel;
 	private Grid grid;
@@ -108,12 +110,22 @@ public class MainPanel extends JPanel  implements ActionListener{
 			}
 		});		
 		
+		
+		coordinatePointOnGrid = new JTextField("", 10);
+		coordinatePointOnGrid.setEditable(false);
+				
+		
+		//line 1
 		controlPanel1.add(buttonResetGrid);
 		controlPanel1.add(buttonStart);		
 		controlPanel1.add(algorithmsList);			
 		controlPanel1.add(gridSizeList);		
+
+		//line 2
 		controlPanel2.add(drawGridList);		
-		controlPanel2.add(alphaColorSlider);		
+		controlPanel2.add(alphaColorSlider);	
+		controlPanel2.add(coordinatePointOnGrid);		
+		
 		
 
 		controlPanel.add(controlPanel1);
@@ -140,6 +152,12 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 	public void removeWall(int x, int y) {
 		gridPanel.removeWallByScreenCoordinate(x, y);
+	}
+	
+	public void setGridPointCoordinate(int x, int y) {
+		
+		Cell selected = gridPanel.getCellByScreenCoordinate(x, y);
+		coordinatePointOnGrid.setText("Point x:"+selected.getX()+" y:"+selected.getY());		
 	}
 
 
