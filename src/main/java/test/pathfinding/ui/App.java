@@ -2,8 +2,6 @@ package test.pathfinding.ui;
 
 import javax.swing.JFrame;
 
-import test.ui.DrawImmageFromTxt;
-
 public class App {
 
 	static int INITIAL_SIZE = 800;
