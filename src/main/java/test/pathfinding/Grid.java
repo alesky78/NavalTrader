@@ -47,6 +47,10 @@ public class Grid {
 	}
 	
 	public Cell getCell(int x, int y) {
+		if(x < 0 || y < 0 || x > (size-1) || y > (size-1)) {
+			return null;
+		}
+		
 		return grid[x][y];
 	}
 	

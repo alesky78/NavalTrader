@@ -109,18 +109,20 @@ public class GridPanel extends JPanel {
 		return endCell;		
 	}
 	
-	public Cell addWallByScreenCoordinate(int x,int y) {
+	public void addWallByScreenCoordinate(int x,int y) {
 		Cell wall = getCellByScreenCoordinate(x, y);
-		wall.setWall(true);
-		repaint();
-		return endCell;		
+		if(wall!=null) {
+			wall.setWall(true);
+			repaint();			
+		}
 	}	
 
-	public Cell removeWallByScreenCoordinate(int x, int y) {
+	public void removeWallByScreenCoordinate(int x, int y) {
 		Cell wall = getCellByScreenCoordinate(x, y);
-		wall.setWall(false);
-		repaint();
-		return endCell;	
+		if(wall!=null) {
+			wall.setWall(false);
+			repaint();			
+		}
 	}	
 
 	

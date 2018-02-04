@@ -157,7 +157,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 	public void setGridPointCoordinate(int x, int y) {
 		
 		Cell selected = gridPanel.getCellByScreenCoordinate(x, y);
-		coordinatePointOnGrid.setText("Point x:"+selected.getX()+" y:"+selected.getY());		
+		if(selected!=null) {
+			coordinatePointOnGrid.setText("Point x:"+selected.getX()+" y:"+selected.getY());			
+		}
 	}
 
 
