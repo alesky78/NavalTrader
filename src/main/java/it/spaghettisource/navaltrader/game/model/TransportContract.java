@@ -77,6 +77,13 @@ public class TransportContract {
 		this.destinationPort = destinationPort;
 	}
 
+	public List<Point> getRoute() {
+		return route;
+	}
+	public void setRoute(List<Point> route) {
+		this.route = route;
+	}
+
 
 	public boolean equals(Object obj){
 		if(obj==null){

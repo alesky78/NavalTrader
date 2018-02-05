@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.spaghettisource.navaltrader.game.model.TransportContract;
+import it.spaghettisource.navaltrader.graphic.Point;
 
 public class TransportContractTableRow {
 
@@ -14,8 +15,9 @@ public class TransportContractTableRow {
 	private double pricePerTeu;
 	private double totalPrice;	
 	private String destinationPort;
+	private List<Point> route;	
 	
-	public TransportContractTableRow(String id, String good, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, String destinationPort) {
+	public TransportContractTableRow(String id, String good, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, String destinationPort,List<Point> route) {
 		super();
 		this.id = id;
 		this.good = good;
@@ -24,6 +26,7 @@ public class TransportContractTableRow {
 		this.pricePerTeu = pricePerTeu;
 		this.totalPrice = totalPrice;
 		this.destinationPort = destinationPort;
+		this.route = route;
 	}
 
 	public String getId() {
@@ -54,6 +57,10 @@ public class TransportContractTableRow {
 		return destinationPort;
 	}
 	
+	public List<Point> getRoute() {
+		return route;
+	}
+
 	public boolean equals(Object obj){
 		if(obj==null){
 			return false;
@@ -79,7 +86,8 @@ public class TransportContractTableRow {
 											 contract.getTeu()*contract.getDwtPerTeu(), 
 											 contract.getPricePerTeu(), 
 											 contract.getTeu()*contract.getPricePerTeu(), 
-											 contract.getDestinationPort().getName());	
+											 contract.getDestinationPort().getName(),
+											 contract.getRoute());	
 	}		
 	
 	

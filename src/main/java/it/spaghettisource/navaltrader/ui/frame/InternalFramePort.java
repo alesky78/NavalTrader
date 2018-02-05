@@ -36,11 +36,14 @@ import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
+import it.spaghettisource.navaltrader.game.model.World;
+import it.spaghettisource.navaltrader.graphic.Point;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
-import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
+import it.spaghettisource.navaltrader.ui.component.PanelDrawPath;
 import it.spaghettisource.navaltrader.ui.component.ProgressBarHull;
+import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
@@ -62,6 +65,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private String portName;	
 	private Ship ship; 
 	private Port port; 	
+	private World world; 	
 
 	//UI components
 	private JTabbedPane tabbedPane;	
@@ -121,6 +125,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private void initValuesFromModel() {
 
 		ship = gameData.getCompany().getShipByName(shipName);
+		world = gameData.getWorld();
 		port = gameData.getWorld().getPortByName(portName);
 
 		//ship status
@@ -285,11 +290,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		///////////////////////////////////
 		//word map port
-		JPanel mapOfPortPanel = new JPanel(new BorderLayout());
-		JLabel picture = new JLabel(ImageIconFactory.getForTab("/icon/warning.png"));
-		picture.setHorizontalAlignment(JLabel.CENTER);		
-		JScrollPane pictureScrollPane = new JScrollPane(picture);        
-		mapOfPortPanel.add(pictureScrollPane,BorderLayout.CENTER);
+		PanelDrawPath mapOfPortPanel = new PanelDrawPath(600, world.getGridSize(), world.getWorldMap(), port.getCooridnate());
 
 		///////////////
 		//port contract
@@ -309,18 +310,22 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					//calculation on the control based on the selected rows
 					TransportContractTableRow data;
 					int newMaxTeu = ship.getAcceptedTeu();
-					int newMaxDwt = ship.getAcceptedDwt();					
+					int newMaxDwt = ship.getAcceptedDwt();	
+					List<List<Point>> paths = new ArrayList<List<Point>>();
 					for (int i = 0; i < selected.length; i++) {
 						data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
 						newMaxTeu -= data.getTotalTeu();
 						newMaxDwt -= data.getTotalDwt();
 						//TODO add fuel cotrol here and set new value
-						//TODO add point in the map where is the port and the path
+						paths.add(data.getRoute());
 					}
 
 					controlTeu.setValue(newMaxTeu); 
 					controlDwt.setValue(newMaxDwt);
-					//controlFuel.setValue(XXXX); TODO set value for fuel cotrol 					
+					//controlFuel.setValue(XXXX); TODO set value for fuel cotrol 	
+					
+					//add the path to the map
+					mapOfPortPanel.setPath(paths);
 
 				}catch (Exception e) {
 					log.error("error chosing contract", e);
