@@ -5,11 +5,14 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
+import it.spaghettisource.navaltrader.graphic.Point;
 import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 
 public class Port  implements Entity{
 
 	private World world;
+
+	private Point cooridnate;
 	
 	private String name;
 	private int classAccepted;
@@ -22,9 +25,10 @@ public class Port  implements Entity{
 
 	
 	
-	public Port(World world,String name, double dailyFeeCost, int classAccepted,int dayContractRegeneration) {
+	public Port(World world,Point cooridnate,String name, double dailyFeeCost, int classAccepted,int dayContractRegeneration) {
 		super();
 		this.world =  world;
+		this.cooridnate = cooridnate;
 		this.name = name;
 		this.dailyFeeCost = dailyFeeCost;
 		this.classAccepted = classAccepted;
@@ -37,6 +41,10 @@ public class Port  implements Entity{
 
 	public String getName() {
 		return name;
+	}
+	
+	public Point getCooridnate() {
+		return cooridnate;
 	}
 
 	public int getClassAccepted() {
@@ -132,6 +140,10 @@ public class Port  implements Entity{
 		}else{
 			return name.equals(((Port)obj).getName());
 		}	
+	}	
+	
+	public String toString() {
+		return "{name:"+name+" cooridnate:"+cooridnate.getX()+"/"+cooridnate.getY()+"}";
 	}	
 	
 	
