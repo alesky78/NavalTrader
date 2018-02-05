@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.io.IOUtils;
@@ -14,13 +16,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrade.pathfinding.AStar;
-import it.spaghettisource.navaltrade.pathfinding.Cell;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
 import it.spaghettisource.navaltrade.pathfinding.GridUtils;
 import it.spaghettisource.navaltrade.pathfinding.PathFinding;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.ui.component.PanelDrawPath;
 
 public class WorldFactory {
 
@@ -60,9 +62,15 @@ public class WorldFactory {
 			//prepare the route
 			tempFile = generateTempFile("grid", "/scenario/grid.map");
 			Grid grid = GridUtils.loadFromFile(tempFile);
+			
+			world.setGridSize(grid.getSize());
+			world.setWorldMap(ImageIO.read(PanelDrawPath.class.getResourceAsStream("/scenario/world.png")));
+			
 			PathFinding finder =  new AStar();	
 			List<Point> path;
 			List<Port> connectedPorts;
+			
+			
 			
 			//generate the routes for all the ports
 			for (Port port : ports) {

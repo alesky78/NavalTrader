@@ -1,5 +1,6 @@
 package it.spaghettisource.navaltrader.game.model;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +8,37 @@ import it.spaghettisource.navaltrader.game.loop.Entity;
 
 public class World implements Entity {
 
+	private int gridSize;				//this is the actual world size
+	private BufferedImage worldMap;		//this is the actual world map
+		
 	private List<Port> ports;
 
 	public World() {
 		ports = new ArrayList<Port>();
+	}
+	
+	public int getGridSize() {
+		return gridSize;
+	}
+
+	public void setGridSize(int gridSize) {
+		this.gridSize = gridSize;
+	}
+
+	public BufferedImage getWorldMap() {
+		return worldMap;
+	}
+
+	public void setWorldMap(BufferedImage worldMap) {
+		this.worldMap = worldMap;
+	}
+	
+	public void setPorts(List<Port> ports) {
+		this.ports = ports;
+	}
+	
+	public List<Port> getPorts() {
+		return ports;
 	}
 
 	public Port getPortByName(String name) {
@@ -22,15 +50,6 @@ public class World implements Entity {
 		
 		return null;
 	}
-	
-	public void setPorts(List<Port> ports) {
-		this.ports = ports;
-	}
-	
-	public List<Port> getPorts() {
-		return ports;
-	}
-	
 	
 	//TODO implement the logic to connect the ports
 	public List<Port> getConnectedPorts(Port sourcePort) {
