@@ -1,0 +1,20 @@
+//Antwerp
+port0.xpos = 10
+port0.ypos = 10
+port0.dailyFeeCost = 10000
+port0.classAccepted = 3
+port0.dayContractRegeneration = 2
+
+//Valencia
+port1.xpos = 10
+port1.ypos = 10
+port1.dailyFeeCost = 10000
+port1.classAccepted = 3
+port1.dayContractRegeneration = 2
+
+//Gioia Tauro
+port2.xpos = 10
+port2.ypos = 10
+port2.dailyFeeCost = 10000
+port2.classAccepted = 3
+port2.dayContractRegeneration = 2

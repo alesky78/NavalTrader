@@ -1,0 +1,10 @@
+#list of all ports 
+ports = 3
+
+port0   = Antwerp 
+port1   = Valencia
+port2   = Gioia Tauro
+
+
+
+
