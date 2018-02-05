@@ -96,6 +96,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	
 
 
+	//TODO pause the time when we create this frame and reactivate when close... other way implement the notification of all the events
 	public InternalFramePort(MainDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
 		super(parentDesktopPane,gameManager, portName);
 		try {		
