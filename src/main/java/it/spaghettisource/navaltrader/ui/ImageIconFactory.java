@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 public class ImageIconFactory {
 
 	private static Log log = LogFactory.getLog(ImageIconFactory.class.getName());
+	
 	public  static final int ICON_SIZE_BUTTON = 30;
 	public  static final int ICON_SIZE_TAB = 25;
 	public  static final int ICON_SIZE_FRAME = 20;		

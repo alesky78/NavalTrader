@@ -1,5 +1,6 @@
 package it.spaghettisource.navaltrader.game;
 
+import it.spaghettisource.navaltrader.game.factory.WorldFactory;
 import it.spaghettisource.navaltrader.game.loop.LoopManager;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
@@ -11,15 +12,18 @@ public class GameManager {
 	private LoopManager loopManager;
 
 
+	//TODO user should chose company and start port
 	public void newGame(String companyName) {
 
+		//TODO initialization of the game and selection of scenario
+		
 		GameTime gameTime = new GameTime();
-		World world = new World();		
+		
+		WorldFactory factory = new WorldFactory();
+		World world = 	factory.createWorld();
+		
 		Company company = new Company(companyName, "porto A", 4000000,world);
 
-
-		
-		
 		gameData = new GameData(company,gameTime,world);
 		loopManager = new LoopManager(gameData);
 		

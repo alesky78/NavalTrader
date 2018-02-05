@@ -138,6 +138,7 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 	}
 	
 	
+	//TODO remove this thread... pass the instance to the loop that update this frame when required
 	private class TimeRefreshThread implements Runnable {
 
 		private boolean shutdown;

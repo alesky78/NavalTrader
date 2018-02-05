@@ -29,7 +29,10 @@ public class World implements Entity {
 		return null;
 	}
 	
-	
+	public void setPorts(List<Port> ports) {
+		this.ports = ports;
+	}
+
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 			
 		for (Port port : ports) {
