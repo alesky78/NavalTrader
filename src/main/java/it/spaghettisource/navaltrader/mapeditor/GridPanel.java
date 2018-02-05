@@ -224,11 +224,11 @@ public class GridPanel extends JPanel {
 	}
 
 	private void drawBackground(int width, int height, Graphics2D graphicsGrid) {
-		if(background==null) {
-			//clean the background of the screen
-			graphicsGrid.setColor(WHITE);	    
-			graphicsGrid.fillRect(0, 0, getWidth(), getHeight());	
-		}else {
+//		if(background==null) {
+//			//clean the background of the screen
+//			graphicsGrid.setColor(WHITE);	    
+//			graphicsGrid.fillRect(0, 0, getWidth(), getHeight());	
+//		}else {
 			try {
 				background = ImageIO.read(GridPanel.class.getResourceAsStream("/scenario/world.png")); 	
 				graphicsGrid.drawImage(background,0,0,width,height,0,0,background.getWidth(),background.getHeight(),null);
@@ -236,7 +236,7 @@ public class GridPanel extends JPanel {
 				log.error("error creating background immage", e);
 			}		
 			
-		}
+//		}
 		
 		
 	}
