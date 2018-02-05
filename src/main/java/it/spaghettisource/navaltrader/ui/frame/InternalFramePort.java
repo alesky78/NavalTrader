@@ -315,7 +315,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 						newMaxTeu -= data.getTotalTeu();
 						newMaxDwt -= data.getTotalDwt();
 						//TODO add fuel cotrol here and set new value
-						//TODO add point in the map where is the port
+						//TODO add point in the map where is the port and the path
 					}
 
 					controlTeu.setValue(newMaxTeu); 

@@ -54,30 +54,31 @@ public class WorldFactory {
 				ports.add(actual);				
 			}
 			
-
-
 			//add to the world
 			world.setPorts(ports);
-
-			//generate the contracts
-			for (Port port : ports) {
-				port.generateContracts();
-			}
 
 			//prepare the route
 			tempFile = generateTempFile("grid", "/scenario/grid.map");
 			Grid grid = GridUtils.loadFromFile(tempFile);
 			PathFinding finder =  new AStar();	
+			List<Point> path;
+			List<Port> connectedPorts;
 			
 			//generate the routes for all the ports
 			for (Port port : ports) {
-				List<Port> connectedPorts = world.getConnectedPorts(port);
+				connectedPorts = world.getConnectedPorts(port);
 				for (Port destination : connectedPorts) {
-					finder.search(grid, port.getCooridnate(), destination.getCooridnate());
+					path = finder.search(grid, port.getCooridnate(), destination.getCooridnate());
+					port.addRoute(destination, path);
 					grid.resetCells();
 				}
 			}
 
+			//generate the contracts
+			for (Port port : ports) {
+				port.generateContracts();
+			}
+			
 			return world;
 
 		}catch (Exception e) {

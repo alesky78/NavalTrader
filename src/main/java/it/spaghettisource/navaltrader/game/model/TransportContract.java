@@ -1,6 +1,9 @@
 package it.spaghettisource.navaltrader.game.model;
 
+import java.util.List;
 import java.util.UUID;
+
+import it.spaghettisource.navaltrader.graphic.Point;
 
 public class TransportContract {
 
@@ -10,6 +13,7 @@ public class TransportContract {
 	private int dwtPerTeu;		
 	private double pricePerTeu;
 	private Port destinationPort;
+	private List<Point> route;
 
 	//TODO implement the management of the bonus
 	private double clauseBonus;	
@@ -17,7 +21,7 @@ public class TransportContract {
 	private int clauseDay;	
 
 
-	public TransportContract(String good, int teu, int dwtPerTeu, double pricePerTeu, Port destinationPort) {
+	public TransportContract(String good, int teu, int dwtPerTeu, double pricePerTeu, Port destinationPort,List<Point> route) {
 		super();
 		this.id = UUID.randomUUID().toString();		
 		this.good = good;
@@ -25,6 +29,7 @@ public class TransportContract {
 		this.dwtPerTeu = dwtPerTeu;
 		this.pricePerTeu = pricePerTeu;
 		this.destinationPort = destinationPort;
+		this.route = route;
 	}
 
 
