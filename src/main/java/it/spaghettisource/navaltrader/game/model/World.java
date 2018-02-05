@@ -10,13 +10,7 @@ public class World implements Entity {
 	private List<Port> ports;
 
 	public World() {
-		
-		//TODO implement configuration of the ports and the word
 		ports = new ArrayList<Port>();
-		
-		ports.add(new Port("porto A", 3000.0, 4, 1));
-		ports.add(new Port("porto B", 4000.0, 5, 2));		
-		
 	}
 
 	public Port getPortByName(String name) {
@@ -31,6 +25,25 @@ public class World implements Entity {
 	
 	public void setPorts(List<Port> ports) {
 		this.ports = ports;
+	}
+	
+	public List<Port> getPorts() {
+		return ports;
+	}
+	
+	
+	//TODO implement the logic to connect the ports
+	public List<Port> getConnectedPorts(Port sourcePort) {
+		
+		List<Port> connected = new ArrayList<Port>();
+		
+		for (Port port : ports) {
+			if(!port.equals(sourcePort)){
+				connected.add(port);
+			}	
+		}
+		
+		return connected;
 	}
 
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {

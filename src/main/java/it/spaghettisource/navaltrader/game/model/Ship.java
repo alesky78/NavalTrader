@@ -86,7 +86,7 @@ public class Ship implements Entity{
 		
 	}
 	
-	public static Ship factoryShip(String model,String name,String port){
+	public static Ship factoryShip(String model,String name,Port port){
 		Ship modelShip = null;
 		Ship newShip = null;
 		
@@ -98,7 +98,7 @@ public class Ship implements Entity{
 		}
 		newShip = new Ship(modelShip.getShipClass(), modelShip.getModel(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
-		newShip.setPort(port);
+		newShip.setPort(port.getName());
 		
 		return newShip;
 	}

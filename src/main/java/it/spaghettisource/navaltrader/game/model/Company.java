@@ -18,14 +18,14 @@ public class Company implements Updatable {
 	private World world;
 	
 	private String name;
-	private String port;	
+	private Port port;	
 	private double budget;	
 	private String rating;		
 	private Finance companyFinance;	
 	private Bank bank;	
 	private List<Ship> ships;	
 	
-	public Company(String companyName, String registerPort, int initialBudget,World world) {
+	public Company(String companyName, Port registerPort, int initialBudget,World world) {
 		this.world = world;
 		name = companyName;
 		port = registerPort; 

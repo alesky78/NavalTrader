@@ -2,11 +2,15 @@ package it.spaghettisource.navaltrader.game.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
+import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 
 public class Port  implements Entity{
 
+	private World world;
+	
 	private String name;
 	private int classAccepted;
 	private double dailyFeeCost;	
@@ -18,8 +22,9 @@ public class Port  implements Entity{
 
 	
 	
-	public Port(String name, double dailyFeeCost, int classAccepted,int dayContractRegeneration) {
+	public Port(World world,String name, double dailyFeeCost, int classAccepted,int dayContractRegeneration) {
 		super();
+		this.world =  world;
 		this.name = name;
 		this.dailyFeeCost = dailyFeeCost;
 		this.classAccepted = classAccepted;
@@ -28,8 +33,6 @@ public class Port  implements Entity{
 		this.contracts = new ArrayList<TransportContract>(0);
 		this.fuelPrice = 700.0;
 		this.repairPrice = 25000.0;		
-		generateContracts();
-		
 	}
 
 	public String getName() {
@@ -66,18 +69,45 @@ public class Port  implements Entity{
 		return selected;
 	}
 		
-
+	//TODO implement logic to calculate fuel price
 	public double getFuelPrice() {
-		return fuelPrice;	//TODO implement logic to calculate fuel price
+		return fuelPrice;	
 	}
 
+	//TODO implement logic to calculate repair price
 	public double getRepairPrice() {
-		return repairPrice;	//TODO implement logic to calculate repari price
+		return repairPrice;	
 	}
 
-	private void generateContracts(){
-		contracts = TransportContract.generateNewContract(10);
+	//TODO implement the logic to calculate the new contracts
+	public void generateContracts(){
+		
+		int numberOfContracts = 10;
+		
+		List<Port> connectePorts = world.getConnectedPorts(this);
+		int connected = connectePorts.size();
+		
+		List<TransportContract> newContracts = new ArrayList<TransportContract>(numberOfContracts);
+
+		int teu;
+		int dwt;
+		int price;
+		Port port;
+		
+		for (int i = 0; i< numberOfContracts; i++) {
+			teu = ThreadLocalRandom.current().nextInt(50, 999+1 );
+			dwt = ThreadLocalRandom.current().nextInt(2, 10+1 );
+			price = ThreadLocalRandom.current().nextInt(1000, 12000+1 );			
+			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));
+			
+			newContracts.add(new TransportContract("wood", teu, dwt, price, port));			
+		}
+		
+		contracts = newContracts;
 	}
+	
+	
+	
 	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 	
@@ -92,6 +122,17 @@ public class Port  implements Entity{
 
 		
 	}
+	
+	
+	public boolean equals(Object obj){
+		if(obj==null){
+			return false;
+		}else if(!(obj instanceof Port)){
+			return false;
+		}else{
+			return name.equals(((Port)obj).getName());
+		}	
+	}	
 	
 	
 }

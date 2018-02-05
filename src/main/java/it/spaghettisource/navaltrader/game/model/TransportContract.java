@@ -1,11 +1,6 @@
 package it.spaghettisource.navaltrader.game.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
-
-import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 
 public class TransportContract {
 
@@ -14,7 +9,7 @@ public class TransportContract {
 	private int teu;
 	private int dwtPerTeu;		
 	private double pricePerTeu;
-	private String destinationPort;
+	private Port destinationPort;
 
 	//TODO implement the management of the bonus
 	private double clauseBonus;	
@@ -22,7 +17,7 @@ public class TransportContract {
 	private int clauseDay;	
 
 
-	public TransportContract(String good, int teu, int dwtPerTeu, double pricePerTeu, String destinationPort) {
+	public TransportContract(String good, int teu, int dwtPerTeu, double pricePerTeu, Port destinationPort) {
 		super();
 		this.id = UUID.randomUUID().toString();		
 		this.good = good;
@@ -32,22 +27,6 @@ public class TransportContract {
 		this.destinationPort = destinationPort;
 	}
 
-
-	//TODO reimplement the genreation	
-	public static List<TransportContract> generateNewContract(int maxGenerated){
-
-		List<TransportContract> contracts = new ArrayList<TransportContract>(maxGenerated);
-
-		for (int i = 0; i< maxGenerated; i++) {
-			int teu = ThreadLocalRandom.current().nextInt(50, 999+1 );
-			int dwt = ThreadLocalRandom.current().nextInt(2, 10+1 );
-			int price = ThreadLocalRandom.current().nextInt(1000, 12000+1 );			
-
-			contracts.add(new TransportContract("wood", teu, dwt, price, "port x"));			
-		}
-
-		return contracts;
-	}
 
 	public String getId() {
 		return id;
@@ -85,13 +64,14 @@ public class TransportContract {
 		this.pricePerTeu = pricePerTeu;
 	}
 
-	public String getDestinationPort() {
+	public Port getDestinationPort() {
 		return destinationPort;
 	}
 
-	public void setDestinationPort(String destinationPort) {
+	public void setDestinationPort(Port destinationPort) {
 		this.destinationPort = destinationPort;
 	}
+
 
 	public boolean equals(Object obj){
 		if(obj==null){

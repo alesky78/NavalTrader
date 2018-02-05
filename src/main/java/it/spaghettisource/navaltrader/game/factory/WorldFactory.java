@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
@@ -33,22 +34,32 @@ public class WorldFactory {
 			IOUtils.copy(WorldFactory.class.getResourceAsStream("/scenario/port.properties"), out);
 
 			Configuration config = configs.properties(tempFile);
-
-			//strat to create all the ports
+		
+			
+			World world = new World();
+			
+			//////////////////////
+			//create all the ports
 			List<Port> ports = new ArrayList<Port>();
 			Port actual;
 
 			for (int i = 0; i <config.getInt("ports"); i++) {
-				actual = new Port(config.getString("port"+i+".name"), 
+				actual = new Port(world,
+								  config.getString("port"+i+".name"), 
 								  config.getDouble("port"+i+".dailyFeeCost"),
 								  config.getInt("port"+i+".classAccepted"), 
 								  config.getInt("port"+i+".dayContractRegeneration")); 
 				ports.add(actual);				
 			}
 
-			World world = new World();
+			//add to the world
 			world.setPorts(ports);
 
+			//generate the first contracts
+			for (Port port : ports) {
+				port.generateContracts();
+			}
+			
 			return world;
 
 		}catch (Exception e) {

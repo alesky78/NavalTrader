@@ -79,7 +79,7 @@ public class TransportContractTableRow {
 											 contract.getTeu()*contract.getDwtPerTeu(), 
 											 contract.getPricePerTeu(), 
 											 contract.getTeu()*contract.getPricePerTeu(), 
-											 contract.getDestinationPort());	
+											 contract.getDestinationPort().getName());	
 	}		
 	
 	
