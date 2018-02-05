@@ -19,15 +19,15 @@ public class PolyLine {
 		yPoints = new int[0];		
 	}
 
-	public void addPoint(int x, int y) {
+	public void addPoint(Point p) {
 		//extend the array
 		points++;
 		xPoints = Arrays.copyOf(xPoints, points);
 		yPoints = Arrays.copyOf(yPoints, points);
 		
 		//add the new point
-		xPoints[points-1] = x;
-		yPoints[points-1] = x;		
+		xPoints[points-1] = p.getX();
+		yPoints[points-1] = p.getY();		
 		
 	}
 
