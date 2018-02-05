@@ -27,7 +27,7 @@ public class WorldFactory {
 			
 			Configurations configs = new Configurations();
 
-			File tempFile = File.createTempFile("portlist", null);
+			File tempFile = File.createTempFile("port", null);
 			tempFile.deleteOnExit();
 			FileOutputStream out = new FileOutputStream(tempFile);
 			IOUtils.copy(WorldFactory.class.getResourceAsStream("/scenario/port.properties"), out);
@@ -40,9 +40,9 @@ public class WorldFactory {
 
 			for (int i = 0; i <config.getInt("ports"); i++) {
 				actual = new Port(config.getString("port"+i+".name"), 
-						config.getDouble("port"+i+".dailyFeeCost"),
-						config.getInt("port"+i+".classAccepted"), 
-						config.getInt("port"+i+".dayContractRegeneration")); 
+								  config.getDouble("port"+i+".dailyFeeCost"),
+								  config.getInt("port"+i+".classAccepted"), 
+								  config.getInt("port"+i+".dayContractRegeneration")); 
 			}
 
 			World world = new World();
