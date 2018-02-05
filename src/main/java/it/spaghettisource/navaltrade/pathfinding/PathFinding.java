@@ -1,8 +1,7 @@
-package it.spaghettisource.navaltrade.pathfinding.algorithm;
+package it.spaghettisource.navaltrade.pathfinding;
 
 import java.util.List;
 
-import it.spaghettisource.navaltrade.pathfinding.Grid;
 import it.spaghettisource.navaltrader.graphic.Point;
 
 public interface PathFinding {

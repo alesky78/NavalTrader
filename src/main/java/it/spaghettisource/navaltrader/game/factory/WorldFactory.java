@@ -13,11 +13,11 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import it.spaghettisource.navaltrade.pathfinding.AStar;
 import it.spaghettisource.navaltrade.pathfinding.Cell;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
 import it.spaghettisource.navaltrade.pathfinding.GridUtils;
-import it.spaghettisource.navaltrade.pathfinding.algorithm.AStar;
-import it.spaghettisource.navaltrade.pathfinding.algorithm.PathFinding;
+import it.spaghettisource.navaltrade.pathfinding.PathFinding;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.graphic.Point;
