@@ -43,6 +43,7 @@ public class WorldFactory {
 								  config.getDouble("port"+i+".dailyFeeCost"),
 								  config.getInt("port"+i+".classAccepted"), 
 								  config.getInt("port"+i+".dayContractRegeneration")); 
+				ports.add(actual);				
 			}
 
 			World world = new World();
