@@ -67,7 +67,7 @@ public class WorldFactory {
 			//prepare the route
 			tempFile = generateTempFile("grid", "/scenario/grid.map");
 			Grid grid = GridUtils.loadFromFile(tempFile);
-			PathFinding finder =  new AStar();
+			PathFinding finder;
 			Cell source;
 			Cell destination;			
 			
@@ -76,7 +76,8 @@ public class WorldFactory {
 				source = new Cell(port.getCooridnate().getX(), port.getCooridnate().getY());
 				List<Port> connectedPorts = world.getConnectedPorts(port);
 				for (Port connected : connectedPorts) {
-					destination = new Cell(connected.getCooridnate().getX(), connected.getCooridnate().getY());					
+					destination = new Cell(connected.getCooridnate().getX(), connected.getCooridnate().getY());			
+					finder =  new AStar();
 					finder.search(grid, source, destination);
 					grid.resetCells();
 				}
