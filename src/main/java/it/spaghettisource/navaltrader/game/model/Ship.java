@@ -38,6 +38,11 @@ public class Ship implements Entity{
 	private static final Ship[] shipArray = new Ship[]{SHIP_OLD_LITTLE,SHIP_OLD_LARGE,SHIP_NORMAL_LITTLE,SHIP_NORMAL_LARGE,SHIP_HITECH_LITTLE,SHIP_HITECH_LARGE,SHIP_HITECH_HUGE};	
 	private static double priceIndex = 1.0;
 
+	//TODO create generator of the sell ships and don't keep here
+	public static List<Ship> getListSellShip(){
+		return Arrays.asList(shipArray);
+	}
+	
 	private String name;	
 	private String model;
 	private String status;
@@ -59,7 +64,6 @@ public class Ship implements Entity{
 	private int maxSpeed;	
 	
 	private List<TransportContract> transportContracts;
-	
 	
 	
 	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, int maxFuel, double operatingCost, int maxSpeed, double basePrice) {
@@ -101,14 +105,7 @@ public class Ship implements Entity{
 		newShip.setPort(port.getName());
 		
 		return newShip;
-	}
-	
-	public static List<Ship> getListSellShip(){
-		return Arrays.asList(shipArray);
-	}
-
-	
-	
+	}	
 	
 	public List<TransportContract> getTransportContracts() {
 		return transportContracts;
