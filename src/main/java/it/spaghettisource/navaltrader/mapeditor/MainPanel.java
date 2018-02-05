@@ -271,7 +271,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 				finder = new Dijkstra();
 			}
 
-			List<Cell> path = finder.search(grid, startCell, endCell);
+			List<Cell> path = finder.search(grid, startCell.getCoordinate(), endCell.getCoordinate());
 			gridPanel.setPath(path);
 
 		}

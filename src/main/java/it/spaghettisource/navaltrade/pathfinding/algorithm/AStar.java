@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrade.pathfinding.Cell;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
+import it.spaghettisource.navaltrader.graphic.Point;
 
 /**
  * simple algorithm 
@@ -25,27 +26,29 @@ public class AStar implements PathFinding {
 
 	public AStar() {
 		super();
-		open = new PriorityQueue<Cell>();
 	}
 
 
 
-	public List<Cell> search(Grid grid, Cell start, Cell end) {
+	public List<Cell> search(Grid grid, Point start, Point end) {
 
 		boolean allowDiagonal = false;	
 		boolean finish = false;		
+		open = new PriorityQueue<Cell>();		
+		
+		Cell targetCell = grid.getCell(end.getX(), end.getY());		
 
 		Cell actualCell = grid.getCell(start.getX(), start.getY());
 		actualCell.setVisited(true);
 		actualCell.setOpen(true);
-		actualCell.calculatehCosts(end); 			
+		actualCell.calculatehCosts(targetCell); 			
 		open.add(actualCell);	//start from first node
 
 		while (!finish) {
 			actualCell = open.poll(); // get node with lowest fCosts from openList
 			actualCell.setVisited(true);
 
-			if (actualCell.equals(end)  ) { // found goal
+			if (actualCell.equals(targetCell)  ) { // found goal
 				return calcPath( grid.getCell(start.getX(), start.getY()), actualCell);
 			}
 
@@ -54,7 +57,7 @@ public class AStar implements PathFinding {
 			for (Cell cell : adjacentNodes) {
 				if(!cell.isOpen()) {
 					cell.setPrevious(actualCell); 				// set current node as previous for this node
-					cell.calculatehCosts(end); 					// set h costs of this node (estimated costs to goal)
+					cell.calculatehCosts(targetCell); 					// set h costs of this node (estimated costs to goal)
 					cell.calculategCosts(actualCell); 			// set g costs of this node (costs from start to this node)
 					cell.setOpen(true);							//set node open		
 					open.add(cell);								// add node to openList

@@ -42,6 +42,10 @@ public class Cell implements Comparable<Cell>{
 		open = false;	
 	}
 
+	public Point getCoordinate() {
+		return coordinate;
+	}
+
 	public int getX() {
 		return coordinate.getX();
 	}

@@ -8,6 +8,7 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrade.pathfinding.Cell;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
+import it.spaghettisource.navaltrader.graphic.Point;
 
 /**
  * simple algorithm 
@@ -24,25 +25,27 @@ public class BreadthFirstSearch  implements PathFinding {
 	
 	public BreadthFirstSearch() {
 		super();
-		open = new ArrayList<Cell>();
+
 	}
 
 
 
-	public List<Cell> search(Grid grid, Cell start, Cell end) {
+	public List<Cell> search(Grid grid, Point start, Point end) {
 		
 		boolean allowDiagonal = false;
-		
 		boolean found = false;
+		
+		open = new ArrayList<Cell>();		
 		
 		int indexCounter = 0;
 		int totalCell = grid.getTotalCell();
 
+		Cell targetCell = grid.getCell(start.getX(), start.getY());		
 		
-		Cell startCell = grid.getCell(end.getX(), end.getY());
+		Cell startCell = grid.getCell(end.getX(), end.getY());	
 		startCell.setVisited(true);
 		
-		end.setStep(0);			//initialize first step
+		startCell.setStep(0);			//initialize first step
 		open.add(startCell);	//start from end node
 		
 		Cell actualCell = null;
@@ -54,7 +57,7 @@ public class BreadthFirstSearch  implements PathFinding {
 			actualCell = open.get(indexCounter);
 			indexCounter++;			
 			
-			if(actualCell.equals(start)) {
+			if(actualCell.equals(targetCell)) {
 				found = true;
 			}else {
 				newCell = grid.getAdjacentcellsNotVisited(actualCell,allowDiagonal);

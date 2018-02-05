@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrade.pathfinding.Cell;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
+import it.spaghettisource.navaltrader.graphic.Point;
 
 /**
  * Dijkstra algorithm 
@@ -29,16 +30,20 @@ public class Dijkstra implements PathFinding {
 
 	public Dijkstra() {
 		super();
-		open = new PriorityQueue<Cell>();
+
 	}
 
 
 
-	public List<Cell> search(Grid grid, Cell start, Cell end) {
+	public List<Cell> search(Grid grid, Point start, Point end) {
 
 		boolean allowDiagonal = false;	
 		boolean finish = false;		
+		
+		open = new PriorityQueue<Cell>();		
 
+		Cell targetCell = grid.getCell(end.getX(), end.getY());	
+		
 		Cell actualCell = grid.getCell(start.getX(), start.getY());
 		actualCell.setVisited(true);
 		actualCell.setOpen(true);
@@ -49,7 +54,7 @@ public class Dijkstra implements PathFinding {
 			actualCell = open.poll(); // get node with lowest fCosts from openList
 			actualCell.setVisited(true);
 
-			if (actualCell.equals(end)  ) { // found goal
+			if (actualCell.equals(targetCell)  ) { // found goal
 				return calcPath( grid.getCell(start.getX(), start.getY()), actualCell);
 			}
 
