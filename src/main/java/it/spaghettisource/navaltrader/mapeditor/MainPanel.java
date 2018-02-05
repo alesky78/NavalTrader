@@ -16,7 +16,6 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,9 +24,9 @@ import it.spaghettisource.navaltrade.pathfinding.Cell;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
 import it.spaghettisource.navaltrade.pathfinding.GridUtils;
 import it.spaghettisource.navaltrade.pathfinding.algorithm.AStar;
-import it.spaghettisource.navaltrade.pathfinding.algorithm.BreadthFirstSearch;
 import it.spaghettisource.navaltrade.pathfinding.algorithm.Dijkstra;
 import it.spaghettisource.navaltrade.pathfinding.algorithm.PathFinding;
+import it.spaghettisource.navaltrader.graphic.Point;
 
 public class MainPanel extends JPanel  implements ActionListener{
 
@@ -51,7 +50,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private String ACTION_LOAD_GRID = "ACTION_LOAD_GRID";	
 
 
-	private String[] algorithmsValues = { "AStar", "BreadthFirstSearch", "Dijkstra"};
+	private String[] algorithmsValues = { "AStar", "Dijkstra"};
 	private Integer[] gridSizeValues = { 10, 50, 100, 250, 300, 400, 500,1000};
 	private String[] drawGridValues = { "draw grid", "remove grid"};		
 
@@ -183,7 +182,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		String command = event.getActionCommand();
 		if(ACTION_RESET.equals(command)){
 			grid.resetCells();
-			gridPanel.setPath(new ArrayList<Cell>());
+			gridPanel.setPath(new ArrayList<Point>());
 		}else if(ACTION_START.equals(command)){
 
 			if( startCell != null && endCell != null){
@@ -265,13 +264,11 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 			if(algorithm.equals("AStar")){
 				finder = new AStar();
-			}else if(algorithm.equals("BreadthFirstSearch")){
-				finder = new BreadthFirstSearch();
 			}else if(algorithm.equals("Dijkstra")){
 				finder = new Dijkstra();
 			}
 
-			List<Cell> path = finder.search(grid, startCell.getCoordinate(), endCell.getCoordinate());
+			List<Point> path = finder.search(grid, startCell.getCoordinate(), endCell.getCoordinate());
 			gridPanel.setPath(path);
 
 		}

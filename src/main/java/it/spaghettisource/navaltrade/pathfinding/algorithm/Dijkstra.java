@@ -35,7 +35,7 @@ public class Dijkstra implements PathFinding {
 
 
 
-	public List<Cell> search(Grid grid, Point start, Point end) {
+	public List<Point> search(Grid grid, Point start, Point end) {
 
 		boolean allowDiagonal = false;	
 		boolean finish = false;		
@@ -84,17 +84,17 @@ public class Dijkstra implements PathFinding {
 
 	}
 
-	private List<Cell> calcPath(Cell start, Cell goal) {
-		LinkedList<Cell> path = new LinkedList<Cell>();
+	private List<Point> calcPath(Cell start, Cell goal) {
+		LinkedList<Point> path = new LinkedList<Point>();
 
 		Cell curr = goal;
 		boolean done = false;
 		while (!done) {
-			path.addFirst(curr);
+			path.addFirst(curr.getCoordinate());
 			curr = curr.getPrevious();
 
 			if (curr.equals(start)) {
-				path.addFirst(curr);			
+				path.addFirst(curr.getCoordinate());			
 				done = true;
 			}
 		}

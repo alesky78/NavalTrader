@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrade.pathfinding.Cell;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
+import it.spaghettisource.navaltrader.graphic.Point;
 
 
 public class GridPanel extends JPanel {
@@ -24,7 +25,7 @@ public class GridPanel extends JPanel {
 	static Log log = LogFactory.getLog(GridPanel.class.getName());
 
 	private Grid grid;
-	private List<Cell> foundPath;
+	private List<Point> foundPath;
 	private Cell startCell;
 	private Cell endCell;
 	
@@ -49,7 +50,7 @@ public class GridPanel extends JPanel {
 		this.grid = grid;
 		this.panelSize = size;
 		cellSize = 6;
-		foundPath = new LinkedList<Cell>();
+		foundPath = new LinkedList<Point>();
 		drawGrid = true;
 		
 		BLACK = Color.BLACK;
@@ -85,7 +86,7 @@ public class GridPanel extends JPanel {
 		return new Dimension(panelSize, panelSize);
 	}
 
-	public void setPath(List<Cell> path){
+	public void setPath(List<Point> path){
 		this.foundPath = path;
 		repaint();
 	}
@@ -196,7 +197,7 @@ public class GridPanel extends JPanel {
 
 		//draw found path
 		if(foundPath!=null && !foundPath.isEmpty()){
-			for (Cell cellPath : foundPath) {
+			for (Point cellPath : foundPath) {
 				graphicsGrid.setColor(YELLOW);			
 				graphicsGrid.fillRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);	
 				graphicsGrid.setColor(BLACK);
