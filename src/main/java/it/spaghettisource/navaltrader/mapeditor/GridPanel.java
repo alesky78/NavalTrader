@@ -1,4 +1,4 @@
-package test.pathfinding.ui;
+package it.spaghettisource.navaltrader.mapeditor;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import test.pathfinding.Cell;
-import test.pathfinding.Grid;
+import it.spaghettisource.navaltrade.pathfinding.Cell;
+import it.spaghettisource.navaltrade.pathfinding.Grid;
 
 
 public class GridPanel extends JPanel {

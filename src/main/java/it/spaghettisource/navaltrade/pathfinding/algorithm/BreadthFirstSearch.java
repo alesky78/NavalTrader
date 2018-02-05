@@ -1,4 +1,4 @@
-package test.pathfinding.algorithm;
+package it.spaghettisource.navaltrade.pathfinding.algorithm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import test.pathfinding.Cell;
-import test.pathfinding.Grid;
+import it.spaghettisource.navaltrade.pathfinding.Cell;
+import it.spaghettisource.navaltrade.pathfinding.Grid;
 
 /**
  * simple algorithm 

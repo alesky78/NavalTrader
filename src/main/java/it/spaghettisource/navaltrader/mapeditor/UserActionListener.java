@@ -1,4 +1,4 @@
-package test.pathfinding.ui;
+package it.spaghettisource.navaltrader.mapeditor;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

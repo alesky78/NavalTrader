@@ -1,4 +1,4 @@
-package test.pathfinding;
+package it.spaghettisource.navaltrade.pathfinding;
 
 public class Cell implements Comparable<Cell>{
 

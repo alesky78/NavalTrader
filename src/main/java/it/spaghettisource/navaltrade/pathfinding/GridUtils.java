@@ -1,4 +1,4 @@
-package test.pathfinding;
+package it.spaghettisource.navaltrade.pathfinding;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;

@@ -1,4 +1,4 @@
-package test.pathfinding.ui;
+package it.spaghettisource.navaltrader.mapeditor;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -21,13 +21,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import test.pathfinding.Cell;
-import test.pathfinding.Grid;
-import test.pathfinding.GridUtils;
-import test.pathfinding.algorithm.AStar;
-import test.pathfinding.algorithm.BreadthFirstSearch;
-import test.pathfinding.algorithm.Dijkstra;
-import test.pathfinding.algorithm.PathFinding;
+import it.spaghettisource.navaltrade.pathfinding.Cell;
+import it.spaghettisource.navaltrade.pathfinding.Grid;
+import it.spaghettisource.navaltrade.pathfinding.GridUtils;
+import it.spaghettisource.navaltrade.pathfinding.algorithm.AStar;
+import it.spaghettisource.navaltrade.pathfinding.algorithm.BreadthFirstSearch;
+import it.spaghettisource.navaltrade.pathfinding.algorithm.Dijkstra;
+import it.spaghettisource.navaltrade.pathfinding.algorithm.PathFinding;
 
 public class MainPanel extends JPanel  implements ActionListener{
 
