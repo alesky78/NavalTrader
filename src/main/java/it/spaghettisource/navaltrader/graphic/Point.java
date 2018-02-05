@@ -3,9 +3,6 @@ package it.spaghettisource.navaltrader.graphic;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import it.spaghettisource.navaltrade.pathfinding.Cell;
-import it.spaghettisource.navaltrader.game.model.Port;
-
 public class Point {
 
 	private int x,y;

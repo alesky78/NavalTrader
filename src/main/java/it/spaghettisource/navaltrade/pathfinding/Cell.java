@@ -1,8 +1,10 @@
 package it.spaghettisource.navaltrade.pathfinding;
 
+import it.spaghettisource.navaltrader.graphic.Point;
+
 public class Cell implements Comparable<Cell>{
 
-	private int x,y;
+	private Point coordinate;
     private boolean wall;	//a wall cell will be not returned as adjacent becouse cannot be used
 	
     //VARIABLE FOR ALGORITHM
@@ -22,9 +24,8 @@ public class Cell implements Comparable<Cell>{
         
 	public Cell(int x, int y) {
 		super();
-		this.x = x;
-		this.y = y;
-		this.step = 0;
+		coordinate = new Point(x, y);
+		step = 0;
 		gCosts = 0;
 		hCosts = 0;		
 		visited = false;
@@ -42,20 +43,13 @@ public class Cell implements Comparable<Cell>{
 	}
 
 	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
+		return coordinate.getX();
 	}
 
 	public int getY() {
-		return y;
+		return coordinate.getY();
 	}
 
-	public void setY(int y) {
-		this.y = y;
-	}
 
 	public boolean isVisited() {
 		return visited;
@@ -115,16 +109,12 @@ public class Cell implements Comparable<Cell>{
 	}
 	
 	public void calculatehCosts(Cell cell) {
-		hCosts = Math.hypot(x - cell.x, y - cell.y)*nodeCost;	
+		hCosts = Math.hypot(coordinate.getX() - cell.coordinate.getX(), coordinate.getY() - cell.coordinate.getY())*nodeCost;	
 		//hCosts = ((absolute(x - cell.x) + absolute(y - cell.y)))*nodeCost;
     }
 
     public double getfCosts() {
         return gCosts + hCosts;
-    }
-	
-    private int absolute(int a) {
-        return a > 0 ? a : -a;
     }
     
 	/**
@@ -135,12 +125,18 @@ public class Cell implements Comparable<Cell>{
 
 	}
 	
-	public boolean equals(Object e) {
-		return x==((Cell)e).x && y==((Cell)e).y;
-	}
+	public boolean equals(Object obj){
+		if(obj==null){
+			return false;
+		}else if(!(obj instanceof Cell)){
+			return false;
+		}else{
+			return coordinate.equals(((Cell)obj).coordinate);
+		}	
+	}	
 	
 	public String toString() {
-		return "{x:"+x+" y:"+y+" step:"+step +" f:"+getfCosts()+" g:"+getgCosts()+" h:"+gethCosts()+"}";
+		return "{x:"+coordinate.getX()+" y:"+coordinate.getY()+" step:"+step +" f:"+getfCosts()+" g:"+getgCosts()+" h:"+gethCosts()+"}";
 	}
 
 
