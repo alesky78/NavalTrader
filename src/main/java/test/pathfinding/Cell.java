@@ -1,10 +1,8 @@
 package test.pathfinding;
 
-import it.spaghettisource.navaltrader.graphic.Point;
-
 public class Cell implements Comparable<Cell>{
 
-	private Point cooridnate;
+	private int x,y;
     private boolean wall;	//a wall cell will be not returned as adjacent becouse cannot be used
 	
     //VARIABLE FOR ALGORITHM
@@ -24,7 +22,8 @@ public class Cell implements Comparable<Cell>{
         
 	public Cell(int x, int y) {
 		super();
-		cooridnate = new Point(x, y);
+		this.x = x;
+		this.y = y;
 		this.step = 0;
 		gCosts = 0;
 		hCosts = 0;		
@@ -43,19 +42,19 @@ public class Cell implements Comparable<Cell>{
 	}
 
 	public int getX() {
-		return cooridnate.getX();
+		return x;
 	}
 
 	public void setX(int x) {
-		cooridnate.setX(x);
+		this.x = x;
 	}
 
 	public int getY() {
-		return cooridnate.getY();
+		return y;
 	}
 
 	public void setY(int y) {
-		cooridnate.setY(y);
+		this.y = y;
 	}
 
 	public boolean isVisited() {
@@ -116,7 +115,8 @@ public class Cell implements Comparable<Cell>{
 	}
 	
 	public void calculatehCosts(Cell cell) {
-		hCosts = Math.hypot(cooridnate.getX() - cell.cooridnate.getX(), cooridnate.getY() - cell.cooridnate.getY())*nodeCost;	
+		hCosts = Math.hypot(x - cell.x, y - cell.y)*nodeCost;	
+		//hCosts = ((absolute(x - cell.x) + absolute(y - cell.y)))*nodeCost;
     }
 
     public double getfCosts() {
@@ -136,11 +136,11 @@ public class Cell implements Comparable<Cell>{
 	}
 	
 	public boolean equals(Object e) {
-		return cooridnate.equals(e);
+		return x==((Cell)e).x && y==((Cell)e).y;
 	}
 	
 	public String toString() {
-		return "{x:"+cooridnate.getX()+" y:"+cooridnate.getY()+" step:"+step +" f:"+getfCosts()+" g:"+getgCosts()+" h:"+gethCosts()+"}";
+		return "{x:"+x+" y:"+y+" step:"+step +" f:"+getfCosts()+" g:"+getgCosts()+" h:"+gethCosts()+"}";
 	}
 
 
