@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.graphic;
+package it.spaghettisource.navaltrader.geometry;
 
 import java.awt.Graphics;
 import java.util.*;

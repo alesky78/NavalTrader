@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrade.pathfinding.Cell;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
-import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.geometry.Point;
 
 
 public class GridPanel extends JPanel {

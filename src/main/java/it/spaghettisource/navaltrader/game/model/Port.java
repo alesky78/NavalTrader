@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
-import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.geometry.Point;
 
 public class Port  implements Entity{
 

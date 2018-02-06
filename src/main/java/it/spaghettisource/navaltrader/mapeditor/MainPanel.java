@@ -26,7 +26,7 @@ import it.spaghettisource.navaltrade.pathfinding.Dijkstra;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
 import it.spaghettisource.navaltrade.pathfinding.GridUtils;
 import it.spaghettisource.navaltrade.pathfinding.PathFinding;
-import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.geometry.Point;
 
 public class MainPanel extends JPanel  implements ActionListener{
 

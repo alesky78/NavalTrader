@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.spaghettisource.navaltrader.game.model.TransportContract;
-import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.geometry.Point;
 
 public class TransportContractTableRow {
 

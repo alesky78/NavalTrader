@@ -3,7 +3,7 @@ package it.spaghettisource.navaltrader.game.model;
 import java.util.List;
 import java.util.UUID;
 
-import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.geometry.Point;
 
 public class TransportContract {
 

@@ -2,7 +2,7 @@ package it.spaghettisource.navaltrade.pathfinding;
 
 import java.util.List;
 
-import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.geometry.Point;
 
 public interface PathFinding {
 

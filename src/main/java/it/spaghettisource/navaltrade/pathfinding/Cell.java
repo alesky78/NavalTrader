@@ -1,6 +1,6 @@
 package it.spaghettisource.navaltrade.pathfinding;
 
-import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.geometry.Point;
 
 public class Cell implements Comparable<Cell>{
 

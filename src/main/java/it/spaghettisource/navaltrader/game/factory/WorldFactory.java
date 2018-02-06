@@ -21,7 +21,7 @@ import it.spaghettisource.navaltrade.pathfinding.GridUtils;
 import it.spaghettisource.navaltrade.pathfinding.PathFinding;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.World;
-import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawPath;
 
 public class WorldFactory {

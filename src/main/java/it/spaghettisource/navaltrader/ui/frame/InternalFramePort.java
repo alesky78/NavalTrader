@@ -37,7 +37,7 @@ import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
 import it.spaghettisource.navaltrader.game.model.World;
-import it.spaghettisource.navaltrader.graphic.Point;
+import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
