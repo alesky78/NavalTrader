@@ -31,3 +31,9 @@ private String shipClass; --> PANAMAX ETC....
 https://en.wikipedia.org/wiki/Container_ship
 https://en.wikipedia.org/wiki/Cargo_ship
 http://maritime-connector.com/wiki/ship-sizes/
+
+
+######################
+ship fuel consumption
+https://people.hofstra.edu/geotrans/eng/ch8en/conc8en/fuel_consumption_containerships.html
+https://mermaidchaos.wordpress.com/2014/12/05/slow-steaming-in-modern-shipping/
