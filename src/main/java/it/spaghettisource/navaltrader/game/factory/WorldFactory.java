@@ -71,7 +71,6 @@ public class WorldFactory {
 			List<Port> connectedPorts;
 			
 			
-			
 			//generate the routes for all the ports
 			for (Port port : ports) {
 				connectedPorts = world.getConnectedPorts(port);

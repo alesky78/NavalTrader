@@ -113,7 +113,7 @@ public class Port  implements Entity{
 			teu = ThreadLocalRandom.current().nextInt(50, 999+1 );
 			dwt = ThreadLocalRandom.current().nextInt(2, 10+1 );
 			price = ThreadLocalRandom.current().nextInt(1000, 12000+1 );			
-			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));
+			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));	//get random port
 			
 			newContracts.add(new TransportContract("wood", teu, dwt, price, port,routes.get(port)));			
 		}
