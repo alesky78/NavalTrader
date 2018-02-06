@@ -20,6 +20,7 @@ import it.spaghettisource.navaltrade.pathfinding.Grid;
 import it.spaghettisource.navaltrade.pathfinding.GridUtils;
 import it.spaghettisource.navaltrade.pathfinding.PathFinding;
 import it.spaghettisource.navaltrader.game.model.Port;
+import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawPath;
@@ -33,14 +34,19 @@ public class WorldFactory {
 
 		try {
 
-			File tempFile = generateTempFile("port", "/scenario/port.properties");
-
 			Configurations configs = new Configurations();
-			Configuration config = configs.properties(tempFile);
-
+			Configuration config;
+			
+			//create the world
+			File tempFile = generateTempFile("world", "/scenario/world.properties");
+			config = configs.properties(tempFile);			
 			World world = new World();
+			world.setGridScale(config.getInt("gridscale"));
+			
 
-			//create all the ports
+			//create the ports
+			tempFile = generateTempFile("port", "/scenario/port.properties");
+			config = configs.properties(tempFile);			
 			List<Port> ports = new ArrayList<Port>();
 			Port actual;
 
@@ -56,7 +62,7 @@ public class WorldFactory {
 				ports.add(actual);				
 			}
 			
-			//add to the world
+			//add the port to the world
 			world.setPorts(ports);
 
 			//prepare the route
@@ -67,7 +73,8 @@ public class WorldFactory {
 			world.setWorldMap(ImageIO.read(PanelDrawPath.class.getResourceAsStream("/scenario/world.png")));
 			
 			PathFinding finder =  new AStar();	
-			List<Point> path;
+			Point[] path;
+			Route route;
 			List<Port> connectedPorts;
 			
 			
@@ -76,7 +83,8 @@ public class WorldFactory {
 				connectedPorts = world.getConnectedPorts(port);
 				for (Port destination : connectedPorts) {
 					path = finder.search(grid, port.getCooridnate(), destination.getCooridnate());
-					port.addRoute(destination, path);
+					route = new Route(destination, world.getGridScale(), path);
+					port.addRoute(route);
 					grid.resetCells();
 				}
 			}

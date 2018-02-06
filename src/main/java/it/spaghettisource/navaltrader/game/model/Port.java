@@ -2,6 +2,7 @@ package it.spaghettisource.navaltrader.game.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,7 +24,7 @@ public class Port  implements Entity{
 	private int dayContractRegeneration;	
 	private int dayToNextContractRegeneration;
 	private List<TransportContract> contracts;
-	private Map<Port,List<Point>> routes;
+	private List<Route> routes;
 
 	
 	
@@ -37,7 +38,7 @@ public class Port  implements Entity{
 		this.dayContractRegeneration = dayContractRegeneration;
 		this.dayToNextContractRegeneration = dayContractRegeneration;
 		this.contracts = new ArrayList<TransportContract>(0);
-		this.routes = new HashMap<Port,List<Point>>();
+		this.routes = new ArrayList<Route>();
 		this.fuelPrice = 700.0;
 		this.repairPrice = 25000.0;		
 	}
@@ -66,8 +67,18 @@ public class Port  implements Entity{
 		return contracts;
 	}
 	
-	public void addRoute(Port port, List<Point> path) {
-		routes.put(port, path);
+	public void addRoute(Route route) {
+		routes.add(route);
+	}
+	
+	public Route getRouteTo(Port destination) {
+		for (Route route : routes) {
+			if(route.isDestination(destination)) {
+				return route;
+			}
+		}
+		
+		return null;
 	}
 	
 	public TransportContract removeContractById(String contractId) {
@@ -115,7 +126,7 @@ public class Port  implements Entity{
 			price = ThreadLocalRandom.current().nextInt(1000, 12000+1 );			
 			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));	//get random port
 			
-			newContracts.add(new TransportContract("wood", teu, dwt, price, port,routes.get(port)));			
+			newContracts.add(new TransportContract("wood", teu, dwt, price, getRouteTo(port)));			
 		}
 		
 		contracts = newContracts;

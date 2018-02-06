@@ -3,32 +3,36 @@ package it.spaghettisource.navaltrader.game.model;
 import it.spaghettisource.navaltrader.geometry.Mathematic;
 import it.spaghettisource.navaltrader.geometry.Point;
 
+/**
+ * 
+ * 
+ * 
+ * @author Alessandro
+ *
+ */
 public class Route {
 
 	private Port destination;
-	
-	private int totalDistance;	
-	private int pathScale;
+	private int distanceInScale;	
 	private Point[] path;
 	private Point[] pathInScale;	
 	
-	public Route(Port destination, int pathScale, Point[] path) {
+	public Route(Port destination, int scale, Point[] path) {
 		super();
 		this.destination = destination;
-		this.pathScale = pathScale;
 		this.path = path;
-		this.totalDistance = (path.length-1)*pathScale;
+		this.distanceInScale = (path.length-1)*scale;
 		
 		pathInScale = new Point[path.length];
 		Point point;
 		for (int i = 0; i < path.length; i++) {
 			point = path[i];
-			pathInScale[i] = Mathematic.scale(point, pathScale);
+			pathInScale[i] = Mathematic.scale(point, scale);
 		}	
 	}
 		
-	public int getTotalDistance() {
-		return totalDistance;
+	public int getDistanceInScale() {
+		return distanceInScale;
 	}
 
 	public Port getDestination() {
@@ -37,10 +41,6 @@ public class Route {
 
 	public boolean isDestination(Port port) {
 		return destination.equals(port);
-	}
-
-	public int getPathScale() {
-		return pathScale;
 	}
 
 	public Point[] getPath() {

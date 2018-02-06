@@ -8,11 +8,7 @@ public class Cell implements Comparable<Cell>{
     private boolean wall;	//a wall cell will be not returned as adjacent becouse cannot be used
 	
     //VARIABLE FOR ALGORITHM
-
-	boolean visited;	//for all A star and BreadthFirstSearch and Dijkstra
-	private int step;	//for BreadthFirstSearch
-	
-	//for A star  Dijkstra
+	boolean visited;	
 	private Cell previous;
     private double gCosts;	
     private boolean open;
@@ -25,7 +21,6 @@ public class Cell implements Comparable<Cell>{
 	public Cell(int x, int y) {
 		super();
 		coordinate = new Point(x, y);
-		step = 0;
 		gCosts = 0;
 		hCosts = 0;		
 		visited = false;
@@ -35,7 +30,7 @@ public class Cell implements Comparable<Cell>{
 	}
 	
 	public void reset() {
-		this.step = 0;
+
 		gCosts = 0;
 		hCosts = 0;		
 		visited = false;
@@ -77,14 +72,6 @@ public class Cell implements Comparable<Cell>{
 
 	public void setOpen(boolean open) {
 		this.open = open;
-	}
-
-	public int getStep() {
-		return step;
-	}
-
-	public void setStep(int step) {
-		this.step = step;
 	}
 
 	public Cell getPrevious() {
@@ -140,7 +127,7 @@ public class Cell implements Comparable<Cell>{
 	}	
 	
 	public String toString() {
-		return "{x:"+coordinate.getX()+" y:"+coordinate.getY()+" step:"+step +" f:"+getfCosts()+" g:"+getgCosts()+" h:"+gethCosts()+"}";
+		return "{x:"+coordinate.getX()+" y:"+coordinate.getY()+" f:"+getfCosts()+" g:"+getgCosts()+" h:"+gethCosts()+"}";
 	}
 
 

@@ -12,8 +12,7 @@ public class TransportContract {
 	private int teu;
 	private int dwtPerTeu;		
 	private double pricePerTeu;
-	private Port destinationPort;
-	private List<Point> route;
+	private Route route;
 
 	//TODO implement the management of the bonus
 	private double clauseBonus;	
@@ -21,14 +20,13 @@ public class TransportContract {
 	private int clauseDay;	
 
 
-	public TransportContract(String good, int teu, int dwtPerTeu, double pricePerTeu, Port destinationPort,List<Point> route) {
+	public TransportContract(String good, int teu, int dwtPerTeu, double pricePerTeu, Route route) {
 		super();
 		this.id = UUID.randomUUID().toString();		
 		this.good = good;
 		this.teu = teu;
 		this.dwtPerTeu = dwtPerTeu;
 		this.pricePerTeu = pricePerTeu;
-		this.destinationPort = destinationPort;
 		this.route = route;
 	}
 
@@ -41,49 +39,25 @@ public class TransportContract {
 		return good;
 	}
 
-	public void setGood(String good) {
-		this.good = good;
-	}
-
 	public int getTeu() {
 		return teu;
-	}
-
-	public void setTeu(int teu) {
-		this.teu = teu;
 	}
 
 	public int getDwtPerTeu() {
 		return dwtPerTeu;
 	}
 
-	public void setDwtPerTeu(int dwtPerTeu) {
-		this.dwtPerTeu = dwtPerTeu;
-	}
-
 	public double getPricePerTeu() {
 		return pricePerTeu;
 	}
 
-	public void setPricePerTeu(double pricePerTeu) {
-		this.pricePerTeu = pricePerTeu;
-	}
-
 	public Port getDestinationPort() {
-		return destinationPort;
+		return route.getDestination();
 	}
 
-	public void setDestinationPort(Port destinationPort) {
-		this.destinationPort = destinationPort;
-	}
-
-	public List<Point> getRoute() {
+	public Route getRoute() {
 		return route;
 	}
-	public void setRoute(List<Point> route) {
-		this.route = route;
-	}
-
 
 	public boolean equals(Object obj){
 		if(obj==null){

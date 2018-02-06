@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.geometry.Point;
 
 
@@ -20,8 +21,7 @@ public class PanelDrawPath extends JPanel {
 
 	static Log log = LogFactory.getLog(PanelDrawPath.class.getName());
 
-
-	private List<List<Point>> paths;	
+	private List<Route> routes;	
 	private BufferedImage background;
 	private Point portCoordinate;
 
@@ -38,7 +38,7 @@ public class PanelDrawPath extends JPanel {
 		this.portCoordinate = portCoordinate;
 
 		cellSize = 6;
-		paths = new LinkedList<List<Point>>();
+		routes = new LinkedList<Route>();
 
 	}
 
@@ -47,8 +47,8 @@ public class PanelDrawPath extends JPanel {
 		return new Dimension(panelSize, panelSize);
 	}
 
-	public void setPath(List<List<Point>> paths){
-		this.paths = paths;
+	public void setRoutes(List<Route> routes){
+		this.routes = routes;
 		repaint();
 	}
 
@@ -82,14 +82,16 @@ public class PanelDrawPath extends JPanel {
 
 
 	private void drawPaths(Graphics2D graphicsGrid) {
-		if(!paths.isEmpty()){
-			for (List<Point> actualPath : paths) {
-				for (Point point : actualPath) {
+		if(!routes.isEmpty()){
+			Point[] path;
+			for (Route route : routes) {
+				path = route.getPath();
+				for (int i = 0; i < path.length; i++) {
 					graphicsGrid.setColor(Color.RED);			
-					graphicsGrid.fillRect(point.getX()*cellSize, point.getY()*cellSize, cellSize, cellSize);	
+					graphicsGrid.fillRect(path[i].getX()*cellSize, path[i].getY()*cellSize, cellSize, cellSize);	
 					graphicsGrid.setColor(Color.BLACK);
-					graphicsGrid.drawRect(point.getX()*cellSize, point.getY()*cellSize, cellSize, cellSize);							
-				}		
+					graphicsGrid.drawRect(path[i].getX()*cellSize, path[i].getY()*cellSize, cellSize, cellSize);
+				}	
 			}
 		}
 	}

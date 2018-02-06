@@ -182,7 +182,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		String command = event.getActionCommand();
 		if(ACTION_RESET.equals(command)){
 			grid.resetCells();
-			gridPanel.setPath(new ArrayList<Point>());
+			gridPanel.setPath(null);
 		}else if(ACTION_START.equals(command)){
 
 			if( startCell != null && endCell != null){
@@ -268,7 +268,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 				finder = new Dijkstra();
 			}
 
-			List<Point> path = finder.search(grid, startCell.getCoordinate(), endCell.getCoordinate());
+			Point[] path = finder.search(grid, startCell.getCoordinate(), endCell.getCoordinate());
 			gridPanel.setPath(path);
 
 		}

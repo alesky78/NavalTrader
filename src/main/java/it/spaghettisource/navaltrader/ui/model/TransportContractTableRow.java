@@ -3,6 +3,7 @@ package it.spaghettisource.navaltrader.ui.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
 import it.spaghettisource.navaltrader.geometry.Point;
 
@@ -14,10 +15,9 @@ public class TransportContractTableRow {
 	private int totalDwt;		
 	private double pricePerTeu;
 	private double totalPrice;	
-	private String destinationPort;
-	private List<Point> route;	
+	private Route route;	
 	
-	public TransportContractTableRow(String id, String good, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, String destinationPort,List<Point> route) {
+	public TransportContractTableRow(String id, String good, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, Route route) {
 		super();
 		this.id = id;
 		this.good = good;
@@ -25,7 +25,6 @@ public class TransportContractTableRow {
 		this.totalDwt = totalDwt;
 		this.pricePerTeu = pricePerTeu;
 		this.totalPrice = totalPrice;
-		this.destinationPort = destinationPort;
 		this.route = route;
 	}
 
@@ -54,10 +53,14 @@ public class TransportContractTableRow {
 	}
 	
 	public String getDestinationPort() {
-		return destinationPort;
+		return route.getDestination().getName();
 	}
 	
-	public List<Point> getRoute() {
+	public int getDistance() {
+		return route.getDistanceInScale();
+	}
+	
+	public Route getRoute() {
 		return route;
 	}
 
@@ -86,7 +89,6 @@ public class TransportContractTableRow {
 											 contract.getTeu()*contract.getDwtPerTeu(), 
 											 contract.getPricePerTeu(), 
 											 contract.getTeu()*contract.getPricePerTeu(), 
-											 contract.getDestinationPort().getName(),
 											 contract.getRoute());	
 	}		
 	

@@ -25,7 +25,7 @@ public class GridPanel extends JPanel {
 	static Log log = LogFactory.getLog(GridPanel.class.getName());
 
 	private Grid grid;
-	private List<Point> foundPath;
+	private Point[] foundPath;
 	private Cell startCell;
 	private Cell endCell;
 	
@@ -50,7 +50,7 @@ public class GridPanel extends JPanel {
 		this.grid = grid;
 		this.panelSize = size;
 		cellSize = 6;
-		foundPath = new LinkedList<Point>();
+		foundPath = null;
 		drawGrid = true;
 		
 		BLACK = Color.BLACK;
@@ -86,7 +86,7 @@ public class GridPanel extends JPanel {
 		return new Dimension(panelSize, panelSize);
 	}
 
-	public void setPath(List<Point> path){
+	public void setPath(Point[] path){
 		this.foundPath = path;
 		repaint();
 	}
@@ -196,13 +196,14 @@ public class GridPanel extends JPanel {
 
 
 		//draw found path
-		if(foundPath!=null && !foundPath.isEmpty()){
-			for (Point cellPath : foundPath) {
+		if(foundPath!=null && foundPath.length != 0){
+			for (int i = 0; i < foundPath.length; i++) {
 				graphicsGrid.setColor(YELLOW);			
-				graphicsGrid.fillRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);	
+				graphicsGrid.fillRect(foundPath[i].getX()*cellSize, foundPath[i].getY()*cellSize, cellSize, cellSize);	
 				graphicsGrid.setColor(BLACK);
-				graphicsGrid.drawRect(cellPath.getX()*cellSize, cellPath.getY()*cellSize, cellSize, cellSize);							
-			}			
+				graphicsGrid.drawRect(foundPath[i].getX()*cellSize, foundPath[i].getY()*cellSize, cellSize, cellSize);			
+			}
+				
 		}
 
 		//draw strat end point path

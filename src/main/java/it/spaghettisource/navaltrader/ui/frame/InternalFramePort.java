@@ -34,10 +34,10 @@ import ca.odell.glazedlists.gui.TableFormat;
 import ca.odell.glazedlists.swing.EventTableModel;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.model.Port;
+import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
 import it.spaghettisource.navaltrader.game.model.World;
-import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
@@ -296,8 +296,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//port contract
 		JPanel portContractPanel = new JPanel(new BorderLayout());
 		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));	
-		String[] newContractpropertyNames = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] newContractcolumnLabels = new String[] { "good","destinationPort", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] newContractpropertyNames = new String[] { "good","destinationPort", "distance", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] newContractcolumnLabels = new String[] { "good","destinationPort", "distance", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> newContractTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
 		newContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listNewContractData, newContractTf));			
 		newContractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -311,13 +311,13 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					TransportContractTableRow data;
 					int newMaxTeu = ship.getAcceptedTeu();
 					int newMaxDwt = ship.getAcceptedDwt();	
-					List<List<Point>> paths = new ArrayList<List<Point>>();
+					List<Route> routes = new ArrayList<Route>();
 					for (int i = 0; i < selected.length; i++) {
 						data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
 						newMaxTeu -= data.getTotalTeu();
 						newMaxDwt -= data.getTotalDwt();
 						//TODO add fuel cotrol here and set new value
-						paths.add(data.getRoute());
+						routes.add(data.getRoute());
 					}
 
 					controlTeu.setValue(newMaxTeu); 
@@ -325,7 +325,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					//controlFuel.setValue(XXXX); TODO set value for fuel cotrol 	
 					
 					//add the path to the map
-					mapOfPortPanel.setPath(paths);
+					mapOfPortPanel.setRoutes(routes);
 
 				}catch (Exception e) {
 					log.error("error chosing contract", e);

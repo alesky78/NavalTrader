@@ -20,19 +20,12 @@ public class AStar implements PathFinding {
 
 	static Log log = LogFactory.getLog(AStar.class.getName());
 
-	private PriorityQueue<Cell> open;
 
-	public AStar() {
-		super();
-	}
-
-
-
-	public List<Point> search(Grid grid, Point start, Point end) {
+	public Point[]  search(Grid grid, Point start, Point end) {
 
 		boolean allowDiagonal = false;	
 		boolean finish = false;		
-		open = new PriorityQueue<Cell>();		
+		PriorityQueue<Cell> open = new PriorityQueue<Cell>();		
 		
 		Cell targetCell = grid.getCell(end.getX(), end.getY());		
 
@@ -73,10 +66,10 @@ public class AStar implements PathFinding {
 		}
 
 		return null;
-
 	}
 
-	private List<Point> calcPath(Cell start, Cell goal) {
+	
+	private Point[] calcPath(Cell start, Cell goal) {
 		LinkedList<Point> path = new LinkedList<Point>();
 
 		Cell curr = goal;
@@ -90,7 +83,11 @@ public class AStar implements PathFinding {
 				done = true;
 			}
 		}
-		return path;
+		
+		Point[] result = new Point[path.size()];
+		path.toArray(result);
+		
+		return result;
 	}
 
 }
