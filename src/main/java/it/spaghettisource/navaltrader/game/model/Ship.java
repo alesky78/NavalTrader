@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
+import it.spaghettisource.navaltrader.geometry.Mathematic;
 
 public class Ship implements Entity{
 
@@ -27,13 +28,13 @@ public class Ship implements Entity{
 	private static final int SHIP_CARGO_HUGE = 6000;		
 		
 	//customized ship
-	private static final Ship SHIP_OLD_LITTLE = 	new Ship("Small feeder", "nsr-32", 	50,	 SHIP_CARGO_LITTLE	, 1000,  3000, 2000, 15, 1000000);
-	private static final Ship SHIP_OLD_LARGE = 		new Ship("Feeder", 		 "xModel", 	50,	 SHIP_CARGO_LARGE	, 2000,  3500, 2000, 15, 2000000);	
-	private static final Ship SHIP_NORMAL_LITTLE = 	new Ship("Feedermax", 	 "SS32", 	60,	 SHIP_CARGO_LITTLE	, 3000,  3500, 2000, 17, 4000000);
-	private static final Ship SHIP_NORMAL_LARGE = 	new Ship("Panamax",		 "FastS", 	70,	 SHIP_CARGO_LARGE	, 5100,  4000, 2000, 17, 5000000);
-	private static final Ship SHIP_HITECH_LITTLE = 	new Ship("Post-Panamax", "FastSS",	80, SHIP_CARGO_LITTLE	, 10000, 4000, 2000, 21, 10000000);
-	private static final Ship SHIP_HITECH_LARGE = 	new Ship("New Panamax",	 "tornato", 90, SHIP_CARGO_LARGE	, 14500, 5000, 2000, 21, 15000000);
-	private static final Ship SHIP_HITECH_HUGE= 	new Ship("ULCV",		 "spaceX", 	100, SHIP_CARGO_HUGE	, 18270, 6000, 2000, 21, 25000000);	
+	private static final Ship SHIP_OLD_LITTLE = 	new Ship("Small feeder", "nsr-32", 	50,	 SHIP_CARGO_LITTLE	, 1000,  3000, 0.02, 0.03, 2000, 15, 1000000);
+	private static final Ship SHIP_OLD_LARGE = 		new Ship("Feeder", 		 "xModel", 	50,	 SHIP_CARGO_LARGE	, 2000,  3500, 0.02, 0.04, 2000, 16, 2000000);	
+	private static final Ship SHIP_NORMAL_LITTLE = 	new Ship("Feedermax", 	 "SS32", 	60,	 SHIP_CARGO_LITTLE	, 3000,  3500, 0.02, 0.06, 2000, 17, 4000000);
+	private static final Ship SHIP_NORMAL_LARGE = 	new Ship("Panamax",		 "FastS", 	70,	 SHIP_CARGO_LARGE	, 5100,  4000, 0.02, 0.1, 2000, 19, 5000000);
+	private static final Ship SHIP_HITECH_LITTLE = 	new Ship("Post-Panamax", "FastSS",	80, SHIP_CARGO_LITTLE	, 10000, 4000, 0.02, 0.2, 2000, 21, 10000000);
+	private static final Ship SHIP_HITECH_LARGE = 	new Ship("New Panamax",	 "tornato", 90, SHIP_CARGO_LARGE	, 14500, 5000, 0.02, 0.2, 2000, 22, 15000000);
+	private static final Ship SHIP_HITECH_HUGE= 	new Ship("ULCV",		 "spaceX", 	100, SHIP_CARGO_HUGE	, 18270, 6000, 0.02, 0.3, 2000, 23, 25000000);	
 	
 	private static final Ship[] shipArray = new Ship[]{SHIP_OLD_LITTLE,SHIP_OLD_LARGE,SHIP_NORMAL_LITTLE,SHIP_NORMAL_LARGE,SHIP_HITECH_LITTLE,SHIP_HITECH_LARGE,SHIP_HITECH_HUGE};	
 	private static double priceIndex = 1.0;
@@ -58,6 +59,8 @@ public class Ship implements Entity{
 	private int maxDwt;	
 	private int teu;		
 	private int maxTeu;	
+	private double fuelConsumptionIndexA;
+	private double fuelConsumptionIndexB;	
 	private int fuel;	
 	private int maxFuel;	
 	private int speed;	
@@ -66,7 +69,7 @@ public class Ship implements Entity{
 	private List<TransportContract> transportContracts;
 	
 	
-	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, int maxFuel, double operatingCost, int maxSpeed, double basePrice) {
+	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, int maxFuel,double fuelConsumptionIndexA, double fuelConsumptionIndexB,  double operatingCost, int maxSpeed, double basePrice) {
 		
 		this.shipClass = shipClass;
 		this.model = model;
@@ -75,6 +78,8 @@ public class Ship implements Entity{
 		this.maxDwt = maxDwt;
 		this.maxTeu = maxTeu;
 		this.maxFuel = maxFuel;
+		this.fuelConsumptionIndexA = fuelConsumptionIndexA;
+		this.fuelConsumptionIndexB = fuelConsumptionIndexB;
 		this.maxSpeed = maxSpeed;
 		this.hull = hull;		
 		this.basePrice = basePrice;
@@ -100,7 +105,7 @@ public class Ship implements Entity{
 				modelShip = ship;
 			}
 		}
-		newShip = new Ship(modelShip.getShipClass(), modelShip.getModel(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
+		newShip = new Ship(modelShip.getShipClass(), modelShip.getModel(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getFuelConsumptionIndexA(), modelShip.getFuelConsumptionIndexB(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
 		newShip.setPort(port.getName());
 		
@@ -245,7 +250,28 @@ public class Ship implements Entity{
 		this.fuel = fuel + toAdd;
 	}	
 	
+	public int getFuelConsumptionPerHour(int speed) {
+		int value = (int)(Mathematic.powBy2(speed)*fuelConsumptionIndexA + speed*fuelConsumptionIndexB);;
+		if(value<1) {
+			return 1;
+		}else {
+			return value;
+		}
+	}
 	
+	public int getFuelConsumptionPerDistance(int speed,int distance) {
+		int consumption = getFuelConsumptionPerHour(speed);
+		return (distance/speed)*consumption;
+	}	
+	
+	public double getFuelConsumptionIndexA() {
+		return fuelConsumptionIndexA;
+	}
+
+	public double getFuelConsumptionIndexB() {
+		return fuelConsumptionIndexB;
+	}
+
 	public int getSpeed() {
 		return speed;
 	}

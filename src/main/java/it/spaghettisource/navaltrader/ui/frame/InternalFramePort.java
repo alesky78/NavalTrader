@@ -97,7 +97,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private TextFieldInteger controlTeu;
 	private TextFieldInteger controlDwt;	
 	private TextFieldInteger controlFuel;	
-	
+
 
 
 	//TODO pause the time when we create this frame and reactivate when close... other way implement the notification of all the events
@@ -168,11 +168,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		JPanel maintainancePanel = new JPanel(new BorderLayout());
 		maintainancePanel.setBorder(BorderFactory.createTitledBorder("maintainance ship"));
 
-		
+
 		//STATUS PART
 		JPanel globalStatusPanel = new JPanel(new BorderLayout());
 		globalStatusPanel.setBorder(BorderFactory.createTitledBorder("status ship"));
-		
+
 		///////////////////////////		
 		//create ship status info
 		JPanel statusPanel = new JPanel(new SpringLayout());		
@@ -191,7 +191,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		SpringLayoutUtilities.makeCompactGrid(statusPanel,6, 2,5, 5,5, 5);			
 		globalStatusPanel.add(statusPanel, BorderLayout.NORTH);	
-		
+
 		//REFUEL PART
 		JPanel globalRefuelPanel = new JPanel(new BorderLayout());
 		globalRefuelPanel.setBorder(BorderFactory.createTitledBorder("refuel ship"));	
@@ -288,10 +288,64 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		SpringLayoutUtilities.makeCompactGrid(controPanel,3, 2,5, 5,5, 5);	
 
 
+		///////////////
+		//configure fuel used and speed and accept contract
+		int startSpeed = 5;		
+		JTextField selectedSpeed = new JTextField();
+		JTextField selectedFuelConsumption = new JTextField();		
+		selectedSpeed.setText(startSpeed+"/"+ship.getMaxSpeed()+" nd");
+		selectedSpeed.setEditable(false);	
+		selectedFuelConsumption.setText(ship.getFuelConsumptionPerHour(startSpeed) +"t /"+ship.getFuelConsumptionPerHour(startSpeed)*24+" t");
+		selectedFuelConsumption.setEditable(false);
+
+		JSlider sliderNavigationSpeed;			
+		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);	
+		
+		sliderNavigationSpeed.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				JSlider source = (JSlider)e.getSource();
+				if (!source.getValueIsAdjusting()) {
+					selectedSpeed.setText(source.getValue()+"/"+ship.getMaxSpeed()+" nd");
+					selectedFuelConsumption.setText(ship.getFuelConsumptionPerHour(source.getValue()) +" t hour /"+ship.getFuelConsumptionPerHour(source.getValue())*24+" t day");	
+		
+					if(newContractTable!=null) {	//reset the controll of the fuel
+						TransportContractTableRow data;						
+						int newMaxFule = ship.getFuel();
+						int[] selected = newContractTable.getSelectedRows();
+						for (int i = 0; i < selected.length; i++) {
+							data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
+							newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), data.getDistance());
+						}		
+						controlFuel.setValue(newMaxFule);
+					}
+
+					
+				}
+			}
+		});		
+
+		JButton acceptContractButton = new JButton(ImageIconFactory.getForTab("/icon/investment.png"));
+		acceptContractButton.setActionCommand(ACTION_ACCEPT_CONTRACT);
+		acceptContractButton.addActionListener(this);
+
+		JPanel speedControlPanel = new JPanel(new SpringLayout());	
+		speedControlPanel.setBorder(BorderFactory.createTitledBorder("navigation speed"));		
+		speedControlPanel.add(new JLabel("speed selection"));		
+		speedControlPanel.add(selectedSpeed);	
+		speedControlPanel.add(new JLabel("fuel consumption per hour/day"));	
+		speedControlPanel.add(selectedFuelConsumption);
+		speedControlPanel.add(new JLabel("select speed"));		
+		speedControlPanel.add(sliderNavigationSpeed);	
+		speedControlPanel.add(new JLabel("sign contract"));		
+		speedControlPanel.add(acceptContractButton);		
+		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,2, 4,5, 5,5, 5);	
+
+
 		///////////////////////////////////
 		//word map port
 		PanelDrawPath mapOfPortPanel = new PanelDrawPath(600, world.getGridSize(), world.getWorldMap(), port.getCooridnate());
 
+		
 		///////////////
 		//port contract
 		JPanel portContractPanel = new JPanel(new BorderLayout());
@@ -311,19 +365,20 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					TransportContractTableRow data;
 					int newMaxTeu = ship.getAcceptedTeu();
 					int newMaxDwt = ship.getAcceptedDwt();	
+					int newMaxFule = ship.getFuel();			//TODO use this variable to cont		
 					List<Route> routes = new ArrayList<Route>();
 					for (int i = 0; i < selected.length; i++) {
 						data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
 						newMaxTeu -= data.getTotalTeu();
 						newMaxDwt -= data.getTotalDwt();
-						//TODO add fuel cotrol here and set new value
+						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), data.getDistance());
 						routes.add(data.getRoute());
 					}
 
 					controlTeu.setValue(newMaxTeu); 
 					controlDwt.setValue(newMaxDwt);
-					//controlFuel.setValue(XXXX); TODO set value for fuel cotrol 	
-					
+					controlFuel.setValue(newMaxFule);
+
 					//add the path to the map
 					mapOfPortPanel.setRoutes(routes);
 
@@ -337,13 +392,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		portContractPanel.add(controPanel, BorderLayout.SOUTH);		
 
 
-		//split pane with the contract and port
-		//		JPanel MapControPanel = new JPanel(new BorderLayout()); 
-		//		MapControPanel.add(mapOfPortPanel, BorderLayout.NORTH);
-		//		MapControPanel.add(controPanel, BorderLayout.SOUTH);		
-
 		JSplitPane newContractAndMapPortPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,portContractPanel);
-		newContractAndMapPortPanel.setDividerLocation(200);
+		newContractAndMapPortPanel.setDividerLocation(350);
 
 
 		///////////////	
@@ -356,37 +406,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		acceptedContractTable.setAutoCreateRowSorter(true);		
 		acceptedContractTable.setRowSelectionAllowed(false);
 
-		///////////////
-		//configure fuel used and speed and accept contract
-		int startSpeed = 5;
-		JTextField selectedSpeed = new JTextField();
-		selectedSpeed.setText(startSpeed+"/"+ship.getMaxSpeed()+" nd");
-		selectedSpeed.setEditable(false);		
-		JSlider sliderNavigationSpeed;			
-		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);	
-		
-		sliderNavigationSpeed.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				JSlider source = (JSlider)e.getSource();
-				if (!source.getValueIsAdjusting()) {
-					selectedSpeed.setText(source.getValue()+"/"+ship.getMaxSpeed()+" nd");
-					//TODO modify the date to arrive to the ports in the table newContractTable	
-					//TODO modify the fuel used to arrive to the ports						
-				}
-			}
-		});		
 
-		JButton acceptContractButton = new JButton(ImageIconFactory.getForTab("/icon/investment.png"));
-		acceptContractButton.setActionCommand(ACTION_ACCEPT_CONTRACT);
-		acceptContractButton.addActionListener(this);
-
-		JPanel speedControlPanel = new JPanel(new SpringLayout());	
-		speedControlPanel.setBorder(BorderFactory.createTitledBorder("navigation speed"));		
-		speedControlPanel.add(new JLabel("speed selection"));		
-		speedControlPanel.add(selectedSpeed);		
-		speedControlPanel.add(sliderNavigationSpeed);	
-		speedControlPanel.add(acceptContractButton);		
-		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,1, 4,5, 5,5, 5);	
 
 		//accepted contract and speed panels join
 		JPanel acceptedContractAndSelectSpeedPanel = new JPanel(new BorderLayout());
@@ -440,21 +460,21 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					ship.addContract(contract);	
 					listAcceptedContractData.add(data);
 				}
-				
+
 				for (TransportContractTableRow transportContractTableRow : selectedContract) {
 					listNewContractData.remove(transportContractTableRow);
 				}
-				
+
 				int newMaxTeu = ship.getAcceptedTeu();
 				int newMaxDwt = ship.getAcceptedDwt();	
 				controlTeu.setValue(newMaxTeu); 
 				controlDwt.setValue(newMaxDwt);			
 				//controlFuel.setValue(XXXX); TODO set value for fuel cotrol 					
-				
+
 			}else {
 				parentDesktopPane.showErrorMessageDialog("the contract cannot be signed, not enought space or fuel");
 			}
-			
+
 
 		}
 
