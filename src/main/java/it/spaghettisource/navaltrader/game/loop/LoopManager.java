@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import it.spaghettisource.navaltrader.game.GameData;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
+import it.spaghettisource.navaltrader.ui.frame.InternalFrameTimeSimulation;
 
 public class LoopManager implements  Runnable {
 
@@ -20,6 +21,8 @@ public class LoopManager implements  Runnable {
 	private int timePass;		
 
 	private Thread owner;
+	
+	private InternalFrameTimeSimulation clockUI;
 
 	public LoopManager(GameData gameData) {
 		super();
@@ -63,6 +66,9 @@ public class LoopManager implements  Runnable {
 		shutdown = true;
 	}
 
+	public void setClockUI(InternalFrameTimeSimulation clockUI) {
+		this.clockUI = clockUI;
+	}
 
 	public void run() {
 
@@ -90,6 +96,14 @@ public class LoopManager implements  Runnable {
 					//TODO remove log for test
 
 					company.update(timePass,isNewDate,isNewWeek,isNewMonth);
+					
+					if(clockUI!=null){
+						try{
+							clockUI.updateTime(gameTime.getDate());				//here clockUI could be null for multhythread							
+						}catch (Exception e) {}
+	
+					}
+
 
 				}
 

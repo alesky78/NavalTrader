@@ -20,18 +20,16 @@ import it.spaghettisource.navaltrader.game.model.GameTime;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.event.Event;
+import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 
 public class InternalFrameTimeSimulation extends InternalFrameAbstract  implements ActionListener {
 
 	static Log log = LogFactory.getLog(InternalFrameTimeSimulation.class.getName());
-
-	private int refreshTime = 500;
 	
 	private GameTime gameTime;
 	private LoopManager loopManager;
 	
-	private TimeRefreshThread refreshThread;
 	private JLabel date;	
 	private JLabel simulationSpeed;		
 	
@@ -54,13 +52,13 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/clock.png"));
 		getContentPane().add(panelTimerController());
 		
-		refreshThread = new TimeRefreshThread();
-		Thread thread = new Thread(refreshThread);
-		thread.start();			
+		loopManager.setClockUI(this);
+		
 	}
 
 	public void internalFrameClosed(InternalFrameEvent arg0) {
-		refreshThread.stopThread();
+		super.internalFrameClosed(arg0);
+		loopManager.setClockUI(null);
 	}
 	
 
@@ -124,7 +122,7 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 	}
 
 	public void updateTime(String time) {
-		date.setText(time);
+		date.setText("date: "+time);
 		simulationSpeed.setText("simulation speed: x"+loopManager.getMultiplicator());
 	}
 	
@@ -136,39 +134,6 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 	public EventType[] getEventsOfInterest() {
 		return new EventType[]{};
 	}
-	
-	
-	//TODO remove this thread... pass the instance to the loop that update this frame when required
-	private class TimeRefreshThread implements Runnable {
-
-		private boolean shutdown;
-
-		public TimeRefreshThread() {
-			shutdown = false;
-		}
-
-		public void stopThread(){
-			shutdown = true;
-		}
-		
-		@Override
-		public void run() {
-			while (!shutdown) {
-
-				updateTime("date: "+gameTime.getDate());
-				try {
-					Thread.sleep(refreshTime);
-				} catch (InterruptedException e) {
-					log.error(e);
-				}
-			}
-			log.debug("TimeRefreshThread thread shutdown");
-		}
-		
-	}
-
-
-
 
 
 }
