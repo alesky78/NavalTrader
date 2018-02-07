@@ -43,12 +43,13 @@ public class Ship implements Entity{
 	public static List<Ship> getListSellShip(){
 		return Arrays.asList(shipArray);
 	}
+
+	private String status;
 	
 	private String name;	
 	private String model;
-	private String status;
 	private String shipClass;	
-	private String port;
+	private Port dockedPort;
 	
 	private Finance finance;
 	private double basePrice;	
@@ -107,7 +108,7 @@ public class Ship implements Entity{
 		}
 		newShip = new Ship(modelShip.getShipClass(), modelShip.getModel(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getFuelConsumptionIndexA(), modelShip.getFuelConsumptionIndexB(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
-		newShip.setPort(port.getName());
+		newShip.setDockedPort(port);
 		
 		return newShip;
 	}	
@@ -146,12 +147,12 @@ public class Ship implements Entity{
 		this.name = name;
 	}
 
-	public String getPort() {
-		return port;
+	public Port getDockedPort() {
+		return dockedPort;
 	}
 
-	public void setPort(String port) {
-		this.port = port;
+	public void setDockedPort(Port dockedPort) {
+		this.dockedPort = dockedPort;
 	}
 
 	public Finance getFinance() {

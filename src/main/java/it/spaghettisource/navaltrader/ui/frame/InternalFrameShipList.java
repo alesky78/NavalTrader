@@ -83,8 +83,8 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		JPanel shipListTablePanel = new JPanel(new BorderLayout());
 		shipListTablePanel.setBorder(BorderFactory.createTitledBorder("owned ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "name", "shipClass", "model","port", "status", "operatingCost", "hull", "actualDwt", "actualTeu", "actualFuel"};
-		String[] columnLabels = new String[] { "name", "class", "model", "port", "status", "operating Cost", "hull", "actual Dwt",  "actual Teu","actual Fuel"};
+		String[] propertyNames = new String[] { "name", "shipClass", "model","dockedPortName", "status", "operatingCost", "hull", "actualDwt", "actualTeu", "actualFuel"};
+		String[] columnLabels = new String[] { "name", "class", "model", "docked port", "status", "operating cost", "hull", "actual Dwt",  "actual Teu","actual Fuel"};
 		TableFormat<ShipListTableRow> tf = GlazedLists.tableFormat(ShipListTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<ShipListTableRow>(listShipData, tf));
 		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);			
@@ -102,7 +102,7 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 						JInternalFrame[] frames =  parentDesktopPane.getAllFrames();
 						boolean exist = false;
 						for (JInternalFrame frame : frames) {
-							if(frame.getTitle().equals(data.getPort())) {
+							if(frame.getTitle().equals(data.getDockedPortName())) {
 								exist = true;
 								if(frame.isIcon()) {
 									frame.setIcon(false);
@@ -115,7 +115,7 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 						
 						if(!exist) {
 							//open frame for specific ship
-							InternalFramePort newFrame = new InternalFramePort(parentDesktopPane,gameManager,data.getPort(),data.getName());
+							InternalFramePort newFrame = new InternalFramePort(parentDesktopPane,gameManager,data.getDockedPortName(),data.getName());
 							newFrame.setVisible(true);
 							parentDesktopPane.add(newFrame);
 							newFrame.setSelected(true);

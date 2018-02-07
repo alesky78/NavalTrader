@@ -174,8 +174,8 @@ public class Company implements Updatable {
 				ship.getFinance().addEntry(FinancialEntryType.SHIP_OPERATING_COST, -ship.getOperatingCost());
 				
 				if(ship.getStatus().equals(Ship.SHIP_STATUS_DOCKED)) {
-					totalPortFeeCost += world.getPortByName(ship.getPort()).getDailyFeeCost();
-					ship.getFinance().addEntry(FinancialEntryType.SHIP_PORT_FEE_COST, - world.getPortByName(ship.getPort()).getDailyFeeCost());
+					totalPortFeeCost += ship.getDockedPort().getDailyFeeCost();
+					ship.getFinance().addEntry(FinancialEntryType.SHIP_PORT_FEE_COST, - ship.getDockedPort().getDailyFeeCost());
 				}
 			}
 		}

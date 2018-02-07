@@ -3,12 +3,13 @@ package it.spaghettisource.navaltrader.ui.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Ship;
 
 public class ShipListTableRow {
 
 	private String name;
-	private String port;	
+	private Port dockedPort;	
 	private String shipClass;		
 	private String model;
 	private String status;	
@@ -18,10 +19,10 @@ public class ShipListTableRow {
 	private String actualTeu;		
 	private String actualFuel;			
 	
-	public ShipListTableRow(String shipClass, String name,String model,String port,String status, double operatingCost, int hull, String actualDwt,String actualTeu, String actualFuel) {
+	public ShipListTableRow(String shipClass, String name,String model,Port dockedPort,String status, double operatingCost, int hull, String actualDwt,String actualTeu, String actualFuel) {
 		super();
 		this.name = name;
-		this.port = port;
+		this.dockedPort = dockedPort;
 		this.shipClass = shipClass;		
 		this.status = status;
 		this.model = model;
@@ -37,8 +38,12 @@ public class ShipListTableRow {
 		return name;
 	}
 	
-	public String getPort() {
-		return port;
+	public Port getDockedPort() {
+		return dockedPort;
+	}
+
+	public String getDockedPortName() {
+		return dockedPort.getName();
 	}
 
 	public String getShipClass() {
@@ -94,7 +99,7 @@ public class ShipListTableRow {
 	}
 	
 	public static ShipListTableRow mapData(Ship ship){
-		return new ShipListTableRow(ship.getShipClass(), ship.getName(), ship.getModel(), ship.getPort(), ship.getStatus(), ship.getOperatingCost(), ship.getHull(), 
+		return new ShipListTableRow(ship.getShipClass(), ship.getName(), ship.getModel(), ship.getDockedPort(), ship.getStatus(), ship.getOperatingCost(), ship.getHull(), 
 									ship.getDwt()+"/"+ship.getMaxDwt(),
 									ship.getTeu()+"/"+ship.getMaxTeu(), 
 									ship.getFuel()+"/"+ship.getMaxFuel());
