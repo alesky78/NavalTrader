@@ -12,7 +12,7 @@ public class Mathematic {
 	}
 	
 	public static int distance(Point a, Point b) {
-		return (int) Math.sqrt( Math.pow(b.getX()-a.getX(), 2) + Math.pow(b.getY()-a.getY(), 2));
+		return (int) Math.sqrt(  powBy2(b.getX()-a.getX()) + powBy2(b.getY()-a.getY()) );
 	}
 	
 	public static Point scale(Point point, int scale) {

@@ -289,7 +289,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 		///////////////
-		//configure fuel used and speed and accept contract
+		//configure fuel used and speed and accept contract			
 		int startSpeed = 5;		
 		JTextField selectedSpeed = new JTextField();
 		JTextField selectedFuelConsumption = new JTextField();		
@@ -299,7 +299,17 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		selectedFuelConsumption.setEditable(false);
 
 		JSlider sliderNavigationSpeed;			
-		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);	
+		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);
+		
+		//set the day to destination for all contracts
+		TransportContractTableRow contract;		
+		for (int index = 0; index < listNewContractData.size(); index++) {
+			contract = listNewContractData.get(index);
+			contract.calcDaysToDestination(startSpeed);
+			listNewContractData.set(index, contract);
+		}
+
+		
 		
 		sliderNavigationSpeed.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -308,14 +318,19 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					selectedSpeed.setText(source.getValue()+"/"+ship.getMaxSpeed()+" nd");
 					selectedFuelConsumption.setText(ship.getFuelConsumptionPerHour(source.getValue()) +" t hour /"+ship.getFuelConsumptionPerHour(source.getValue())*24+" t day");	
 		
-					if(newContractTable!=null) {	//reset the controll of the fuel
+					if(newContractTable!=null) {	//reset the control of the fuel
 						TransportContractTableRow data;						
 						int newMaxFule = ship.getFuel();
 						int[] selected = newContractTable.getSelectedRows();
-						for (int i = 0; i < selected.length; i++) {
+						for (int i = 0; i < selected.length; i++) {	//Calculate the used fuel based on selected rows
 							data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
 							newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), data.getDistance());
 						}		
+						for (int index = 0; index < listNewContractData.size(); index++) {	//reset the days to arrive at destination for each contract
+							data = listNewContractData.get(index);
+							data.calcDaysToDestination(source.getValue());
+							listNewContractData.set(index, data);
+						}						
 						controlFuel.setValue(newMaxFule);
 					}
 
@@ -350,8 +365,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//port contract
 		JPanel portContractPanel = new JPanel(new BorderLayout());
 		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));	
-		String[] newContractpropertyNames = new String[] { "good","destinationPort", "distance", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] newContractcolumnLabels = new String[] { "good","destinationPort", "distance", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] newContractpropertyNames = new String[] { "good","destinationPort", "distance", "daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] newContractcolumnLabels  = new String[] { "good","destinationPort", "distance", "daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> newContractTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
 		newContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listNewContractData, newContractTf));			
 		newContractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -365,7 +380,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					TransportContractTableRow data;
 					int newMaxTeu = ship.getAcceptedTeu();
 					int newMaxDwt = ship.getAcceptedDwt();	
-					int newMaxFule = ship.getFuel();			//TODO use this variable to cont		
+					int newMaxFule = ship.getFuel();		
 					List<Route> routes = new ArrayList<Route>();
 					for (int i = 0; i < selected.length; i++) {
 						data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
