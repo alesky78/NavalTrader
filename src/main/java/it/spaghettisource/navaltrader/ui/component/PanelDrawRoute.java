@@ -17,9 +17,9 @@ import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.geometry.Point;
 
 
-public class PanelDrawPath extends JPanel {
+public class PanelDrawRoute extends JPanel {
 
-	static Log log = LogFactory.getLog(PanelDrawPath.class.getName());
+	static Log log = LogFactory.getLog(PanelDrawRoute.class.getName());
 
 	private List<Route> routes;	
 	private BufferedImage background;
@@ -30,7 +30,7 @@ public class PanelDrawPath extends JPanel {
 	private int cellSize;
 
 
-	public PanelDrawPath(int panelSize, int gridSize ,BufferedImage background, Point portCoordinate){
+	public PanelDrawRoute(int panelSize, int gridSize ,BufferedImage background, Point portCoordinate){
 		super();
 		this.gridSize = gridSize;
 		this.panelSize = panelSize;
@@ -70,7 +70,7 @@ public class PanelDrawPath extends JPanel {
 		drawPaths(graphicsImage);	//draw the paths
 
 		//draw starting port point
-		graphicsImage.setColor(Color.YELLOW);			
+		graphicsImage.setColor(Color.YELLOW);
 		graphicsImage.fillRect(portCoordinate.getX()*cellSize, portCoordinate.getY()*cellSize, cellSize, cellSize);	
 		graphicsImage.setColor(Color.BLACK);
 		graphicsImage.drawRect(portCoordinate.getX()*cellSize, portCoordinate.getY()*cellSize, cellSize, cellSize);

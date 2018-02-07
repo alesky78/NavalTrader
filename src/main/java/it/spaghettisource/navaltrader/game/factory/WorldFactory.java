@@ -23,7 +23,7 @@ import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.geometry.Point;
-import it.spaghettisource.navaltrader.ui.component.PanelDrawPath;
+import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 
 public class WorldFactory {
 
@@ -70,7 +70,7 @@ public class WorldFactory {
 			Grid grid = GridUtils.loadFromFile(tempFile);
 			
 			world.setGridSize(grid.getSize());
-			world.setWorldMap(ImageIO.read(PanelDrawPath.class.getResourceAsStream("/scenario/world.png")));
+			world.setWorldMap(ImageIO.read(PanelDrawRoute.class.getResourceAsStream("/scenario/world.png")));
 			
 			PathFinding finder =  new AStar();	
 			Point[] path;

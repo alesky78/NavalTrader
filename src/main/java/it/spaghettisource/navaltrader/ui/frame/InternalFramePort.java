@@ -41,7 +41,7 @@ import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
-import it.spaghettisource.navaltrader.ui.component.PanelDrawPath;
+import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 import it.spaghettisource.navaltrader.ui.component.ProgressBarHull;
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
@@ -343,7 +343,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		///////////////////////////////////
 		//word map port
-		PanelDrawPath mapOfPortPanel = new PanelDrawPath(600, world.getGridSize(), world.getWorldMap(), port.getCooridnate());
+		PanelDrawRoute mapOfPortPanel = new PanelDrawRoute(600, world.getGridSize(), world.getWorldMap(), port.getCooridnate());
 
 		
 		///////////////
