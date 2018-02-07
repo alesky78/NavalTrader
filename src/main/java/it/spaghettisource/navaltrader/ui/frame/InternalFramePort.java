@@ -1,6 +1,7 @@
 package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
@@ -55,8 +56,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 	private final static String TAB_SHIP_MAINTAINACE = "maitainance";	
 	private final static String TAB_TRANSPORT_CONTRACT = "contract";	
+	private final static String TAB_SHIP_SAIL = "sail";	
 
-
+	
 	private final static String ACTION_REFUEL = "refuel";
 	private final static String ACTION_REPAIR = "repair";	
 	private final static String ACTION_ACCEPT_CONTRACT = "accept contract";		
@@ -113,13 +115,17 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 			tabbedPane = new JTabbedPane();		
 			tabbedPane.addTab(TAB_SHIP_MAINTAINACE, ImageIconFactory.getForTab("/icon/clipboard.png"),createMaintainancePanel());
-			tabbedPane.addTab(TAB_TRANSPORT_CONTRACT, ImageIconFactory.getForTab("/icon/investment.png"),createTransportContractPanel());				
+			tabbedPane.addTab(TAB_TRANSPORT_CONTRACT, ImageIconFactory.getForTab("/icon/investment.png"),createTransportContractPanel());		
+			tabbedPane.addTab(TAB_SHIP_SAIL, ImageIconFactory.getForTab("/icon/helm.png"),createShipSailPanel());			
+			
+			
 			getContentPane().add(tabbedPane);
 		}catch (Exception e) {
 			log.error("error creating port internal frame",e);
 		}
 
 	}
+
 
 
 	private void initValuesFromModel() {
@@ -440,6 +446,15 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	}	
 
 
+	private Component createShipSailPanel() {
+		
+		JPanel panel = new JPanel(new BorderLayout());	
+		panel.setBorder(BorderFactory.createTitledBorder("sail"));	
+		
+		return panel;
+	}
+	
+	
 
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();

@@ -1,9 +1,6 @@
 package it.spaghettisource.navaltrader.game.model;
 
-import java.util.List;
 import java.util.UUID;
-
-import it.spaghettisource.navaltrader.geometry.Point;
 
 public class TransportContract {
 
@@ -14,7 +11,7 @@ public class TransportContract {
 	private double pricePerTeu;
 	private Route route;
 
-	//TODO implement the management of the bonus
+	//TODO implement the creation/management of the bonus
 	private double clauseBonus;	
 	private double clausePenalty;
 	private int clauseDay;	
