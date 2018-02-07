@@ -89,8 +89,8 @@ public class PanelDrawRoute extends JPanel {
 				for (int i = 0; i < path.length; i++) {
 					graphicsGrid.setColor(Color.RED);			
 					graphicsGrid.fillRect(path[i].getX()*cellSize, path[i].getY()*cellSize, cellSize, cellSize);	
-					graphicsGrid.setColor(Color.BLACK);
-					graphicsGrid.drawRect(path[i].getX()*cellSize, path[i].getY()*cellSize, cellSize, cellSize);
+//					graphicsGrid.setColor(Color.BLACK);
+//					graphicsGrid.drawRect(path[i].getX()*cellSize, path[i].getY()*cellSize, cellSize, cellSize);
 				}	
 			}
 		}
