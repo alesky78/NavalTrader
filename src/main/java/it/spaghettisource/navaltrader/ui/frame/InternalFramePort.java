@@ -457,14 +457,6 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 		///////////////
-		//control of fuel teu and dwt				
-		JPanel controPanel = new JPanel(new SpringLayout());	
-		controPanel.add(new JLabel("fuel status"));	
-		controPanel.add(sailControlFuel);
-		SpringLayoutUtilities.makeCompactGrid(controPanel,1, 2,5, 5,5, 5);	
-
-
-		///////////////
 		//configure fuel used and speed and accept contract			
 		int startSpeed = 5;		
 		JTextField selectedSpeed = new JTextField();
@@ -568,7 +560,6 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		});			
 
 		acceptedContractPanel.add(new JScrollPane(sailContractTable), BorderLayout.CENTER);
-		acceptedContractPanel.add(controPanel, BorderLayout.SOUTH);	
 
 		//join the panels
 		JSplitPane newContractAndMapRoutePanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,acceptedContractPanel);
@@ -686,11 +677,5 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	public EventType[] getEventsOfInterest() {
 		return new EventType[]{EventType.SELL_SHIP_EVENT,EventType.SHIP_STATUS_CHANGE_EVENT,EventType.SHIP_FUEL_CHANGE_EVENT,EventType.SHIP_HULL_CHANGE_EVENT,EventType.SHIP_STATUS_CHANGE_EVENT};
 	}
-
-
-
-
-
-
 
 }

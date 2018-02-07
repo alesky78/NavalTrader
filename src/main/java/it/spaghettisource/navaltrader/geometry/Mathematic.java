@@ -19,8 +19,8 @@ public class Mathematic {
 		return new Point(point.getX()*scale, point.getY()*scale);
 	}
 
-	public static int powBy2(int value) {
-		return  (int) Math.pow(value, 2);
+	public static double powBy2(int value) {
+		return  Math.pow(value, 2);
 	}
 
 	

@@ -62,7 +62,7 @@ public class Ship implements Entity{
 	private int maxTeu;	
 	private double fuelConsumptionIndexA;
 	private double fuelConsumptionIndexB;	
-	private int fuel;	
+	private int fuel;	//TODO convert to double for the correct calculation	
 	private int maxFuel;	
 	private int speed;	
 	private int maxSpeed;	
@@ -251,18 +251,12 @@ public class Ship implements Entity{
 		this.fuel = fuel + toAdd;
 	}	
 	
-	public int getFuelConsumptionPerHour(int speed) {
-		int value = (int)(Mathematic.powBy2(speed)*fuelConsumptionIndexA + speed*fuelConsumptionIndexB);;
-		if(value<1) {
-			return 1;
-		}else {
-			return value;
-		}
+	public double getFuelConsumptionPerHour(int speed) {
+		return Mathematic.powBy2(speed)*fuelConsumptionIndexA + speed*fuelConsumptionIndexB;
 	}
 	
-	public int getFuelConsumptionPerDistance(int speed,int distance) {
-		int consumption = getFuelConsumptionPerHour(speed);
-		return (distance/speed)*consumption;
+	public double getFuelConsumptionPerDistance(int speed,int distance) {
+		return (distance/speed)*getFuelConsumptionPerHour(speed);
 	}	
 	
 	public double getFuelConsumptionIndexA() {
@@ -304,5 +298,6 @@ public class Ship implements Entity{
 			
 	}
 	
+
 				
 }
