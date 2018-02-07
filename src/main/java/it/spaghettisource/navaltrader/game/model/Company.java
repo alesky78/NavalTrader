@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import it.spaghettisource.navaltrader.game.factory.ShipFactory;
 import it.spaghettisource.navaltrader.game.loop.Updatable;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
@@ -37,7 +38,7 @@ public class Company implements Updatable {
 	}
 
 	public void buyShip(String shipType, String name, double shipPrice) {
-		Ship newShip = Ship.factoryShip(shipType, name,port);
+		Ship newShip = ShipFactory.factoryShip(shipType, name,port);
 		ships.add(newShip);
 				
 		companyFinance.addEntry(FinancialEntryType.SHIP_BUY, -shipPrice);

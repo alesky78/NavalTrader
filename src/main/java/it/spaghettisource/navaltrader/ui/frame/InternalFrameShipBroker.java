@@ -27,13 +27,14 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.gui.TableFormat;
 import ca.odell.glazedlists.swing.EventTableModel;
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.game.factory.ShipFactory;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
-import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.TableCellHullProgressBarPercentageRenderer;
+import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.model.BuyShipTableRow;
@@ -91,7 +92,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 
 		//buy ship tab
 		listBuyShipData = GlazedLists.threadSafeList(new BasicEventList<BuyShipTableRow>());	
-		listBuyShipData.addAll(BuyShipTableRow.mapData(Ship.getListSellShip())); 
+		listBuyShipData.addAll(BuyShipTableRow.mapData(ShipFactory.getListSellShip())); 
 		newShipName = new JTextField("");
 		newShipModel = new JTextField("");
 		newShipModel.setEditable(false);
