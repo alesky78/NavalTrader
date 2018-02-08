@@ -48,8 +48,8 @@ public class AStar implements PathFinding {
 			for (Cell cell : adjacentNodes) {
 				if(!cell.isOpen()) {
 					cell.setPrevious(actualCell); 				// set current node as previous for this node
-					cell.calculatehCosts(targetCell); 					// set h costs of this node (estimated costs to goal)
-					cell.calculategCosts(actualCell); 			// set g costs of this node (costs from start to this node)
+					cell.calculatehCosts(targetCell); 			// set h costs of this node (estimated costs to goal)
+					cell.calculategCosts(actualCell); 			// set g costs of this node (costs from start to this node)		//TODO if move diagonal the cost should be different
 					cell.setOpen(true);							//set node open		
 					open.add(cell);								// add node to openList
 				} else { // node is in openList
