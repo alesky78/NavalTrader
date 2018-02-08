@@ -335,7 +335,7 @@ public class Ship implements Entity{
 			
 		}else if(SHIP_STATUS_DOCKING.equals(status)) {
 
-			//TODO make the docking action
+			//TODO implement the docking action, take care the financial part when completed
 			
 		} 
 		

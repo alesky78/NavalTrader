@@ -60,7 +60,7 @@ public class World implements Entity {
 		return null;
 	}
 	
-	//TODO implement the logic to connect the ports
+	//TODO implement the logic to manage the route of the connected the ports, this is a test implementation all the port are connected
 	public List<Port> getConnectedPorts(Port sourcePort) {
 		
 		List<Port> connected = new ArrayList<Port>();
