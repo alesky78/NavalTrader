@@ -29,6 +29,9 @@ https://www.codeproject.com/Articles/2136/Double-buffer-in-standard-Java-AWT
 java 2d api
 http://www.oracle.com/technetwork/java/index-jsp-138693.html
 
+######################
+use hardware accelerator
+https://www.javalobby.org/java/forums/t16867.html
 
 #######################
 container ship info
