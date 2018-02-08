@@ -282,6 +282,11 @@ public class Ship implements Entity{
 		
 	}
 	
+	/**
+	 * spend time loading the ship
+	 * 
+	 * @param hourPassed
+	 */
 	private void loadShip(double hourPassed) {
 		waitingTimeInHours = waitingTimeInHours - hourPassed;
 		if(waitingTimeInHours<0) {
@@ -292,6 +297,11 @@ public class Ship implements Entity{
 		}
 	}
 	
+	/**
+	 * navigate to the destination
+	 * 
+	 * @param hourPassed
+	 */	
 	private void navigation(double hourPassed) {
 		
 		//TODO implement the damage of the ship
@@ -306,8 +316,7 @@ public class Ship implements Entity{
 			status = SHIP_STATUS_DOCKING;
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));					
 		}
-		
-		
+			
 	}
 	
 	
@@ -325,6 +334,7 @@ public class Ship implements Entity{
 			navigation(minutsPassed/60);
 			
 		}else if(SHIP_STATUS_DOCKING.equals(status)) {
+
 			//TODO make the docking action
 			
 		} 
