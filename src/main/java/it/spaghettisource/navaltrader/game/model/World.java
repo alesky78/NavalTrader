@@ -9,7 +9,7 @@ import it.spaghettisource.navaltrader.game.loop.Entity;
 public class World implements Entity {
 
 	private int gridSize;				//this is the actual world size
-	private int gridScale;				//this is the actual world size	
+	private int gridScale;				//this is the actual world scale, if you multiply gridSize * gridScale you have the real size
 	private BufferedImage worldMap;		//this is the actual world map
 		
 	private List<Port> ports;

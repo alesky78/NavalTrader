@@ -30,7 +30,7 @@ public class Ship implements Entity{
 	
 	private Company company;
 	
-	private Point shipPosition;	
+	private Point position;	
 	private NavigationRoute navigationRoute;
 	
 	private String name;	
@@ -91,7 +91,10 @@ public class Ship implements Entity{
 		this.company = company;
 	}	
 	
-	
+	public Point getPosition() {
+		return position;
+	}
+
 	public List<TransportContract> getTransportContracts() {
 		return transportContracts;
 	}
@@ -159,7 +162,7 @@ public class Ship implements Entity{
 
 	public void setDockedPort(Port dockedPort) {
 		this.dockedPort = dockedPort;
-		this.shipPosition = new Point(dockedPort.getCooridnate().getX(), dockedPort.getCooridnate().getY()) ;
+		this.position = new Point(dockedPort.getCooridnate().getX(), dockedPort.getCooridnate().getY()) ;
 	}
 
 	public Finance getFinance() {
@@ -339,7 +342,7 @@ public class Ship implements Entity{
 		
 		//TODO implement the damage of the ship
 		fuel -= getFuelConsumptionPerHour(navigationRoute.getSpeed())*hourPassed;
-		shipPosition = navigationRoute.navigate(hourPassed);
+		position = navigationRoute.navigate(hourPassed);
 		
 		if(navigationRoute.isArrivedAtDestination()) {
 
