@@ -20,7 +20,7 @@ public class LoopManager implements  Runnable {
 	private double timeSleepMultiplicator;	
 	private int timePassInMinuts;		
 
-	private Thread owner;
+	private Thread loopThread;
 	
 	private InternalFrameTimeSimulation clockUI;
 
@@ -31,19 +31,19 @@ public class LoopManager implements  Runnable {
 		shutdown = false;
 		timeSleep = 2000;
 		timeSleepMultiplicator = 1;
-		timePassInMinuts = 30;		
+		timePassInMinuts = 20;		
 	}
 
 	public void startLoopManagerThread() {
-		owner = new Thread(this);
-		owner.start();
+		loopThread = new Thread(this);
+		loopThread.start();
 	}
 
 
 	public void goFast() {
-		if(timeSleepMultiplicator>0.0625) {
+		if(timeSleepMultiplicator>0.015625) {
 			timeSleepMultiplicator = timeSleepMultiplicator / 2;
-			owner.interrupt();
+			loopThread.interrupt();
 		}
 	}
 

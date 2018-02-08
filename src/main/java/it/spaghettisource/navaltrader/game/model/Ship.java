@@ -377,7 +377,7 @@ public class Ship implements Entity{
 	@Override	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 
-		double hourPassed = minutsPassed/60;
+		double hourPassed = minutsPassed/60.0;
 		
 		if(SHIP_STATUS_DOCKED.equals(status)) {
 			
