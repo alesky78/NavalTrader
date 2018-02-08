@@ -162,8 +162,14 @@ public class Company implements Updatable {
 		double totalPortFeeCost = 0;		
 		double totalInstallmentCost = 0;		
 		
+		
+		for (Ship ship : ships) {
+			//update ship
+			ship.update(minutsPassed, isNewDay, isNewWeek, isNewMonth);
+		}
+		
 		////////////////////////////
-		//- update ship
+		//- ship daily cost management
 		//- pay ship operative cost
 		//- pay ship daily Fee Cost
 		if(isNewDay){
@@ -174,7 +180,7 @@ public class Company implements Updatable {
 				totalOperationalCost += ship.getOperatingCost();
 				ship.getFinance().addEntry(FinancialEntryType.SHIP_OPERATING_COST, -ship.getOperatingCost());
 				
-				if(ship.getStatus().equals(Ship.SHIP_STATUS_DOCKED)) {
+				if(ship.getStatus().equals(Ship.SHIP_STATUS_DOCKED) || ship.getStatus().equals(Ship.SHIP_STATUS_LOADING)) {
 					totalPortFeeCost += ship.getDockedPort().getDailyFeeCost();
 					ship.getFinance().addEntry(FinancialEntryType.SHIP_PORT_FEE_COST, - ship.getDockedPort().getDailyFeeCost());
 				}

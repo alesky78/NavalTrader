@@ -1,7 +1,6 @@
 package it.spaghettisource.navaltrader.game.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -9,6 +8,10 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
 import it.spaghettisource.navaltrader.geometry.Mathematic;
+import it.spaghettisource.navaltrader.geometry.Point;
+import it.spaghettisource.navaltrader.ui.event.Event;
+import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
 public class Ship implements Entity{
 
@@ -19,10 +22,14 @@ public class Ship implements Entity{
 	public static final String SHIP_STATUS_REPAIRING = "repairing";
 	public static final String SHIP_STATUS_NAVIGATION = "navigation";
 	public static final String SHIP_STATUS_DOCKING = "docking";
-
+	public static final String SHIP_STATUS_LOADING = "loading";	
 
 
 	private String status;
+	private double waitingTimeInHours; //used	to manage the time to stay in particualr status	
+	
+	private Point shipPosition;	
+	private NavigationRoute navigationRoute;
 	
 	private String name;	
 	private String model;
@@ -45,6 +52,8 @@ public class Ship implements Entity{
 	private int speed;	
 	private int maxSpeed;	
 	
+
+	
 	private List<TransportContract> transportContracts;
 	
 	
@@ -53,7 +62,6 @@ public class Ship implements Entity{
 		this.shipClass = shipClass;
 		this.model = model;
 
-		this.status = SHIP_STATUS_DOCKED;
 		this.maxDwt = maxDwt;
 		this.maxTeu = maxTeu;
 		this.maxFuel = maxFuel;
@@ -71,6 +79,9 @@ public class Ship implements Entity{
 		name = "";		
 		finance = new Finance();
 		transportContracts = new ArrayList<TransportContract>();
+		
+		this.status = SHIP_STATUS_DOCKED;
+		waitingTimeInHours = 0;
 		
 	}
 	
@@ -115,6 +126,7 @@ public class Ship implements Entity{
 
 	public void setDockedPort(Port dockedPort) {
 		this.dockedPort = dockedPort;
+		this.shipPosition = new Point(dockedPort.getCooridnate().getX(), dockedPort.getCooridnate().getY()) ;
 	}
 
 	public Finance getFinance() {
@@ -253,10 +265,71 @@ public class Ship implements Entity{
 		this.maxSpeed = maxSpeed;
 	}
 
+	/**
+	 * prepare the ship to be loaded
+	 * 
+	 * @param speed
+	 * @param route
+	 */
+	public void loadShipAndPrepareToNavigate(int navigationSpeed, Route route) {
+		log.debug("ship :"+name+" strat loading operations");
+		speed = navigationSpeed;
+		navigationRoute = new NavigationRoute(speed, route);
+		status = SHIP_STATUS_LOADING;
+		
+		waitingTimeInHours = 24;	//TODO calculate in function of the loaded TEU amount to time to load and unload, consider 6,086 TEU - was 2.5 to 3 days
+		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));	
+		
+	}
+	
+	private void loadShip(double hourPassed) {
+		waitingTimeInHours = waitingTimeInHours - hourPassed;
+		if(waitingTimeInHours<0) {
+			log.debug("ship :"+name+" completed loading start navigation");
+			status = SHIP_STATUS_NAVIGATION;
+			dockedPort = null;
+			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
+		}
+	}
+	
+	private void navigation(double hourPassed) {
+		
+		//TODO implement the damage of the ship
+		fuel -= getFuelConsumptionPerHour(navigationRoute.getSpeed())*hourPassed;
+		shipPosition = navigationRoute.navigate(hourPassed);
+		
+		if(navigationRoute.isArrivedAtDestination()) {
+
+			setDockedPort(navigationRoute.getDestinationPort());	//this set also final coordinate of the ship
+			waitingTimeInHours = 4;		//set the docking time
+			navigationRoute = null;
+			status = SHIP_STATUS_DOCKING;
+			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));					
+		}
+		
+		
+	}
+	
 	
 	@Override	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 
+		if(SHIP_STATUS_DOCKED.equals(status)) {
+			
+		}else if(SHIP_STATUS_LOADING.equals(status)) {
+		
+			loadShip(minutsPassed/60);
+			
+		}else if(SHIP_STATUS_NAVIGATION.equals(status)) {
+			
+			navigation(minutsPassed/60);
+			
+		}else if(SHIP_STATUS_DOCKING.equals(status)) {
+			//TODO make the docking action
+			
+		} 
+		
+		
 			
 	}
 	

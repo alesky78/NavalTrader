@@ -43,6 +43,9 @@ public class ShipListTableRow {
 	}
 
 	public String getDockedPortName() {
+		if(dockedPort==null) {
+			return "";
+		}
 		return dockedPort.getName();
 	}
 

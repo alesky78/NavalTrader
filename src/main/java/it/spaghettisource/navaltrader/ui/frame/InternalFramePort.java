@@ -103,6 +103,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	//ship sail tab
 	private JTable sailContractTable;	
 	private TextFieldInteger sailControlFuel;	
+	private JSlider sliderNavigationSpeed;		
 
 
 	//TODO pause the time when we create this frame and reactivate when close... other way implement the notification of all the events
@@ -175,6 +176,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 
+	/**
+	 * MaintainancePanel
+	 * 
+	 * @return
+	 */
 	private JPanel createMaintainancePanel() {
 		JPanel maintainancePanel = new JPanel(new BorderLayout());
 		maintainancePanel.setBorder(BorderFactory.createTitledBorder("maintainance ship"));
@@ -282,6 +288,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 
+	/**
+	 * TransportContractPanel
+	 * 
+	 * @return
+	 */
 	private JPanel createTransportContractPanel() {
 		JPanel panel = new JPanel(new BorderLayout());	
 		panel.setBorder(BorderFactory.createTitledBorder("transport contract"));	
@@ -450,6 +461,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	}	
 
 
+	/**
+	 * SailPanel
+	 * 
+	 * @return
+	 */
 	private Component createShipSailPanel() {
 
 		JPanel panel = new JPanel(new BorderLayout());	
@@ -466,7 +482,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		selectedFuelConsumption.setText(ship.getFuelConsumptionPerHour(startSpeed) +"t /"+ship.getFuelConsumptionPerHour(startSpeed)*24+" t");
 		selectedFuelConsumption.setEditable(false);
 
-		JSlider sliderNavigationSpeed;			
+		
 		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);
 
 		//set the day to destination for all contracts
@@ -629,7 +645,18 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			}
 
 		}else if (ACTION_SAIL.equals(command)){
-			//TODO accepte the route prepare the ship!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			
+			int selectedRoute = sailContractTable.getSelectedRow();
+
+			if(sailControlFuel.getValue()>=0 && selectedRoute!=-1) {
+				int selectedSpeed = sliderNavigationSpeed.getValue();
+				TransportContractTableRow data = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(selectedRoute));
+	
+				ship.loadShipAndPrepareToNavigate(selectedSpeed, data.getRoute());
+				
+				this.doDefaultCloseAction();	//close the frame ship no more in the port				
+			}
+
 		}
 
 	}

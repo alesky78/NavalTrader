@@ -14,6 +14,16 @@ public class Mathematic {
 	public static int distance(Point a, Point b) {
 		return (int) Math.sqrt(  powBy2(b.getX()-a.getX()) + powBy2(b.getY()-a.getY()) );
 	}
+
+	public static Point move(Point a, Point b, double amountToMove) {
+		int distance = Mathematic.distance(a,b);
+		
+		double x = a.getX() + amountToMove/distance*(b.getX()-a.getX());
+		double y = a.getY() + amountToMove/distance*(b.getY()-a.getY());		
+		
+		return new Point((int)x, (int)y);
+	}
+
 	
 	public static Point scale(Point point, int scale) {
 		return new Point(point.getX()*scale, point.getY()*scale);
