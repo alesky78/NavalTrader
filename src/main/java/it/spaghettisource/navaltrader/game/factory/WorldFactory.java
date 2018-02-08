@@ -22,6 +22,7 @@ import it.spaghettisource.navaltrade.pathfinding.PathFinding;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.game.model.World;
+import it.spaghettisource.navaltrader.geometry.Mathematic;
 import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 
@@ -89,6 +90,11 @@ public class WorldFactory {
 				}
 			}
 
+			//now transform the port coordinate in scale coordinate
+			for (Port port : ports) {
+				 port.setCooridnate(Mathematic.scale(port.getCooridnate(), world.getGridScale())); 
+			}
+			
 			//generate the contracts
 			for (Port port : ports) {
 				port.generateContracts();

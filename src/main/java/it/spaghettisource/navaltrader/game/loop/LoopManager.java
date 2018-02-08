@@ -29,7 +29,7 @@ public class LoopManager implements  Runnable {
 		this.gameData = gameData;
 		pause = false;
 		shutdown = false;
-		timeSleep = 2000;
+		timeSleep = 2000;	//TODO review a valid amount for the time 2000 is to much i think 1000
 		timeSleepMultiplicator = 1;
 		timePassInMinuts = 20;		
 	}

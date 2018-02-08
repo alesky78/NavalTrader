@@ -43,9 +43,13 @@ public class Port  implements Entity{
 	public String getName() {
 		return name;
 	}
-	
+		
 	public Point getCooridnate() {
 		return cooridnate;
+	}
+	
+	public void setCooridnate(Point cooridnate) {
+		this.cooridnate = cooridnate;
 	}
 
 	public int getClassAccepted() {
