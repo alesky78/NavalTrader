@@ -45,6 +45,7 @@ import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 import it.spaghettisource.navaltrader.ui.component.ProgressBarHull;
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
+import it.spaghettisource.navaltrader.ui.component.TextFieldDouble;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
@@ -78,11 +79,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private JTextField shipModel;
 	private JTextField shipClass;	
 	private ProgressBarHull shipHull;
-	private TextFieldInteger shipActualFuel;
+	private TextFieldDouble shipActualFuel;
 	private TextFieldCurrency operatingCost;	
 
 	//ship maintainance tab
-	private TextFieldInteger shipMaxFuel;
+	private TextFieldDouble shipMaxFuel;
 	private JSlider amountToRefuelSlider;	
 	private TextFieldInteger amountToRefuel;
 	private TextFieldCurrency amountToPayForRefuel;
@@ -98,11 +99,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private JTable newContractTable;	
 	private TextFieldInteger controlTeu;
 	private TextFieldInteger controlDwt;	
-	private TextFieldInteger controlFuel;	
+	private TextFieldDouble controlFuel;	
 
 	//ship sail tab
 	private JTable sailContractTable;	
-	private TextFieldInteger sailControlFuel;	
+	private TextFieldDouble sailControlFuel;	
 	private JSlider sliderNavigationSpeed;		
 
 
@@ -146,12 +147,12 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		shipClass = new JTextField(ship.getShipClass());		
 		shipClass.setEditable(false);
 		shipHull = new ProgressBarHull(ship.getHull());
-		shipActualFuel = new TextFieldInteger(ship.getFuel());
+		shipActualFuel = new TextFieldDouble(ship.getFuel());
 		operatingCost = new TextFieldCurrency(ship.getOperatingCost());
 
 		//ship maintainance
-		shipMaxFuel = new TextFieldInteger(ship.getMaxFuel());
-		amountToRefuelSlider = new JSlider(0, ship.getMaxFuel()-ship.getFuel(), 0);
+		shipMaxFuel = new TextFieldDouble(ship.getMaxFuel());
+		amountToRefuelSlider = new JSlider(0, (int)Math.ceil(ship.getMaxFuel()-ship.getFuel()) , 0);
 		amountToRefuel = new TextFieldInteger(0);
 		amountToPayForRefuel = new TextFieldCurrency(0.0);
 		priceUnitOfFuel =  new TextFieldCurrency(port.getFuelPrice()); 
@@ -169,9 +170,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		controlTeu = new TextFieldInteger(ship.getAcceptedTeu());
 		controlDwt = new TextFieldInteger(ship.getAcceptedDwt());
-		controlFuel = new TextFieldInteger(ship.getFuel());
+		controlFuel = new TextFieldDouble(ship.getFuel());
 
-		sailControlFuel = new TextFieldInteger(ship.getFuel());
+		sailControlFuel = new TextFieldDouble(ship.getFuel());
 	}
 
 
@@ -342,7 +343,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 					if(newContractTable!=null) {	//reset the control of the fuel
 						TransportContractTableRow data;						
-						int newMaxFule = ship.getFuel();
+						double newMaxFule = ship.getFuel();
 						int[] selected = newContractTable.getSelectedRows();
 						for (int i = 0; i < selected.length; i++) {	//Calculate the used fuel based on selected rows
 							data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
@@ -402,7 +403,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					TransportContractTableRow data;
 					int newMaxTeu = ship.getAcceptedTeu();
 					int newMaxDwt = ship.getAcceptedDwt();	
-					int newMaxFule = ship.getFuel();		
+					double newMaxFule = ship.getFuel();		
 					List<Route> routes = new ArrayList<Route>();
 					for (int i = 0; i < selected.length; i++) {
 						data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
@@ -502,7 +503,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 					if(sailContractTable!=null) {	//reset the control of the fuel
 						TransportContractTableRow data;						
-						int newMaxFule = ship.getFuel();
+						double newMaxFule = ship.getFuel();
 						int index = sailContractTable.getSelectedRow();
 						if(index!=-1){
 							data = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(index));
@@ -561,7 +562,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 						TransportContractTableRow data = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(selected));
 						routes.add(data.getRoute());
 
-						int newMaxFule = ship.getFuel();
+						double newMaxFule = ship.getFuel();
 						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), data.getDistance());
 						sailControlFuel.setValue(newMaxFule);
 					}
@@ -635,7 +636,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 				int newMaxTeu = ship.getAcceptedTeu();
 				int newMaxDwt = ship.getAcceptedDwt();
-				int newMaxFuel = ship.getFuel();				
+				double newMaxFuel = ship.getFuel();				
 				controlTeu.setValue(newMaxTeu); 
 				controlDwt.setValue(newMaxDwt);			
 				controlFuel.setValue(newMaxFuel);  					
@@ -676,7 +677,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			Ship source = (Ship) event.getSource();			
 			if(source.getName().equals(shipName)) {
 				shipActualFuel.setValue(source.getFuel());
-				amountToRefuelSlider.setMaximum(source.getMaxFuel()-source.getFuel());
+				amountToRefuelSlider.setMaximum((int)Math.ceil(source.getMaxFuel()-source.getFuel()));
 
 				//reset the fuel control because fuel is changed
 				controlTeu.setValue(ship.getAcceptedTeu());

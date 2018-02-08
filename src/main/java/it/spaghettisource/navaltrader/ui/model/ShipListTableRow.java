@@ -1,5 +1,6 @@
 package it.spaghettisource.navaltrader.ui.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,11 +102,13 @@ public class ShipListTableRow {
 		return LoanTableRow;
 	}
 	
+	private static DecimalFormat format = new DecimalFormat(".#");
+	
 	public static ShipListTableRow mapData(Ship ship){
 		return new ShipListTableRow(ship.getShipClass(), ship.getName(), ship.getModel(), ship.getDockedPort(), ship.getStatus(), ship.getOperatingCost(), ship.getHull(), 
 									ship.getDwt()+"/"+ship.getMaxDwt(),
 									ship.getTeu()+"/"+ship.getMaxTeu(), 
-									ship.getFuel()+"/"+ship.getMaxFuel());
+									format.format(ship.getFuel())+"/"+ship.getMaxFuel());
 	}	
 	
 

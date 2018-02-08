@@ -49,8 +49,8 @@ public class Ship implements Entity{
 	private int maxTeu;	
 	private double fuelConsumptionIndexA;
 	private double fuelConsumptionIndexB;	
-	private int fuel;	//TODO convert to double for the correct calculation	
-	private int maxFuel;	
+	private double fuel;
+	private double maxFuel;	
 	private int speed;	
 	private int maxSpeed;	
 	
@@ -59,7 +59,7 @@ public class Ship implements Entity{
 	private List<TransportContract> transportContracts;
 	
 	
-	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, int maxFuel,double fuelConsumptionIndexA, double fuelConsumptionIndexB,  double operatingCost, int maxSpeed, double basePrice) {
+	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, double maxFuel,double fuelConsumptionIndexA, double fuelConsumptionIndexB,  double operatingCost, int maxSpeed, double basePrice) {
 		
 		this.shipClass = shipClass;
 		this.model = model;
@@ -114,6 +114,10 @@ public class Ship implements Entity{
 		
 		int totalBudget = 0;
 		for (TransportContract transportContract : toClose) {
+			//reset the Teu and the DWT
+			teu -= transportContract.getTeu();
+			dwt -= transportContract.getTeu()*transportContract.getDwtPerTeu();			
+			
 			transportContracts.remove(transportContract);
 			totalBudget += transportContract.getTotalPrice();
 			finance.addEntry(FinancialEntryType.SHIP_INCOME, transportContract.getTotalPrice());
@@ -242,15 +246,15 @@ public class Ship implements Entity{
 		this.operatingCost = operatingCost;
 	}
 
-	public int getFuel() {
+	public double getFuel() {
 		return fuel;
 	}
 
-	public void setFuel(int fuel) {
+	public void setFuel(double fuel) {
 		this.fuel = fuel;
 	}
 
-	public void addFuel(int toAdd) {
+	public void addFuel(double toAdd) {
 		this.fuel = fuel + toAdd;
 	}	
 	
@@ -278,11 +282,11 @@ public class Ship implements Entity{
 		this.speed = speed;
 	}
 
-	public int getMaxFuel() {
+	public double getMaxFuel() {
 		return maxFuel;
 	}
 
-	public void setMaxFuel(int maxFuel) {
+	public void setMaxFuel(double maxFuel) {
 		this.maxFuel = maxFuel;
 	}
 
@@ -345,6 +349,8 @@ public class Ship implements Entity{
 			status = SHIP_STATUS_DOCKING;
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));					
 		}
+		
+		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));	
 			
 	}
 	
