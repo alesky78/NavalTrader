@@ -19,9 +19,15 @@ https://github.com/aseber/PathFindingVisualization
 
 #####################
 buffered strategy in java
+http://www.oracle.com/technetwork/java/painting-140037.html
 https://docs.oracle.com/javase/6/docs/api/java/awt/image/BufferStrategy.html
 http://www.cokeandcode.com/info/tut2d.html   --> exaplin whell the strategy
 https://www.codeproject.com/Articles/2136/Double-buffer-in-standard-Java-AWT
+
+
+#####################
+java 2d api
+http://www.oracle.com/technetwork/java/index-jsp-138693.html
 
 
 #######################

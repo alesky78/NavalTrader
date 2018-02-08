@@ -60,9 +60,9 @@ public class PanelDrawRoute extends JPanel {
 		int width = gridSize * cellSize + 1;	//+1 because is not consider index 0 in the size of the immage
 		int height = gridSize * cellSize + 1;
 
-		//the image of the grid is big exactly has the grid
-		BufferedImage generateImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphicsImage = generateImage.createGraphics();
+		//create the double buffer of the same size of the grid
+		BufferedImage bufferImage = (BufferedImage)createImage(width, height); 
+		Graphics2D graphicsImage = bufferImage.createGraphics();
 
 		//draw the map background
 		graphicsImage.drawImage(background,0,0,width,height,0,0,background.getWidth(),background.getHeight(),null);		
@@ -75,8 +75,10 @@ public class PanelDrawRoute extends JPanel {
 		graphicsImage.setColor(Color.BLACK);
 		graphicsImage.drawRect(portCoordinate.getX()*cellSize, portCoordinate.getY()*cellSize, cellSize, cellSize);
 		
+		graphicsImage.dispose();
+		
 		//draw all to the JPanel Graphics
-		graphicsPanel.drawImage(generateImage,0,0,getWidth(),getHeight(),0,0,generateImage.getWidth(),generateImage.getHeight(),null);			
+		graphicsPanel.drawImage(bufferImage,0,0,getWidth(),getHeight(),0,0,bufferImage.getWidth(),bufferImage.getHeight(),null);		
 
 	}
 
