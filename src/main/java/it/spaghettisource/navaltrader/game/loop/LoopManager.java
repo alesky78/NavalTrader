@@ -18,7 +18,7 @@ public class LoopManager implements  Runnable {
 	private boolean shutdown;	
 	private int timeSleep;
 	private double timeSleepMultiplicator;	
-	private int timePass;		
+	private int timePassInMinuts;		
 
 	private Thread owner;
 	
@@ -31,7 +31,7 @@ public class LoopManager implements  Runnable {
 		shutdown = false;
 		timeSleep = 2000;
 		timeSleepMultiplicator = 1;
-		timePass = 60;		
+		timePassInMinuts = 30;		
 	}
 
 	public void startLoopManagerThread() {
@@ -90,12 +90,12 @@ public class LoopManager implements  Runnable {
 
 				if(!pause){
  
-					gameTime.addMinuts(timePass);				
+					gameTime.addMinuts(timePassInMinuts);				
 					
 					//log.debug("time:"+gameTime.getFullDate()+" new date:"+isNewDate+" new week:"+isNewWeek+" new month:"+isNewMonth );
 					//TODO remove log for test
 
-					company.update(timePass,isNewDate,isNewWeek,isNewMonth);
+					company.update(timePassInMinuts,isNewDate,isNewWeek,isNewMonth);
 					
 					if(clockUI!=null){
 						try{

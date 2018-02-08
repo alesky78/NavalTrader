@@ -27,6 +27,7 @@ import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
+import it.spaghettisource.navaltrader.ui.frame.InternalFrameMapNavigation;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameOffice;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameShipBroker;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameShipList;
@@ -41,6 +42,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 	private static final String MENU_ACTION_FRAME_OFFICE = "office";
 	private static final String MENU_ACTION_FRAME_BROKER = "ship Broker";
 	private static final String MENU_ACTION_FRAME_SHIP = "ship list";
+	private static final String MENU_ACTION_FRAME_NAVIGATION = "ship navigation";	
 	private static final String MENU_ACTION_TIME_SIMULAION = "time simultion";	
 
 
@@ -134,6 +136,11 @@ public class MainFrame extends JFrame  implements ActionListener{
 		menuItem.addActionListener(this);
 		menu.add(menuItem);		
 
+		menuItem = new JMenuItem("Ship navigation map");
+		menuItem.setActionCommand(MENU_ACTION_FRAME_NAVIGATION);
+		menuItem.addActionListener(this);
+		menu.add(menuItem);		
+		
 		return menuBar;
 	}
 
@@ -188,7 +195,14 @@ public class MainFrame extends JFrame  implements ActionListener{
 			try {
 				frame.setSelected(true);
 			} catch (java.beans.PropertyVetoException e) {}	        
-		}     
+		}else if (MENU_ACTION_FRAME_NAVIGATION.equals(event.getActionCommand())) { 
+			InternalFrameMapNavigation frame = new InternalFrameMapNavigation(desktop, gameManager);
+			frame.setVisible(true);
+			desktop.add(frame);
+			try {
+				frame.setSelected(true);
+			} catch (java.beans.PropertyVetoException e) {}	        
+		}       
 
 	}	 	
 

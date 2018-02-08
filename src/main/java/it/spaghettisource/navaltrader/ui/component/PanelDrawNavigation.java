@@ -1,5 +1,6 @@
 package it.spaghettisource.navaltrader.ui.component;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -25,6 +26,8 @@ public class PanelDrawNavigation extends JPanel {
 
 	static Log log = LogFactory.getLog(PanelDrawNavigation.class.getName());
 	
+	private final static long SLEEP_TIME = 10;
+	
 	private Company company;
 	private World world;	
 	private int worldSize;
@@ -47,6 +50,10 @@ public class PanelDrawNavigation extends JPanel {
 	}
 	
 	
+	public void start(){
+		new Thread(new Repainter(SLEEP_TIME, this)).start();
+	}
+	
 	public void stop(){
 		stopThread = true;
 	}
@@ -66,13 +73,14 @@ public class PanelDrawNavigation extends JPanel {
 		graphicsBuffer.drawImage(world.getWorldMap(),0,0,width,height,0,0,world.getWorldMap().getWidth(),world.getWorldMap().getHeight(),null);		
 
 		//draw the ships
+		graphicsBuffer.setColor(Color.RED);		
 		Point point;
 		for (Ship ship : company.getShips()) {
 			point = ship.getPosition();
-			graphicsBuffer.fillOval(point.getX(), point.getY(), width, height);
+			
+			graphicsBuffer.fillOval(point.getX(), point.getY(), 15, 15);
 		}
 
-		
 		graphicsBuffer.dispose();
 		
 		//draw all to the JPanel Graphics

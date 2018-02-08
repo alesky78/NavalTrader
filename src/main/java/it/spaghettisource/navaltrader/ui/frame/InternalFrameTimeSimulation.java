@@ -20,7 +20,6 @@ import it.spaghettisource.navaltrader.game.model.GameTime;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.event.Event;
-import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 
 public class InternalFrameTimeSimulation extends InternalFrameAbstract  implements ActionListener {
