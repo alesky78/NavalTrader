@@ -1,5 +1,6 @@
 package it.spaghettisource.navaltrader.ui.component;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -43,7 +44,7 @@ public class PanelDrawNavigation extends JPanel {
 		this.company = company;
 		this.world = world;
 		
-		worldSize = world.getGridSize() * world.getGridScale();
+		worldSize = world.getGridSize() * world.getGridScale();	//TODO no good if will be biggest will become huge amount of memory, better to implement scale also here
 		
 		stopThread = false;
 	
@@ -73,12 +74,16 @@ public class PanelDrawNavigation extends JPanel {
 		graphicsBuffer.drawImage(world.getWorldMap(),0,0,width,height,0,0,world.getWorldMap().getWidth(),world.getWorldMap().getHeight(),null);		
 
 		//draw the ships
-		graphicsBuffer.setColor(Color.RED);		
+		graphicsBuffer.setStroke(new BasicStroke(10));
+		
 		Point point;
 		for (Ship ship : company.getShips()) {
 			point = ship.getPosition();
+			graphicsBuffer.setColor(Color.RED);	
+			graphicsBuffer.fillOval(point.getX(), point.getY(), 30, 30);
 			
-			graphicsBuffer.fillOval(point.getX(), point.getY(), 15, 15);
+			graphicsBuffer.setColor(Color.BLACK);				
+			graphicsBuffer.drawOval(point.getX(), point.getY(), 30, 30);			
 		}
 
 		graphicsBuffer.dispose();
