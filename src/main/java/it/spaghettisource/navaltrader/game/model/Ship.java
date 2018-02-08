@@ -28,6 +28,8 @@ public class Ship implements Entity{
 	private String status;
 	private double waitingTimeInHours; //used	to manage the time to stay in particualr status	
 	
+	private Company company;
+	
 	private Point shipPosition;	
 	private NavigationRoute navigationRoute;
 	
@@ -85,6 +87,10 @@ public class Ship implements Entity{
 		
 	}
 	
+	public void setCompany(Company company) {
+		this.company = company;
+	}	
+	
 	
 	public List<TransportContract> getTransportContracts() {
 		return transportContracts;
@@ -96,6 +102,29 @@ public class Ship implements Entity{
 		dwt += contract.getTeu()*contract.getDwtPerTeu();
 	}
 
+	
+	public void closeContracts(){
+		
+		List<TransportContract> toClose = new ArrayList<>();
+		for (TransportContract transportContract : transportContracts) {
+			if(transportContract.getDestinationPort().equals(dockedPort)){
+				toClose.add(transportContract);
+			}
+		}
+		
+		int totalBudget = 0;
+		for (TransportContract transportContract : toClose) {
+			transportContracts.remove(transportContract);
+			totalBudget += transportContract.getTotalPrice();
+			finance.addEntry(FinancialEntryType.SHIP_INCOME, transportContract.getTotalPrice());
+		}
+		
+		company.addBudget(totalBudget);
+		
+		InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));
+		
+	}
+	
 	public String getShipClass() {
 		return shipClass;
 	}
@@ -320,6 +349,22 @@ public class Ship implements Entity{
 	}
 	
 	
+	/**
+	 * spend time loading the ship
+	 * 
+	 * @param hourPassed
+	 */
+	private void docking(double hourPassed) {
+		waitingTimeInHours = waitingTimeInHours - hourPassed;
+		if(waitingTimeInHours<0) {
+			log.debug("ship :"+name+" completed docking");
+			status = SHIP_STATUS_DOCKED;
+			closeContracts();
+			
+			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
+		}
+	}	
+	
 	@Override	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 
@@ -335,13 +380,16 @@ public class Ship implements Entity{
 			
 		}else if(SHIP_STATUS_DOCKING.equals(status)) {
 
-			//TODO implement the docking action, take care the financial part when completed
+			docking(minutsPassed/60);
 			
 		} 
 		
 		
 			
 	}
+
+
+
 	
 
 				

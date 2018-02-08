@@ -48,6 +48,11 @@ public class TransportContract {
 		return pricePerTeu;
 	}
 
+	public double getTotalPrice() {
+		return teu*pricePerTeu;
+	}
+	
+	
 	public Port getDestinationPort() {
 		return route.getDestination();
 	}

@@ -38,7 +38,7 @@ public class Company implements Updatable {
 	}
 
 	public void buyShip(String shipType, String name, double shipPrice) {
-		Ship newShip = ShipFactory.factoryShip(shipType, name,port);
+		Ship newShip = ShipFactory.factoryShip(shipType, name,port,this);
 		ships.add(newShip);
 				
 		companyFinance.addEntry(FinancialEntryType.SHIP_BUY, -shipPrice);

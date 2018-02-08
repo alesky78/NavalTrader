@@ -97,7 +97,7 @@ public class TransportContractTableRow {
 		return new TransportContractTableRow(contract.getId(), contract.getGood(), contract.getTeu(), 
 											 contract.getTeu()*contract.getDwtPerTeu(), 
 											 contract.getPricePerTeu(), 
-											 contract.getTeu()*contract.getPricePerTeu(), 
+											 contract.getTotalPrice(), 
 											 contract.getRoute());	
 	}		
 	

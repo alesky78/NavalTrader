@@ -3,6 +3,7 @@ package it.spaghettisource.navaltrader.game.factory;
 import java.util.Arrays;
 import java.util.List;
 
+import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Ship;
 
@@ -44,7 +45,7 @@ public class ShipFactory {
 	}
 	
 	
-	public static Ship factoryShip(String model,String name,Port port){
+	public static Ship factoryShip(String model,String name,Port port,Company company){
 		Ship modelShip = null;
 		Ship newShip = null;
 		
@@ -57,6 +58,7 @@ public class ShipFactory {
 		newShip = new Ship(modelShip.getShipClass(), modelShip.getModel(), modelShip.getHull(), modelShip.getMaxDwt(), modelShip.getMaxTeu(),  modelShip.getMaxFuel(), modelShip.getFuelConsumptionIndexA(), modelShip.getFuelConsumptionIndexB(), modelShip.getOperatingCost(), modelShip.getMaxSpeed(),modelShip.getBasePrice());
 		newShip.setName(name);
 		newShip.setDockedPort(port);
+		newShip.setCompany(company);		
 		
 		return newShip;
 	}	
