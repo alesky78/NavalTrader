@@ -11,17 +11,17 @@ public class Mathematic {
 	private Mathematic() {
 	}
 	
-	public static int distance(Point a, Point b) {
-		return (int) Math.sqrt(  powBy2(b.getX()-a.getX()) + powBy2(b.getY()-a.getY()) );
+	public static double distance(Point a, Point b) {
+		return Math.sqrt(  powBy2(b.getX()-a.getX()) + powBy2(b.getY()-a.getY()) );
 	}
 
 	public static Point move(Point a, Point b, double amountToMove) {
-		int distance = Mathematic.distance(a,b);
+		double distance = Mathematic.distance(a,b);
 		
 		double x = a.getX() + amountToMove/distance*(b.getX()-a.getX());
 		double y = a.getY() + amountToMove/distance*(b.getY()-a.getY());		
 		
-		return new Point((int)x, (int)y);
+		return new Point((int)Math.round(x) , (int)Math.round(y));
 	}
 
 	

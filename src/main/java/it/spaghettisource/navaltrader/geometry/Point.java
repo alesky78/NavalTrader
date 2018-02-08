@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 
 public class Point {
 
-	private int x,y;	//TODO move to double for a correct calculation
+	private int x,y;
 	
 	public Point(int x, int y) {
 		super();

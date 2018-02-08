@@ -43,7 +43,7 @@ public class NavigationRoute {
 
 	public Point navigate(double hourPassed) {
 
-		int distance = Mathematic.distance(actualPosition, path[actualPathIndex]);
+		double distance = Mathematic.distance(actualPosition, path[actualPathIndex]);
 		double realSpeed = speed*hourPassed;
 		
 		if(distance > realSpeed) {	//move close to the next point
