@@ -1,5 +1,6 @@
 package it.spaghettisource.navaltrader.ui;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -23,6 +24,17 @@ public class ImageIconFactory {
 	}
 
 
+	public static BufferedImage getScaledBufferedImage(BufferedImage srcImg, int w, int h){
+		Image tmp = srcImg.getScaledInstance(w, h, Image.SCALE_SMOOTH);
+	    BufferedImage dimg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+	    Graphics2D g2d = dimg.createGraphics();
+	    g2d.drawImage(tmp, 0, 0, null);
+	    g2d.dispose();
+
+	    return dimg;
+	}
+	
 	private static Image getImageByNameAndSize(String name,int size) {
 
 		try {
@@ -36,7 +48,6 @@ public class ImageIconFactory {
 		}
 
 	}
-
 	
 	private static ImageIcon getImageIconByNameAndSize(String name,int size) {
 		return new ImageIcon(getImageByNameAndSize(name,size));
