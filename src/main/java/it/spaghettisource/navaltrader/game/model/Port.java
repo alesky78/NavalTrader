@@ -127,7 +127,7 @@ public class Port  implements Entity{
 			price = ThreadLocalRandom.current().nextInt(1000, 12000+1 );			
 			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));	//get random port
 			
-			newContracts.add(new TransportContract("wood", teu, dwt, price, getRouteTo(port)));		//TODO bug to fix, if contract is take but i move to a new destination the route is the old one	
+			newContracts.add(new TransportContract("wood", teu, dwt, price,port));	
 		}
 		
 		contracts = newContracts;

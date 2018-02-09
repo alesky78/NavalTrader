@@ -324,11 +324,14 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		JSlider sliderNavigationSpeed;			
 		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);
 
-		//set the day to destination for all contracts
+		//set the day and distance to destination for all contracts
 		TransportContractTableRow contract;		
+		Route route;
 		for (int index = 0; index < listNewContractData.size(); index++) {
 			contract = listNewContractData.get(index);
-			contract.calcDaysToDestination(startSpeed);
+			route = port.getRouteTo(contract.getDestinationPort());
+			contract.setDaysToDestination(route.calcDaysToDestination(startSpeed));
+			contract.setDistance(route.getDistanceInScale());
 			listNewContractData.set(index, contract);
 		}
 
@@ -342,17 +345,20 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					selectedFuelConsumption.setText(ship.getFuelConsumptionPerHour(source.getValue()) +" t hour /"+ship.getFuelConsumptionPerHour(source.getValue())*24+" t day");	
 
 					if(newContractTable!=null) {	//reset the control of the fuel
-						TransportContractTableRow data;						
+						TransportContractTableRow contract;		
+					
 						double newMaxFule = ship.getFuel();
 						int[] selected = newContractTable.getSelectedRows();
 						for (int i = 0; i < selected.length; i++) {	//Calculate the used fuel based on selected rows
-							data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
-							newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), data.getDistance());
+							contract = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
+							newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), contract.getDistance());
 						}		
+						Route route;	
 						for (int index = 0; index < listNewContractData.size(); index++) {	//reset the days to arrive at destination for each contract
-							data = listNewContractData.get(index);
-							data.calcDaysToDestination(source.getValue());
-							listNewContractData.set(index, data);
+							contract = listNewContractData.get(index);
+							route = port.getRouteTo(contract.getDestinationPort());							
+							contract.setDaysToDestination(route.calcDaysToDestination(source.getValue()));
+							listNewContractData.set(index, contract);
 						}						
 						controlFuel.setValue(newMaxFule);
 					}
@@ -384,12 +390,14 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		PanelDrawRoute mapOfPortPanel = new PanelDrawRoute(600, world.getGridSize(), world.getWorldMap(), port.getCooridnate());
 
 
+
+		
 		///////////////
 		//port contract
 		JPanel portContractPanel = new JPanel(new BorderLayout());
 		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));	
-		String[] newContractpropertyNames = new String[] { "good","destinationPort", "distance", "daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] newContractcolumnLabels  = new String[] { "good","destinationPort", "distance", "daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] newContractpropertyNames = new String[] { "good","destinationPortName", "distance", "daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] newContractcolumnLabels  = new String[] { "good","destinationPortName", "distance", "daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> newContractTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
 		newContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listNewContractData, newContractTf));			
 		newContractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -400,17 +408,17 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 				try{
 					int[] selected = newContractTable.getSelectedRows();
 					//calculation on the control based on the selected rows
-					TransportContractTableRow data;
+					TransportContractTableRow contract;
 					int newMaxTeu = ship.getAcceptedTeu();
 					int newMaxDwt = ship.getAcceptedDwt();	
 					double newMaxFule = ship.getFuel();		
 					List<Route> routes = new ArrayList<Route>();
 					for (int i = 0; i < selected.length; i++) {
-						data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
-						newMaxTeu -= data.getTotalTeu();
-						newMaxDwt -= data.getTotalDwt();
-						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), data.getDistance());
-						routes.add(data.getRoute());
+						contract = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
+						newMaxTeu -= contract.getTotalTeu();
+						newMaxDwt -= contract.getTotalDwt();
+						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), contract.getDistance());
+						routes.add(port.getRouteTo(contract.getDestinationPort()));
 					}
 
 					controlTeu.setValue(newMaxTeu); 
@@ -437,8 +445,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		////////////////////	
 		//accepted contracts
 		JTable acceptedContractTable;	
-		String[] propertyNames = new String[] { "good","destinationPort", "distance",  "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] columnLabels = new String[] { "good","destinationPort", "distance",  "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] propertyNames = new String[] { "good","destinationPortName", "distance",  "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] columnLabels = new String[] { "good","destinationPortName", "distance",  "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> acceptedContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		acceptedContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listAcceptedContractData, acceptedContractTableTf));	
 		acceptedContractTable.setAutoCreateRowSorter(true);		
@@ -486,11 +494,14 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		
 		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);
 
-		//set the day to destination for all contracts
+		//set the day and distance to destination for all contracts
 		TransportContractTableRow contract;		
+		Route route;	
 		for (int index = 0; index < listAcceptedContractData.size(); index++) {
 			contract = listAcceptedContractData.get(index);
-			contract.calcDaysToDestination(startSpeed);
+			route = port.getRouteTo(contract.getDestinationPort());
+			contract.setDaysToDestination(route.calcDaysToDestination(startSpeed));
+			contract.setDistance(route.getDistanceInScale());
 			listAcceptedContractData.set(index, contract);
 		}
 
@@ -502,14 +513,17 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					selectedFuelConsumption.setText(ship.getFuelConsumptionPerHour(source.getValue()) +" t hour /"+ship.getFuelConsumptionPerHour(source.getValue())*24+" t day");	
 
 					if(sailContractTable!=null) {	//reset the control of the fuel
-						TransportContractTableRow data;						
+						TransportContractTableRow contract;		
+						Route route;						
 						double newMaxFule = ship.getFuel();
 						int index = sailContractTable.getSelectedRow();
 						if(index!=-1){
-							data = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(index));
-							data.calcDaysToDestination(source.getValue());							
-							listAcceptedContractData.set(index, data);							
-							newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), data.getDistance());							
+							contract = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(index));
+							route = port.getRouteTo(contract.getDestinationPort());
+							
+							contract.setDaysToDestination(route.calcDaysToDestination(source.getValue()));							
+							listAcceptedContractData.set(index, contract);							
+							newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), contract.getDistance());							
 						}
 
 						sailControlFuel.setValue(newMaxFule); 
@@ -545,8 +559,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//accepted contract table
 		JPanel acceptedContractPanel = new JPanel(new BorderLayout());
 		acceptedContractPanel.setBorder(BorderFactory.createTitledBorder("accepted contract"));			
-		String[] propertyNames = new String[] { "good","destinationPort", "distance","daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] columnLabels = new String[] { "good","destinationPort", "distance", "daysToDestination","totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] propertyNames = new String[] { "good","destinationPortName", "distance","daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] columnLabels = new String[] { "good","destinationPortName", "distance", "daysToDestination","totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> acceptedContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		sailContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listAcceptedContractData, acceptedContractTableTf));	
 		sailContractTable.setAutoCreateRowSorter(true);	
@@ -559,11 +573,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					List<Route> routes = new ArrayList<Route>();
 
 					if(selected!=-1){
-						TransportContractTableRow data = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(selected));
-						routes.add(data.getRoute());
+						TransportContractTableRow contract = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(selected));
+						routes.add(port.getRouteTo(contract.getDestinationPort()));
 
 						double newMaxFule = ship.getFuel();
-						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), data.getDistance());
+						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), contract.getDistance());
 						sailControlFuel.setValue(newMaxFule);
 					}
 
@@ -651,9 +665,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 			if(sailControlFuel.getValue()>=0 && selectedRoute!=-1) {
 				int selectedSpeed = sliderNavigationSpeed.getValue();
-				TransportContractTableRow data = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(selectedRoute));
+				TransportContractTableRow contract = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(selectedRoute));
 	
-				ship.loadShipAndPrepareToNavigate(selectedSpeed, data.getRoute());
+				ship.loadShipAndPrepareToNavigate(selectedSpeed, port.getRouteTo(contract.getDestinationPort()));
 				
 				this.doDefaultCloseAction();	//close the frame ship no more in the port				
 			}

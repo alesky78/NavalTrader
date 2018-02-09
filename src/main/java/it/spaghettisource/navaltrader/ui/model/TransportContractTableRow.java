@@ -3,6 +3,7 @@ package it.spaghettisource.navaltrader.ui.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
 
@@ -14,10 +15,12 @@ public class TransportContractTableRow {
 	private int totalDwt;		
 	private double pricePerTeu;
 	private double totalPrice;
-	private int daysToDestination;		
-	private Route route;	
+	private Port destination;	
+	private int distance;
+	private int daysToDestination;	
+
 	
-	public TransportContractTableRow(String id, String good, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, Route route) {
+	public TransportContractTableRow(String id, String good, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, Port destination) {
 		super();
 		this.id = id;
 		this.good = good;
@@ -25,7 +28,7 @@ public class TransportContractTableRow {
 		this.totalDwt = totalDwt;
 		this.pricePerTeu = pricePerTeu;
 		this.totalPrice = totalPrice;
-		this.route = route;
+		this.destination = destination;
 		this.daysToDestination = 0;
 	}
 
@@ -53,24 +56,28 @@ public class TransportContractTableRow {
 		return totalPrice;
 	}
 	
-	public String getDestinationPort() {
-		return route.getDestination().getName();
+	public Port getDestinationPort() {
+		return destination;
+	}
+
+	public String getDestinationPortName() {
+		return destination.getName();
 	}
 	
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
+
 	public int getDistance() {
-		return route.getDistanceInScale();
+		return distance;
 	}
-	
-	public Route getRoute() {
-		return route;
-	}
-	
+		
 	public int getDaysToDestination() {
 		return daysToDestination;
 	}
-
-	public void calcDaysToDestination(int speed) {
-		this.daysToDestination = route.getDistanceInScale()/(speed*24);
+	
+	public void setDaysToDestination(int daysToDestination) {
+		this.daysToDestination = daysToDestination;
 	}
 
 	public boolean equals(Object obj){
@@ -98,7 +105,7 @@ public class TransportContractTableRow {
 											 contract.getTeu()*contract.getDwtPerTeu(), 
 											 contract.getPricePerTeu(), 
 											 contract.getTotalPrice(), 
-											 contract.getRoute());	
+											 contract.getDestinationPort());	
 	}		
 	
 	

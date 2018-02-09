@@ -42,6 +42,10 @@ public class Route {
 	public boolean isDestination(Port port) {
 		return destination.equals(port);
 	}
+	
+	public int calcDaysToDestination(int speed) {
+		return distanceInScale/(speed*24);
+	}	
 
 	public Point[] getPath() {
 		return path;
