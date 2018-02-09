@@ -113,9 +113,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		try {		
 			this.shipName = shipName;
 			this.portName = portName;
-			setSize(700,500);   
+			setSize(700,500);
+		
 			setFrameIcon(ImageIconFactory.getForFrame("/icon/ship list.png"));
 
+			
 			initValuesFromModel();
 
 			tabbedPane = new JTabbedPane();		
@@ -594,7 +596,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		//join the panels
 		JSplitPane newContractAndMapRoutePanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,acceptedContractPanel);
-		newContractAndMapRoutePanel.setDividerLocation(450);		
+		newContractAndMapRoutePanel.setDividerLocation(600);		
 
 		JPanel selectSpeedPanel = new JPanel(new BorderLayout());		
 		selectSpeedPanel.add(speedControlPanel, BorderLayout.NORTH);		

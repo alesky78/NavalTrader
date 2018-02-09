@@ -33,7 +33,7 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 			this.gameManager = gameManager; 
 			this.gameData = gameManager.getGameData();
 			this.parentDesktopPane = parentDesktopPane;
-
+			
 			//register to receive event
 			log.debug("register listener: "+title);        
 			EventPublisher.getInstance().register(this);
@@ -45,6 +45,11 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 		}catch (Exception e) {
 			log.error("error creating internal frame",e);
 		}
+	}
+
+	private void setExtendedState(Object object) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void internalFrameActivated(InternalFrameEvent arg0) {	
