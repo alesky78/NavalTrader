@@ -2,7 +2,6 @@ package it.spaghettisource.navaltrader.game.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import it.spaghettisource.navaltrader.game.factory.ContractFactory;
 import it.spaghettisource.navaltrader.game.loop.Entity;
@@ -17,6 +16,7 @@ public class Port  implements Entity{
 	private String name;
 	private int classAccepted;
 	private double dailyFeeCost;	
+	private double castOffCost;	
 	private double fuelPrice;
 	private double repairPrice;	
 	private int dayContractRegeneration;	
@@ -26,12 +26,13 @@ public class Port  implements Entity{
 
 	
 	
-	public Port(World world,Point cooridnate,String name, double dailyFeeCost, int classAccepted,int dayContractRegeneration) {
+	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int classAccepted,int dayContractRegeneration) {
 		super();
 		this.world =  world;
 		this.cooridnate = cooridnate;
 		this.name = name;
 		this.dailyFeeCost = dailyFeeCost;
+		this.castOffCost = castOffCost;
 		this.classAccepted = classAccepted;
 		this.dayContractRegeneration = dayContractRegeneration;
 		this.dayToNextContractRegeneration = dayContractRegeneration;
@@ -59,6 +60,10 @@ public class Port  implements Entity{
 
 	public double getDailyFeeCost() {
 		return dailyFeeCost;
+	}
+
+	public double getCastOffCost() {
+		return castOffCost;
 	}
 
 	public int getDayContractRegeneration() {

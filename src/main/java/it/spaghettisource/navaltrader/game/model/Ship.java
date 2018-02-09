@@ -47,14 +47,14 @@ public class Ship implements Entity{
 	private int maxDwt;	
 	private int teu;		
 	private int maxTeu;	
+	
 	private double fuelConsumptionIndexA;
 	private double fuelConsumptionIndexB;	
 	private double fuel;
 	private double maxFuel;	
+	
 	private int speed;	
 	private int maxSpeed;	
-	
-
 	
 	private List<TransportContract> transportContracts;
 	
@@ -261,6 +261,13 @@ public class Ship implements Entity{
 		this.fuel = fuel + toAdd;
 	}	
 	
+	/**
+	 * fuel consumption is calculated as:
+	 *   consume = (speed^2 * A)  + (speed * A)
+	 * 
+	 * @param speed
+	 * @return
+	 */
 	public double getFuelConsumptionPerHour(int speed) {
 		return Mathematic.powBy2(speed)*fuelConsumptionIndexA + speed*fuelConsumptionIndexB;
 	}
@@ -328,7 +335,15 @@ public class Ship implements Entity{
 		if(waitingTimeInHours<0) {
 			log.debug("ship :"+name+" completed loading start navigation");
 			status = SHIP_STATUS_NAVIGATION;
+
+			//cost for cast off
+			finance.addEntry(FinancialEntryType.SHIP_CAST_OFF_COST, -dockedPort.getCastOffCost());
+			company.removeBudget(dockedPort.getCastOffCost());			
+			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));			
+
 			dockedPort = null;
+			
+			//ship start to navigate
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
 		}
 	}
@@ -369,6 +384,11 @@ public class Ship implements Entity{
 			log.debug("ship :"+name+" completed docking");
 			status = SHIP_STATUS_DOCKED;
 			closeContracts();
+			
+			//cost for cast off to dock
+			finance.addEntry(FinancialEntryType.SHIP_CAST_OFF_COST, -dockedPort.getCastOffCost());
+			company.removeBudget(dockedPort.getCastOffCost());			
+			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));				
 			
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
 		}

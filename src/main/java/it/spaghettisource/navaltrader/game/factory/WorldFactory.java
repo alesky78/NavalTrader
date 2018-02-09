@@ -58,6 +58,7 @@ public class WorldFactory {
 								 cooridnate,
 								 config.getString("port"+i+".name"), 
 								 config.getDouble("port"+i+".dailyFeeCost"),
+								 config.getDouble("port"+i+".castOffCost"),
 								 config.getInt("port"+i+".classAccepted"), 
 								 config.getInt("port"+i+".dayContractRegeneration")); 
 				ports.add(actual);				

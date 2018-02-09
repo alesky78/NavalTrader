@@ -57,7 +57,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 	private final static String TAB_SHIP_MAINTAINACE = "maitainance";	
 	private final static String TAB_TRANSPORT_CONTRACT = "contract";	
-	private final static String TAB_SHIP_SAIL = "sail";	
+	private final static String TAB_CAST_OFF = "cast off";	
 
 
 	private final static String ACTION_REFUEL = "refuel";
@@ -121,7 +121,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			tabbedPane = new JTabbedPane();		
 			tabbedPane.addTab(TAB_SHIP_MAINTAINACE, ImageIconFactory.getForTab("/icon/clipboard.png"),createMaintainancePanel());
 			tabbedPane.addTab(TAB_TRANSPORT_CONTRACT, ImageIconFactory.getForTab("/icon/investment.png"),createTransportContractPanel());		
-			tabbedPane.addTab(TAB_SHIP_SAIL, ImageIconFactory.getForTab("/icon/helm.png"),createShipSailPanel());			
+			tabbedPane.addTab(TAB_CAST_OFF, ImageIconFactory.getForTab("/icon/helm.png"),createCastOffPanel());			
 
 
 			getContentPane().add(tabbedPane);
@@ -475,7 +475,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	 * 
 	 * @return
 	 */
-	private Component createShipSailPanel() {
+	private Component createCastOffPanel() {
 
 		JPanel panel = new JPanel(new BorderLayout());	
 		panel.setBorder(BorderFactory.createTitledBorder("sail"));	
