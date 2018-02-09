@@ -30,7 +30,7 @@ public class Ship implements Entity{
 	
 	private Company company;
 	
-	private Point position;		//TODO initialized non in scale but later used in scale during the navigation. fix it
+	private Point position;	
 	private NavigationRoute navigationRoute;
 	
 	private String name;	

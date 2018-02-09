@@ -25,9 +25,8 @@ public class Dijkstra implements PathFinding {
 	static Log log = LogFactory.getLog(Dijkstra.class.getName());
 
 	
-	public Point[]  search(Grid grid, Point start, Point end) {
+	public Point[]  search(Grid grid, Point start, Point end, boolean allowDiagonal) {
 
-		boolean allowDiagonal = false;	
 		boolean finish = false;		
 		
 		PriorityQueue<Cell> open = new PriorityQueue<Cell>();		

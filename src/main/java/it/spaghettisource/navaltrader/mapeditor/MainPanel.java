@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -34,7 +32,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 	private JComboBox<String> algorithmsList;
 	private JComboBox<Integer> gridSizeList;
-	private JComboBox<String> drawGridList;		
+	private JComboBox<String> drawGridList;
+	private JComboBox<Boolean> allowDiagonalList;		
 	private JSlider alphaColorSlider;
 	private JTextField coordinatePointOnGrid;	
 
@@ -48,11 +47,13 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private String ACTION_DRAW_GRID = "ACTION_DRAW_GRID";	
 	private String ACTION_SAVE_GRID = "ACTION_SAVE_GRID";	
 	private String ACTION_LOAD_GRID = "ACTION_LOAD_GRID";	
+	private String ACTION_ALLOW_DIAGONAL = "ACTION_ALLOW_DIAGONAL";		
 
 
 	private String[] algorithmsValues = { "AStar", "Dijkstra"};
 	private Integer[] gridSizeValues = { 10, 50, 100, 250, 300, 400, 500,1000};
 	private String[] drawGridValues = { "draw grid", "remove grid"};		
+	private Boolean[] allowDiagonalValues = { Boolean.TRUE, Boolean.FALSE};
 
 	private Cell startCell;
 	private Cell endCell;	
@@ -103,6 +104,10 @@ public class MainPanel extends JPanel  implements ActionListener{
 		drawGridList = new JComboBox<String>(drawGridValues);
 		drawGridList.setActionCommand(ACTION_DRAW_GRID);		
 		drawGridList.addActionListener(this);		
+		
+		allowDiagonalList  = new JComboBox<Boolean>(allowDiagonalValues);
+		drawGridList.addActionListener(this);			
+		
 
 		alphaColorSlider = new JSlider(JSlider.HORIZONTAL, 0, 255, 255);
 		alphaColorSlider.addChangeListener(new ChangeListener() {
@@ -130,7 +135,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 		//line 1
 		controlPanel1.add(buttonResetGrid);
 		controlPanel1.add(buttonStart);		
-		controlPanel1.add(algorithmsList);			
+		controlPanel1.add(algorithmsList);		
+		controlPanel1.add(allowDiagonalList);		
 		controlPanel1.add(gridSizeList);		
 
 		//line 2
@@ -139,7 +145,6 @@ public class MainPanel extends JPanel  implements ActionListener{
 		controlPanel2.add(coordinatePointOnGrid);
 		controlPanel2.add(loadGrid);		
 		controlPanel2.add(saveGrid);				
-
 
 
 		controlPanel.add(controlPanel1);
@@ -188,7 +193,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 			if( startCell != null && endCell != null){
 
 				String algorithm = (String)algorithmsList.getSelectedItem();
-				(new Thread(new SearchThread(algorithm))).start();
+				Boolean diagonal = (Boolean)allowDiagonalList.getSelectedItem();
+				(new Thread(new SearchThread(algorithm,diagonal))).start();
 
 			}
 		}else if (ACTION_GRID_SIZE.equals(command)){
@@ -252,9 +258,11 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private class SearchThread implements Runnable {
 
 		String algorithm;
+		Boolean diagonal;		
 
-		public SearchThread(String algorithm){
+		public SearchThread(String algorithm,Boolean diagonal){
 			this.algorithm = algorithm;
+			this.diagonal = diagonal;
 		}
 
 		@Override
@@ -268,7 +276,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 				finder = new Dijkstra();
 			}
 
-			Point[] path = finder.search(grid, startCell.getCoordinate(), endCell.getCoordinate());
+			Point[] path = finder.search(grid, startCell.getCoordinate(), endCell.getCoordinate(),diagonal);
 			gridPanel.setPath(path);
 
 		}

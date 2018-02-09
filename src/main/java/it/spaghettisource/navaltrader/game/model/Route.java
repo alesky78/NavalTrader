@@ -21,14 +21,20 @@ public class Route {
 		super();
 		this.destination = destination;
 		this.path = path;
-		this.distanceInScale = (path.length-1)*scale;
-		
+
 		pathInScale = new Point[path.length];
 		Point point;
 		for (int i = 0; i < path.length; i++) {
 			point = path[i];
 			pathInScale[i] = Mathematic.scale(point, scale);
-		}	
+		}
+		
+		//calcualte real distance
+		this.distanceInScale = 0;
+		for (int i = 1; i < pathInScale.length; i++) {
+			distanceInScale += Mathematic.distance(pathInScale[i], pathInScale[i-1]);
+		}		
+		
 	}
 		
 	public int getDistanceInScale() {

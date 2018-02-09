@@ -13,7 +13,7 @@ public class Cell implements Comparable<Cell>{
     private double gCosts;	
     private boolean open;
     private int nodeCost;	//INFO: is extremely important to have a node cost of 100 because in this way we don't lost the decimal part during the comparison between the nodes
-    						// check the calculatehCosts and compareTo methods.... if we lost decimal part compare will not able to recognise exactly better nodes
+    						// check the calculatehCosts and compareTo methods.... if we lost decimal part compare will not able to recognize exactly better nodes
 
     //for A star
     private double hCosts;
@@ -91,7 +91,7 @@ public class Cell implements Comparable<Cell>{
 	}
 
 	public void calculategCosts(Cell cell) {
-		gCosts = cell.getgCosts() + nodeCost;
+		gCosts = cell.getgCosts() + Math.hypot(coordinate.getX() - cell.coordinate.getX(), coordinate.getY() - cell.coordinate.getY())*nodeCost;
 	}
 	
 
@@ -101,7 +101,6 @@ public class Cell implements Comparable<Cell>{
 	
 	public void calculatehCosts(Cell cell) {
 		hCosts = Math.hypot(coordinate.getX() - cell.coordinate.getX(), coordinate.getY() - cell.coordinate.getY())*nodeCost;	
-		//hCosts = ((absolute(x - cell.x) + absolute(y - cell.y)))*nodeCost;
     }
 
     public double getfCosts() {

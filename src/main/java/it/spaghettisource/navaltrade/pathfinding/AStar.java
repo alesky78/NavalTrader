@@ -21,9 +21,8 @@ public class AStar implements PathFinding {
 	static Log log = LogFactory.getLog(AStar.class.getName());
 
 
-	public Point[]  search(Grid grid, Point start, Point end) {
+	public Point[]  search(Grid grid, Point start, Point end, boolean allowDiagonal) {
 
-		boolean allowDiagonal = false;	
 		boolean finish = false;		
 		PriorityQueue<Cell> open = new PriorityQueue<Cell>();		
 		
@@ -49,7 +48,7 @@ public class AStar implements PathFinding {
 				if(!cell.isOpen()) {
 					cell.setPrevious(actualCell); 				// set current node as previous for this node
 					cell.calculatehCosts(targetCell); 			// set h costs of this node (estimated costs to goal)
-					cell.calculategCosts(actualCell); 			// set g costs of this node (costs from start to this node)		//TODO if move diagonal the cost should be different
+					cell.calculategCosts(actualCell); 			// set g costs of this node (costs from start to this node)
 					cell.setOpen(true);							//set node open		
 					open.add(cell);								// add node to openList
 				} else { // node is in openList

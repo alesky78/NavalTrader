@@ -83,7 +83,7 @@ public class WorldFactory {
 			for (Port port : ports) {
 				connectedPorts = world.getConnectedPorts(port);
 				for (Port destination : connectedPorts) {
-					path = finder.search(grid, port.getCooridnate(), destination.getCooridnate());
+					path = finder.search(grid, port.getCooridnate(), destination.getCooridnate(),true);
 					route = new Route(destination, world.getGridScale(), path);
 					port.addRoute(route);
 					grid.resetCells();
