@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import it.spaghettisource.navaltrader.game.factory.ContractFactory;
 import it.spaghettisource.navaltrader.game.loop.Entity;
 import it.spaghettisource.navaltrader.geometry.Point;
 
@@ -106,33 +107,11 @@ public class Port  implements Entity{
 		return repairPrice;	
 	}
 
-	//TODO implement the logic to calculate the new contracts
-	public void generateContracts(){
-		
-		int numberOfContracts = 10;
-		
-		List<Port> connectePorts = world.getConnectedPorts(this);
-		int connected = connectePorts.size();
-		
-		List<TransportContract> newContracts = new ArrayList<TransportContract>(numberOfContracts);
 
-		int teu;
-		int dwt;
-		int price;
-		Port port;
-		
-		for (int i = 0; i< numberOfContracts; i++) {
-			teu = ThreadLocalRandom.current().nextInt(50, 999+1 );
-			dwt = ThreadLocalRandom.current().nextInt(2, 10+1 );
-			price = ThreadLocalRandom.current().nextInt(1000, 12000+1 );			
-			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));	//get random port
-			
-			newContracts.add(new TransportContract("wood", teu, dwt, price,port));	
-		}
-		
-		contracts = newContracts;
+	public void generateContracts(){
+		contracts.clear();
+		contracts.addAll(ContractFactory.generateContracts(world, this)) ;
 	}
-	
 	
 	
 	
