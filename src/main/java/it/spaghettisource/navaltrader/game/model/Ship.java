@@ -337,7 +337,7 @@ public class Ship implements Entity{
 			status = SHIP_STATUS_NAVIGATION;
 
 			//cost for cast off
-			finance.addEntry(FinancialEntryType.SHIP_CAST_OFF_COST, -dockedPort.getCastOffCost());
+			finance.addEntry(FinancialEntryType.SHIP_CAST_OFF_COST_TUG, -dockedPort.getCastOffCost());
 			company.removeBudget(dockedPort.getCastOffCost());			
 			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));			
 
@@ -386,7 +386,7 @@ public class Ship implements Entity{
 			closeContracts();
 			
 			//cost for cast off to dock
-			finance.addEntry(FinancialEntryType.SHIP_CAST_OFF_COST, -dockedPort.getCastOffCost());
+			finance.addEntry(FinancialEntryType.SHIP_DOCK_COST_TUG, -dockedPort.getCastOffCost());
 			company.removeBudget(dockedPort.getCastOffCost());			
 			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));				
 			
