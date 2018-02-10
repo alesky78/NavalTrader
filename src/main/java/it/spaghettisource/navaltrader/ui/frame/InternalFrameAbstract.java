@@ -28,7 +28,12 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 	protected NumberFormat percentageFormat = NumberFormat.getPercentInstance();		
 
 	public InternalFrameAbstract(MainDesktopPane parentDesktopPane,GameManager gameManager, String name) {
-		super(name, true, true, true, true);
+		this(parentDesktopPane, gameManager, name, true, true, true, true);
+	}
+	
+	
+	public InternalFrameAbstract(MainDesktopPane parentDesktopPane,GameManager gameManager, String name,boolean resizable, boolean closable,boolean maximizable, boolean iconifiable) {
+		super(name, resizable, closable, maximizable, iconifiable);
 		try {		
 			this.gameManager = gameManager; 
 			this.gameData = gameManager.getGameData();
@@ -45,7 +50,8 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 		}catch (Exception e) {
 			log.error("error creating internal frame",e);
 		}
-	}
+		
+	}	
 
 	private void setExtendedState(Object object) {
 		// TODO Auto-generated method stub

@@ -14,7 +14,7 @@ public class Application {
 
 	static Log log = LogFactory.getLog(Application.class.getName());
 
-	public static boolean nimbus = false;
+	public static boolean nimbus = true;
 
 	public static void main(String[] args){
 

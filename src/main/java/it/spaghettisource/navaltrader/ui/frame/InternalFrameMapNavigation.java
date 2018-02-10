@@ -15,17 +15,15 @@ public class InternalFrameMapNavigation extends InternalFrameAbstract {
 	
 	
 	public InternalFrameMapNavigation(MainDesktopPane parentDesktopPane, GameManager gameManager) {
-		super(parentDesktopPane, gameManager, "navigation");
-		setSize(600,600);   		
+		super(parentDesktopPane, gameManager, "navigation", true, true, true, true);
+		setSize(850,850);   		
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/globe.png"));
 		
-
-		panel = new PanelDrawNavigation(gameManager.getGameData().getCompany(), 
-															gameManager.getGameData().getWorld(), 
-															600);
+		panel = new PanelDrawNavigation(gameManager.getGameData().getCompany(), gameManager.getGameData().getWorld(), 600);
 				
 		getContentPane().add(panel);
 		panel.start();
+		
 		
 	}
 	
