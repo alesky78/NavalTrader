@@ -129,6 +129,7 @@ public class Ship implements Entity{
 		company.addBudget(totalBudget);
 		
 		InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));
+		InboundEventQueue.getInstance().put(new Event(EventType.CONTRACT_COMPLETED_EVENT,this));	//TODO send the data of the contract	
 		
 	}
 	

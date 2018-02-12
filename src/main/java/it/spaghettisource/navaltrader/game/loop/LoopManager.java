@@ -61,11 +61,13 @@ public class LoopManager implements  Runnable {
 
 
 	public void setPauseByUser(boolean toSet){
+		log.debug("user set pause");
 		pauseByUser = toSet;
 	}
 	
 
 	public void setPauseByGame(boolean pauseByGame) {
+		log.debug("game set pause");		
 		this.pauseByGame = pauseByGame;
 	}
 

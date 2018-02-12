@@ -62,7 +62,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 		setIconImage(ImageIconFactory.getAppImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		desktop = new MainDesktopPane();
+		desktop = new MainDesktopPane(gameManager);
 		//Make dragging a little faster but perhaps uglier.
 		desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);	        
 

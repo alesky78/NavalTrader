@@ -53,32 +53,27 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 		
 	}	
 
-	private void setExtendedState(Object object) {
-		// TODO Auto-generated method stub
-		
+	public void internalFrameActivated(InternalFrameEvent event) {	
 	}
 
-	public void internalFrameActivated(InternalFrameEvent arg0) {	
-	}
-
-	public void internalFrameClosed(InternalFrameEvent arg0) {
+	public void internalFrameClosed(InternalFrameEvent event) {
 		log.debug("unregister listener: "+title);
 		EventPublisher.getInstance().unRegister(this);
 	}
 
-	public void internalFrameClosing(InternalFrameEvent arg0) {
+	public void internalFrameClosing(InternalFrameEvent event) {
 	}
 
-	public void internalFrameDeactivated(InternalFrameEvent arg0) {
+	public void internalFrameDeactivated(InternalFrameEvent event) {
 	}
 
-	public void internalFrameDeiconified(InternalFrameEvent arg0) {
+	public void internalFrameDeiconified(InternalFrameEvent event) {
 	}
 
-	public void internalFrameIconified(InternalFrameEvent arg0) {
+	public void internalFrameIconified(InternalFrameEvent event) {
 	}
 
-	public void internalFrameOpened(InternalFrameEvent arg0) {
+	public void internalFrameOpened(InternalFrameEvent event) {
 	}
 
 

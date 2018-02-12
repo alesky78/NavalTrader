@@ -15,8 +15,9 @@ public class EventType {
 	public static final EventType BUY_SHIP_EVENT = new EventType("BUY_SHIP_EVENT");						//list of ship change
 	public static final EventType SELL_SHIP_EVENT = new EventType("SELL_SHIP_EVENT");					//list of ship change
 	public static final EventType SHIP_STATUS_CHANGE_EVENT = new EventType("SHIP_STATUS_CHANGE_EVENT");	//list of ship change
-	public static final EventType SHIP_FUEL_CHANGE_EVENT = new EventType("SHIP_FUEL_CHANGE_EVENT");	//list of ship change		
-	public static final EventType SHIP_HULL_CHANGE_EVENT = new EventType("SHIP_HULL_CHANGE_EVENT");	//list of ship change	
+	public static final EventType SHIP_FUEL_CHANGE_EVENT = new EventType("SHIP_FUEL_CHANGE_EVENT");		//list of ship change		
+	public static final EventType SHIP_HULL_CHANGE_EVENT = new EventType("SHIP_HULL_CHANGE_EVENT");		//list of ship change
+	public static final EventType CONTRACT_COMPLETED_EVENT = new EventType("CONTRACT_COMPLETED_EVENT");	//contract completed event	
 	
 	
 
