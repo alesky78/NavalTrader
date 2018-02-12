@@ -14,7 +14,8 @@ public class LoopManager implements  Runnable {
 
 	private GameData gameData;
 
-	private boolean pause;
+	private boolean pauseByUser;
+	private boolean pauseByGame;	
 	private boolean shutdown;	
 	private int timeSleep;
 	private double timeSleepMultiplicator;	
@@ -27,10 +28,11 @@ public class LoopManager implements  Runnable {
 	public LoopManager(GameData gameData) {
 		super();
 		this.gameData = gameData;
-		pause = false;
+		pauseByUser = false;
+		pauseByGame	= false;
 		shutdown = false;
-		timeSleep = 2000;	//TODO review a valid amount for the time 2000 is to much i think 1000
 		timeSleepMultiplicator = 1;
+		timeSleep = 2000;	//TODO review a valid amount for the time 2000 is to much i think 1000		
 		timePassInMinuts = 20;		//TODO still is jumping, reduce this time
 	}
 
@@ -58,8 +60,13 @@ public class LoopManager implements  Runnable {
 	}
 
 
-	public void pause(boolean toSet){
-		pause = toSet;
+	public void setPauseByUser(boolean toSet){
+		pauseByUser = toSet;
+	}
+	
+
+	public void setPauseByGame(boolean pauseByGame) {
+		this.pauseByGame = pauseByGame;
 	}
 
 	public void shutdown(){
@@ -88,13 +95,10 @@ public class LoopManager implements  Runnable {
 				Thread.currentThread();
 				Thread.sleep((long)(timeSleep*timeSleepMultiplicator));
 
-				if(!pause){
+				if(!pauseByUser && !pauseByGame){
  
 					gameTime.addMinuts(timePassInMinuts);				
 					
-					//log.debug("time:"+gameTime.getFullDate()+" new date:"+isNewDate+" new week:"+isNewWeek+" new month:"+isNewMonth );
-					//TODO remove log for test
-
 					company.update(timePassInMinuts,isNewDate,isNewWeek,isNewMonth);
 					
 					if(clockUI!=null){

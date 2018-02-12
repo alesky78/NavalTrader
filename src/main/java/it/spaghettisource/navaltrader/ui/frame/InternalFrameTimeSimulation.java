@@ -110,9 +110,9 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if(ACTION_PAUSE.equals(command)) {
-			loopManager.pause(true);
+			loopManager.setPauseByUser(true);
 		}else if(ACTION_PLAY.equals(command)) {
-			loopManager.pause(false);			
+			loopManager.setPauseByUser(false);			
 		}else if(ACTION_FORWARD.equals(command)) {
 			loopManager.goFast();
 		}else if(ACTION_REWIND.equals(command)) {
