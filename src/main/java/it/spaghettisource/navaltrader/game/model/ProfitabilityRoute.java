@@ -61,7 +61,7 @@ public class ProfitabilityRoute {
 		this.hullDamaged += hullDamaged;
 	}
 	
-	public double getHullDamagedPrice(int hullDamaged) {
+	public double getHullDamagedPrice() {
 		return hullDamaged*navigationRoute.getDestinationPort().getRepairPrice();
 	}
 
@@ -85,7 +85,9 @@ public class ProfitabilityRoute {
 		return (int)(navigationRoute.getTotalNavigationHours()/24);
 	}
 	
-	
+	public double getFinalBalance() {
+		return incomeObtained - getTugCharges() - getFuelConsumedPrice() - getHullDamagedPrice();
+	}
 	
 
 	

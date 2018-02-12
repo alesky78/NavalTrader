@@ -7,6 +7,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.game.model.ProfitabilityRoute;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventListener;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
@@ -55,10 +56,11 @@ public class MainDesktopPane extends JDesktopPane implements EventListener  {
 	public void eventReceived(Event event) {
 		EventType eventType = event.getEventType(); 
 		if(eventType.equals(EventType.CONTRACT_COMPLETED_EVENT)){
-			event.getSource();	//TODO add the source to the frame in the way to show the data
-			InternalFrameContractDelivered frame = new InternalFrameContractDelivered(this, gameManager);
-			frame.setVisible(true);
+			InternalFrameContractDelivered frame = new InternalFrameContractDelivered(this, gameManager,(ProfitabilityRoute) event.getSource());
 			add(frame);
+			frame.moveToFront(); 	
+			frame.setVisible(true);
+
 		}
 	}
 
