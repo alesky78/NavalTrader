@@ -9,6 +9,8 @@ public class NavigationRoute {
 
 	private boolean arrived;
 
+	private double totalNavigationHours;
+	
 	private int speed;
 	private int actualPathIndex;
 	private int latPathIndex;	
@@ -20,6 +22,8 @@ public class NavigationRoute {
 		this.speed = speed;
 		this.route = route;
 
+		totalNavigationHours = 0;
+		
 		arrived = false;
 		path = route.getPathInScale();
 		actualPathIndex = 1;
@@ -40,9 +44,14 @@ public class NavigationRoute {
 		return arrived;
 	}
 
+	public double getTotalNavigationHours() {
+		return totalNavigationHours;
+	}
 
 	public Point navigate(double hourPassed) {
 
+		totalNavigationHours += hourPassed;
+		
 		double distance = Mathematic.distance(actualPosition, path[actualPathIndex]);
 		double realSpeed = speed*hourPassed;
 		

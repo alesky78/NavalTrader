@@ -27,40 +27,41 @@ public class Ship implements Entity{
 
 	private String status;
 	private double waitingTimeInHours; //used	to manage the time to stay in particualr status	
-	
+
 	private Company company;
-	
+
 	private Point position;	
 	private NavigationRoute navigationRoute;
-	
+	private ProfitabilityRoute profitabilityRoute;
+
 	private String name;	
 	private String model;
 	private String shipClass;	
 	private Port dockedPort;
-	
+
 	private Finance finance;
 	private double basePrice;	
 	private double operatingCost;
-	
+
 	private int hull;	
 	private int dwt;
 	private int maxDwt;	
 	private int teu;		
 	private int maxTeu;	
-	
+
 	private double fuelConsumptionIndexA;
 	private double fuelConsumptionIndexB;	
 	private double fuel;
 	private double maxFuel;	
-	
+
 	private int speed;	
 	private int maxSpeed;	
-	
+
 	private List<TransportContract> transportContracts;
-	
-	
+
+
 	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, double maxFuel,double fuelConsumptionIndexA, double fuelConsumptionIndexB,  double operatingCost, int maxSpeed, double basePrice) {
-		
+
 		this.shipClass = shipClass;
 		this.model = model;
 
@@ -73,7 +74,7 @@ public class Ship implements Entity{
 		this.hull = hull;		
 		this.basePrice = basePrice;
 		this.operatingCost = operatingCost;
-		
+
 		dwt = 0; 
 		teu = 0;
 		fuel = 0;		
@@ -81,16 +82,16 @@ public class Ship implements Entity{
 		name = "";		
 		finance = new Finance();
 		transportContracts = new ArrayList<TransportContract>();
-		
+
 		this.status = SHIP_STATUS_DOCKED;
 		waitingTimeInHours = 0;
-		
+
 	}
-	
+
 	public void setCompany(Company company) {
 		this.company = company;
 	}	
-	
+
 	public Point getPosition() {
 		return position;
 	}
@@ -105,34 +106,38 @@ public class Ship implements Entity{
 		dwt += contract.getTeu()*contract.getDwtPerTeu();
 	}
 
-	
+
 	public void closeContracts(){
-		
+
 		List<TransportContract> toClose = new ArrayList<>();
 		for (TransportContract transportContract : transportContracts) {
 			if(transportContract.getDestinationPort().equals(dockedPort)){
 				toClose.add(transportContract);
 			}
 		}
-		
-		int totalBudget = 0;
-		for (TransportContract transportContract : toClose) {
-			//reset the Teu and the DWT
-			teu -= transportContract.getTeu();
-			dwt -= transportContract.getTeu()*transportContract.getDwtPerTeu();			
+
+		if(!toClose.isEmpty()){
+			int totalBudget = 0;
+			for (TransportContract transportContract : toClose) {
+				//reset the Teu and the DWT
+				teu -= transportContract.getTeu();
+				dwt -= transportContract.getTeu()*transportContract.getDwtPerTeu();			
+
+				transportContracts.remove(transportContract);
+				totalBudget += transportContract.getTotalPrice();
+				finance.addEntry(FinancialEntryType.SHIP_INCOME, transportContract.getTotalPrice());
+			}
+
+			company.addBudget(totalBudget);
 			
-			transportContracts.remove(transportContract);
-			totalBudget += transportContract.getTotalPrice();
-			finance.addEntry(FinancialEntryType.SHIP_INCOME, transportContract.getTotalPrice());
+			profitabilityRoute.setIncomeObtained(totalBudget);
+			profitabilityRoute.addContractClosed(toClose);
+			
+			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));
+			InboundEventQueue.getInstance().put(new Event(EventType.CONTRACT_COMPLETED_EVENT,profitabilityRoute));
 		}
-		
-		company.addBudget(totalBudget);
-		
-		InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));
-		InboundEventQueue.getInstance().put(new Event(EventType.CONTRACT_COMPLETED_EVENT,this));	//TODO send the data of the contract	
-		
 	}
-	
+
 	public String getShipClass() {
 		return shipClass;
 	}
@@ -197,7 +202,7 @@ public class Ship implements Entity{
 	public void setHull(int hull) {
 		this.hull = hull;
 	}
-	
+
 	public void addHull(int toAdd) {
 		this.hull = hull + toAdd;
 	}	
@@ -209,7 +214,7 @@ public class Ship implements Entity{
 	public void setDwt(int dwt) {
 		this.dwt = dwt;
 	}
-	
+
 	public int getAcceptedDwt() {
 		return maxDwt-dwt;
 	}	
@@ -233,7 +238,7 @@ public class Ship implements Entity{
 	public int getAcceptedTeu() {
 		return maxTeu-teu;
 	}	
-	
+
 	public int getMaxTeu() {
 		return maxTeu;
 	}
@@ -261,7 +266,7 @@ public class Ship implements Entity{
 	public void addFuel(double toAdd) {
 		this.fuel = fuel + toAdd;
 	}	
-	
+
 	/**
 	 * fuel consumption is calculated as:
 	 *   consume = (speed^2 * A)  + (speed * A)
@@ -272,11 +277,11 @@ public class Ship implements Entity{
 	public double getFuelConsumptionPerHour(int speed) {
 		return Mathematic.powBy2(speed)*fuelConsumptionIndexA + speed*fuelConsumptionIndexB;
 	}
-	
+
 	public double getFuelConsumptionPerDistance(int speed,int distance) {
 		return (distance/speed)*getFuelConsumptionPerHour(speed);
 	}	
-	
+
 	public double getFuelConsumptionIndexA() {
 		return fuelConsumptionIndexA;
 	}
@@ -319,13 +324,14 @@ public class Ship implements Entity{
 		log.debug("ship :"+name+" strat loading operations");
 		speed = navigationSpeed;
 		navigationRoute = new NavigationRoute(speed, route);
+		profitabilityRoute = new ProfitabilityRoute(navigationRoute,this);
 		status = SHIP_STATUS_LOADING;
-		
+
 		waitingTimeInHours = 24;	//TODO calculate in function of the loaded TEU amount to time to load and unload, consider 6,086 TEU - was 2.5 to 3 days
 		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));	
-		
+
 	}
-	
+
 	/**
 	 * spend time loading the ship
 	 * 
@@ -339,26 +345,32 @@ public class Ship implements Entity{
 
 			//cost for cast off
 			finance.addEntry(FinancialEntryType.SHIP_CAST_OFF_COST_TUG, -dockedPort.getCastOffCost());
+			profitabilityRoute.addTugCharges(dockedPort.getCastOffCost());
 			company.removeBudget(dockedPort.getCastOffCost());			
 			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));			
 
 			dockedPort = null;
-			
+
 			//ship start to navigate
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
 		}
 	}
-	
+
 	/**
 	 * navigate to the destination
 	 * 
 	 * @param hourPassed
 	 */	
 	private void navigation(double hourPassed) {
-		
-		//TODO implement the damage of the ship
-		fuel -= getFuelConsumptionPerHour(navigationRoute.getSpeed())*hourPassed;
+
 		position = navigationRoute.navigate(hourPassed);
+		
+		double fuelConsumed = getFuelConsumptionPerHour(navigationRoute.getSpeed())*hourPassed;
+		fuel -= fuelConsumed;
+		profitabilityRoute.addFuelConsumed(fuelConsumed);
+
+		//TODO implement the damage of the ship
+		
 		
 		if(navigationRoute.isArrivedAtDestination()) {
 
@@ -368,12 +380,12 @@ public class Ship implements Entity{
 			status = SHIP_STATUS_DOCKING;
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));					
 		}
-		
+
 		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_FUEL_CHANGE_EVENT,this));	
-			
+
 	}
-	
-	
+
+
 	/**
 	 * spend time loading the ship
 	 * 
@@ -384,45 +396,48 @@ public class Ship implements Entity{
 		if(waitingTimeInHours<0) {
 			log.debug("ship :"+name+" completed docking");
 			status = SHIP_STATUS_DOCKED;
-			closeContracts();
-			
+	
 			//cost for cast off to dock
 			finance.addEntry(FinancialEntryType.SHIP_DOCK_COST_TUG, -dockedPort.getCastOffCost());
 			company.removeBudget(dockedPort.getCastOffCost());			
-			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));				
+			profitabilityRoute.addTugCharges(dockedPort.getCastOffCost());
 			
+			//close contracts
+			closeContracts();
+			
+			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));				
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
 		}
 	}	
-	
+
 	@Override	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 
 		double hourPassed = minutsPassed/60.0;
-		
+
 		if(SHIP_STATUS_DOCKED.equals(status)) {
-			
+
 		}else if(SHIP_STATUS_LOADING.equals(status)) {
-		
+
 			loadShip(hourPassed);
-			
+
 		}else if(SHIP_STATUS_NAVIGATION.equals(status)) {
-			
+
 			navigation(hourPassed);
-			
+
 		}else if(SHIP_STATUS_DOCKING.equals(status)) {
 
 			docking(hourPassed);
-			
+
 		} 
-		
-		
-			
+
+
+
 	}
 
 
 
-	
 
-				
+
+
 }

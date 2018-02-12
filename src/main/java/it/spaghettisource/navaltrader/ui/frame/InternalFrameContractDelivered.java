@@ -1,6 +1,6 @@
 package it.spaghettisource.navaltrader.ui.frame;
 
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.event.InternalFrameEvent;
 
 import org.apache.commons.logging.Log;
@@ -13,15 +13,15 @@ import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 
-public class InternalFrameContractCompleted extends InternalFrameAbstract {
+public class InternalFrameContractDelivered extends InternalFrameAbstract {
 
-	static Log log = LogFactory.getLog(InternalFrameContractCompleted.class.getName());
+	static Log log = LogFactory.getLog(InternalFrameContractDelivered.class.getName());
 	
 	private LoopManager loopManager;
 	
 	
-	public InternalFrameContractCompleted(MainDesktopPane parentDesktopPane, GameManager gameManager) {
-		super(parentDesktopPane, gameManager, "contract completed", true, true, false, false);
+	public InternalFrameContractDelivered(MainDesktopPane parentDesktopPane, GameManager gameManager) {
+		super(parentDesktopPane, gameManager, "contract delivered", true, true, false, false);
 		
 		loopManager = gameManager.getLoopManager();
 		loopManager.setPauseByGame(true);
@@ -30,11 +30,18 @@ public class InternalFrameContractCompleted extends InternalFrameAbstract {
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/container.png"));		
 		parentDesktopPane.centerInTheDesktopPane(this);
 			
-		getContentPane().add(new JLabel("aperto"));
+		getContentPane().add(createContentPanel());
 		
 	}
 
 	
+	private JPanel createContentPanel() {
+		JPanel panel = new JPanel();
+		
+		return panel;
+	}
+
+
 	public void internalFrameClosed(InternalFrameEvent event) {
 		super.internalFrameClosed(event);
 		loopManager.setPauseByGame(false);

@@ -11,7 +11,7 @@ import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventListener;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.frame.InternalFrameContractCompleted;
+import it.spaghettisource.navaltrader.ui.frame.InternalFrameContractDelivered;
 
 public class MainDesktopPane extends JDesktopPane implements EventListener  {
 
@@ -55,7 +55,8 @@ public class MainDesktopPane extends JDesktopPane implements EventListener  {
 	public void eventReceived(Event event) {
 		EventType eventType = event.getEventType(); 
 		if(eventType.equals(EventType.CONTRACT_COMPLETED_EVENT)){
-			InternalFrameContractCompleted frame = new InternalFrameContractCompleted(this, gameManager);
+			event.getSource();	//TODO add the source to the frame in the way to show the data
+			InternalFrameContractDelivered frame = new InternalFrameContractDelivered(this, gameManager);
 			frame.setVisible(true);
 			add(frame);
 		}
