@@ -6,6 +6,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.event.InternalFrameEvent;
@@ -13,6 +15,11 @@ import javax.swing.event.InternalFrameEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.gui.TableFormat;
+import ca.odell.glazedlists.swing.EventTableModel;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.loop.LoopManager;
 import it.spaghettisource.navaltrader.game.model.ProfitabilityRoute;
@@ -24,6 +31,7 @@ import it.spaghettisource.navaltrader.ui.component.TextFieldDouble;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.model.TransportContractTableRow;
 
 public class InternalFrameContractDelivered extends InternalFrameAbstract {
 
@@ -32,6 +40,7 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 	private LoopManager loopManager;
 	private ProfitabilityRoute profitabilityRoute;
 	
+	private EventList<TransportContractTableRow> listDeliveredContract;	
 	
 	public InternalFrameContractDelivered(MainDesktopPane parentDesktopPane, GameManager gameManager, ProfitabilityRoute profitabilityRoute) {
 		super(parentDesktopPane, gameManager, "contract delivered", true, true, false, false);
@@ -40,15 +49,25 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 		loopManager = gameManager.getLoopManager();
 		loopManager.setPauseByGame(true);
 		
-		setSize(600,300);
+		setSize(600,450);
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/container.png"));		
 		parentDesktopPane.centerInTheDesktopPane(this);
 			
+		initValuesFromModel();
+		
 		getContentPane().add(createContentPanel());
 		
 	}
 
 	
+	private void initValuesFromModel() {
+
+		listDeliveredContract = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
+		listDeliveredContract.addAll(TransportContractTableRow.mapData(profitabilityRoute.getContractClosed()));
+		
+	}
+
+
 	private JPanel createContentPanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 		
@@ -85,8 +104,23 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 		
 		SpringLayoutUtilities.makeCompactGrid(economicalResults,5, 4, 5, 5, 5, 5);	
 
+		
+		////////////////////	
+		//delivered contracts
+		JTable acceptedContractTable;	
+		String[] propertyNames = new String[] { "good", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] columnLabels = new String[]  { "good", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		TableFormat<TransportContractTableRow> deliveredContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
+		acceptedContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listDeliveredContract, deliveredContractTableTf));	
+		acceptedContractTable.setAutoCreateRowSorter(true);		
+		acceptedContractTable.setRowSelectionAllowed(false);
+		
+		JScrollPane acceptedContract = new JScrollPane(acceptedContractTable);
+		acceptedContract.setBorder(BorderFactory.createTitledBorder("contract delivered"));	
+		
 		//add all together
 		panel.add(economicalResults, BorderLayout.NORTH);
+		panel.add(acceptedContract, BorderLayout.CENTER);		
 		
 		return panel;
 	}
