@@ -30,7 +30,6 @@ public class InternalFrameMapNavigation extends InternalFrameAbstract {
 	public void internalFrameClosed(InternalFrameEvent arg0) {
 		super.internalFrameClosed(arg0);
 		panel.stop();
-		
 	}	
 
 	public void eventReceived(Event event) {

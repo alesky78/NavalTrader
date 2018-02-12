@@ -22,6 +22,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -34,6 +35,7 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.gui.TableFormat;
 import ca.odell.glazedlists.swing.EventTableModel;
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.game.loop.LoopManager;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.game.model.Ship;
@@ -65,6 +67,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private final static String ACTION_ACCEPT_CONTRACT = "accept contract";		
 	private final static String ACTION_SAIL = "sail";	
 
+	private LoopManager loopManager;
 	private String shipName;
 	private String portName;	
 	private Ship ship; 
@@ -107,12 +110,14 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private JSlider sliderNavigationSpeed;		
 
 
-	//TODO pause the time when we create this frame and reactivate when close... other way implement the notification of all the events
 	public InternalFramePort(MainDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
 		super(parentDesktopPane,gameManager, portName);
 		try {		
 			this.shipName = shipName;
 			this.portName = portName;
+			loopManager = gameManager.getLoopManager();
+			loopManager.setPauseByGame(true);
+			
 			setSize(700,500);
 		
 			setFrameIcon(ImageIconFactory.getForFrame("/icon/ship list.png"));
@@ -133,6 +138,11 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 	}
 
+	
+	public void internalFrameClosed(InternalFrameEvent arg0) {
+		super.internalFrameClosed(arg0);
+		loopManager.setPauseByGame(false);
+	}	
 
 
 	private void initValuesFromModel() {
