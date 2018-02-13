@@ -109,12 +109,16 @@ public class InboundEventQueue {
 		}
 
 		/**
-		 * Fires all the events directly by this thread wihtout create a new one
+		 * Fires all the events directly by this thread without create a new one
 		 * @param loggingEvent the event to fire
 		 */
 		private void processEvents() {
+			event = null;
 			while(!isEmpty()) {
-				eventsToProcess.add(poll());
+				event = poll();
+				if(event!=null){
+					eventsToProcess.add(poll());					
+				}
 			}
 
 			if(!eventsToProcess.isEmpty()){
