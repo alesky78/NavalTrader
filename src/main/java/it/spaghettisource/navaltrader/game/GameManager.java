@@ -1,6 +1,6 @@
 package it.spaghettisource.navaltrader.game;
 
-import it.spaghettisource.navaltrader.game.factory.WorldFactory;
+import it.spaghettisource.navaltrader.game.factory.GameFactory;
 import it.spaghettisource.navaltrader.game.loop.LoopManager;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
@@ -20,7 +20,7 @@ public class GameManager {
 		
 		GameTime gameTime = new GameTime();
 		
-		WorldFactory factory = new WorldFactory();
+		GameFactory factory = new GameFactory();
 		World world = 	factory.createWorld();
 		
 		

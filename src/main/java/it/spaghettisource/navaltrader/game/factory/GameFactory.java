@@ -26,9 +26,9 @@ import it.spaghettisource.navaltrader.geometry.Mathematic;
 import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 
-public class WorldFactory {
+public class GameFactory {
 
-	private static Log log = LogFactory.getLog(WorldFactory.class.getName());
+	private static Log log = LogFactory.getLog(GameFactory.class.getName());
 
 
 	public World createWorld() {
@@ -115,7 +115,7 @@ public class WorldFactory {
 		File tempFile = File.createTempFile(tempFileName, null);
 		tempFile.deleteOnExit();
 		FileOutputStream out = new FileOutputStream(tempFile);
-		IOUtils.copy(WorldFactory.class.getResourceAsStream(sourceFile), out);
+		IOUtils.copy(GameFactory.class.getResourceAsStream(sourceFile), out);
 		out.close();
 		return tempFile;
 	}

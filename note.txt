@@ -47,6 +47,12 @@ ship fuel consumption
 https://people.hofstra.edu/geotrans/eng/ch8en/conc8en/fuel_consumption_containerships.html
 https://mermaidchaos.wordpress.com/2014/12/05/slow-steaming-in-modern-shipping/
 
+###################
+freight container cost
+https://www.freightos.com/
+http://worldfreightrates.com/freight
+
+
 #####################
 point between vector
 https://math.stackexchange.com/questions/2045174/how-to-find-a-point-between-two-points-with-given-distance
