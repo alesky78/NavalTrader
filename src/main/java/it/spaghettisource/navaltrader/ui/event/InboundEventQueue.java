@@ -56,7 +56,7 @@ public class InboundEventQueue {
 	private Event poll() {
 		return linkedQueue.poll();
 	}
-	
+
 
 	public boolean isEmpty() {
 		return linkedQueue.isEmpty();
@@ -123,8 +123,10 @@ public class InboundEventQueue {
 
 			if(!eventsToProcess.isEmpty()){
 				for (Event event : eventsToProcess) {
-					if(EventPublisher.getInstance().hasListner(event)) {
-						EventPublisher.getInstance().doFireEventForEachListner(event);						
+					if(event!=null){
+						if(EventPublisher.getInstance().hasListner(event)) {
+							EventPublisher.getInstance().doFireEventForEachListner(event);						
+						}
 					}
 
 				}
