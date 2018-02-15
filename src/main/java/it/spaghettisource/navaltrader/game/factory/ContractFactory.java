@@ -14,7 +14,7 @@ public class ContractFactory {
 	
 	public static List<TransportContract> generateContracts(World world, Port targetPort){
 		
-		int numberOfContracts = 10;	//TODO how to calcualte contract amount
+		int numberOfContracts = ThreadLocalRandom.current().nextInt(0, 10 ); //TODO how to calcualte contract amount
 		
 		List<Port> connectePorts = world.getConnectedPorts(targetPort);
 		int connected = connectePorts.size();
@@ -28,7 +28,7 @@ public class ContractFactory {
 		Product product;
 		
 		for (int i = 0; i< numberOfContracts; i++) {
-			teu = ThreadLocalRandom.current().nextInt(50, 200+1 );	//TODO how to calculate amount	
+			teu = ThreadLocalRandom.current().nextInt(50, 200+1 );	//TODO how to calculate amount should be variable of the ships owned
 			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));	//get random port
 			product =  generateProduct(targetPort, port);
 			
