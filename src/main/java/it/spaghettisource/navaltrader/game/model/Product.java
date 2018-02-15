@@ -6,13 +6,15 @@ public class Product {
 	private String name;
 	private double minprice;
 	private double maxprice;
+	private int dwt;
 	
-	public Product(int id, String name, double minprice, double maxprice) {
+	public Product(int id, String name, double minprice, double maxprice, int dwt) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.minprice = minprice;
 		this.maxprice = maxprice;
+		this.dwt = dwt;
 	}
 
 	public int getId() {
@@ -31,6 +33,10 @@ public class Product {
 		return maxprice;
 	}	
 	
+	public int getDwt() {
+		return dwt;
+	}
+
 	public boolean equals(Object obj){
 		if(obj==null){
 			return false;
