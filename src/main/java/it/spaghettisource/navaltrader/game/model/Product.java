@@ -30,6 +30,16 @@ public class Product {
 	public double getMaxprice() {
 		return maxprice;
 	}	
+	
+	public boolean equals(Object obj){
+		if(obj==null){
+			return false;
+		}else if(!(obj instanceof Product)){
+			return false;
+		}else{
+			return id == ((Product)obj).getId();
+		}	
+	}		
 
 	
 }

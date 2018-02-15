@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
 import org.apache.commons.configuration2.ex.ConfigurationException;
@@ -39,6 +38,7 @@ public class GameFactory {
 	private static Log log = LogFactory.getLog(GameFactory.class.getName());
 
 
+	//TODO rewrite completely is a uniqe bunch of code
 	public World createWorld() {
 
 		try {
@@ -126,12 +126,16 @@ public class GameFactory {
 			int[] supply;
 			
 			Market market;
+			Port port;			
 			for (int i = 0; i <config.getInt("ports"); i++) {
 				demandString = config.getStringArray("market"+i+".demand");
 				supplyString = config.getStringArray("market"+i+".supply");
 				demand = Arrays.asList(demandString).stream().mapToInt(Integer::parseInt).toArray();
 				supply= Arrays.asList(supplyString).stream().mapToInt(Integer::parseInt).toArray();				
 				market = new Market(products, demand, supply);
+				port = world.getPortByName(  config.getString("market"+i+".port") );
+				port.setMarket(market);		//TODO implement this behavior
+				
 			}
 			
 			

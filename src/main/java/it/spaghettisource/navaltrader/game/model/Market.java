@@ -41,9 +41,27 @@ public class Market {
 		return demandProducts;
 	}
 	
+	public boolean demandThis(Product product) {
+		for (int i = 0; i < demandProducts.length; i++) {
+			if(demandProducts[i].equals(product)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Product[] productSupply() {
 		return supplyProducts;		
 	}
+	
+	public boolean supplyThis(Product product) {
+		for (int i = 0; i < supplyProducts.length; i++) {
+			if(supplyProducts[i].equals(product)) {
+				return true;
+			}
+		}
+		return false;
+	}	
 	
 	/**
 	 * P = a/((Q+1)/b) - c
