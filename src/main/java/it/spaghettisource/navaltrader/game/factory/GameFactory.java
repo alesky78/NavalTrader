@@ -5,12 +5,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.convert.DefaultListDelimiterHandler;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,7 +25,9 @@ import it.spaghettisource.navaltrade.pathfinding.AStar;
 import it.spaghettisource.navaltrade.pathfinding.Grid;
 import it.spaghettisource.navaltrade.pathfinding.GridUtils;
 import it.spaghettisource.navaltrade.pathfinding.PathFinding;
+import it.spaghettisource.navaltrader.game.model.Market;
 import it.spaghettisource.navaltrader.game.model.Port;
+import it.spaghettisource.navaltrader.game.model.Product;
 import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.geometry.Mathematic;
@@ -35,19 +43,18 @@ public class GameFactory {
 
 		try {
 
-			Configurations configs = new Configurations();
 			Configuration config;
 			
 			//create the world
 			File tempFile = generateTempFile("world", "/scenario/world.properties");
-			config = configs.properties(tempFile);			
+			config = createConfig(tempFile);			
 			World world = new World();
 			world.setGridScale(config.getInt("gridscale"));
 			
 
 			//create the ports
 			tempFile = generateTempFile("port", "/scenario/port.properties");
-			config = configs.properties(tempFile);			
+			config = createConfig(tempFile);			
 			List<Port> ports = new ArrayList<Port>();
 			Port actual;
 
@@ -96,6 +103,38 @@ public class GameFactory {
 				 port.setCooridnate(Mathematic.scale(port.getCooridnate(), world.getGridScale())); 
 			}
 			
+			
+			//load all the product
+			tempFile = generateTempFile("market", "/scenario/market.properties");
+			config = createConfig(tempFile);			
+			List<Product> products = new ArrayList<Product>();
+			Product product;			
+			for (int i = 0; i <config.getInt("ports"); i++) {
+				
+				product = new Product( config.getInt("product"+i+".id"),  
+										config.getString("product"+i+".name"), 
+										config.getDouble("product"+i+".minprice"), 
+										config.getDouble("product"+i+".maxprice")); 
+				products.add(product);				
+			}			
+			
+			
+			//create the market for each port
+			String[] demandString;
+			int[] demand;			
+			String[] supplyString;
+			int[] supply;
+			
+			Market market;
+			for (int i = 0; i <config.getInt("ports"); i++) {
+				demandString = config.getStringArray("market"+i+".demand");
+				supplyString = config.getStringArray("market"+i+".supply");
+				demand = Arrays.asList(demandString).stream().mapToInt(Integer::parseInt).toArray();
+				supply= Arrays.asList(supplyString).stream().mapToInt(Integer::parseInt).toArray();				
+				market = new Market(products, demand, supply);
+			}
+			
+			
 			//generate the contracts
 			for (Port port : ports) {
 				port.generateContracts();
@@ -108,6 +147,19 @@ public class GameFactory {
 			return null;
 		}
 
+	}
+
+
+	private Configuration createConfig(File tempFile) throws ConfigurationException {
+		FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+			    new FileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+			    	.configure(new Parameters().properties()
+			    				.setFile(tempFile)
+			    				.setThrowExceptionOnMissing(true)
+			    				.setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
+			    				.setIncludesAllowed(false));
+			PropertiesConfiguration config = builder.getConfiguration();
+		return config;
 	}
 
 

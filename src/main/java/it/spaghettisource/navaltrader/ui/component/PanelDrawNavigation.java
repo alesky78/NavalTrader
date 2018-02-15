@@ -1,11 +1,10 @@
 package it.spaghettisource.navaltrader.ui.component;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -107,7 +106,14 @@ public class PanelDrawNavigation extends JPanel {
 		Point point;
 		for (Port port : world.getPorts()) {
 			point = port.getCooridnate();
-			graphicsBuffer.drawImage(portImmage, point.getX()-(spirteSize/2), point.getY()-(spirteSize/2), null);	
+//			graphicsBuffer.drawImage(portImmage, point.getX()-(spirteSize/2), point.getY()-(spirteSize/2), null);	
+			
+			//draw the ports
+			graphicsBuffer.setStroke(new BasicStroke(10));
+			graphicsBuffer.setColor(Color.YELLOW);	
+			graphicsBuffer.fillOval(point.getX(), point.getY(), 30, 30);			
+			graphicsBuffer.setColor(Color.BLACK);				
+			graphicsBuffer.drawOval(point.getX(), point.getY(), 30, 30);				
 		}
 		
 	}
@@ -117,14 +123,14 @@ public class PanelDrawNavigation extends JPanel {
 		Point point;
 		for (Ship ship : company.getShips()) {
 			point = ship.getPosition();
-			graphicsBuffer.drawImage(shipImmage, point.getX()-(spirteSize/2), point.getY()-(spirteSize/2), null);	
+//			graphicsBuffer.drawImage(shipImmage, point.getX()-(spirteSize/2), point.getY()-(spirteSize/2), null);	
 
 			//draw the ships
-			//graphicsBuffer.setStroke(new BasicStroke(10));
-			//graphicsBuffer.setColor(Color.RED);	
-			//graphicsBuffer.fillOval(point.getX(), point.getY(), 30, 30);			
-			//graphicsBuffer.setColor(Color.BLACK);				
-			//graphicsBuffer.drawOval(point.getX(), point.getY(), 30, 30);			
+			graphicsBuffer.setStroke(new BasicStroke(10));
+			graphicsBuffer.setColor(Color.RED);	
+			graphicsBuffer.fillOval(point.getX(), point.getY(), 30, 30);			
+			graphicsBuffer.setColor(Color.BLACK);				
+			graphicsBuffer.drawOval(point.getX(), point.getY(), 30, 30);			
 		}
 	}
 
