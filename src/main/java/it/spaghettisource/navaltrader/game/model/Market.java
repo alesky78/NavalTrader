@@ -6,6 +6,7 @@ import java.util.List;
 public class Market {
 	
 	private static int INITIAL_RESOURCES_AMOUNT = 1000;
+	private static int RESOURCES_CONSUMPTION_RATE = 20;	
 	
 	private Product[] products;
 	private Product[] demandProducts;	
@@ -84,5 +85,12 @@ public class Market {
 		actualQuantityStored[product.getId()] += amount;
 	}
 
+	
+	public void consumeProducts(){
+		for (int i = 0; i < demandProducts.length; i++) {
+			actualQuantityStored[demandProducts[i].getId()] = actualQuantityStored[demandProducts[i].getId()] - RESOURCES_CONSUMPTION_RATE; 
+			
+		}
+	}
 	
 }

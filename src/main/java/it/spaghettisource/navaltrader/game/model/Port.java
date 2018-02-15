@@ -133,6 +133,7 @@ public class Port  implements Entity{
 	
 		if(isNewDay){
 			dayToNextContractRegeneration = dayToNextContractRegeneration-1;
+			market.consumeProducts();
 		}
 
 		if(dayToNextContractRegeneration == 0){
