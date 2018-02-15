@@ -1,18 +1,17 @@
 package it.spaghettisource.navaltrader.game.factory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import it.spaghettisource.navaltrader.game.model.Port;
+import it.spaghettisource.navaltrader.game.model.Product;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
 import it.spaghettisource.navaltrader.game.model.World;
 
 public class ContractFactory {
 	
-	
-	
-	//TODO implement the logic to calculate the new contracts
 	public static List<TransportContract> generateContracts(World world, Port targetPort){
 		
 		int numberOfContracts = 10;
@@ -24,19 +23,42 @@ public class ContractFactory {
 
 		int teu;
 		int dwt;
-		int price;
+		double price;
 		Port port;
+		Product product;
 		
 		for (int i = 0; i< numberOfContracts; i++) {
-			teu = ThreadLocalRandom.current().nextInt(50, 999+1 );
-			dwt = ThreadLocalRandom.current().nextInt(2, 10+1 );
-			price = ThreadLocalRandom.current().nextInt(1000, 12000+1 );			
+			teu = ThreadLocalRandom.current().nextInt(50, 200+1 );
+			dwt = ThreadLocalRandom.current().nextInt(2, 10+1 );			
 			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));	//get random port
+			product =  generateProduct(targetPort, port);
 			
-			newContracts.add(new TransportContract("wood", teu, dwt, price,port));	
+			if(product!=null){
+				price = port.getMarket().getPriceForBuy(product);	//TODO must be influenced by distance
+				newContracts.add(new TransportContract(product, teu, dwt, price,port));				
+			}
+	
 		}
 		
 		return newContracts;
 	}
+	
+	
+	public static Product generateProduct(Port supplyPort, Port demandPort) {
+		Product[] supply = supplyPort.getMarket().productSupply();
+		Product[] demand = demandPort.getMarket().productDemand();
+		
+	    Object[] intersection =  Arrays.stream(supply)
+	                 					.distinct()
+	                 					.filter(x -> Arrays.stream(demand).anyMatch(y -> y.equals(x)))
+	                 					.toArray();
+	    
+	    if(intersection.length == 0){
+	    	return null;
+	    }
+	    return (Product) intersection[ThreadLocalRandom.current().nextInt(0, intersection.length)];
+	    
+	}
+		
 
 }

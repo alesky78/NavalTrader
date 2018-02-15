@@ -109,7 +109,7 @@ public class GameFactory {
 			config = createConfig(tempFile);			
 			List<Product> products = new ArrayList<Product>();
 			Product product;			
-			for (int i = 0; i <config.getInt("ports"); i++) {
+			for (int i = 0; i <config.getInt("products"); i++) {
 				
 				product = new Product( config.getInt("product"+i+".id"),  
 										config.getString("product"+i+".name"), 
@@ -126,18 +126,20 @@ public class GameFactory {
 			int[] supply;
 			
 			Market market;
-			Port port;			
+			Port portOwnerOfMarket;			
 			for (int i = 0; i <config.getInt("ports"); i++) {
+				portOwnerOfMarket = world.getPortByName(  config.getString("market"+i+".port") );
+				log.debug("create market for:"+portOwnerOfMarket.getName());
+				
 				demandString = config.getStringArray("market"+i+".demand");
 				supplyString = config.getStringArray("market"+i+".supply");
 				demand = Arrays.asList(demandString).stream().mapToInt(Integer::parseInt).toArray();
 				supply= Arrays.asList(supplyString).stream().mapToInt(Integer::parseInt).toArray();				
 				market = new Market(products, demand, supply);
-				port = world.getPortByName(  config.getString("market"+i+".port") );
-				port.setMarket(market);		//TODO implement this behavior
+
+				portOwnerOfMarket.setMarket(market);
 				
 			}
-			
 			
 			//generate the contracts
 			for (Port port : ports) {

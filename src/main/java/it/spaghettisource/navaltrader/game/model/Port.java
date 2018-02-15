@@ -23,6 +23,7 @@ public class Port  implements Entity{
 	private int dayToNextContractRegeneration;
 	private List<TransportContract> contracts;
 	private List<Route> routes;
+	private Market market;
 
 	
 	
@@ -78,6 +79,14 @@ public class Port  implements Entity{
 		routes.add(route);
 	}
 	
+	public Market getMarket() {
+		return market;
+	}
+
+	public void setMarket(Market market) {
+		this.market = market;
+	}
+
 	public Route getRouteTo(Port destination) {
 		for (Route route : routes) {
 			if(route.isDestination(destination)) {

@@ -5,7 +5,7 @@ import java.util.UUID;
 public class TransportContract {
 
 	private String id;
-	private String good;
+	private Product product;
 	private int teu;
 	private int dwtPerTeu;		
 	private double pricePerTeu;
@@ -17,10 +17,10 @@ public class TransportContract {
 	private int clauseDay;	
 
 
-	public TransportContract(String good, int teu, int dwtPerTeu, double pricePerTeu,Port destination) {
+	public TransportContract(Product product, int teu, int dwtPerTeu, double pricePerTeu,Port destination) {
 		super();
 		this.id = UUID.randomUUID().toString();		
-		this.good = good;
+		this.product = product;
 		this.teu = teu;
 		this.dwtPerTeu = dwtPerTeu;
 		this.pricePerTeu = pricePerTeu;
@@ -36,8 +36,8 @@ public class TransportContract {
 		return destination;
 	}		
 	
-	public String getGood() {
-		return good;
+	public Product getProduct() {
+		return product;
 	}
 
 	public int getTeu() {

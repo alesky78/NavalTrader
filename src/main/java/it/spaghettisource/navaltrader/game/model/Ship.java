@@ -124,6 +124,8 @@ public class Ship implements Entity{
 				dwt -= transportContract.getTeu()*transportContract.getDwtPerTeu();			
 
 				transportContracts.remove(transportContract);
+				transportContract.getDestinationPort().getMarket().addQuantityToMarket(transportContract.getProduct(), teu);
+				
 				totalBudget += transportContract.getTotalPrice();
 				finance.addEntry(FinancialEntryType.SHIP_INCOME, transportContract.getTotalPrice());
 			}

@@ -108,8 +108,8 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 		////////////////////	
 		//delivered contracts
 		JTable acceptedContractTable;	
-		String[] propertyNames = new String[] { "good", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] columnLabels = new String[]  { "good", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] propertyNames = new String[] { "productName", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] columnLabels = new String[]  { "productName", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> deliveredContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		acceptedContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listDeliveredContract, deliveredContractTableTf));	
 		acceptedContractTable.setAutoCreateRowSorter(true);		

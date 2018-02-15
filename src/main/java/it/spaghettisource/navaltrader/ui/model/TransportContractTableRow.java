@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.spaghettisource.navaltrader.game.model.Port;
-import it.spaghettisource.navaltrader.game.model.Route;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
 
 public class TransportContractTableRow {
 
 	private String id;
-	private String good;
+	private String productName;
 	private int totalTeu;
 	private int totalDwt;		
 	private double pricePerTeu;
@@ -20,10 +19,10 @@ public class TransportContractTableRow {
 	private int daysToDestination;	
 
 	
-	public TransportContractTableRow(String id, String good, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, Port destination) {
+	public TransportContractTableRow(String id, String productName, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, Port destination) {
 		super();
 		this.id = id;
-		this.good = good;
+		this.productName = productName;
 		this.totalTeu = totalTeu;
 		this.totalDwt = totalDwt;
 		this.pricePerTeu = pricePerTeu;
@@ -36,10 +35,10 @@ public class TransportContractTableRow {
 		return id;
 	}
 	
-	public String getGood() {
-		return good;
+	public String getProductName() {
+		return productName;
 	}
-	
+
 	public int getTotalTeu() {
 		return totalTeu;
 	}
@@ -101,7 +100,7 @@ public class TransportContractTableRow {
 	}
 	
 	public static TransportContractTableRow mapData(TransportContract contract){
-		return new TransportContractTableRow(contract.getId(), contract.getGood(), contract.getTeu(), 
+		return new TransportContractTableRow(contract.getId(), contract.getProduct().getName(), contract.getTeu(), 
 											 contract.getTeu()*contract.getDwtPerTeu(), 
 											 contract.getPricePerTeu(), 
 											 contract.getTotalPrice(), 
