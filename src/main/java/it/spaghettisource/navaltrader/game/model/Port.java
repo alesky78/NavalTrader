@@ -67,10 +67,6 @@ public class Port  implements Entity{
 		return castOffCost;
 	}
 
-	public int getDayContractRegeneration() {
-		return dayContractRegeneration;
-	}
-
 	public List<TransportContract> getContracts() {
 		return contracts;
 	}
@@ -131,6 +127,7 @@ public class Port  implements Entity{
 	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 	
+		//TODO move this loop in the market... moreover the obtain contracts and the contracts variables must be in the market
 		if(isNewDay){
 			dayToNextContractRegeneration = dayToNextContractRegeneration-1;
 			market.consumeProducts();
