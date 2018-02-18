@@ -163,8 +163,7 @@ public class GameFactory {
 			    	.configure(new Parameters().properties()
 			    				.setFile(tempFile)
 			    				.setThrowExceptionOnMissing(true)
-			    				.setListDelimiterHandler(new DefaultListDelimiterHandler(';'))
-			    				.setIncludesAllowed(false));
+			    				.setListDelimiterHandler(new DefaultListDelimiterHandler(';')));
 			PropertiesConfiguration config = builder.getConfiguration();
 		return config;
 	}
