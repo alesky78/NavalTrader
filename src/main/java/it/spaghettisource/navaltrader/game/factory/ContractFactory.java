@@ -35,7 +35,7 @@ public class ContractFactory {
 			
 			if(product!=null){
 				dwt = product.getDwt() * ThreadLocalRandom.current().nextInt(50, 150)/100; //dwt between 50% to 150%
-				price = port.getMarket().getPriceForBuy(product) * ThreadLocalRandom.current().nextInt(50, 150)/100.0; //price between 50% to 150%
+				price = port.getMarket().getPriceForBuy(product) * ThreadLocalRandom.current().nextInt(50, 150)/100.0; //TODO price must consider distance between 50% to 150%
 				newContracts.add(new TransportContract(product, teu, dwt, price,port));				
 			}
 	
