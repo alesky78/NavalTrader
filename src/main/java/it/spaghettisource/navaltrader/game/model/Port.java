@@ -19,15 +19,12 @@ public class Port  implements Entity{
 	private double castOffCost;	
 	private double fuelPrice;
 	private double repairPrice;	
-	private int dayContractRegeneration;	
-	private int dayToNextContractRegeneration;
-	private List<TransportContract> contracts;
 	private List<Route> routes;
 	private Market market;
 
 	
 	
-	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int classAccepted,int dayContractRegeneration) {
+	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int classAccepted) {
 		super();
 		this.world =  world;
 		this.cooridnate = cooridnate;
@@ -35,9 +32,6 @@ public class Port  implements Entity{
 		this.dailyFeeCost = dailyFeeCost;
 		this.castOffCost = castOffCost;
 		this.classAccepted = classAccepted;
-		this.dayContractRegeneration = dayContractRegeneration;
-		this.dayToNextContractRegeneration = dayContractRegeneration;
-		this.contracts = new ArrayList<TransportContract>(0);
 		this.routes = new ArrayList<Route>();
 		this.fuelPrice = 700.0;
 		this.repairPrice = 25000.0;		
@@ -66,10 +60,6 @@ public class Port  implements Entity{
 	public double getCastOffCost() {
 		return castOffCost;
 	}
-
-	public List<TransportContract> getContracts() {
-		return contracts;
-	}
 	
 	public void addRoute(Route route) {
 		routes.add(route);
@@ -83,6 +73,10 @@ public class Port  implements Entity{
 		this.market = market;
 	}
 
+	public World getWorld() {
+		return world;
+	}
+
 	public Route getRouteTo(Port destination) {
 		for (Route route : routes) {
 			if(route.isDestination(destination)) {
@@ -93,19 +87,6 @@ public class Port  implements Entity{
 		return null;
 	}
 	
-	public TransportContract removeContractById(String contractId) {
-		TransportContract selected = null;
-		for (TransportContract transportContract : contracts) {
-			if(transportContract.getId().equals(contractId)) {
-				selected = transportContract;
-			}
-		}
-		
-		if(selected!=null) {
-			contracts.remove(selected);			
-		}
-		return selected;
-	}
 		
 	//TODO implement logic to calculate fuel price
 	public double getFuelPrice() {
@@ -118,29 +99,13 @@ public class Port  implements Entity{
 	}
 
 
-	public void generateContracts(){
-		contracts.clear();
-		contracts.addAll(ContractFactory.generateContracts(world, this)) ;
-	}
-	
 	
 	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 	
-		//TODO move this loop in the market... moreover the obtain contracts and the contracts variables must be in the market
-		if(isNewDay){
-			dayToNextContractRegeneration = dayToNextContractRegeneration-1;
-			market.consumeProducts();
-		}
-
-		if(dayToNextContractRegeneration == 0){
-			generateContracts();
-			dayToNextContractRegeneration = dayContractRegeneration;
-		}
-
+		market.update(minutsPassed, isNewDay, isNewWeek, isNewMonth);
 		
 	}
-	
 	
 	public boolean equals(Object obj){
 		if(obj==null){

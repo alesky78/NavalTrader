@@ -66,8 +66,7 @@ public class GameFactory {
 								 config.getString("port"+i+".name"), 
 								 config.getDouble("port"+i+".dailyFeeCost"),
 								 config.getDouble("port"+i+".castOffCost"),
-								 config.getInt("port"+i+".classAccepted"), 
-								 config.getInt("port"+i+".dayContractRegeneration")); 
+								 config.getInt("port"+i+".classAccepted")); 
 				ports.add(actual);				
 			}
 			
@@ -126,6 +125,7 @@ public class GameFactory {
 			String[] supplyString;
 			int[] supply;
 			
+			int dayContractRegeneration = 0;
 			Market market;
 			Port portOwnerOfMarket;			
 			for (int i = 0; i <config.getInt("ports"); i++) {
@@ -134,9 +134,10 @@ public class GameFactory {
 				
 				demandString = config.getStringArray("market"+i+".demand");
 				supplyString = config.getStringArray("market"+i+".supply");
+				dayContractRegeneration  = config.getInt("market"+i+".dayContractRegeneration"); 
 				demand = Arrays.asList(demandString).stream().mapToInt(Integer::parseInt).toArray();
 				supply= Arrays.asList(supplyString).stream().mapToInt(Integer::parseInt).toArray();				
-				market = new Market(products, demand, supply);
+				market = new Market(portOwnerOfMarket,products, demand, supply,dayContractRegeneration);
 
 				portOwnerOfMarket.setMarket(market);
 				
@@ -144,7 +145,7 @@ public class GameFactory {
 			
 			//generate the contracts
 			for (Port port : ports) {
-				port.generateContracts();
+				port.getMarket().generateContracts();
 			}
 			
 			return world;

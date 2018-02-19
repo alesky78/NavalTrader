@@ -1,9 +1,13 @@
 package it.spaghettisource.navaltrader.game.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Market {
+import it.spaghettisource.navaltrader.game.factory.ContractFactory;
+import it.spaghettisource.navaltrader.game.loop.Entity;
+
+public class Market  implements Entity{
 	
 	private static int INITIAL_RESOURCES_AMOUNT = 1000;
 	private static int RESOURCES_CONSUMPTION_RATE = 20;	
@@ -14,9 +18,19 @@ public class Market {
 
 	private int[] actualQuantityStored;	
 	
+	private int dayContractRegeneration;	
+	private int dayToNextContractRegeneration;
 	
-	public Market(List<Product> products, int[] demandProductsId, int[] supplyProductsId) {
+	private List<TransportContract> contracts;
+	private Port port;
+	
+	public Market(Port port,List<Product> products, int[] demandProductsId, int[] supplyProductsId,int dayContractRegeneration)  {
 		super();
+		
+		this.port = port;
+		this.dayContractRegeneration = dayContractRegeneration;
+		this.dayToNextContractRegeneration = dayContractRegeneration;
+		this.contracts = new ArrayList<TransportContract>(0);		
 		
 		this.products = new Product[products.size()];
 		for (Product product : products) {
@@ -38,6 +52,30 @@ public class Market {
 		
 	}
 
+	public TransportContract removeContractById(String contractId) {
+		TransportContract selected = null;
+		for (TransportContract transportContract : contracts) {
+			if(transportContract.getId().equals(contractId)) {
+				selected = transportContract;
+			}
+		}
+		
+		if(selected!=null) {
+			contracts.remove(selected);			
+		}
+		return selected;
+	}
+	
+	public List<TransportContract> getContracts() {
+		return contracts;
+	}
+	
+	public void generateContracts(){
+		contracts.clear();
+		contracts.addAll(ContractFactory.generateContracts(port.getWorld(), port)) ;
+	}	
+	
+	
 	public Product[] productDemand() {
 		return demandProducts;
 	}
@@ -91,6 +129,23 @@ public class Market {
 			actualQuantityStored[demandProducts[i].getId()] = actualQuantityStored[demandProducts[i].getId()] - RESOURCES_CONSUMPTION_RATE; 
 			
 		}
+	}
+	
+	
+
+	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
+		
+		if(isNewDay){
+			dayToNextContractRegeneration = dayToNextContractRegeneration-1;
+			consumeProducts();
+		}
+
+		if(dayToNextContractRegeneration == 0){
+			generateContracts();	//TODO generate contract here and update the port
+			dayToNextContractRegeneration = dayContractRegeneration;
+		}
+
+		
 	}
 	
 }

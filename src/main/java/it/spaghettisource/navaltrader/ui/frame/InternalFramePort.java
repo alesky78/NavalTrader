@@ -175,7 +175,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		//transport contract
 		listNewContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
-		listNewContractData.addAll(TransportContractTableRow.mapData(port.getContracts()));
+		listNewContractData.addAll(TransportContractTableRow.mapData(port.getMarket().getContracts()));
 
 		listAcceptedContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
 		listAcceptedContractData.addAll(TransportContractTableRow.mapData(ship.getTransportContracts()));
@@ -652,7 +652,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 				for (int i = 0; i < selected.length; i++) {
 					data = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
 					selectedContract.add(data);
-					contract = port.removeContractById(data.getId());
+					contract = port.getMarket().removeContractById(data.getId());
 					ship.addContract(contract);	
 					listAcceptedContractData.add(data);
 				}
