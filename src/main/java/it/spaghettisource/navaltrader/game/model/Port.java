@@ -3,7 +3,6 @@ package it.spaghettisource.navaltrader.game.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.spaghettisource.navaltrader.game.factory.ContractFactory;
 import it.spaghettisource.navaltrader.game.loop.Entity;
 import it.spaghettisource.navaltrader.geometry.Point;
 
