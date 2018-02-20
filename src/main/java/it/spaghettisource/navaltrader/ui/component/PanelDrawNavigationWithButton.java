@@ -41,9 +41,6 @@ public class PanelDrawNavigationWithButton extends JPanel {
 	private int worldSize;
 
 	private boolean stopThread;
-
-	private BufferedImage shipImmage;
-	private int spirteSize = 120;
 	
 	private List<ButtonDrawPort> portsButton;
 
@@ -58,22 +55,13 @@ public class PanelDrawNavigationWithButton extends JPanel {
 
 		worldSize = world.getGridSize() * world.getGridScale();	//TODO no good if will be biggest will become huge amount of memory, better to implement scale also here
 
-		
 		portsButton = new ArrayList<>();
 		ButtonDrawPort button;
 		for (Port port : world.getPorts()) {
-			button = new ButtonDrawPort(port, 30, "");
+			button = new ButtonDrawPort(port, 15, 4, "");
 			add(button);			
 			portsButton.add(button);
 		}
-		
-		try {
-			shipImmage = ImageIO.read(PanelDrawRoute.class.getResourceAsStream("/icon/ship-map.png"));
-			shipImmage = ImageIconFactory.getScaledBufferedImage(shipImmage, spirteSize, spirteSize);	
-		} catch (IOException e) {
-			log.error("erro loading immages",e);
-		}
-
 
 		stopThread = false;
 
@@ -125,7 +113,6 @@ public class PanelDrawNavigationWithButton extends JPanel {
 		Point point;
 		for (Ship ship : company.getShips()) {
 			point = ship.getPosition();
-//			graphicsBuffer.drawImage(shipImmage, point.getX()-(spirteSize/2), point.getY()-(spirteSize/2), null);	
 
 			//draw the ships
 			graphicsBuffer.setStroke(new BasicStroke(10));

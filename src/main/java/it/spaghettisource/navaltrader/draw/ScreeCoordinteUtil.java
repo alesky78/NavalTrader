@@ -1,5 +1,7 @@
 package it.spaghettisource.navaltrader.draw;
 
+import java.awt.Container;
+
 import javax.swing.JComponent;
 
 import it.spaghettisource.navaltrader.geometry.Point;
@@ -18,7 +20,7 @@ public class ScreeCoordinteUtil {
 	 * @param wolrdSize
 	 * @return
 	 */
-	public static Point convertFromRealWorldToScreenCoordinate(JComponent component, Point realworldCoordinate, int wolrdSize){
+	public static Point convertFromRealWorldToScreenCoordinate(Container component, Point realworldCoordinate, int wolrdSize){
 		return new Point((int)( (double)realworldCoordinate.getX() * ((double)component.getWidth()  / (double)wolrdSize) ),
 						 (int)( (double)realworldCoordinate.getY() * ((double)component.getHeight() / (double)wolrdSize) ));
 	}
@@ -33,7 +35,7 @@ public class ScreeCoordinteUtil {
 	 * @param wolrdSize
 	 * @return
 	 */
-	public static void setLocationFromRealWorldToScreenCoordinate(JComponent component,JComponent componentToDraw, Point realworldCoordinate, int wolrdSize){
+	public static void setLocationFromRealWorldToScreenCoordinate(Container component,JComponent componentToDraw, Point realworldCoordinate, int wolrdSize){
 		componentToDraw.setLocation((int)( (double)realworldCoordinate.getX() * ((double)component.getWidth()  / (double)wolrdSize) - (componentToDraw.getWidth() /2) ),
 									(int)( (double)realworldCoordinate.getY() * ((double)component.getHeight() / (double)wolrdSize) - (componentToDraw.getHeight()/2) ));
 
