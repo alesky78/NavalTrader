@@ -35,23 +35,32 @@ public class ButtonDrawPort extends JButton  implements ActionListener{
 	public ButtonDrawPort( Port port,int buttonSize,int buttonBordersize,String actionCommand) {
 		super();
 		this.port = port;
+		this.buttonBordersize = buttonBordersize;
 		setBorder(BorderFactory.createEmptyBorder());
 		setContentAreaFilled(false);
 		setSize(buttonSize, buttonSize);
+
+		
+		//add listner and command
 		addActionListener(this);
+		setActionCommand(actionCommand);		
 	}
 
-
+	public Port getManagedPort(){
+		return port;
+	}
+	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g); 
 		Graphics2D graphicsBuffer = (Graphics2D) g;
 
+		int r = 2;
 		//draw the ports
 		graphicsBuffer.setStroke(new BasicStroke(buttonBordersize));		
 		graphicsBuffer.setColor(Color.YELLOW);	
-		graphicsBuffer.fillOval(buttonBordersize, buttonBordersize, getWidth()-buttonBordersize, getHeight()-buttonBordersize);			
+		graphicsBuffer.fillOval(buttonBordersize+r, buttonBordersize+r, getWidth()-buttonBordersize-r, getHeight()-buttonBordersize-r);			
 		graphicsBuffer.setColor(Color.BLACK);				
-		graphicsBuffer.drawOval(buttonBordersize, buttonBordersize, getWidth()-buttonBordersize, getHeight()-buttonBordersize);		
+		graphicsBuffer.drawOval(buttonBordersize+r, buttonBordersize+r, getWidth()-buttonBordersize-r, getHeight()-buttonBordersize-r);		
 	}
 
 
@@ -59,7 +68,9 @@ public class ButtonDrawPort extends JButton  implements ActionListener{
 		ScreeCoordinteUtil.setLocationFromRealWorldToScreenCoordinate(panel, this, port.getCooridnate(), worldSize);
 	}
 
+	
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("cliccato!!!");

@@ -58,7 +58,7 @@ public class PanelDrawNavigationWithButton extends JPanel implements ComponentLi
 		portsButton = new ArrayList<>();
 		ButtonDrawPort button;
 		for (Port port : world.getPorts()) {
-			button = new ButtonDrawPort(port, 15, 4, "");
+			button = new ButtonDrawPort(port, 25, 3, "");
 			add(button);			
 			portsButton.add(button);
 		}
