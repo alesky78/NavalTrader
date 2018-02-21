@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ import it.spaghettisource.navaltrader.geometry.Point;
  * @author Alessandro
  *
  */
-public class PanelDrawNavigationWithButton extends JPanel {
+public class PanelDrawNavigationWithButton extends JPanel implements ComponentListener  {
 
 	static Log log = LogFactory.getLog(PanelDrawNavigationWithButton.class.getName());
 
@@ -59,6 +61,7 @@ public class PanelDrawNavigationWithButton extends JPanel {
 			portsButton.add(button);
 		}
 
+		addComponentListener(this);
 		stopThread = false;
 
 	}
@@ -85,7 +88,8 @@ public class PanelDrawNavigationWithButton extends JPanel {
 
 		//draw
 		graphicsBuffer.drawImage(world.getWorldMap(),0,0,width,height,0,0,world.getWorldMap().getWidth(),world.getWorldMap().getHeight(),null);		
-		drawPorts(graphicsBuffer);
+
+		
 		drawShips(graphicsBuffer);
 
 		graphicsBuffer.dispose();
@@ -95,14 +99,6 @@ public class PanelDrawNavigationWithButton extends JPanel {
 
 	}
 
-
-	private void drawPorts(Graphics2D graphicsBuffer) {
-
-		for (ButtonDrawPort buttonDrawPort : portsButton) {
-			buttonDrawPort.resetLocation(this, worldSize);
-		}
-		
-	}
 
 
 	private void drawShips(Graphics2D graphicsBuffer) {
@@ -155,6 +151,32 @@ public class PanelDrawNavigationWithButton extends JPanel {
 
 
 
+	}
+
+
+
+
+	public void componentResized(ComponentEvent e) {
+		//put the correct position of the port buttons		
+		for (ButtonDrawPort buttonDrawPort : portsButton) {
+			buttonDrawPort.resetLocation(this, worldSize);
+		}
+	}
+
+
+	public void componentMoved(ComponentEvent e) {		
+	}
+
+
+	public void componentShown(ComponentEvent e) {
+		//put the correct position of the port buttons
+		for (ButtonDrawPort buttonDrawPort : portsButton) {
+			buttonDrawPort.resetLocation(this, worldSize);
+		}
+	}
+
+
+	public void componentHidden(ComponentEvent e) {
 	}
 
 
