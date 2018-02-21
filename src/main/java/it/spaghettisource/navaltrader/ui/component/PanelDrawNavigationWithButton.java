@@ -23,7 +23,9 @@ import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.geometry.Point;
 
 /**
- * this is the main pannel used to draw all then ports and the position of the ships
+ * this is the pannel used to draw all then ports and the position of the ships
+ * the ports are desiged has button then is possible to link an action to them
+ * 
  * 
  * @author Alessandro
  *
