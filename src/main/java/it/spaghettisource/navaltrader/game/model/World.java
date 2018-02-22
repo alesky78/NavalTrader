@@ -34,6 +34,10 @@ public class World implements Entity {
 		this.gridScale = gridScale;
 	}
 
+	public int getWorldSize(){
+		return gridSize * gridScale;
+	}
+	
 	public BufferedImage getWorldMap() {
 		return worldMap;
 	}

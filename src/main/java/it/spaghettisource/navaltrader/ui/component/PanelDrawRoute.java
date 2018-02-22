@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,35 +16,53 @@ import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Route;
+import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.geometry.Point;
 
 
-public class PanelDrawRoute extends JPanel {
+public class PanelDrawRoute extends JPanel implements ComponentListener {
 
 	static Log log = LogFactory.getLog(PanelDrawRoute.class.getName());
 
 	private List<Route> routes;	
 	private BufferedImage background;
-	private Point portCoordinate;
+	
+	private Port port;
+	private World world;
+	
 
 	private int gridSize;
 	private int panelSize;
 	private int cellSize;
-
-
-	public PanelDrawRoute(int panelSize, int gridSize ,BufferedImage background, Point portCoordinate){
+	
+	
+	private List<ButtonDrawPort> portsButton;
+	
+	public PanelDrawRoute(Port port, World world,int panelSize) {
 		super();
-		this.gridSize = gridSize;
+		this.gridSize = world.getGridSize();
 		this.panelSize = panelSize;
-		this.background = background;
-		this.portCoordinate = portCoordinate;
-
+		this.port = port;
+		this.world = world;
+		
+		background = world.getWorldMap();
 		cellSize = 6;
 		routes = new LinkedList<Route>();
-
+		
+		//create a button for each port
+		portsButton = new ArrayList<>();
+		ButtonDrawPort button;
+		for (Port actualPort : world.getPorts()) {
+			button = new ButtonDrawPort(actualPort, 25, 3, "",null);
+			add(button);			
+			portsButton.add(button);
+		}		
+		
+		addComponentListener(this);
+		
 	}
-
 
 	public Dimension getPreferredSize() {
 		return new Dimension(panelSize, panelSize);
@@ -71,9 +92,9 @@ public class PanelDrawRoute extends JPanel {
 
 		//draw starting port point
 		graphicsImage.setColor(Color.YELLOW);
-		graphicsImage.fillRect(portCoordinate.getX()*cellSize, portCoordinate.getY()*cellSize, cellSize, cellSize);	
+		graphicsImage.fillRect(port.getCooridnate().getX()*cellSize, port.getCooridnate().getY()*cellSize, cellSize, cellSize);	
 		graphicsImage.setColor(Color.BLACK);
-		graphicsImage.drawRect(portCoordinate.getX()*cellSize, portCoordinate.getY()*cellSize, cellSize, cellSize);
+		graphicsImage.drawRect(port.getCooridnate().getX()*cellSize, port.getCooridnate().getY()*cellSize, cellSize, cellSize);
 		
 		graphicsImage.dispose();
 		
@@ -91,8 +112,6 @@ public class PanelDrawRoute extends JPanel {
 				for (int i = 0; i < path.length; i++) {
 					graphicsGrid.setColor(Color.RED);			
 					graphicsGrid.fillRect(path[i].getX()*cellSize, path[i].getY()*cellSize, cellSize, cellSize);	
-//					graphicsGrid.setColor(Color.BLACK);
-//					graphicsGrid.drawRect(path[i].getX()*cellSize, path[i].getY()*cellSize, cellSize, cellSize);
 				}	
 			}
 		}
@@ -100,6 +119,29 @@ public class PanelDrawRoute extends JPanel {
 
 
 
+	public void componentResized(ComponentEvent e) {
+		//put the correct position of the port buttons		
+		for (ButtonDrawPort buttonDrawPort : portsButton) {
+//			buttonDrawPort.resetLocation(this, world.getWorldSize());
+			buttonDrawPort.setLocation(15, 15);
+		}
+	}
 
+
+	public void componentMoved(ComponentEvent e) {		
+	}
+
+
+	public void componentShown(ComponentEvent e) {
+		//put the correct position of the port buttons
+		for (ButtonDrawPort buttonDrawPort : portsButton) {
+//			buttonDrawPort.resetLocation(this, world.getWorldSize());
+			buttonDrawPort.setLocation(15, 15);			
+		}
+	}
+
+
+	public void componentHidden(ComponentEvent e) {
+	}
 
 }

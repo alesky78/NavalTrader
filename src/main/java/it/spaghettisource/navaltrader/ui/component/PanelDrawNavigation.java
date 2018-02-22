@@ -53,7 +53,7 @@ public class PanelDrawNavigation extends JPanel implements ComponentListener  {
 		this.company = company;
 		this.world = world;
 
-		worldSize = world.getGridSize() * world.getGridScale();	//TODO no good if will be biggest will become huge amount of memory, better to implement scale also here
+		worldSize = world.getWorldSize();	//TODO no good if will be biggest will become huge amount of memory, better to implement scale also here
 
 		//create a button for each port
 		portsButton = new ArrayList<>();

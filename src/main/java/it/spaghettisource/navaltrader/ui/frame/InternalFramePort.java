@@ -399,9 +399,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		///////////////////////////////////
 		//word map port
-		PanelDrawRoute mapOfPortPanel = new PanelDrawRoute(600, world.getGridSize(), world.getWorldMap(), port.getCooridnate());
-
-
+		PanelDrawRoute mapOfPortPanel = new PanelDrawRoute(port, world, 600); 
 
 		
 		///////////////
@@ -566,7 +564,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		///////////////////////////////////
 		//word map port
-		PanelDrawRoute mapOfPortPanel = new PanelDrawRoute(600, world.getGridSize(), world.getWorldMap(), port.getCooridnate());		
+		PanelDrawRoute mapOfPortPanel = new PanelDrawRoute(port, world, 600); 
+		
 
 		/////////////////////////
 		//accepted contract table
