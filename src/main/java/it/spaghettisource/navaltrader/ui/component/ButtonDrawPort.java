@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -28,8 +27,6 @@ public class ButtonDrawPort extends JButton{
 	static Log log = LogFactory.getLog(ButtonDrawPort.class.getName());
 
 	private Port port;
-	
-	private int buttonSize;
 	private int buttonBordersize;
 
 	public ButtonDrawPort( Port port,int buttonSize,int buttonBordersize,String actionCommand, ActionListener listner) {
