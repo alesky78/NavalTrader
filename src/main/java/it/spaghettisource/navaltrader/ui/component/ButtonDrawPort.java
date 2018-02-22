@@ -23,7 +23,7 @@ import it.spaghettisource.navaltrader.game.model.Port;
  * @author id837836
  *
  */
-public class ButtonDrawPort extends JButton  implements ActionListener{
+public class ButtonDrawPort extends JButton implements ActionListener{
 
 	static Log log = LogFactory.getLog(ButtonDrawPort.class.getName());
 
@@ -39,7 +39,6 @@ public class ButtonDrawPort extends JButton  implements ActionListener{
 		setBorder(BorderFactory.createEmptyBorder());
 		setContentAreaFilled(false);
 		setSize(buttonSize, buttonSize);
-
 		
 		//add listner and command
 		addActionListener(this);
@@ -54,13 +53,12 @@ public class ButtonDrawPort extends JButton  implements ActionListener{
 		super.paintComponent(g); 
 		Graphics2D graphicsBuffer = (Graphics2D) g;
 
-		int r = 2;
 		//draw the ports
 		graphicsBuffer.setStroke(new BasicStroke(buttonBordersize));		
 		graphicsBuffer.setColor(Color.YELLOW);	
-		graphicsBuffer.fillOval(buttonBordersize+r, buttonBordersize+r, getWidth()-buttonBordersize-r, getHeight()-buttonBordersize-r);			
+		graphicsBuffer.fillOval(buttonBordersize, buttonBordersize, getWidth()-buttonBordersize, getHeight()-buttonBordersize);			
 		graphicsBuffer.setColor(Color.BLACK);				
-		graphicsBuffer.drawOval(buttonBordersize+r, buttonBordersize+r, getWidth()-buttonBordersize-r, getHeight()-buttonBordersize-r);		
+		graphicsBuffer.drawOval(buttonBordersize, buttonBordersize, getWidth()-buttonBordersize, getHeight()-buttonBordersize);		
 	}
 
 
@@ -68,7 +66,6 @@ public class ButtonDrawPort extends JButton  implements ActionListener{
 		ScreeCoordinteUtil.setLocationFromRealWorldToScreenCoordinate(panel, this, port.getCooridnate(), worldSize);
 	}
 
-	
 
 	
 	@Override
