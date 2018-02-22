@@ -23,7 +23,7 @@ import it.spaghettisource.navaltrader.game.model.Port;
  * @author id837836
  *
  */
-public class ButtonDrawPort extends JButton implements ActionListener{
+public class ButtonDrawPort extends JButton{
 
 	static Log log = LogFactory.getLog(ButtonDrawPort.class.getName());
 
@@ -32,7 +32,7 @@ public class ButtonDrawPort extends JButton implements ActionListener{
 	private int buttonSize;
 	private int buttonBordersize;
 
-	public ButtonDrawPort( Port port,int buttonSize,int buttonBordersize,String actionCommand) {
+	public ButtonDrawPort( Port port,int buttonSize,int buttonBordersize,String actionCommand, ActionListener listner) {
 		super();
 		this.port = port;
 		this.buttonBordersize = buttonBordersize;
@@ -41,8 +41,11 @@ public class ButtonDrawPort extends JButton implements ActionListener{
 		setSize(buttonSize, buttonSize);
 		
 		//add listner and command
-		addActionListener(this);
-		setActionCommand(actionCommand);		
+		if(listner!=null){
+			addActionListener(listner);
+			setActionCommand(actionCommand);			
+		}
+		
 	}
 
 	public Port getManagedPort(){
@@ -64,14 +67,6 @@ public class ButtonDrawPort extends JButton implements ActionListener{
 
 	public void resetLocation(JPanel panel,int worldSize){
 		ScreeCoordinteUtil.setLocationFromRealWorldToScreenCoordinate(panel, this, port.getCooridnate(), worldSize);
-	}
-
-
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		System.out.println("cliccato!!!");
-
 	}
 
 

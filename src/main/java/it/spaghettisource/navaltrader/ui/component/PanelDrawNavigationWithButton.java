@@ -55,10 +55,11 @@ public class PanelDrawNavigationWithButton extends JPanel implements ComponentLi
 
 		worldSize = world.getGridSize() * world.getGridScale();	//TODO no good if will be biggest will become huge amount of memory, better to implement scale also here
 
+		//create a button for each port
 		portsButton = new ArrayList<>();
 		ButtonDrawPort button;
 		for (Port port : world.getPorts()) {
-			button = new ButtonDrawPort(port, 25, 3, "");
+			button = new ButtonDrawPort(port, 25, 3, "",null);
 			add(button);			
 			portsButton.add(button);
 		}
