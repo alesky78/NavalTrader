@@ -5,13 +5,13 @@ import javax.swing.event.InternalFrameEvent;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
-import it.spaghettisource.navaltrader.ui.component.PanelDrawNavigationWithButton;
+import it.spaghettisource.navaltrader.ui.component.PanelDrawNavigation;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 
 public class InternalFrameMapNavigation extends InternalFrameAbstract {
 	
-	private PanelDrawNavigationWithButton panel;
+	private PanelDrawNavigation panel;
 	
 	
 	public InternalFrameMapNavigation(MainDesktopPane parentDesktopPane, GameManager gameManager) {
@@ -19,7 +19,7 @@ public class InternalFrameMapNavigation extends InternalFrameAbstract {
 		setSize(850,850);   		
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/globe.png"));
 		
-		panel = new PanelDrawNavigationWithButton(gameManager.getGameData().getCompany(), gameManager.getGameData().getWorld(), 600);
+		panel = new PanelDrawNavigation(gameManager.getGameData().getCompany(), gameManager.getGameData().getWorld(), 600);
 				
 		getContentPane().add(panel);
 		panel.start();
