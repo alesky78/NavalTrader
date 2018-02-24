@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.apache.commons.logging.Log;
@@ -42,6 +43,9 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 	
 	public PanelDrawRoute(Port port, World world,int panelSize) {
 		super();
+		setLayout(null);
+		setPreferredSize(new Dimension(panelSize,panelSize));		
+		
 		this.gridSize = world.getGridSize();
 		this.panelSize = panelSize;
 		this.port = port;
@@ -58,6 +62,7 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 			button = new ButtonDrawPort(actualPort, 25, 3, "",null);
 			add(button);			
 			portsButton.add(button);
+			button.resetLocation(this, world.getWorldSize());			
 		}		
 		
 		addComponentListener(this);
@@ -122,26 +127,32 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 	public void componentResized(ComponentEvent e) {
 		//put the correct position of the port buttons		
 		for (ButtonDrawPort buttonDrawPort : portsButton) {
-//			buttonDrawPort.resetLocation(this, world.getWorldSize());
-			buttonDrawPort.setLocation(15, 15);
+			buttonDrawPort.resetLocation(this, world.getWorldSize());
 		}
 	}
 
 
 	public void componentMoved(ComponentEvent e) {		
+		//put the correct position of the port buttons
+		for (ButtonDrawPort buttonDrawPort : portsButton) {
+			buttonDrawPort.resetLocation(this, world.getWorldSize());
+		}		
 	}
 
 
 	public void componentShown(ComponentEvent e) {
 		//put the correct position of the port buttons
 		for (ButtonDrawPort buttonDrawPort : portsButton) {
-//			buttonDrawPort.resetLocation(this, world.getWorldSize());
-			buttonDrawPort.setLocation(15, 15);			
+			buttonDrawPort.resetLocation(this, world.getWorldSize());
 		}
 	}
 
 
 	public void componentHidden(ComponentEvent e) {
+		//put the correct position of the port buttons
+		for (ButtonDrawPort buttonDrawPort : portsButton) {
+			buttonDrawPort.resetLocation(this, world.getWorldSize());
+		}		
 	}
 
 }
