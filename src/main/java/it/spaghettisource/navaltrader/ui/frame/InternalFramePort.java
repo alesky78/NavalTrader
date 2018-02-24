@@ -44,6 +44,7 @@ import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
+import it.spaghettisource.navaltrader.ui.component.ButtonDrawPort;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 import it.spaghettisource.navaltrader.ui.component.ProgressBarHull;
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
@@ -65,7 +66,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private final static String ACTION_REFUEL = "refuel";
 	private final static String ACTION_REPAIR = "repair";	
 	private final static String ACTION_ACCEPT_CONTRACT = "accept contract";		
-	private final static String ACTION_SAIL = "sail";	
+	private final static String ACTION_SAIL = "sail";
+	private final static String ACTION_CHOOSE_DESTINATION = "choose destination";		
 
 	private LoopManager loopManager;
 	private String shipName;
@@ -565,6 +567,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		///////////////////////////////////
 		//word map port
 		PanelDrawRoute mapOfPortPanel = new PanelDrawRoute(port, world, 600); 
+		mapOfPortPanel.drawPorts(ACTION_CHOOSE_DESTINATION, this);
 		
 
 		/////////////////////////
@@ -684,6 +687,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 				this.doDefaultCloseAction();	//close the frame ship no more in the port				
 			}
 
+		}else if (ACTION_CHOOSE_DESTINATION.equals(command)) {
+			Port destinationPort = 	((ButtonDrawPort)event.getSource()).getManagedPort();
+			log.info("scelto "+destinationPort.getName());
 		}
 
 	}

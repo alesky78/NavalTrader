@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
@@ -33,13 +34,12 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 	private Port port;
 	private World world;
 	
-
 	private int gridSize;
 	private int panelSize;
 	private int cellSize;
 	
-	
 	private List<ButtonDrawPort> portsButton;
+	
 	
 	public PanelDrawRoute(Port port, World world,int panelSize) {
 		super();
@@ -55,11 +55,15 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 		cellSize = 6;
 		routes = new LinkedList<Route>();
 		
+	}
+	
+	public void drawPorts(String actionCommand, ActionListener listner) {
+		
 		//create a button for each port
 		portsButton = new ArrayList<>();
 		ButtonDrawPort button;
 		for (Port actualPort : world.getPorts()) {
-			button = new ButtonDrawPort(actualPort, 25, 3, "",null);
+			button = new ButtonDrawPort(actualPort, 20, 3, actionCommand,listner);
 			add(button);			
 			portsButton.add(button);
 			button.resetLocation(this, world.getWorldSize());			
@@ -68,6 +72,7 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 		addComponentListener(this);
 		
 	}
+	
 
 	public Dimension getPreferredSize() {
 		return new Dimension(panelSize, panelSize);
