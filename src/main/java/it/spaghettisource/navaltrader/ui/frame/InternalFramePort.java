@@ -531,15 +531,20 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 						double newMaxFule = ship.getFuel();
 						int index = sailContractTable.getSelectedRow();
 						if(index!=-1){	
-							contract = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(index));
-							route = port.getRouteTo(contract.getDestinationPort());
-							
-							contract.setDaysToDestination(route.calcDaysToDestination(source.getValue()));							
-							listAcceptedContractData.set(index, contract);	//TODO there is a bug, only the selected contract change days to destination but must be done for all						
+							contract = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(index));						
 							newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), contract.getDistance());							
 						}
 
 						sailControlFuel.setValue(newMaxFule); 
+
+						for (int i = 0; i < listAcceptedContractData.size(); i++) {	//reset the days to arrive at destination for each contract
+							contract = listAcceptedContractData.get(i);
+							route = port.getRouteTo(contract.getDestinationPort());							
+							contract.setDaysToDestination(route.calcDaysToDestination(source.getValue()));
+							listAcceptedContractData.set(i, contract);
+						}	
+						
+						
 					}
 				}
 			}
