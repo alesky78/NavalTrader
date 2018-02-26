@@ -106,11 +106,15 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	private TextFieldInteger controlDwt;	
 	private TextFieldDouble controlFuel;	
 
-	//ship sail tab
+	//ship cast off tab
+	private PanelDrawRoute castOffPanelDrawRoute; 	
 	private JTable sailContractTable;	
 	private TextFieldDouble sailControlFuel;	
 	private JSlider sliderNavigationSpeed;		
+	private JTextField destinationPort;	
+	private TextFieldInteger daysTodestinationPort;	
 
+	
 
 	public InternalFramePort(MainDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
 		super(parentDesktopPane,gameManager, portName);
@@ -385,7 +389,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		JButton acceptContractButton = new JButton(ImageIconFactory.getForTab("/icon/investment.png"));
 		acceptContractButton.setActionCommand(ACTION_ACCEPT_CONTRACT);
 		acceptContractButton.addActionListener(this);
-
+		
 		JPanel speedControlPanel = new JPanel(new SpringLayout());	
 		speedControlPanel.setBorder(BorderFactory.createTitledBorder("navigation speed"));		
 		speedControlPanel.add(new JLabel("speed selection"));		
@@ -396,7 +400,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		speedControlPanel.add(sliderNavigationSpeed);	
 		speedControlPanel.add(new JLabel("sign contract"));		
 		speedControlPanel.add(acceptContractButton);		
-		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,2, 4,5, 5,5, 5);	
+		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,2, 4, 5, 5, 5, 5);	
 
 
 		///////////////////////////////////
@@ -494,7 +498,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		panel.setBorder(BorderFactory.createTitledBorder("sail"));	
 
 
-		///////////////
+		//////////////////////////////////////////////////
 		//configure fuel used and speed and accept contract			
 		int startSpeed = 5;		
 		JTextField selectedSpeed = new JTextField();
@@ -505,6 +509,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		selectedFuelConsumption.setEditable(false);
 
 		
+		//slider used to configure the speed of the route
 		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);
 
 		//set the day and distance to destination for all contracts
@@ -525,27 +530,28 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					selectedSpeed.setText(source.getValue()+"/"+ship.getMaxSpeed()+" nd");
 					selectedFuelConsumption.setText(ship.getFuelConsumptionPerHour(source.getValue()) +" t hour /"+ship.getFuelConsumptionPerHour(source.getValue())*24+" t day");	
 
-					if(sailContractTable!=null) {	//reset the control of the fuel
+					if(sailContractTable!=null) {	
+						//reset the days to arrive at destination for each contract accepted
 						TransportContractTableRow contract;		
 						Route route;						
-						double newMaxFule = ship.getFuel();
-						int index = sailContractTable.getSelectedRow();
-						if(index!=-1){	
-							contract = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(index));						
-							newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), contract.getDistance());							
-						}
-
-						sailControlFuel.setValue(newMaxFule); 
-
-						for (int i = 0; i < listAcceptedContractData.size(); i++) {	//reset the days to arrive at destination for each contract
+						for (int i = 0; i < listAcceptedContractData.size(); i++) {	
 							contract = listAcceptedContractData.get(i);
 							route = port.getRouteTo(contract.getDestinationPort());							
 							contract.setDaysToDestination(route.calcDaysToDestination(source.getValue()));
 							listAcceptedContractData.set(i, contract);
 						}	
-						
-						
 					}
+					
+					//reset the control of the fuel on the destination port
+					double newMaxFule = ship.getFuel();
+					Port targetPort = world.getPortByName(destinationPort.getText()); 	
+					if(targetPort!=null) {
+						Route targetRoute = port.getRouteTo(targetPort);
+						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), targetRoute.getDistanceInScale() );	
+						daysTodestinationPort.setValue(targetRoute.calcDaysToDestination(sliderNavigationSpeed.getValue())); 
+					}
+					sailControlFuel.setValue(newMaxFule);					
+					
 				}
 			}
 		});				
@@ -554,8 +560,18 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		acceptRouteButton.setActionCommand(ACTION_SAIL);
 		acceptRouteButton.addActionListener(this);
 
+		//////////////////////
+		//route data panel
+		destinationPort = new JTextField("");	
+		daysTodestinationPort = new TextFieldInteger(0);		
+		
 		JPanel speedControlPanel = new JPanel(new SpringLayout());	
-		speedControlPanel.setBorder(BorderFactory.createTitledBorder("navigation speed"));		
+		speedControlPanel.setBorder(BorderFactory.createTitledBorder("route data"));		
+
+		speedControlPanel.add(new JLabel("destination port"));		
+		speedControlPanel.add(destinationPort);
+		speedControlPanel.add(new JLabel("days to destination"));		
+		speedControlPanel.add(daysTodestinationPort);
 		speedControlPanel.add(new JLabel("speed selection"));		
 		speedControlPanel.add(selectedSpeed);	
 		speedControlPanel.add(new JLabel("fuel consumption per hour/day"));	
@@ -565,14 +581,15 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		speedControlPanel.add(new JLabel("fuel forecast"));		
 		speedControlPanel.add(sailControlFuel);		
 		speedControlPanel.add(new JLabel("accept route"));		
-		speedControlPanel.add(acceptRouteButton);		
-		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,5, 2,5, 5,5, 5);			
+		speedControlPanel.add(acceptRouteButton);
+		
+		SpringLayoutUtilities.makeCompactGrid(speedControlPanel,7, 2,5, 5,5, 5);			
 
 
 		///////////////////////////////////
 		//word map port
-		PanelDrawRoute mapOfPortPanel = new PanelDrawRoute(port, world, 600); 
-		mapOfPortPanel.drawPorts(ACTION_CHOOSE_DESTINATION, this);
+		castOffPanelDrawRoute = new PanelDrawRoute(port, world, 600); 
+		castOffPanelDrawRoute.drawPorts(ACTION_CHOOSE_DESTINATION, this);
 		
 
 		/////////////////////////
@@ -591,10 +608,13 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 				try{
 					int selected = sailContractTable.getSelectedRow();
 					List<Route> routes = new ArrayList<Route>();
-
+					
 					if(selected!=-1){
 						TransportContractTableRow contract = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(selected));
 						routes.add(port.getRouteTo(contract.getDestinationPort()));
+						
+						destinationPort.setText(contract.getDestinationPortName());
+						daysTodestinationPort.setValue(contract.getDaysToDestination());
 
 						double newMaxFule = ship.getFuel();
 						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), contract.getDistance());
@@ -602,7 +622,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					}
 
 					//add the path to the map
-					mapOfPortPanel.setRoutes(routes);
+					castOffPanelDrawRoute.setRoutes(routes);
 
 				}catch (Exception e) {
 					log.error("error chosing contract", e);
@@ -613,7 +633,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		acceptedContractPanel.add(new JScrollPane(sailContractTable), BorderLayout.CENTER);
 
 		//join the panels
-		JSplitPane newContractAndMapRoutePanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,mapOfPortPanel,acceptedContractPanel);
+		JSplitPane newContractAndMapRoutePanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,castOffPanelDrawRoute,acceptedContractPanel);
 		newContractAndMapRoutePanel.setDividerLocation(600);		
 
 		JPanel selectSpeedPanel = new JPanel(new BorderLayout());		
@@ -681,20 +701,35 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 		}else if (ACTION_SAIL.equals(command)){
 			
-			int selectedRoute = sailContractTable.getSelectedRow();
+			Port whereToGo = world.getPortByName(destinationPort.getText());
 
-			if(sailControlFuel.getValue()>=0 && selectedRoute!=-1) {
+			if(sailControlFuel.getValue()>=0 && whereToGo != null) {
 				int selectedSpeed = sliderNavigationSpeed.getValue();
-				TransportContractTableRow contract = listAcceptedContractData.get(sailContractTable.convertRowIndexToModel(selectedRoute));
 	
-				ship.loadShipAndPrepareToNavigate(selectedSpeed, port.getRouteTo(contract.getDestinationPort()));
-				
+				ship.loadShipAndPrepareToNavigate(selectedSpeed, port.getRouteTo(whereToGo));				
 				this.doDefaultCloseAction();	//close the frame ship no more in the port				
 			}
 
 		}else if (ACTION_CHOOSE_DESTINATION.equals(command)) {
-			Port destinationPort = 	((ButtonDrawPort)event.getSource()).getManagedPort();
-			log.info("scelto "+destinationPort.getName());
+			Port targetPort = ((ButtonDrawPort)event.getSource()).getManagedPort();
+			
+			if(targetPort!=null && !port.equals(targetPort)) {
+				//set the new destination port and the day to arrive to it
+				destinationPort.setText(targetPort.getName());			
+				Route targetRoute = port.getRouteTo(targetPort);
+				daysTodestinationPort.setValue(targetRoute.calcDaysToDestination(sliderNavigationSpeed.getValue()));
+				
+				//reset the control of the fuel on the new destination port
+				double newMaxFule = ship.getFuel(); 	
+				newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), targetRoute.getDistanceInScale() );	 
+				sailControlFuel.setValue(newMaxFule);		
+				
+				//set the new path in the draw
+				List<Route> routes = new ArrayList<Route>();
+				routes.add(targetRoute);
+				castOffPanelDrawRoute.setRoutes(routes);				
+				
+			}
 		}
 
 	}
