@@ -487,11 +487,10 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 	/**
-	 * SailPanel
+	 * CastOffPanel
 	 * 
 	 * @return
 	 */
-	//TODO must be possible also set routes without have contracts
 	private Component createCastOffPanel() {
 
 		JPanel panel = new JPanel(new BorderLayout());	
