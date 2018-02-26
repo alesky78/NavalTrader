@@ -87,7 +87,7 @@ public class EventPublisher {
 	public void fireEvent(Event event) {
 
 		if(hasListner(event)){
-			LogEventDispatcher dispatcher = new LogEventDispatcher(event);
+			EventDispatcher dispatcher = new EventDispatcher(event);
 			dispatcher.execute();			
 		}
 	}
@@ -143,7 +143,7 @@ public class EventPublisher {
 	 * isolated from the thread
 	 *
 	 */
-	class LogEventDispatcher extends SwingWorker<Void, Void>{
+	class EventDispatcher extends SwingWorker<Void, Void>{
 
 
 		/**
@@ -155,19 +155,24 @@ public class EventPublisher {
 		 * Creates the dispatcher witht eh event to dispatch
 		 * @param event the event to dispatch
 		 */
-		public LogEventDispatcher(Event event) {
+		public EventDispatcher(Event event) {
 			super();
 			this.event = event;
 		}
 
-		/**
-		 * Executed by the Swing event dispatcher thread
-		 */
+		
 		protected Void doInBackground() throws Exception {
-			log.debug("process event: "+event.getEventType());
-			doFireEventForEachListner(event);
 			return null;
 		}
+		
+		
+		/**
+		 * Executed by the Swing event dispatcher thread
+		 */		
+	    protected void done() {
+	    	log.debug("process event: "+event.getEventType());	    	
+			doFireEventForEachListner(event);
+	    }
 
 	}
 }

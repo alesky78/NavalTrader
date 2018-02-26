@@ -11,6 +11,11 @@ https://docs.oracle.com/javase/tutorial/uiswing/misc/index.html
 SwingWorker how it really works... this tutorial is real good and i understood
 https://dzone.com/articles/multi-threading-java-swing
 
+######################
+real Java swing massive multhytiread update
+http://alblue.bandlem.com/2004/07/java-optimising-gui-performance.html
+
+
 #######################
 path finding alghoritm
 
