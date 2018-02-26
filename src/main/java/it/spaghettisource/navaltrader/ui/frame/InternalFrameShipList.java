@@ -97,7 +97,7 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 					ShipListTableRow data = listShipData.get(table.convertRowIndexToModel(table.getSelectedRow()));
 					table.clearSelection();					
 
-					//enter in port onyl if the ship is doked
+					//enter in port only if the ship is docked
 					if(data.getStatus().equals(Ship.SHIP_STATUS_DOCKED)){
 						JInternalFrame[] frames =  parentDesktopPane.getAllFrames();
 						boolean exist = false;
@@ -160,7 +160,6 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 			int index = listShipData.indexOf( replaceElement);
 			listShipData.set(index, replaceElement);
 		}		
-
 	}
 
 

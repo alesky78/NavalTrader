@@ -14,6 +14,7 @@ public class Port  implements Entity{
 	
 	private String name;
 	private int classAccepted;
+	private double loadTeuPerHour;		
 	private double dailyFeeCost;	
 	private double castOffCost;	
 	private double fuelPrice;
@@ -23,7 +24,7 @@ public class Port  implements Entity{
 
 	
 	
-	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int classAccepted) {
+	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int classAccepted,double loadTeuPerHour) {
 		super();
 		this.world =  world;
 		this.cooridnate = cooridnate;
@@ -31,6 +32,7 @@ public class Port  implements Entity{
 		this.dailyFeeCost = dailyFeeCost;
 		this.castOffCost = castOffCost;
 		this.classAccepted = classAccepted;
+		this.loadTeuPerHour = loadTeuPerHour;
 		this.routes = new ArrayList<Route>();
 		this.fuelPrice = 700.0;
 		this.repairPrice = 25000.0;		
@@ -86,7 +88,11 @@ public class Port  implements Entity{
 		return null;
 	}
 	
-		
+	
+	public double getLoadTeuPerHour() {
+		return loadTeuPerHour;
+	}
+
 	//TODO implement logic to calculate fuel price
 	public double getFuelPrice() {
 		return fuelPrice;	

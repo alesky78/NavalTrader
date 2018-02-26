@@ -46,7 +46,8 @@ public class Ship implements Entity{
 	private int hull;	
 	private int dwt;
 	private int maxDwt;	
-	private int teu;		
+	private int teu;
+	private int teuToLoad;			
 	private int maxTeu;	
 
 	private double fuelConsumptionIndexA;
@@ -77,6 +78,7 @@ public class Ship implements Entity{
 
 		dwt = 0; 
 		teu = 0;
+		teuToLoad = 0;		
 		fuel = 0;		
 		speed = 0;		
 		name = "";		
@@ -104,6 +106,7 @@ public class Ship implements Entity{
 		transportContracts.add(contract);
 		teu += contract.getTeu();
 		dwt += contract.getTeu()*contract.getDwtPerTeu();
+		teuToLoad += contract.getTeu();
 	}
 
 
@@ -135,8 +138,8 @@ public class Ship implements Entity{
 			profitabilityRoute.setIncomeObtained(totalBudget);
 			profitabilityRoute.addContractClosed(toClose);
 			
-			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));
 			InboundEventQueue.getInstance().put(new Event(EventType.CONTRACT_COMPLETED_EVENT,profitabilityRoute));
+			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));
 		}
 	}
 
@@ -329,7 +332,9 @@ public class Ship implements Entity{
 		profitabilityRoute = new ProfitabilityRoute(navigationRoute,this);
 		status = SHIP_STATUS_LOADING;
 
-		waitingTimeInHours = 24;	//TODO calculate in function of the loaded TEU amount to time to load and unload, consider 6,086 TEU - was 2.5 to 3 days
+		//calculate the time to load all the cargo based on the accepted contract in this port
+		waitingTimeInHours = teuToLoad / dockedPort.getLoadTeuPerHour() ;	
+		
 		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));	
 
 	}
@@ -341,7 +346,8 @@ public class Ship implements Entity{
 	 */
 	private void loadShip(double hourPassed) {
 		waitingTimeInHours = waitingTimeInHours - hourPassed;
-		if(waitingTimeInHours<0) {
+		
+		if(waitingTimeInHours<0) {	//if finish to load the ship
 			log.debug("ship :"+name+" completed loading start navigation");
 			status = SHIP_STATUS_NAVIGATION;
 
@@ -351,7 +357,9 @@ public class Ship implements Entity{
 			company.removeBudget(dockedPort.getCastOffCost());			
 			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));			
 
+			//reset the variables
 			dockedPort = null;
+			teuToLoad = 0;
 
 			//ship start to navigate
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
@@ -377,7 +385,7 @@ public class Ship implements Entity{
 		if(navigationRoute.isArrivedAtDestination()) {
 
 			setDockedPort(navigationRoute.getDestinationPort());	//this set also final coordinate of the ship
-			waitingTimeInHours = 4;		//set the docking time
+			waitingTimeInHours = 4;		//TODO set the docking time,	may be function of the port and ship type??? depend also from the traffic
 			navigationRoute = null;
 			status = SHIP_STATUS_DOCKING;
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));					
@@ -406,9 +414,10 @@ public class Ship implements Entity{
 			
 			//close contracts
 			closeContracts();
+			//TODO add the unloading phase
 			
-			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));				
-			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
+			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));
+			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));							
 		}
 	}	
 
