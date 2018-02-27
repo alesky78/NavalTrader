@@ -60,6 +60,9 @@ https://en.wikipedia.org/wiki/Container_ship
 https://en.wikipedia.org/wiki/Cargo_ship
 http://maritime-connector.com/wiki/ship-sizes/
 
+- more type's of ships ( bulk carriers , oil tankers , offshore cargo vessels , general cargo , special vessals )
+- more real vessels from real company's ( Maersk , MSC , samskip , wagenborg , spliethoff , dockwise , and all other intl shipping company's )
+
 
 ######################
 ship fuel consumption
