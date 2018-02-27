@@ -12,10 +12,22 @@ import it.spaghettisource.navaltrader.game.model.World;
 
 public class ContractFactory {
 	
+	/**
+	 * responsible to create contract
+	 *
+	 * 
+	 * @param world
+	 * @param targetPort
+	 * @return
+	 */
+	//TODO create a correct generation of the contract taking in consideration several aspects
+	//- how to calculate number of contracts to generate
+	//- how to calculate teu amd dwt,  should be variable of the ships in the port?
+	//- price of the contract should consider the distance to destination port?
 	public static List<TransportContract> generateContracts(World world, Port targetPort){
 		
 		int productProduced = targetPort.getMarket().productSupply().length;
-		int numberOfContracts = 10;//ThreadLocalRandom.current().nextInt(0, productProduced*2 ); //TODO how to calculate number of contracts
+		int numberOfContracts = 10;//ThreadLocalRandom.current().nextInt(0, productProduced*2 ); 
 		
 		List<Port> connectePorts = world.getConnectedPorts(targetPort);
 		int connected = connectePorts.size();
@@ -29,13 +41,13 @@ public class ContractFactory {
 		Product product;
 		
 		for (int i = 0; i< numberOfContracts; i++) {
-			teu = ThreadLocalRandom.current().nextInt(50, 200+1 );	//TODO how to calculate teu should be variable of the ships owned
+			teu = ThreadLocalRandom.current().nextInt(50, 200+1 ); 
 			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));	//get random port
 			product =  generateProduct(targetPort, port);
 			
 			if(product!=null){
 				dwt = product.getDwt() * ThreadLocalRandom.current().nextInt(50, 150)/100; //dwt between 50% to 150%
-				price = port.getMarket().getPriceForBuy(product) * ThreadLocalRandom.current().nextInt(50, 150)/100.0; //TODO price must consider distance between 50% to 150%
+				price = port.getMarket().getPriceForBuy(product) * ThreadLocalRandom.current().nextInt(50, 150)/100.0; 
 				newContracts.add(new TransportContract(product, teu, dwt, price,port));				
 			}
 	

@@ -141,7 +141,7 @@ public class Market  implements Entity{
 		}
 
 		if(dayToNextContractRegeneration == 0){
-			generateContracts();	//TODO generate contract here and update the port
+			generateContracts();	
 			dayToNextContractRegeneration = dayContractRegeneration;
 		}
 

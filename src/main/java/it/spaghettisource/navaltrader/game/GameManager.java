@@ -13,7 +13,6 @@ public class GameManager {
 	private LoopManager loopManager;
 
 
-	//TODO user should chose company and start port
 	public void newGame(String companyName) {
 
 		//TODO initialization of the game, selection of scenario and port and make a progress bar wiht thread

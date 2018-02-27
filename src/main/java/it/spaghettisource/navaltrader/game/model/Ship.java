@@ -26,7 +26,7 @@ public class Ship implements Entity{
 
 
 	private String status;
-	private double waitingTimeInHours; //used	to manage the time to stay in particualr status	
+	private double waitingTimeInHours; //used	to manage the time to stay in particular status	
 
 	private Company company;
 
