@@ -1,5 +1,6 @@
 ######################
-ocean tarder games
+ocean tarder, un vecchio gioco tipo port of call e transocean
+studiarlo per prenderne spunto
 https://www.youtube.com/watch?v=ntycwjx1hjI
 
 ######################
@@ -14,6 +15,11 @@ https://dzone.com/articles/multi-threading-java-swing
 ######################
 real Java swing massive multhytiread update
 http://alblue.bandlem.com/2004/07/java-optimising-gui-performance.html
+
+
+#######################
+vere statistiche finanziare sul mercato dei trasporti marittimi
+http://www.worldshipping.org/
 
 
 #######################
