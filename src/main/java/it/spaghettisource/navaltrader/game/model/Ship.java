@@ -379,7 +379,15 @@ public class Ship implements Entity{
 	 * @param hourPassed
 	 */
 	private void unloadShip(double hourPassed) {
-		// TODO Auto-generated method stub
+		waitingTimeInHours = waitingTimeInHours - hourPassed;
+		
+		if(waitingTimeInHours<0) {	//if finish to load the ship
+			log.debug("ship :"+name+" completed unloading ");
+			status = SHIP_STATUS_DOCKED;
+
+			//ship start to navigate
+			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
+		}		
 		
 	}
 	
@@ -430,10 +438,10 @@ public class Ship implements Entity{
 			
 			//close contracts
 			closeContracts();
-			//TODO add the unloading phase
 
 			if(teuToUnload > 0){
-				status = SHIP_STATUS_UNLOADING;				
+				status = SHIP_STATUS_UNLOADING;		
+				waitingTimeInHours = teuToUnload / dockedPort.getLoadTeuPerHour() ;					
 			}else{
 				status = SHIP_STATUS_DOCKED;				
 			}

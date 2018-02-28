@@ -67,6 +67,10 @@ A oggi le navi porta container più grandi sono le Maersk Triple E Class: sono lu
 Il primo cargo di questa serie, il Maersk Mc-Kinney Moller è entrato in servizio a luglio, seguito da altri due ad agosto. Entro giugno 2014 dai cantieri ne usciranno altri 7.
 
 
+########################
+trovare una vera nave container in ogni momento
+http://shipfinder.co/
+
 ######################
 ship fuel consumption
 https://people.hofstra.edu/geotrans/eng/ch8en/conc8en/fuel_consumption_containerships.html

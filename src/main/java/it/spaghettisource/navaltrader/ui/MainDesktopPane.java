@@ -6,6 +6,9 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.model.ProfitabilityRoute;
 import it.spaghettisource.navaltrader.ui.event.Event;
@@ -16,6 +19,7 @@ import it.spaghettisource.navaltrader.ui.frame.InternalFrameContractDelivered;
 
 public class MainDesktopPane extends JDesktopPane implements EventListener  {
 
+	static Log log = LogFactory.getLog(MainDesktopPane.class.getName());	
 	
 	private GameManager gameManager;
 	
@@ -56,6 +60,7 @@ public class MainDesktopPane extends JDesktopPane implements EventListener  {
 	public void eventReceived(Event event) {
 		EventType eventType = event.getEventType(); 
 		if(eventType.equals(EventType.CONTRACT_COMPLETED_EVENT)){
+			log.debug("contracts completed open new panel for contract delivered");
 			InternalFrameContractDelivered frame = new InternalFrameContractDelivered(this, gameManager,(ProfitabilityRoute) event.getSource());
 			add(frame);
 			frame.moveToFront(); 	

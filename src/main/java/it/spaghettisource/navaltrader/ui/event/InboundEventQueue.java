@@ -15,11 +15,6 @@ import org.apache.commons.logging.LogFactory;
  * The configuration file parameter: <code>logview4j.events.per.second</code> determines how many
  * log events are removed from this queue per second
  */
-
-//TODO how to manage multiple events??? situation like this will not work always the second event doesn't update the UI 
-//InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));
-//InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));	
-
 public class InboundEventQueue {
 
 	static Log log = LogFactory.getLog(InboundEventQueue.class.getName());
@@ -54,7 +49,7 @@ public class InboundEventQueue {
 	}	
 
 	public void put(Event event) {
-		log.debug("add new event in the queue:"+event.getEventType());			
+		//log.debug("add new event in the queue:"+event.getEventType());			
 		linkedQueue.add(event);
 	}
 
@@ -122,7 +117,7 @@ public class InboundEventQueue {
 			while(!isEmpty()) {
 				event = poll();
 				if(event!=null){
-					eventsToProcess.add(poll());					
+					eventsToProcess.add(event);					
 				}
 			}
 
