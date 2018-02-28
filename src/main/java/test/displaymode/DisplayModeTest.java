@@ -24,7 +24,6 @@ import javax.swing.table.TableColumn;
 public class DisplayModeTest extends JFrame implements ActionListener,
     ListSelectionListener {
 
-    private boolean waiting = false;
     private GraphicsDevice device;
     private DisplayMode originalDM;
     private JButton exit = new JButton("Exit");

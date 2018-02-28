@@ -139,7 +139,6 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 
 
 	public void actionPerformed(ActionEvent event) {
-		String command = event.getActionCommand();
 
 	}
 

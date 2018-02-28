@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.Random;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -18,14 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
-import it.spaghettisource.navaltrader.game.model.Bank;
-import it.spaghettisource.navaltrader.game.model.Company;
-import it.spaghettisource.navaltrader.game.model.FinancialEntryType;
-import it.spaghettisource.navaltrader.game.model.Loan;
-import it.spaghettisource.navaltrader.game.model.Ship;
-import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
-import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameMapNavigation;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameOffice;

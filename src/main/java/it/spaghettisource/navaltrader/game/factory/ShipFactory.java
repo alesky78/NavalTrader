@@ -27,7 +27,6 @@ public class ShipFactory {
 	private static final Ship SHIP_HITECH_HUGE= 	new Ship("ULCV",		 "spaceX", 	100, 8000	, 18270, 6000, 0.02, 0.3, 2000, 26, 25000000);	
 	
 	private static final Ship[] shipArray = new Ship[]{SHIP_OLD_S_LITTLE,SHIP_OLD_LITTLE,SHIP_OLD_LARGE,SHIP_NORMAL_LITTLE,SHIP_NORMAL_LARGE,SHIP_HITECH_LITTLE,SHIP_HITECH_LARGE,SHIP_HITECH_HUGE};	
-	private static double priceIndex = 1.0;
 
 	private ShipFactory() {
 	}

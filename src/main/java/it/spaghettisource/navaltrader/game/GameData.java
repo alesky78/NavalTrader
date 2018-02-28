@@ -2,7 +2,6 @@ package it.spaghettisource.navaltrader.game;
 
 import java.io.Serializable;
 
-import it.spaghettisource.navaltrader.game.model.Bank;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
 import it.spaghettisource.navaltrader.game.model.World;

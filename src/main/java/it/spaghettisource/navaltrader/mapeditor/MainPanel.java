@@ -47,7 +47,6 @@ public class MainPanel extends JPanel  implements ActionListener{
 	private String ACTION_DRAW_GRID = "ACTION_DRAW_GRID";	
 	private String ACTION_SAVE_GRID = "ACTION_SAVE_GRID";	
 	private String ACTION_LOAD_GRID = "ACTION_LOAD_GRID";	
-	private String ACTION_ALLOW_DIAGONAL = "ACTION_ALLOW_DIAGONAL";		
 
 
 	private String[] algorithmsValues = { "AStar", "Dijkstra"};

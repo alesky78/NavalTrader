@@ -3,10 +3,6 @@ package it.spaghettisource.navaltrader.game.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.spaghettisource.navaltrader.ui.event.Event;
-import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
-
 public class Finance {
 
 	private Map<FinancialEntryType,Double> entry;

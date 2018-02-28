@@ -54,7 +54,7 @@ public class Bank {
 	}
 
 	public List<Loan> getLoanList() {
-		return  new ArrayList(loanList);
+		return  new ArrayList<Loan>(loanList);
 	}	
 	
 }
