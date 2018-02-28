@@ -63,6 +63,9 @@ http://maritime-connector.com/wiki/ship-sizes/
 - more type's of ships ( bulk carriers , oil tankers , offshore cargo vessels , general cargo , special vessals )
 - more real vessels from real company's ( Maersk , MSC , samskip , wagenborg , spliethoff , dockwise , and all other intl shipping company's )
 
+A oggi le navi porta container più grandi sono le Maersk Triple E Class: sono lunghe 400 metri, hanno una capacità di trasporto di 18 mila container e costano 185 milioni di dollari l'una. 
+Il primo cargo di questa serie, il Maersk Mc-Kinney Moller è entrato in servizio a luglio, seguito da altri due ad agosto. Entro giugno 2014 dai cantieri ne usciranno altri 7.
+
 
 ######################
 ship fuel consumption
