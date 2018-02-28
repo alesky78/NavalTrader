@@ -247,7 +247,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				newShipPrice.setValue(0.0);
 				newShipModel.setText("");
 				newShipName.setText("");				
-				newShipNetBudget.setValue(gameData.getCompany().getBudget());				
+				newShipNetBudget.setValue(gameData.getCompany().getBudget());			
+				parentDesktopPane.showInfoMessageDialog("you have a new ship!!!");				
 			}
 		}else if(ACTION_SELL_SHIP.equals(command)){
 			if(!sellShipName.getText().trim().equals("")){	//if ship is choose
@@ -256,7 +257,8 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 				sellShipPrice.setValue(0.0);
 				sellShipType.setText("");
 				sellShipName.setText("");				
-				sellShipNetBudget.setValue(gameData.getCompany().getBudget());				
+				sellShipNetBudget.setValue(gameData.getCompany().getBudget());
+				
 			}
 		}
 	}
