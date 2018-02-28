@@ -22,7 +22,8 @@ public class Ship implements Entity{
 	public static final String SHIP_STATUS_REPAIRING = "repairing";
 	public static final String SHIP_STATUS_NAVIGATION = "navigation";
 	public static final String SHIP_STATUS_DOCKING = "docking";
-	public static final String SHIP_STATUS_LOADING = "loading";	
+	public static final String SHIP_STATUS_LOADING = "loading";
+	public static final String SHIP_STATUS_UNLOADING = "unloading";		
 
 
 	private String status;
@@ -47,7 +48,8 @@ public class Ship implements Entity{
 	private int dwt;
 	private int maxDwt;	
 	private int teu;
-	private int teuToLoad;			
+	private int teuToLoad;
+	private int teuToUnload;				
 	private int maxTeu;	
 
 	private double fuelConsumptionIndexA;
@@ -79,6 +81,7 @@ public class Ship implements Entity{
 		dwt = 0; 
 		teu = 0;
 		teuToLoad = 0;		
+		teuToUnload = 0;
 		fuel = 0;		
 		speed = 0;		
 		name = "";		
@@ -119,10 +122,13 @@ public class Ship implements Entity{
 			}
 		}
 
+		teuToUnload = 0;
+		
 		if(!toClose.isEmpty()){
 			int totalBudget = 0;
 			for (TransportContract transportContract : toClose) {
 				//reset the Teu and the DWT
+				teuToUnload += transportContract.getTeu();
 				teu -= transportContract.getTeu();
 				dwt -= transportContract.getTeu()*transportContract.getDwtPerTeu();			
 
@@ -366,6 +372,17 @@ public class Ship implements Entity{
 		}
 	}
 
+
+	/**
+	 * spend time loading the ship
+	 * 
+	 * @param hourPassed
+	 */
+	private void unloadShip(double hourPassed) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/**
 	 * navigate to the destination
 	 * 
@@ -405,8 +422,7 @@ public class Ship implements Entity{
 		waitingTimeInHours = waitingTimeInHours - hourPassed;
 		if(waitingTimeInHours<0) {
 			log.debug("ship :"+name+" completed docking");
-			status = SHIP_STATUS_DOCKED;
-	
+			
 			//cost for cast off to dock
 			finance.addEntry(FinancialEntryType.SHIP_DOCK_COST_TUG, -dockedPort.getCastOffCost());
 			company.removeBudget(dockedPort.getCastOffCost());			
@@ -415,7 +431,13 @@ public class Ship implements Entity{
 			//close contracts
 			closeContracts();
 			//TODO add the unloading phase
-			
+
+			if(teuToUnload > 0){
+				status = SHIP_STATUS_UNLOADING;				
+			}else{
+				status = SHIP_STATUS_DOCKED;				
+			}
+
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));
 			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));							
 		}
@@ -440,11 +462,16 @@ public class Ship implements Entity{
 
 			docking(hourPassed);
 
-		} 
+		}else if(SHIP_STATUS_UNLOADING.equals(status)) {
+
+			unloadShip(hourPassed);
+
+		}  
 
 
 
 	}
+
 
 
 
