@@ -164,7 +164,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		shipModel.setEditable(false);		
 		shipClass = new JTextField(ship.getShipClass());		
 		shipClass.setEditable(false);
-		shipHull = new ProgressBarHull(ship.getHull());
+		shipHull = new ProgressBarHull(ship.getHpPercentage());
 		shipActualFuel = new TextFieldDouble(ship.getFuel());
 		operatingCost = new TextFieldCurrency(ship.getOperatingCost());
 
@@ -174,10 +174,10 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		amountToRefuel = new TextFieldInteger(0);
 		amountToPayForRefuel = new TextFieldCurrency(0.0);
 		priceUnitOfFuel =  new TextFieldCurrency(port.getFuelPrice()); 
-		amountToRepairSlider = new JSlider(0, 100-ship.getHull(), 0);
+		amountToRepairSlider = new JSlider(0, 100-ship.getHpPercentage(), 0);
 		amountToRepair = new TextFieldInteger(0);
 		amountToPayForRepair = new TextFieldCurrency(0.0);
-		priceUnitOfRepair =  new TextFieldCurrency(port.getRepairPrice()); 
+		priceUnitOfRepair =  new TextFieldCurrency(port.getRepairPricePerPercentage(ship)); 
 
 		//transport contract
 		listNewContractData = GlazedLists.threadSafeList(new BasicEventList<TransportContractTableRow>());	
@@ -663,7 +663,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			if(gameData.getCompany().getBudget()>amountToPayForRepair.getValue()) {
 				gameData.getCompany().repairShip(shipName, amountToRepair.getValue(), amountToPayForRepair.getValue());	
 				//reset ui before the event to avoid multiple click
-				amountToRepairSlider.setMaximum(100-ship.getHull());
+				amountToRepairSlider.setMaximum(100-ship.getHpPercentage());
 				amountToRepairSlider.setValue(0);
 			}else{
 				parentDesktopPane.showErrorMessageDialog("not enought money");
@@ -760,8 +760,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		}else if(eventType.equals(EventType.SHIP_HULL_CHANGE_EVENT)){
 			Ship source = (Ship) event.getSource();			
 			if(source.getName().equals(shipName)) {
-				shipHull.setValue(source.getHull());
-				amountToRepairSlider.setMaximum(100-ship.getHull());
+				shipHull.setValue(source.getHpPercentage());
+				amountToRepairSlider.setMaximum(100-ship.getHpPercentage());
 			}
 		}else if(eventType.equals(EventType.SHIP_STATUS_CHANGE_EVENT)){
 			Ship source = (Ship) event.getSource();			

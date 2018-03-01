@@ -44,7 +44,8 @@ public class Ship implements Entity{
 	private double basePrice;	
 	private double operatingCost;
 
-	private int hull;	
+	private int hp;	
+	private int maxHp;	
 	private int dwt;
 	private int maxDwt;	
 	private int teu;
@@ -63,7 +64,7 @@ public class Ship implements Entity{
 	private List<TransportContract> transportContracts;
 
 
-	public Ship(String shipClass, String model, int hull, int maxDwt,int maxTeu, double maxFuel,double fuelConsumptionIndexA, double fuelConsumptionIndexB,  double operatingCost, int maxSpeed, double basePrice) {
+	public Ship(String shipClass, String model, int hp, int maxHp, int maxDwt,int maxTeu, double maxFuel,double fuelConsumptionIndexA, double fuelConsumptionIndexB,  double operatingCost, int maxSpeed, double basePrice) {
 
 		this.shipClass = shipClass;
 		this.model = model;
@@ -74,7 +75,8 @@ public class Ship implements Entity{
 		this.fuelConsumptionIndexA = fuelConsumptionIndexA;
 		this.fuelConsumptionIndexB = fuelConsumptionIndexB;
 		this.maxSpeed = maxSpeed;
-		this.hull = hull;		
+		this.hp = hp;
+		this.maxHp = maxHp;				
 		this.basePrice = basePrice;
 		this.operatingCost = operatingCost;
 
@@ -206,17 +208,33 @@ public class Ship implements Entity{
 		this.status = status;
 	}
 
-	public int getHull() {
-		return hull;
+	public int getHpPercentage() {
+		return 	(hp*100)/maxHp;
+	}
+	
+	public int getHpPercentage(int damagedHp) {
+		return 	(damagedHp*100)/maxHp;
 	}
 
-	public void setHull(int hull) {
-		this.hull = hull;
+	public int getHp() {
+		return hp;
 	}
 
-	public void addHull(int toAdd) {
-		this.hull = hull + toAdd;
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+	
+	public void addHp(int hpToAdd) {
+		this.hp += hpToAdd;
 	}	
+
+	public int getMaxHp() {
+		return maxHp;
+	}
+
+	public void setMaxHp(int maxHp) {
+		this.maxHp = maxHp;
+	}
 
 	public int getDwt() {
 		return dwt;

@@ -83,7 +83,7 @@ public class SellShipTableRow {
 	}
 	
 	public static SellShipTableRow mapData(Ship ship){
-		return new SellShipTableRow(ship.getShipClass(),ship.getName(), ship.getModel(),ship.getStatus(), ship.getBasePrice(), ship.getOperatingCost(), ship.getHull(), 
+		return new SellShipTableRow(ship.getShipClass(),ship.getName(), ship.getModel(),ship.getStatus(), ship.getBasePrice(), ship.getOperatingCost(), ship.getHpPercentage(), 
 									ship.getDwt()+"/"+ship.getMaxDwt(),
 									ship.getTeu()+"/"+ship.getMaxTeu(), 
 									ship.getFuel()+"/"+ship.getMaxFuel());

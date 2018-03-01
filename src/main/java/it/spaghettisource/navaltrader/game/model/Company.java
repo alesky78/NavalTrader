@@ -92,9 +92,10 @@ public class Company implements Updatable {
 		
 	}
 	
-	public void repairShip(String shipName,int amountToRepair,Double priceToPay) {
+	public void repairShip(String shipName,int percentageToRepair,Double priceToPay) {
 		Ship ship = getShipByName(shipName);
-		ship.addHull(amountToRepair);
+		int hpToAdd = (ship.getMaxHp()/100) * percentageToRepair;
+		ship.addHp(hpToAdd);
 		ship.getFinance().addEntry(FinancialEntryType.SHIP_REPAIR, -priceToPay);		
 		removeBudget(priceToPay);
 		

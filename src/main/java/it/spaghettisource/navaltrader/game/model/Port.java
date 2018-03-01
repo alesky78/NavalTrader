@@ -35,7 +35,7 @@ public class Port  implements Entity{
 		this.loadTeuPerHour = loadTeuPerHour;
 		this.routes = new ArrayList<Route>();
 		this.fuelPrice = 700.0;
-		this.repairPrice = 25000.0;		
+		this.repairPrice = 900.0;		
 	}
 
 	public String getName() {
@@ -98,18 +98,23 @@ public class Port  implements Entity{
 		return fuelPrice;	
 	}
 
+	/**
+	 * Calculate the cost to repair 1% for this specific ship
+	 * 
+	 * @param ship
+	 * @return
+	 */
 	//TODO implement logic to calculate repair price
-	public double getRepairPrice() {
-		return repairPrice;	
+	public double getRepairPricePerPercentage(Ship ship) {
+		return (ship.getMaxHp()/100) * repairPrice;	
+	}
+	
+	public double getRepairPricePerHp() {
+		return repairPrice;
 	}
 
-
-	
-	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
-	
 		market.update(minutsPassed, isNewDay, isNewWeek, isNewMonth);
-		
 	}
 	
 	public boolean equals(Object obj){

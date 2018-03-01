@@ -92,9 +92,9 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 		economicalResults.add(new TextFieldCurrency(-profitabilityRoute.getFuelConsumedPrice()));
 		
 		economicalResults.add(new JLabel("hull damage"));
-		economicalResults.add(new TextFieldInteger(profitabilityRoute.getHullDamaged()));
+		economicalResults.add(new TextFieldInteger(profitabilityRoute.getHpDamagedPercentage()));
 		economicalResults.add(new JLabel("correspond to reparation price"));		
-		economicalResults.add(new TextFieldCurrency(-profitabilityRoute.getHullDamagedPrice()));		
+		economicalResults.add(new TextFieldCurrency(-profitabilityRoute.getHpDamagedPrice()));		
 		
 		economicalResults.add(new JLabel(""));		
 		economicalResults.add(new JLabel(""));

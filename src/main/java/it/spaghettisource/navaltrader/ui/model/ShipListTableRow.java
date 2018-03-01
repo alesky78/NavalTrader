@@ -105,7 +105,7 @@ public class ShipListTableRow {
 	private static DecimalFormat format = new DecimalFormat(".#");
 	
 	public static ShipListTableRow mapData(Ship ship){
-		return new ShipListTableRow(ship.getShipClass(), ship.getName(), ship.getModel(), ship.getDockedPort(), ship.getStatus(), ship.getOperatingCost(), ship.getHull(), 
+		return new ShipListTableRow(ship.getShipClass(), ship.getName(), ship.getModel(), ship.getDockedPort(), ship.getStatus(), ship.getOperatingCost(), ship.getHpPercentage(), 
 									ship.getDwt()+"/"+ship.getMaxDwt(),
 									ship.getTeu()+"/"+ship.getMaxTeu(), 
 									format.format(ship.getFuel())+"/"+ship.getMaxFuel());

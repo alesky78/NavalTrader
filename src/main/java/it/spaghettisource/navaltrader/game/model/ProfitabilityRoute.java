@@ -8,7 +8,7 @@ public class ProfitabilityRoute {
 	private NavigationRoute navigationRoute;
 	private Ship ship;
 	private double fuelConsumed;
-	private int hullDamaged;
+	private int hpDamaged;
 	private double incomeObtained;
 	private double tugCharges;
 	private List<TransportContract> contractClosed;
@@ -18,7 +18,7 @@ public class ProfitabilityRoute {
 		this.navigationRoute = navigationRoute;
 		this.ship = ship;
 		fuelConsumed = 0;
-		hullDamaged = 0;	
+		hpDamaged = 0;	
 		incomeObtained = 0;
 		tugCharges = 0;
 		
@@ -57,16 +57,20 @@ public class ProfitabilityRoute {
 		this.tugCharges += tugCharges;
 	}
 
-	public void addHullDamaged(int hullDamaged) {
-		this.hullDamaged += hullDamaged;
+	public void addHpDamaged(int hpDamaged) {
+		this.hpDamaged += hpDamaged;
 	}
-	
-	public double getHullDamagedPrice() {
-		return hullDamaged*navigationRoute.getDestinationPort().getRepairPrice();
+		
+	public double getHpDamagedPrice() {
+		return hpDamaged*navigationRoute.getDestinationPort().getRepairPricePerHp();
 	}
 
-	public int getHullDamaged() {
-		return hullDamaged;
+	public int getHpDamaged() {
+		return hpDamaged;
+	}
+
+	public int getHpDamagedPercentage() {
+		return ship.getHpPercentage(hpDamaged);
 	}
 	
 	public List<TransportContract> getContractClosed() {
@@ -86,7 +90,7 @@ public class ProfitabilityRoute {
 	}
 	
 	public double getFinalBalance() {
-		return incomeObtained - getTugCharges() - getFuelConsumedPrice() - getHullDamagedPrice();
+		return incomeObtained - getTugCharges() - getFuelConsumedPrice() - getHpDamagedPrice();
 	}
 	
 
