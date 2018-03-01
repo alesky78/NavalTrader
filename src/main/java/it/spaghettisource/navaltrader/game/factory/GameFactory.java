@@ -66,7 +66,7 @@ public class GameFactory {
 								 config.getString("port"+i+".name"), 
 								 config.getDouble("port"+i+".dailyFeeCost"),
 								 config.getDouble("port"+i+".castOffCost"),
-								 config.getInt("port"+i+".classAccepted"),
+								 config.getInt("port"+i+".shipSizeAccepted"),
 								 config.getDouble("port"+i+".loadTeuPerHour")); 
 				ports.add(actual);				
 			}

@@ -13,7 +13,7 @@ public class Port  implements Entity{
 	private Point cooridnate;
 	
 	private String name;
-	private int classAccepted;
+	private int shipSizeAccepted;
 	private double loadTeuPerHour;		
 	private double dailyFeeCost;	
 	private double castOffCost;	
@@ -24,14 +24,14 @@ public class Port  implements Entity{
 
 	
 	
-	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int classAccepted,double loadTeuPerHour) {
+	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int shipSizeAccepted,double loadTeuPerHour) {
 		super();
 		this.world =  world;
 		this.cooridnate = cooridnate;
 		this.name = name;
 		this.dailyFeeCost = dailyFeeCost;
 		this.castOffCost = castOffCost;
-		this.classAccepted = classAccepted;
+		this.shipSizeAccepted = shipSizeAccepted;
 		this.loadTeuPerHour = loadTeuPerHour;
 		this.routes = new ArrayList<Route>();
 		this.fuelPrice = 700.0;
@@ -50,8 +50,8 @@ public class Port  implements Entity{
 		this.cooridnate = cooridnate;
 	}
 
-	public int getClassAccepted() {
-		return classAccepted;
+	public int getShipSizeAccepted() {
+		return shipSizeAccepted;
 	}
 
 	public double getDailyFeeCost() {
