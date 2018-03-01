@@ -34,6 +34,9 @@ https://www.redblobgames.com/pathfinding/tower-defense/
 https://github.com/Ohohcakester?tab=overview&from=2017-12-01&to=2017-12-31	--> qui ci sono implementazioni java e forse rappresentazione
 https://github.com/aseber/PathFindingVisualization
 
+####################
+funzione di costo di transport tycoon
+https://wiki.openttd.org/Cargo_income
 
 
 #####################
