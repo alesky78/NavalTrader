@@ -17,7 +17,7 @@ public class ContractFactory {
 	 *
 	 * 
 	 * @param world
-	 * @param targetPort
+	 * @param targetPort where we be introduced the contracts
 	 * @return
 	 */
 	//TODO create a correct generation of the contract taking in consideration several aspects

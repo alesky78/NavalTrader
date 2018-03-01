@@ -600,7 +600,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		TableFormat<TransportContractTableRow> acceptedContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		sailContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listAcceptedContractData, acceptedContractTableTf));	
 		sailContractTable.setAutoCreateRowSorter(true);	
-		sailContractTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);			
+		sailContractTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
 
 		sailContractTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {
