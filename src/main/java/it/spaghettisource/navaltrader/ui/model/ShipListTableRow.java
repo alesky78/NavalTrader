@@ -11,7 +11,7 @@ public class ShipListTableRow {
 
 	private String name;
 	private Port dockedPort;	
-	private String shipClass;		
+	private String shipClassName;		
 	private String model;
 	private String status;	
 	private double operatingCost;
@@ -20,11 +20,11 @@ public class ShipListTableRow {
 	private String actualTeu;		
 	private String actualFuel;			
 	
-	public ShipListTableRow(String shipClass, String name,String model,Port dockedPort,String status, double operatingCost, int hull, String actualDwt,String actualTeu, String actualFuel) {
+	public ShipListTableRow(String shipClassName, String name,String model,Port dockedPort,String status, double operatingCost, int hull, String actualDwt,String actualTeu, String actualFuel) {
 		super();
 		this.name = name;
 		this.dockedPort = dockedPort;
-		this.shipClass = shipClass;		
+		this.shipClassName = shipClassName;		
 		this.status = status;
 		this.model = model;
 		this.operatingCost = operatingCost;
@@ -50,8 +50,8 @@ public class ShipListTableRow {
 		return dockedPort.getName();
 	}
 
-	public String getShipClass() {
-		return shipClass;
+	public String getShipClassName() {
+		return shipClassName;
 	}
 
 	public String getModel() {
@@ -105,7 +105,7 @@ public class ShipListTableRow {
 	private static DecimalFormat format = new DecimalFormat(".#");
 	
 	public static ShipListTableRow mapData(Ship ship){
-		return new ShipListTableRow(ship.getShipClass(), ship.getName(), ship.getModel(), ship.getDockedPort(), ship.getStatus(), ship.getOperatingCost(), ship.getHpPercentage(), 
+		return new ShipListTableRow(ship.getShipClassName(), ship.getName(), ship.getModel(), ship.getDockedPort(), ship.getStatus(), ship.getOperatingCost(), ship.getHpPercentage(), 
 									ship.getDwt()+"/"+ship.getMaxDwt(),
 									ship.getTeu()+"/"+ship.getMaxTeu(), 
 									format.format(ship.getFuel())+"/"+ship.getMaxFuel());

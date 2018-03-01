@@ -82,7 +82,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 	//ship status tab
 	private JTextField shipStatus;
 	private JTextField shipModel;
-	private JTextField shipClass;	
+	private JTextField shipClassName;	
 	private ProgressBarHull shipHull;
 	private TextFieldDouble shipActualFuel;
 	private TextFieldCurrency operatingCost;	
@@ -162,8 +162,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		shipStatus.setEditable(false);		
 		shipModel = new JTextField(ship.getModel());
 		shipModel.setEditable(false);		
-		shipClass = new JTextField(ship.getShipClass());		
-		shipClass.setEditable(false);
+		shipClassName = new JTextField(ship.getShipClassName());		
+		shipClassName.setEditable(false);
 		shipHull = new ProgressBarHull(ship.getHpPercentage());
 		shipActualFuel = new TextFieldDouble(ship.getFuel());
 		operatingCost = new TextFieldCurrency(ship.getOperatingCost());
@@ -215,7 +215,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		statusPanel.add(new JLabel("ship status"));
 		statusPanel.add(shipStatus);
 		statusPanel.add(new JLabel("ship class"));
-		statusPanel.add(shipClass);		
+		statusPanel.add(shipClassName);		
 		statusPanel.add(new JLabel("ship model"));
 		statusPanel.add(shipModel);
 		statusPanel.add(new JLabel("daily operating cost"));

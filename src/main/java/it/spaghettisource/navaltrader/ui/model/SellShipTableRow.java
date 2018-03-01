@@ -8,7 +8,7 @@ import it.spaghettisource.navaltrader.game.model.Ship;
 public class SellShipTableRow {
 
 	private String name;
-	private String shipClass;		
+	private String shipClassName;		
 	private String model;
 	private double price;	
 	private String status;	
@@ -18,10 +18,10 @@ public class SellShipTableRow {
 	private String actualFuel;	
 	private double operatingCost;	
 	
-	public SellShipTableRow(String shipClass, String name,String model,String status, double price, double operatingCost,int hull, String actualDwt, String actualTeu, String actualFuel) {
+	public SellShipTableRow(String shipClassName, String name,String model,String status, double price, double operatingCost,int hull, String actualDwt, String actualTeu, String actualFuel) {
 		super();
 		this.name = name;
-		this.shipClass = shipClass;		
+		this.shipClassName = shipClassName;		
 		this.status = status;
 		this.model = model;
 		this.price = price;
@@ -36,8 +36,8 @@ public class SellShipTableRow {
 		return model;
 	}
 
-	public String getShipClass() {
-		return shipClass;
+	public String getShipClassName() {
+		return shipClassName;
 	}
 
 	public double getPrice() {
@@ -83,7 +83,7 @@ public class SellShipTableRow {
 	}
 	
 	public static SellShipTableRow mapData(Ship ship){
-		return new SellShipTableRow(ship.getShipClass(),ship.getName(), ship.getModel(),ship.getStatus(), ship.getBasePrice(), ship.getOperatingCost(), ship.getHpPercentage(), 
+		return new SellShipTableRow(ship.getShipClassName(),ship.getName(), ship.getModel(),ship.getStatus(), ship.getBasePrice(), ship.getOperatingCost(), ship.getHpPercentage(), 
 									ship.getDwt()+"/"+ship.getMaxDwt(),
 									ship.getTeu()+"/"+ship.getMaxTeu(), 
 									ship.getFuel()+"/"+ship.getMaxFuel());

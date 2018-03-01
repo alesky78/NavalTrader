@@ -121,7 +121,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		JPanel buyShipTablePanel = new JPanel(new BorderLayout());
 		buyShipTablePanel.setBorder(BorderFactory.createTitledBorder("available ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "shipClass", "model", "price","operatingCost", "hull", "maxDwt", "maxTeu", "maxFuel", "maxSpeed"};
+		String[] propertyNames = new String[] { "shipClassName", "model", "price","operatingCost", "hull", "maxDwt", "maxTeu", "maxFuel", "maxSpeed"};
 		String[] columnLabels = new String[] { "class", "model", "price","operating Cost", "hull", "max Dwt",  "max Teu", "max Fuel", "max Speed"};
 		TableFormat<BuyShipTableRow> tf = GlazedLists.tableFormat(BuyShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<BuyShipTableRow>(listBuyShipData, tf));	
@@ -180,7 +180,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 		JPanel sellShipTablePanel = new JPanel(new BorderLayout());
 		sellShipTablePanel.setBorder(BorderFactory.createTitledBorder("owned ship"));			
 		JTable table;		
-		String[] propertyNames = new String[] { "name","shipClass","model", "status", "price", "operatingCost", "hull", "actualDwt",  "actualTeu", "actualFuel"};
+		String[] propertyNames = new String[] { "name","shipClassName","model", "status", "price", "operatingCost", "hull", "actualDwt",  "actualTeu", "actualFuel"};
 		String[] columnLabels = new String[] {  "name","class","model", "status", "price", "operatingCost", "hull", "actualDwt",   "actualTeu", "actualFuel"};
 		TableFormat<SellShipTableRow> tf = GlazedLists.tableFormat(SellShipTableRow.class, propertyNames, columnLabels);
 		table = new JTable(new EventTableModel<SellShipTableRow>(listSellShipData, tf));	

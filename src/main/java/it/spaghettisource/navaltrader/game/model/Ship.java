@@ -37,7 +37,7 @@ public class Ship implements Entity{
 
 	private String name;	
 	private String model;
-	private String shipClass;	
+	private String shipClassName;	
 	private Port dockedPort;
 
 	private Finance finance;
@@ -64,9 +64,9 @@ public class Ship implements Entity{
 	private List<TransportContract> transportContracts;
 
 
-	public Ship(String shipClass, String model, int hp, int maxHp, int maxDwt,int maxTeu, double maxFuel,double fuelConsumptionIndexA, double fuelConsumptionIndexB,  double operatingCost, int maxSpeed, double basePrice) {
+	public Ship(String shipClassName, String model, int hp, int maxHp, int maxDwt,int maxTeu, double maxFuel,double fuelConsumptionIndexA, double fuelConsumptionIndexB,  double operatingCost, int maxSpeed, double basePrice) {
 
-		this.shipClass = shipClass;
+		this.shipClassName = shipClassName;
 		this.model = model;
 
 		this.maxDwt = maxDwt;
@@ -151,12 +151,13 @@ public class Ship implements Entity{
 		}
 	}
 
-	public String getShipClass() {
-		return shipClass;
+
+	public String getShipClassName() {
+		return shipClassName;
 	}
 
-	public void setShipClass(String shipClass) {
-		this.shipClass = shipClass;
+	public void setShipClassName(String shipClassName) {
+		this.shipClassName = shipClassName;
 	}
 
 	public String getModel() {
