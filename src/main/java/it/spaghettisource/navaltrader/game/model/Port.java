@@ -20,9 +20,9 @@ public class Port  implements Entity{
 	private double fuelPrice;
 	private double repairPrice;	
 	private List<Route> routes;
+	private List<Ship> dockedShips;
 	private Market market;
 
-	
 	
 	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int shipSizeAccepted,double loadTeuPerHour) {
 		super();
@@ -34,6 +34,7 @@ public class Port  implements Entity{
 		this.shipSizeAccepted = shipSizeAccepted;
 		this.loadTeuPerHour = loadTeuPerHour;
 		this.routes = new ArrayList<Route>();
+		this.dockedShips = new ArrayList<Ship>();
 		this.fuelPrice = 700.0;
 		this.repairPrice = 900.0;		
 	}
@@ -78,6 +79,14 @@ public class Port  implements Entity{
 		return world;
 	}
 
+	public void addDockedShip(Ship ship) {
+		dockedShips.add(ship);
+	}
+
+	public boolean removeDockedShip(Ship ship) {
+		return dockedShips.remove(ship);
+	}
+	
 	public Route getRouteTo(Port destination) {
 		for (Route route : routes) {
 			if(route.isDestination(destination)) {

@@ -192,9 +192,15 @@ public class Ship implements Entity{
 
 	public void setDockedPort(Port dockedPort) {
 		this.dockedPort = dockedPort;
+		this.dockedPort.addDockedShip(this);
 		this.position = new Point(dockedPort.getCooridnate().getX(), dockedPort.getCooridnate().getY()) ;
 	}
 
+	public void leaveDockedPort() {
+		this.dockedPort.removeDockedShip(this);
+		this.dockedPort = null;
+	}
+	
 	public Finance getFinance() {
 		return finance;
 	}
@@ -392,8 +398,8 @@ public class Ship implements Entity{
 			company.removeBudget(dockedPort.getCastOffCost());			
 			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));			
 
-			//reset the variables
-			dockedPort = null;
+			//leave the port			
+			leaveDockedPort();
 			teuToLoad = 0;
 
 			//ship start to navigate
