@@ -1,6 +1,7 @@
 package it.spaghettisource.navaltrader.game.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
@@ -81,10 +82,16 @@ public class Port  implements Entity{
 
 	public void addDockedShip(Ship ship) {
 		dockedShips.add(ship);
+		//regenerate the contract if we have a new ship enter in the port
+		market.generateContracts();
 	}
 
 	public boolean removeDockedShip(Ship ship) {
 		return dockedShips.remove(ship);
+	}
+	
+	public List<Ship> getDockedShip() {
+		return dockedShips;
 	}
 	
 	public Route getRouteTo(Port destination) {

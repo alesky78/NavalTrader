@@ -113,8 +113,7 @@ public class GameFactory {
 				
 				product = new Product( config.getInt("product"+i+".id"),  
 										config.getString("product"+i+".name"), 
-										config.getDouble("product"+i+".minprice"), 
-										config.getDouble("product"+i+".maxprice"),
+										config.getDouble("product"+i+".price"), 
 										config.getInt("product"+i+".dwt")); 
 				products.add(product);				
 			}			

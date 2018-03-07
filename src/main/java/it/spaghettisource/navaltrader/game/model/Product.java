@@ -4,16 +4,14 @@ public class Product {
 
 	private int id;
 	private String name;
-	private double minprice;
-	private double maxprice;
+	private double price;
 	private int dwt;
 	
-	public Product(int id, String name, double minprice, double maxprice, int dwt) {
+	public Product(int id, String name, double price, int dwt) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.minprice = minprice;
-		this.maxprice = maxprice;
+		this.price = price;
 		this.dwt = dwt;
 	}
 
@@ -25,13 +23,10 @@ public class Product {
 		return name;
 	}
 
-	public double getMinprice() {
-		return minprice;
+	public double getPrice() {
+		return price;
 	}
 
-	public double getMaxprice() {
-		return maxprice;
-	}	
 	
 	public int getDwt() {
 		return dwt;

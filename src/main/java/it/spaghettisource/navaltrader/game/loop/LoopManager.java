@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import it.spaghettisource.navaltrader.game.GameData;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
+import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.ui.frame.InternalFrameTimeSimulation;
 
 public class LoopManager implements  Runnable {
@@ -83,6 +84,7 @@ public class LoopManager implements  Runnable {
 
 		GameTime gameTime = gameData.getGameTime(); 	
 		Company company = gameData.getCompany();
+		World world = gameData.getWorld();
 		boolean isNewDate;
 		boolean isNewWeek;		
 		boolean isNewMonth;		
@@ -101,6 +103,7 @@ public class LoopManager implements  Runnable {
  
 					gameTime.addMinuts(timePassInMinuts);				
 					
+					world.update(timePassInMinuts, isNewDate, isNewWeek, isNewMonth);
 					company.update(timePassInMinuts,isNewDate,isNewWeek,isNewMonth);
 					
 					if(clockUI!=null){
@@ -111,6 +114,7 @@ public class LoopManager implements  Runnable {
 					}
 
 
+					
 				}
 
 			} catch (InterruptedException e) {

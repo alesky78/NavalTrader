@@ -7,57 +7,72 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Product;
+import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
 import it.spaghettisource.navaltrader.game.model.World;
 
 public class ContractFactory {
 	
 	/**
-	 * responsible to create contract
-	 *
+	 * this class create the contract in the port..
 	 * 
+	 * the contract are generated in function of the ship in the port, that mean that the size of the contract like teu, dwt depend from the ships doked
+	 *
+	 *
 	 * @param world
-	 * @param targetPort where we be introduced the contracts
+	 * @param sourcePort where we be introduced the contracts
 	 * @return
 	 */
-	//TODO create a correct generation of the contract taking in consideration several aspects
-	//- how to calculate number of contracts to generate
-	//- how to calculate teu amd dwt,  should be variable of the ships in the port?
-	//- price of the contract should consider the distance to destination port?
-	public static List<TransportContract> generateContracts(World world, Port targetPort){
+	public static List<TransportContract> generateContracts(World world, Port sourcePort){
 		
-		int productProduced = targetPort.getMarket().productSupply().length;
-		int numberOfContracts = 10;//ThreadLocalRandom.current().nextInt(0, productProduced*2 ); 
+		List<Ship> ships = sourcePort.getDockedShip();
+		List<TransportContract> newContracts = new ArrayList<TransportContract>();		
 		
-		List<Port> connectePorts = world.getConnectedPorts(targetPort);
-		int connected = connectePorts.size();
-		
-		List<TransportContract> newContracts = new ArrayList<TransportContract>(numberOfContracts);
+		if(!ships.isEmpty()) {
 
-		int teu;
-		int dwt;
-		double price;
-		Port port;
-		Product product;
-		
-		for (int i = 0; i< numberOfContracts; i++) {
-			teu = ThreadLocalRandom.current().nextInt(50, 200+1 ); 
-			port = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connected ));	//get random port
-			product =  generateProduct(targetPort, port);
+			List<Port> connectePorts = world.getConnectedPorts(sourcePort);
 			
-			if(product!=null){
-				dwt = product.getDwt() * ThreadLocalRandom.current().nextInt(50, 150)/100; //dwt between 50% to 150%
-				price = port.getMarket().getPriceForBuy(product) * ThreadLocalRandom.current().nextInt(50, 150)/100.0; 
-				newContracts.add(new TransportContract(product, teu, dwt, price,port));				
-			}
+			int numberOfContracts;
+			int teu;
+			int dwt;
+			double price;
+			Port destinationPort;
+			Product product;
+			
+			//generate the contracts for each ship
+			for (Ship ship : ships) {
+				numberOfContracts = ThreadLocalRandom.current().nextInt(0, 10);	//generate an amount of contracts max 7 for ship
 	
+				for (int i = 0; i< numberOfContracts; i++) {
+					destinationPort = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connectePorts.size() ));	//get random port
+					product =  chooseRandomProduct(sourcePort, destinationPort);
+					
+					//if choosed a valid product
+					if(product!=null){
+						dwt = product.getDwt() * ThreadLocalRandom.current().nextInt(60, 120)/100; //dwt between 60% to 120%
+						int maxTeuLoadable = ship.getMaxDwt() / dwt;
+						maxTeuLoadable = Math.min(maxTeuLoadable, ship.getMaxTeu());
+						
+						teu = ThreadLocalRandom.current().nextInt(1, maxTeuLoadable  );	//generate from 1 to max 
+						
+						price = calcolatePricePerTeu(sourcePort, destinationPort, ship, product,maxTeuLoadable);
+						
+						newContracts.add(new TransportContract(product, teu, dwt, price,destinationPort));				
+					}
+			
+				}
+				
+			}
+			
 		}
 		
 		return newContracts;
+		
+
 	}
 	
-	
-	public static Product generateProduct(Port supplyPort, Port demandPort) {
+
+	private static Product chooseRandomProduct(Port supplyPort, Port demandPort) {
 		Product[] supply = supplyPort.getMarket().productSupply();
 		Product[] demand = demandPort.getMarket().productDemand();
 		
@@ -73,5 +88,17 @@ public class ContractFactory {
 	    
 	}
 		
+	//TODO non puo essere funzione del carico che posso portare al massimo
+	private static double calcolatePricePerTeu(Port sourcePort,Port destinationPort,Ship ship,Product product,int maxTeuLoadable) {
+
+		//amount of fuel consumed
+		double consumption = ship.getFuelConsumptionPerDistance(17, sourcePort.getRouteTo(destinationPort).getDistanceInScale());	//consider standard speed at 17 nodes
+		
+		//total cost 
+		double totalCost = consumption * 500;	//consider 500 euro standard price for fuel
+		
+		//prezzo medio per teu
+		return totalCost / maxTeuLoadable * product.getPrice()  * ThreadLocalRandom.current().nextInt(80, 150)/100;	//reset the price between 80 to 150 %
+	}
 
 }

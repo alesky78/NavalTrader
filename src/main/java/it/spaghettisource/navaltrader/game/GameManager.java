@@ -24,7 +24,7 @@ public class GameManager {
 		
 		
 		Port startPort = world.getPortByName("Gioia Tauro");
-		Company company = new Company(companyName, startPort, 4000000,world);
+		Company company = new Company(companyName, startPort, 40000000,world);
 
 		gameData = new GameData(company,gameTime,world);
 		loopManager = new LoopManager(gameData);
