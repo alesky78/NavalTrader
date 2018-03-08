@@ -16,6 +16,9 @@ https://dzone.com/articles/multi-threading-java-swing
 real Java swing massive multhytiread update
 http://alblue.bandlem.com/2004/07/java-optimising-gui-performance.html
 
+######################
+Beans Binding (JSR 295) support: Using Beans Binding (JSR 295) helps you
+to keep UI state and model in sync. It drastically reduces the amount of listener code that is usually necessary. 
 
 #######################
 vere statistiche finanziare sul mercato dei trasporti marittimi
