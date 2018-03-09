@@ -11,6 +11,7 @@ public enum FinancialEntryType {
 	SHIP_INCOME,
 	SHIP_BUY,
 	SHIP_SELL,
+	PENALTY_CHARGES,	
 	PAY_INSTALLMEN;
 
 	

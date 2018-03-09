@@ -9,8 +9,8 @@ import it.spaghettisource.navaltrader.game.model.Ship;
 
 public class ShipListTableRow {
 
+	private Ship ship;
 	private String name;
-	private Port dockedPort;	
 	private String shipClassName;		
 	private String model;
 	private String status;	
@@ -20,10 +20,10 @@ public class ShipListTableRow {
 	private String actualTeu;		
 	private String actualFuel;			
 	
-	public ShipListTableRow(String shipClassName, String name,String model,Port dockedPort,String status, double operatingCost, int hull, String actualDwt,String actualTeu, String actualFuel) {
+	public ShipListTableRow(Ship ship,String shipClassName, String name,String model,String status, double operatingCost, int hull, String actualDwt,String actualTeu, String actualFuel) {
 		super();
+		this.ship = ship;
 		this.name = name;
-		this.dockedPort = dockedPort;
 		this.shipClassName = shipClassName;		
 		this.status = status;
 		this.model = model;
@@ -40,14 +40,14 @@ public class ShipListTableRow {
 	}
 	
 	public Port getDockedPort() {
-		return dockedPort;
+		return ship.getDockedPort();
 	}
 
 	public String getDockedPortName() {
-		if(dockedPort==null) {
+		if(getDockedPort()==null) {
 			return "";
 		}
-		return dockedPort.getName();
+		return getDockedPort().getName();
 	}
 
 	public String getShipClassName() {
@@ -105,7 +105,7 @@ public class ShipListTableRow {
 	private static DecimalFormat format = new DecimalFormat(".#");
 	
 	public static ShipListTableRow mapData(Ship ship){
-		return new ShipListTableRow(ship.getShipClassName(), ship.getName(), ship.getModel(), ship.getDockedPort(), ship.getStatus(), ship.getOperatingCost(), ship.getHpPercentage(), 
+		return new ShipListTableRow(ship,ship.getShipClassName(), ship.getName(), ship.getModel(),  ship.getStatus(), ship.getOperatingCost(), ship.getHpPercentage(), 
 									ship.getDwt()+"/"+ship.getMaxDwt(),
 									ship.getTeu()+"/"+ship.getMaxTeu(), 
 									format.format(ship.getFuel())+"/"+ship.getMaxFuel());

@@ -177,7 +177,6 @@ public class Company implements Updatable {
 		if(isNewDay){
 			for (Ship ship : ships) {
 				//update ship
-				ship.update(minutsPassed, isNewDay, isNewWeek, isNewMonth);
 				//pay ship operative cost
 				totalOperationalCost += ship.getOperatingCost();
 				ship.getFinance().addEntry(FinancialEntryType.SHIP_OPERATING_COST, -ship.getOperatingCost());

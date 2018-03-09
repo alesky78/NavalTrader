@@ -11,6 +11,7 @@ public class ProfitabilityRoute {
 	private int hpDamaged;
 	private double incomeObtained;
 	private double tugCharges;
+	private double penaltyCharges;	
 	private List<TransportContract> contractClosed;
 	
 	public ProfitabilityRoute(NavigationRoute navigationRoute,Ship ship) {
@@ -21,6 +22,7 @@ public class ProfitabilityRoute {
 		hpDamaged = 0;	
 		incomeObtained = 0;
 		tugCharges = 0;
+		penaltyCharges = 0;
 		
 		contractClosed = new ArrayList<TransportContract>();
 	}
@@ -57,6 +59,14 @@ public class ProfitabilityRoute {
 		this.tugCharges += tugCharges;
 	}
 
+	public double getPenaltyCharges() {
+		return penaltyCharges;
+	}
+
+	public void setPenaltyCharges(double penaltyCharges) {
+		this.penaltyCharges = penaltyCharges;
+	}
+
 	public void addHpDamaged(int hpDamaged) {
 		this.hpDamaged += hpDamaged;
 	}
@@ -90,7 +100,7 @@ public class ProfitabilityRoute {
 	}
 	
 	public double getFinalBalance() {
-		return incomeObtained - getTugCharges() - getFuelConsumedPrice() - getHpDamagedPrice();
+		return incomeObtained - getTugCharges() - getFuelConsumedPrice() - getHpDamagedPrice() - getPenaltyCharges();
 	}
 	
 

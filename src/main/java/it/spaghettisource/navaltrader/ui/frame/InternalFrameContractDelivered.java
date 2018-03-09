@@ -48,7 +48,7 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 		loopManager = gameManager.getLoopManager();
 		loopManager.setPauseByGame(true);
 		
-		setSize(600,450);
+		setSize(700,450);
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/container.png"));		
 		parentDesktopPane.centerInTheDesktopPane(this);
 			
@@ -96,8 +96,8 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 		economicalResults.add(new JLabel("correspond to reparation price"));		
 		economicalResults.add(new TextFieldCurrency(-profitabilityRoute.getHpDamagedPrice()));		
 		
-		economicalResults.add(new JLabel(""));		
-		economicalResults.add(new JLabel(""));
+		economicalResults.add(new JLabel("penalty charges"));		
+		economicalResults.add(new TextFieldCurrency(-profitabilityRoute.getPenaltyCharges()));
 		economicalResults.add(new JLabel("final balance of the journey"));		
 		economicalResults.add(new TextFieldCurrency(profitabilityRoute.getFinalBalance()));		
 		
@@ -107,8 +107,8 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 		////////////////////	
 		//delivered contracts
 		JTable acceptedContractTable;	
-		String[] propertyNames = new String[] { "productName", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] columnLabels = new String[]  { "productName", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] propertyNames = new String[] { "productName","dayForDelivery","dayClausePenalty", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] columnLabels = new String[]  { "productName","dayForDelivery","dayClausePenalty", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> deliveredContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		acceptedContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listDeliveredContract, deliveredContractTableTf));	
 		acceptedContractTable.setAutoCreateRowSorter(true);		

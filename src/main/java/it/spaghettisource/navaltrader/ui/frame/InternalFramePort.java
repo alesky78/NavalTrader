@@ -412,8 +412,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//port contract
 		JPanel portContractPanel = new JPanel(new BorderLayout());
 		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));	
-		String[] newContractpropertyNames = new String[] { "productName","destinationPortName", "distance", "daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] newContractcolumnLabels  = new String[] { "productName","destinationPortName", "distance", "daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] newContractpropertyNames = new String[] { "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
+		String[] newContractcolumnLabels  = new String[] { "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
 		TableFormat<TransportContractTableRow> newContractTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
 		newContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listNewContractData, newContractTf));			
 		newContractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -461,8 +461,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		////////////////////	
 		//accepted contracts
 		JTable acceptedContractTable;	
-		String[] propertyNames = new String[] { "productName","destinationPortName", "distance",  "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] columnLabels = new String[] { "productName","destinationPortName", "distance",  "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] propertyNames = new String[] { "productName","destinationPortName", "distance" ,"dayForDelivery" ,"dayClausePenalty", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] columnLabels = new String[] { "productName","destinationPortName", "distance" , "dayForDelivery" ,"dayClausePenalty", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> acceptedContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		acceptedContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listAcceptedContractData, acceptedContractTableTf));	
 		acceptedContractTable.setAutoCreateRowSorter(true);		
@@ -595,8 +595,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//accepted contract table
 		JPanel acceptedContractPanel = new JPanel(new BorderLayout());
 		acceptedContractPanel.setBorder(BorderFactory.createTitledBorder("accepted contract"));			
-		String[] propertyNames = new String[] { "productName","destinationPortName", "distance","daysToDestination", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
-		String[] columnLabels = new String[] { "productName","destinationPortName", "distance", "daysToDestination","totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] propertyNames = new String[] { "productName","destinationPortName", "distance","daysToDestination", "dayForDelivery" ,"dayClausePenalty", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
+		String[] columnLabels = new String[] { "productName","destinationPortName", "distance", "daysToDestination", "dayForDelivery" ,"dayClausePenalty", "totalTeu","totalDwt","pricePerTeu","totalPrice"};
 		TableFormat<TransportContractTableRow> acceptedContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		sailContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listAcceptedContractData, acceptedContractTableTf));	
 		sailContractTable.setAutoCreateRowSorter(true);	

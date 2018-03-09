@@ -18,6 +18,9 @@ public class ContractFactory {
 	
 	static Log log = LogFactory.getLog(ContractFactory.class.getName());
 	
+	private static int DISTANCE_REDUCTION = 1000;
+	private static int SPEED_REDUCTION = 10;	
+	
 	/**
 	 * this class create the contract in the port..
 	 * 
@@ -39,30 +42,45 @@ public class ContractFactory {
 			
 			int numberOfContracts;
 			int teu;
+			int maxTeuLoadable;			
 			int dwt;
-			double price;
+			int distance;		
+			int days;				
+			double pricePerTeu;
+			double dayPenality;
 			Port destinationPort;
 			Product product;
 			
 			//generate the contracts for each ship
 			for (Ship ship : ships) {
-				numberOfContracts = ThreadLocalRandom.current().nextInt(0, 10);	//generate an amount of contracts max 7 for ship
+				numberOfContracts = ThreadLocalRandom.current().nextInt(0, 10);	//generate an amount of contracts max 10 for ship
 	
 				for (int i = 0; i< numberOfContracts; i++) {
 					destinationPort = connectePorts.get(ThreadLocalRandom.current().nextInt(0, connectePorts.size() ));	//get random port
-					product =  chooseRandomProduct(sourcePort, destinationPort);
+					product =  chooseRandomProduct(sourcePort, destinationPort); //choose a product that is demanded and supply between the two ports
 					
 					//if choosed a valid product
 					if(product!=null){
 						dwt = product.getDwt() * ThreadLocalRandom.current().nextInt(60, 120)/100; //dwt between 60% to 120%
-						int maxTeuLoadable = ship.getMaxDwt() / dwt;
+						maxTeuLoadable = ship.getMaxDwt() / dwt;
 						maxTeuLoadable = Math.min(maxTeuLoadable, ship.getMaxTeu());
 						
-						teu = ThreadLocalRandom.current().nextInt(1, maxTeuLoadable  );	//generate from 1 to max of loaded TEU
+						if(maxTeuLoadable>1) {
+							teu = ThreadLocalRandom.current().nextInt(1, maxTeuLoadable  );	//generate from 1 to max of loaded TEU							
+						}else {
+							teu = 1;
+						}
+
 						
-						price = calcolatePricePerTeu(sourcePort, destinationPort, ship, product, teu, dwt);
+						distance = sourcePort.getRouteTo(destinationPort).getDistanceInScale();
 						
-						newContracts.add(new TransportContract(product, teu, dwt, price,destinationPort));				
+						days = distance / (SPEED_REDUCTION * 24) * ThreadLocalRandom.current().nextInt(60, 120)/100; //days between 50% to 150%
+						
+						pricePerTeu = calcolatePricePerTeu(distance, product, teu, dwt);
+						
+						dayPenality = teu * pricePerTeu * ThreadLocalRandom.current().nextInt(1, 20)/100; //penalty  between 1% to 15% of the total contract per day
+						
+						newContracts.add(new TransportContract(product, teu, dwt, pricePerTeu, dayPenality, days, destinationPort));				
 					}
 			
 				}
@@ -93,24 +111,22 @@ public class ContractFactory {
 	    
 	}
 
-	//TODO il calcolo deve essere funzionde di (prodotto, distanza, tempo, variazione casuale)
-	//il calcolo non e corretto perche prende in considerazione troppo il peso della nave e corretto invece prendere il prezzo dall tabella
-	private static double calcolatePricePerTeu(Port sourcePort,Port destinationPort,Ship ship,Product product,int teuInTheOrder, int dwtPerTeuInTheOrder) {
+	//TODO il calcolo deve essere funzionde di (prodotto, distanza, tempo, variazione casuale)  manca ancora il tempo 
+	private static double calcolatePricePerTeu(int distance, Product product,int teuInTheOrder, int dwtPerTeuInTheOrder) {
 		
 		//variazione casuale
 		double variationPrice = ((double)ThreadLocalRandom.current().nextInt(80, 120)/100D) ;
 		
-		//distanza: ogni 1000 nodi riduzione del 50% del prezzo per 1000 nodi
-		int totalDistance = sourcePort.getRouteTo(destinationPort).getDistanceInScale();
-		int loops = totalDistance/1000;
+		//distanza: ogni DISTANCE_REDUCTION nodi riduzione del 50% del prezzo per DISTANCE_REDUCTION nodi successivi
+		int loops = distance/DISTANCE_REDUCTION;
 		double variationDistance = 0;
 		int reduction = 1;
 		for (int i = 0; i<=loops; i++) {
 			reduction = reduction * 2;
-			if(i==loops) {//last loop take the rest and not 1000 units
-				variationDistance += (totalDistance%1000) / reduction;				
+			if(i==loops) {//last loop take the rest and not DISTANCE_REDUCTION units
+				variationDistance += (distance%DISTANCE_REDUCTION) / reduction;				
 			}else {
-				variationDistance += 1000 / reduction;				
+				variationDistance += DISTANCE_REDUCTION / reduction;				
 			}
 
 		}

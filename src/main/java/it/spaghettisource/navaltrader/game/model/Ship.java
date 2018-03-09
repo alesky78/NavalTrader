@@ -129,7 +129,8 @@ public class Ship implements Entity{
 		teuToUnload = 0;
 		
 		if(!toClose.isEmpty()){
-			int totalBudget = 0;
+			double totalBudget = 0;
+			double penaltyCharges = 0;			
 			for (TransportContract transportContract : toClose) {
 				//reset the Teu and the DWT
 				teuToUnload += transportContract.getTeu();
@@ -140,11 +141,18 @@ public class Ship implements Entity{
 				
 				totalBudget += transportContract.getTotalPrice();
 				finance.addEntry(FinancialEntryType.SHIP_INCOME, transportContract.getTotalPrice());
+				
+				if(transportContract.getDayForDelivery()<0) {
+					penaltyCharges += Math.abs(transportContract.getDayForDelivery())*transportContract.getDayClausePenalty();
+				}
+				
 			}
 
-			company.addBudget(totalBudget);
+			finance.addEntry(FinancialEntryType.PENALTY_CHARGES, -penaltyCharges);
+			company.addBudget(totalBudget-penaltyCharges);
 			
 			profitabilityRoute.setIncomeObtained(totalBudget);
+			profitabilityRoute.setPenaltyCharges(penaltyCharges);
 			profitabilityRoute.addContractClosed(toClose);
 			
 			InboundEventQueue.getInstance().put(new Event(EventType.CONTRACT_COMPLETED_EVENT,profitabilityRoute));
@@ -488,6 +496,13 @@ public class Ship implements Entity{
 	@Override	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 
+		//reduce the delivery time to each contract
+		if(isNewDay) {
+			for (TransportContract transportContract : transportContracts) {
+				transportContract.reduceDayForDelivery();
+			}
+		}
+		
 		double hourPassed = minutsPassed/60.0;
 
 		if(SHIP_STATUS_DOCKED.equals(status)) {

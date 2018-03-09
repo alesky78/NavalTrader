@@ -17,9 +17,12 @@ public class TransportContractTableRow {
 	private Port destination;	
 	private int distance;
 	private int daysToDestination;	
+	private double dayClausePenalty;
+	private int dayForDelivery;	
+	
 
 	
-	public TransportContractTableRow(String id, String productName, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, Port destination) {
+	public TransportContractTableRow(String id, String productName, int totalTeu, int totalDwt, double pricePerTeu,double totalPrice, double dayClausePenalty, int dayForDelivery, Port destination) {
 		super();
 		this.id = id;
 		this.productName = productName;
@@ -27,6 +30,8 @@ public class TransportContractTableRow {
 		this.totalDwt = totalDwt;
 		this.pricePerTeu = pricePerTeu;
 		this.totalPrice = totalPrice;
+		this.dayClausePenalty = dayClausePenalty;
+		this.dayForDelivery = dayForDelivery;
 		this.destination = destination;
 		this.daysToDestination = 0;
 	}
@@ -55,6 +60,14 @@ public class TransportContractTableRow {
 		return totalPrice;
 	}
 	
+	public double getDayClausePenalty() {
+		return dayClausePenalty;
+	}
+
+	public int getDayForDelivery() {
+		return dayForDelivery;
+	}
+
 	public Port getDestinationPort() {
 		return destination;
 	}
@@ -104,6 +117,8 @@ public class TransportContractTableRow {
 											 contract.getTeu()*contract.getDwtPerTeu(), 
 											 contract.getPricePerTeu(), 
 											 contract.getTotalPrice(), 
+											 contract.getDayClausePenalty(),
+											 contract.getDayForDelivery(),
 											 contract.getDestinationPort());	
 	}		
 	
