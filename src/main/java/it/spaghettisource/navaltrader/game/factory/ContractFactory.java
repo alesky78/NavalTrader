@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Product;
 import it.spaghettisource.navaltrader.game.model.Ship;
@@ -12,6 +15,8 @@ import it.spaghettisource.navaltrader.game.model.TransportContract;
 import it.spaghettisource.navaltrader.game.model.World;
 
 public class ContractFactory {
+	
+	static Log log = LogFactory.getLog(ContractFactory.class.getName());
 	
 	/**
 	 * this class create the contract in the port..
@@ -53,9 +58,9 @@ public class ContractFactory {
 						int maxTeuLoadable = ship.getMaxDwt() / dwt;
 						maxTeuLoadable = Math.min(maxTeuLoadable, ship.getMaxTeu());
 						
-						teu = ThreadLocalRandom.current().nextInt(1, maxTeuLoadable  );	//generate from 1 to max 
+						teu = ThreadLocalRandom.current().nextInt(1, maxTeuLoadable  );	//generate from 1 to max of loaded TEU
 						
-						price = calcolatePricePerTeu(sourcePort, destinationPort, ship, product,maxTeuLoadable);
+						price = calcolatePricePerTeu(sourcePort, destinationPort, ship, product, teu, dwt);
 						
 						newContracts.add(new TransportContract(product, teu, dwt, price,destinationPort));				
 					}
@@ -87,18 +92,51 @@ public class ContractFactory {
 	    return (Product) intersection[ThreadLocalRandom.current().nextInt(0, intersection.length)];
 	    
 	}
-		
-	//TODO non puo essere funzione del carico che posso portare al massimo
-	private static double calcolatePricePerTeu(Port sourcePort,Port destinationPort,Ship ship,Product product,int maxTeuLoadable) {
 
-		//amount of fuel consumed
-		double consumption = ship.getFuelConsumptionPerDistance(17, sourcePort.getRouteTo(destinationPort).getDistanceInScale());	//consider standard speed at 17 nodes
+	//TODO il calcolo deve essere funzionde di (prodotto, distanza, tempo, variazione casuale)
+	//il calcolo non e corretto perche prende in considerazione troppo il peso della nave e corretto invece prendere il prezzo dall tabella
+	private static double calcolatePricePerTeu(Port sourcePort,Port destinationPort,Ship ship,Product product,int teuInTheOrder, int dwtPerTeuInTheOrder) {
 		
-		//total cost 
-		double totalCost = consumption * 500;	//consider 500 euro standard price for fuel
+		//variazione casuale
+		double variationPrice = ((double)ThreadLocalRandom.current().nextInt(80, 120)/100D) ;
 		
-		//prezzo medio per teu
-		return totalCost / maxTeuLoadable * product.getPrice()  * ThreadLocalRandom.current().nextInt(80, 150)/100;	//reset the price between 80 to 150 %
+		//distanza: ogni 1000 nodi riduzione del 50% del aumento del prezzo
+		int totalDistance = sourcePort.getRouteTo(destinationPort).getDistanceInScale();
+		int loops = totalDistance/1000;
+		double variationDistance = 0;
+		for (int i = 0; i<=loops; i++) {
+			if(i==loops) {//last loop take the rest and not 1000 units
+				variationDistance += (totalDistance%1000) /(i+1);				
+			}else {
+				variationDistance += 1000/(i+1);				
+			}
+
+		}
+		
+		return product.getPrice()* variationPrice * variationDistance;
 	}
 
+	
+	public static void main(String[] args) {
+		
+		for (int i = 0; i < 1; i++) {
+			test(600);
+		}
+
+		
+	}
+
+	private static void test(int totalDistance) {
+		int loops = totalDistance/1000;
+		double variationDistance = 0;
+		for (int i = 0; i<=loops; i++) {
+			if(i==loops) {//last loop take the rest and not 1000 units
+				variationDistance += (totalDistance%1000) /(i+1);				
+			}else {
+				variationDistance += 1000/(i+1);				
+			}
+
+		}
+		log.info("distance: "+totalDistance+" variationDistance:"+variationDistance);
+	}
 }
