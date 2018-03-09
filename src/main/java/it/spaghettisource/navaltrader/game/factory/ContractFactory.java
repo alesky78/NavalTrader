@@ -100,15 +100,17 @@ public class ContractFactory {
 		//variazione casuale
 		double variationPrice = ((double)ThreadLocalRandom.current().nextInt(80, 120)/100D) ;
 		
-		//distanza: ogni 1000 nodi riduzione del 50% del aumento del prezzo
+		//distanza: ogni 1000 nodi riduzione del 50% del prezzo per 1000 nodi
 		int totalDistance = sourcePort.getRouteTo(destinationPort).getDistanceInScale();
 		int loops = totalDistance/1000;
 		double variationDistance = 0;
+		int reduction = 1;
 		for (int i = 0; i<=loops; i++) {
+			reduction = reduction * 2;
 			if(i==loops) {//last loop take the rest and not 1000 units
-				variationDistance += (totalDistance%1000) /(i+1);				
+				variationDistance += (totalDistance%1000) / reduction;				
 			}else {
-				variationDistance += 1000/(i+1);				
+				variationDistance += 1000 / reduction;				
 			}
 
 		}
