@@ -452,7 +452,7 @@ public class Ship implements Entity{
 		if(navigationRoute.isArrivedAtDestination()) {
 
 			setDockedPort(navigationRoute.getDestinationPort());	//this set also final coordinate of the ship
-			waitingTimeInHours = 4;		//TODO set the docking time,	may be function of the port and ship type??? depend also from the traffic
+			waitingTimeInHours = 4;		//TODO set the docking time, may be function of the port ??? in fact depend from the traffic in the dock
 			navigationRoute = null;
 			status = SHIP_STATUS_DOCKING;
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));					
