@@ -46,7 +46,10 @@ public class Ship implements Entity{
 	private double operatingCost;
 
 	private int hp;	
-	private int maxHp;	
+	private int maxHp;
+	private double hpDamagePerNodeOfNavigation;
+	private double hpDamagePerRoute;	
+	
 	private int dwt;
 	private int maxDwt;	
 	private int teu;
@@ -88,6 +91,8 @@ public class Ship implements Entity{
 		teuToUnload = 0;
 		fuel = 0;		
 		speed = 0;		
+		hpDamagePerNodeOfNavigation = 0;	
+		hpDamagePerRoute = 0;
 		name = "";		
 		finance = new Finance();
 		transportContracts = new ArrayList<TransportContract>();
@@ -197,15 +202,17 @@ public class Ship implements Entity{
 		return dockedPort;
 	}
 
-	public void setDockedPort(Port dockedPort) {
-		this.dockedPort = dockedPort;
-		this.dockedPort.addDockedShip(this);
-		this.position = new Point(dockedPort.getCooridnate().getX(), dockedPort.getCooridnate().getY()) ;
+	public void setDockedPort(Port port) {
+		dockedPort = port;
+		dockedPort.addDockedShip(this);
+		position = new Point(port.getCooridnate().getX(), port.getCooridnate().getY()) ;
+		navigationRoute = null;		
 	}
 
 	public void leaveDockedPort() {
 		this.dockedPort.removeDockedShip(this);
 		this.dockedPort = null;
+		teuToLoad = 0;		
 	}
 	
 	public Finance getFinance() {
@@ -260,6 +267,21 @@ public class Ship implements Entity{
 		this.maxHp = maxHp;
 	}
 
+	/**
+	 * the function to calculate the damage for unit of navigation is based in an idex
+	 * index = teu * average dwt * speed
+	 * 
+	 * then the final function of the unit of damage for node of navigation is 
+	 * HpDamagePerNodeOfNavigation = ATAN(2) + ATAN( index ) / (1,6*ATAN(1))
+	 * 
+	 * @return
+	 */
+	private void calculateDamageForNodeOfNavigation(){
+		hpDamagePerNodeOfNavigation = 1.1 +  Math.atan((dwt*speed)/300000D - 4D) / 1.26  ;
+		hpDamagePerRoute = 0;
+	}
+
+	
 	public int getDwt() {
 		return dwt;
 	}
@@ -368,12 +390,13 @@ public class Ship implements Entity{
 	}
 
 	/**
-	 * prepare the ship to be loaded
+	 * this is the main method that must be called to cast of a ship
+	 * it tacking care to prepare the ship for the load activities and the navigation route
 	 * 
 	 * @param speed
 	 * @param route
 	 */
-	public void loadShipAndPrepareToNavigate(int navigationSpeed, Route route) {
+	public void prepareToloadAndToNavigate(int navigationSpeed, Route route) {
 		log.debug("ship :"+name+" strat loading operations");
 		speed = navigationSpeed;
 		navigationRoute = new NavigationRoute(speed, route);
@@ -395,7 +418,7 @@ public class Ship implements Entity{
 	private void loadShip(double hourPassed) {
 		waitingTimeInHours = waitingTimeInHours - hourPassed;
 		
-		if(waitingTimeInHours<0) {	//if finish to load the ship
+		if(waitingTimeInHours<0) {	//if finish to load the ship prepare to navigate
 			log.debug("ship :"+name+" completed loading start navigation");
 			status = SHIP_STATUS_NAVIGATION;
 
@@ -407,30 +430,13 @@ public class Ship implements Entity{
 
 			//leave the port			
 			leaveDockedPort();
-			teuToLoad = 0;
 
+			//calculate the damage
+			calculateDamageForNodeOfNavigation();			
+			
 			//ship start to navigate
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
 		}
-	}
-
-
-	/**
-	 * spend time loading the ship
-	 * 
-	 * @param hourPassed
-	 */
-	private void unloadShip(double hourPassed) {
-		waitingTimeInHours = waitingTimeInHours - hourPassed;
-		
-		if(waitingTimeInHours<0) {	//if finish to load the ship
-			log.debug("ship :"+name+" completed unloading ");
-			status = SHIP_STATUS_DOCKED;
-
-			//ship start to navigate
-			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
-		}		
-		
 	}
 	
 	/**
@@ -442,18 +448,26 @@ public class Ship implements Entity{
 
 		position = navigationRoute.navigate(hourPassed);
 		
+		//fuel
 		double fuelConsumed = getFuelConsumptionPerHour(navigationRoute.getSpeed())*hourPassed;
 		fuel -= fuelConsumed;
 		profitabilityRoute.addFuelConsumed(fuelConsumed);
 
-		//TODO implement the damage of the ship
-		
+		//damage
+		double damage = hpDamagePerNodeOfNavigation * navigationRoute.getSpeed()*hourPassed;
+		hpDamagePerRoute += damage;
 		
 		if(navigationRoute.isArrivedAtDestination()) {
 
+			//evaluate the final damage
+			profitabilityRoute.addHpDamaged((int)hpDamagePerRoute);
+			hp -= (int)hpDamagePerRoute;
+			
+			//docking the ship
 			setDockedPort(navigationRoute.getDestinationPort());	//this set also final coordinate of the ship
+			
 			waitingTimeInHours = 4;		//TODO set the docking time, may be function of the port ??? in fact depend from the traffic in the dock
-			navigationRoute = null;
+
 			status = SHIP_STATUS_DOCKING;
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));					
 		}
@@ -493,6 +507,26 @@ public class Ship implements Entity{
 		}
 	}	
 
+	
+	/**
+	 * spend time loading the ship
+	 * 
+	 * @param hourPassed
+	 */
+	private void unloadShip(double hourPassed) {
+		waitingTimeInHours = waitingTimeInHours - hourPassed;
+		
+		if(waitingTimeInHours<0) {	//if finish to load the ship
+			log.debug("ship :"+name+" completed unloading ");
+			status = SHIP_STATUS_DOCKED;
+
+			//ship start to navigate
+			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
+		}		
+		
+	}	
+	
+	
 	@Override	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 

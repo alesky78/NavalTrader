@@ -705,7 +705,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			if(sailControlFuel.getValue()>=0 && whereToGo != null) {
 				int selectedSpeed = sliderNavigationSpeed.getValue();
 	
-				ship.loadShipAndPrepareToNavigate(selectedSpeed, port.getRouteTo(whereToGo));				
+				ship.prepareToloadAndToNavigate(selectedSpeed, port.getRouteTo(whereToGo));				
 				this.doDefaultCloseAction();	//close the frame ship no more in the port				
 			}
 

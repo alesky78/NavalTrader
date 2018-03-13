@@ -36,8 +36,8 @@ public class Port  implements Entity{
 		this.loadTeuPerHour = loadTeuPerHour;
 		this.routes = new ArrayList<Route>();
 		this.dockedShips = new ArrayList<Ship>();
-		this.fuelPrice = 700.0;
-		this.repairPrice = 900.0;		
+		this.fuelPrice = 700.0;		//TODO implement logic to calculate fuel price, price if for t of fuel and 700 is the max when 400 is the minumum
+		this.repairPrice = 150.0;	//TODO implement logic to calculate repair price,  150 is the correct average price		
 	}
 
 	public String getName() {
@@ -109,7 +109,6 @@ public class Port  implements Entity{
 		return loadTeuPerHour;
 	}
 
-	//TODO implement logic to calculate fuel price
 	public double getFuelPrice() {
 		return fuelPrice;	
 	}
@@ -120,7 +119,6 @@ public class Port  implements Entity{
 	 * @param ship
 	 * @return
 	 */
-	//TODO implement logic to calculate repair price
 	public double getRepairPricePerPercentage(Ship ship) {
 		return (ship.getMaxHp()/100) * repairPrice;	
 	}
