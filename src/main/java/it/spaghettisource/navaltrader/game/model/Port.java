@@ -1,7 +1,6 @@
 package it.spaghettisource.navaltrader.game.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
@@ -37,7 +36,7 @@ public class Port  implements Entity{
 		this.routes = new ArrayList<Route>();
 		this.dockedShips = new ArrayList<Ship>();
 		this.fuelPrice = 700.0;		//TODO implement logic to calculate fuel price, price if for t of fuel and 700 is the max when 400 is the minumum
-		this.repairPrice = 150.0;	//TODO implement logic to calculate repair price,  150 is the correct average price		
+		this.repairPrice = 500.0;	//TODO implement logic to calculate repair price,  500 is the correct average price		
 	}
 
 	public String getName() {
@@ -60,8 +59,8 @@ public class Port  implements Entity{
 		return dailyFeeCost;
 	}
 
-	public double getCastOffCost() {
-		return castOffCost;
+	public double getCastOffCost(Ship ship) {
+		return castOffCost * ship.getShipSize() * 2;
 	}
 	
 	public void addRoute(Route route) {

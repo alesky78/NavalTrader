@@ -279,6 +279,8 @@ public class Ship implements Entity{
 	private void calculateDamageForNodeOfNavigation(){
 		hpDamagePerNodeOfNavigation = 1.1 +  Math.atan((dwt*speed)/300000D - 4D) / 1.26  ;
 		hpDamagePerRoute = 0;
+
+		log.debug("ship damage new damage per node:"+hpDamagePerNodeOfNavigation);
 	}
 
 	
@@ -423,9 +425,10 @@ public class Ship implements Entity{
 			status = SHIP_STATUS_NAVIGATION;
 
 			//cost for cast off
-			finance.addEntry(FinancialEntryType.SHIP_CAST_OFF_COST_TUG, -dockedPort.getCastOffCost());
-			profitabilityRoute.addTugCharges(dockedPort.getCastOffCost());
-			company.removeBudget(dockedPort.getCastOffCost());			
+			double castOffCost = dockedPort.getCastOffCost(this);			
+			finance.addEntry(FinancialEntryType.SHIP_CAST_OFF_COST_TUG, -castOffCost);
+			profitabilityRoute.addTugCharges(castOffCost);
+			company.removeBudget(castOffCost);			
 			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));			
 
 			//leave the port			
@@ -462,6 +465,7 @@ public class Ship implements Entity{
 			//evaluate the final damage
 			profitabilityRoute.addHpDamaged((int)hpDamagePerRoute);
 			hp -= (int)hpDamagePerRoute;
+			log.debug("ship damage per route:"+hpDamagePerRoute);
 			
 			//docking the ship
 			setDockedPort(navigationRoute.getDestinationPort());	//this set also final coordinate of the ship
@@ -488,9 +492,10 @@ public class Ship implements Entity{
 			log.debug("ship :"+name+" completed docking");
 			
 			//cost for cast off to dock
-			finance.addEntry(FinancialEntryType.SHIP_DOCK_COST_TUG, -dockedPort.getCastOffCost());
-			company.removeBudget(dockedPort.getCastOffCost());			
-			profitabilityRoute.addTugCharges(dockedPort.getCastOffCost());
+			double castOffCost = dockedPort.getCastOffCost(this);
+			finance.addEntry(FinancialEntryType.SHIP_DOCK_COST_TUG, -castOffCost);
+			company.removeBudget(castOffCost);			
+			profitabilityRoute.addTugCharges(castOffCost);
 			
 			//close contracts
 			closeContracts();

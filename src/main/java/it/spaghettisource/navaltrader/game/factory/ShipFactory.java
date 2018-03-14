@@ -24,7 +24,7 @@ public class ShipFactory {
 	private static final Ship SHIP_4 = 	new Ship("Panamax",		 "FastS",   4, 3000,  10000,	7000	, 5100,  3000, 0.02, 0.1, 2000, 19, 5000000);
 	private static final Ship SHIP_5 = 	new Ship("Post-Panamax", "FastSS",  5, 5000,  20000,	15000	, 10000, 4000, 0.02, 0.2, 2000, 23, 10000000);
 	private static final Ship SHIP_6 = 	new Ship("New Panamax",	 "tornato", 6, 5000,  20000,	20000	, 14500, 5000, 0.02, 0.2, 2000, 25, 15000000);
-	private static final Ship SHIP_7= 	new Ship("ULCV",		 "spaceX",  7, 10000, 25000,	25000	, 18270, 6000, 0.02, 0.3, 2000, 26, 25000000);	
+	private static final Ship SHIP_7= 	new Ship("ULCV",		 "spaceX",  7, 10000,  10000,	25000	, 18270, 6000, 0.02, 0.3, 2000, 26, 25000000);	
 	
 	private static final Ship[] shipArray = new Ship[]{SHIP_0,SHIP_1,SHIP_2,SHIP_3,SHIP_4,SHIP_5,SHIP_6,SHIP_7};	
 
