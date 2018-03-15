@@ -47,6 +47,7 @@ import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.ButtonDrawPort;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 import it.spaghettisource.navaltrader.ui.component.ProgressBarHull;
+import it.spaghettisource.navaltrader.ui.component.TableCellRenderCheckContract;
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.TextFieldDouble;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
@@ -342,7 +343,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		JSlider sliderNavigationSpeed;			
 		sliderNavigationSpeed = new JSlider(JSlider.HORIZONTAL,1, ship.getMaxSpeed(), startSpeed);
 
-		//set the day and distance to destination for all contracts
+		//Initialise the day and distance to destination port for all contracts
+		//and the capability to load this contract
 		TransportContractTableRow contract;		
 		Route route;
 		for (int index = 0; index < listNewContractData.size(); index++) {
@@ -350,9 +352,9 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			route = port.getRouteTo(contract.getDestinationPort());
 			contract.setDaysToDestination(route.calcDaysToDestination(startSpeed));
 			contract.setDistance(route.getDistanceInScale());
+			contract.setSelectable(ship.getAcceptedTeu(), ship.getAcceptedDwt());
 			listNewContractData.set(index, contract);
 		}
-
 
 
 		sliderNavigationSpeed.addChangeListener(new ChangeListener() {
@@ -412,35 +414,48 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//port contract
 		JPanel portContractPanel = new JPanel(new BorderLayout());
 		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));	
-		String[] newContractpropertyNames = new String[] { "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
-		String[] newContractcolumnLabels  = new String[] { "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
+		String[] newContractpropertyNames = new String[] { "selectable", "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
+		String[] newContractcolumnLabels  = new String[] { "selectable", "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
 		TableFormat<TransportContractTableRow> newContractTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
 		newContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listNewContractData, newContractTf));			
 		newContractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		newContractTable.setAutoCreateRowSorter(true);		
+		newContractTable.setAutoCreateRowSorter(true);	
+		newContractTable.setDefaultRenderer(Object.class, new TableCellRenderCheckContract(ship, listNewContractData) );  //the render set red to the rows that cannot be selected
+		
 
 		newContractTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {
 				try{
 					int[] selected = newContractTable.getSelectedRows();
 					//calculation on the control based on the selected rows
+					List<TransportContractTableRow> selectedContract = new ArrayList<>();					
 					TransportContractTableRow contract;
 					int newMaxTeu = ship.getAcceptedTeu();
 					int newMaxDwt = ship.getAcceptedDwt();	
 					double newMaxFule = ship.getFuel();		
 					List<Route> routes = new ArrayList<Route>();
+
 					for (int i = 0; i < selected.length; i++) {
 						contract = listNewContractData.get(newContractTable.convertRowIndexToModel(selected[i]));
 						newMaxTeu -= contract.getTotalTeu();
 						newMaxDwt -= contract.getTotalDwt();
 						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), contract.getDistance());
 						routes.add(port.getRouteTo(contract.getDestinationPort()));
+						contract.setSelectable(true);						
+						selectedContract.add(contract);
 					}
 
 					controlTeu.setValue(newMaxTeu); 
 					controlDwt.setValue(newMaxDwt);
 					controlFuel.setValue(newMaxFule);
 
+					//for all the contract not selected check if still can be selected 
+					List<TransportContractTableRow> notSelectedContracts = new ArrayList<TransportContractTableRow>(listNewContractData);	
+					notSelectedContracts.removeAll(selectedContract);
+					for (TransportContractTableRow notSelected : notSelectedContracts) {
+						notSelected.setSelectable(newMaxTeu, newMaxDwt);
+					}
+					
 					//add the path to the map
 					mapOfPortPanel.setRoutes(routes);
 
@@ -600,7 +615,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		TableFormat<TransportContractTableRow> acceptedContractTableTf = GlazedLists.tableFormat(TransportContractTableRow.class, propertyNames, columnLabels);
 		sailContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listAcceptedContractData, acceptedContractTableTf));	
 		sailContractTable.setAutoCreateRowSorter(true);	
-		sailContractTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);			
+		sailContractTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);		
 
 		sailContractTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {

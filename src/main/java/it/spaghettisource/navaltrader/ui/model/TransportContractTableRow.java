@@ -8,6 +8,7 @@ import it.spaghettisource.navaltrader.game.model.TransportContract;
 
 public class TransportContractTableRow {
 
+	private boolean selectable;	//used in the UI to define if the rows can be selected or not
 	private String id;
 	private String productName;
 	private int totalTeu;
@@ -34,6 +35,8 @@ public class TransportContractTableRow {
 		this.dayForDelivery = dayForDelivery;
 		this.destination = destination;
 		this.daysToDestination = 0;
+		
+		selectable = true;
 	}
 
 	public String getId() {
@@ -91,6 +94,22 @@ public class TransportContractTableRow {
 	public void setDaysToDestination(int daysToDestination) {
 		this.daysToDestination = daysToDestination;
 	}
+
+	public boolean isSelectable() {
+		return selectable;
+	}
+
+	public void setSelectable(boolean selectable) {
+		this.selectable = selectable;
+	}
+	
+	public void setSelectable(int maxTeu, int maxDwt) {
+		if(maxTeu>=totalTeu && maxDwt >= totalDwt){
+			selectable = true;			
+		}else{
+			selectable = false;			
+		}
+	}	
 
 	public boolean equals(Object obj){
 		if(obj==null){
