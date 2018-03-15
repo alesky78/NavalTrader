@@ -420,7 +420,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		newContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listNewContractData, newContractTf));			
 		newContractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		newContractTable.setAutoCreateRowSorter(true);	
-		newContractTable.setDefaultRenderer(Object.class, new TableCellRenderCheckContract(ship, listNewContractData) );  //the render set red to the rows that cannot be selected
+		newContractTable.setDefaultRenderer(Object.class, new TableCellRenderCheckContract(listNewContractData) );  //the render set red to the rows that cannot be selected
 		
 
 		newContractTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -440,8 +440,10 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 						newMaxTeu -= contract.getTotalTeu();
 						newMaxDwt -= contract.getTotalDwt();
 						newMaxFule -= ship.getFuelConsumptionPerDistance(sliderNavigationSpeed.getValue(), contract.getDistance());
-						routes.add(port.getRouteTo(contract.getDestinationPort()));
-						contract.setSelectable(true);						
+						routes.add(port.getRouteTo(contract.getDestinationPort()));	
+						
+						listNewContractData.set(listNewContractData.indexOf(contract), contract) ;  //refresh the object for selection
+						
 						selectedContract.add(contract);
 					}
 
@@ -454,6 +456,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					notSelectedContracts.removeAll(selectedContract);
 					for (TransportContractTableRow notSelected : notSelectedContracts) {
 						notSelected.setSelectable(newMaxTeu, newMaxDwt);
+						listNewContractData.set(listNewContractData.indexOf(notSelected), notSelected) ;	//refresh the object for selection				
 					}
 					
 					//add the path to the map
