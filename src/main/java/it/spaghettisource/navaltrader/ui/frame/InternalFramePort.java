@@ -588,7 +588,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		///////////////////////////////////
 		//word map port
 		castOffPanelDrawRoute = new PanelDrawRoute(port, world, 600); 
-		castOffPanelDrawRoute.drawPorts(ACTION_CHOOSE_DESTINATION, this);
+		castOffPanelDrawRoute.drawPorts(ship, ACTION_CHOOSE_DESTINATION, this);
 		
 
 		/////////////////////////

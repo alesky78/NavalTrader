@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.Route;
+import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.geometry.Point;
 
@@ -56,13 +57,13 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 		
 	}
 	
-	public void drawPorts(String actionCommand, ActionListener listner) {
+	public void drawPorts(Ship ship, String actionCommand,  ActionListener listner) {
 		
 		//create a button for each port
 		portsButton = new ArrayList<>();
 		ButtonDrawPort button;
 		for (Port actualPort : world.getPorts()) {
-			button = new ButtonDrawPort(actualPort, 20, 3, actionCommand,listner);
+			button = new ButtonDrawPort(actualPort, ship, 20, 3, actionCommand,listner);
 			add(button);			
 			portsButton.add(button);
 			button.resetLocation(this, world.getWorldSize());			
