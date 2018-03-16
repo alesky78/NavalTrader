@@ -353,7 +353,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			route = port.getRouteTo(contract.getDestinationPort());
 			contract.setDaysToDestination(route.calcDaysToDestination(startSpeed));
 			contract.setDistance(route.getDistanceInScale());
-			contract.setSelectable(ship.getAcceptedTeu(), ship.getAcceptedDwt());
+			contract.setSelectable(ship,ship.getAcceptedTeu(), ship.getAcceptedDwt());
 			listNewContractData.set(index, contract);
 		}
 
@@ -454,7 +454,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 					List<TransportContractTableRow> notSelectedContracts = new ArrayList<TransportContractTableRow>(listNewContractData);	
 					notSelectedContracts.removeAll(selectedContract);
 					for (TransportContractTableRow notSelected : notSelectedContracts) {
-						notSelected.setSelectable(newMaxTeu, newMaxDwt);
+						notSelected.setSelectable(ship,newMaxTeu, newMaxDwt);
 						listNewContractData.set(listNewContractData.indexOf(notSelected), notSelected) ;	//refresh the object for selection				
 					}
 					

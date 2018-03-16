@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.spaghettisource.navaltrader.game.model.Port;
+import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
 
 public class TransportContractTableRow {
 
-	private boolean selectable;	//used in the UI to define if the rows can be selected or not
+	private boolean selectable;	//used in the UI to define if the rows can be selected or not by the specific ship
 	private String id;
 	private String productName;
 	private int totalTeu;
@@ -103,8 +104,15 @@ public class TransportContractTableRow {
 		this.selectable = selectable;
 	}
 	
-	public void setSelectable(int maxTeu, int maxDwt) {
-		if(maxTeu>=totalTeu && maxDwt >= totalDwt){
+	/**
+	 * verify if this contract can be accepted by this 
+	 * 
+	 * @param ship
+	 * @param maxTeu
+	 * @param maxDwt
+	 */
+	public void setSelectable(Ship ship, int maxTeu, int maxDwt) {
+		if(maxTeu>=totalTeu && maxDwt >= totalDwt && ship.getShipSize() <= destination.getShipSizeAccepted()){
 			selectable = true;			
 		}else{
 			selectable = false;			
