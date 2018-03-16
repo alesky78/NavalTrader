@@ -48,6 +48,7 @@ import it.spaghettisource.navaltrader.ui.component.ButtonDrawPort;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 import it.spaghettisource.navaltrader.ui.component.ProgressBarHull;
 import it.spaghettisource.navaltrader.ui.component.TableCellRenderCheckContract;
+import it.spaghettisource.navaltrader.ui.component.TableCheckContract;
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.TextFieldDouble;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
@@ -414,14 +415,12 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 		//port contract
 		JPanel portContractPanel = new JPanel(new BorderLayout());
 		portContractPanel.setBorder(BorderFactory.createTitledBorder("new contract"));	
-		String[] newContractpropertyNames = new String[] { "selectable", "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
-		String[] newContractcolumnLabels  = new String[] { "selectable", "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
+		String[] newContractpropertyNames = new String[] { "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
+		String[] newContractcolumnLabels  = new String[] { "productName","destinationPortName", "distance", "daysToDestination","dayForDelivery", "totalTeu","totalDwt","pricePerTeu","dayClausePenalty","totalPrice"};
 		TableFormat<TransportContractTableRow> newContractTf = GlazedLists.tableFormat(TransportContractTableRow.class, newContractpropertyNames, newContractcolumnLabels);
-		newContractTable = new JTable(new EventTableModel<TransportContractTableRow>(listNewContractData, newContractTf));			
+		newContractTable = new TableCheckContract(new EventTableModel<TransportContractTableRow>(listNewContractData, newContractTf),listNewContractData);			
 		newContractTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		newContractTable.setAutoCreateRowSorter(true);	
-		newContractTable.setDefaultRenderer(Object.class, new TableCellRenderCheckContract(listNewContractData) );  //the render set red to the rows that cannot be selected
-		
 
 		newContractTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {

@@ -91,3 +91,13 @@ http://worldfreightrates.com/freight
 #####################
 point between vector
 https://math.stackexchange.com/questions/2045174/how-to-find-a-point-between-two-points-with-given-distance
+
+
+###################
+JTAble select specific rows
+You can either override JTable.changeSelection() to deselect the offending row whenever it's selected, 
+or provide your table with a custom ListSelectionModel where you override setSelectionInterval(), addSelectionInterval(), etc. 
+to prevent the row from being selected in the first place.
+
+
+
