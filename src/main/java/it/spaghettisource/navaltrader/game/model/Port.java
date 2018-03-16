@@ -2,6 +2,7 @@ package it.spaghettisource.navaltrader.game.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
 import it.spaghettisource.navaltrader.geometry.Point;
@@ -17,6 +18,7 @@ public class Port  implements Entity{
 	private double loadTeuPerHour;		
 	private double dailyFeeCost;	
 	private double castOffCost;	
+	private double fuelPriceStandard;	
 	private double fuelPrice;
 	private double repairPrice;	
 	private List<Route> routes;
@@ -24,7 +26,7 @@ public class Port  implements Entity{
 	private Market market;
 
 	
-	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int shipSizeAccepted,double loadTeuPerHour) {
+	public Port(World world,Point cooridnate,String name, double dailyFeeCost, double castOffCost, int shipSizeAccepted,double loadTeuPerHour,double fuelPrice) {
 		super();
 		this.world =  world;
 		this.cooridnate = cooridnate;
@@ -35,7 +37,8 @@ public class Port  implements Entity{
 		this.loadTeuPerHour = loadTeuPerHour;
 		this.routes = new ArrayList<Route>();
 		this.dockedShips = new ArrayList<Ship>();
-		this.fuelPrice = 700.0;		//TODO implement logic to calculate fuel price, price if for t of fuel and 700 is the max when 400 is the minumum
+		this.fuelPriceStandard = fuelPrice;
+		this.fuelPrice = fuelPrice;		
 		this.repairPrice = 500.0;	//TODO implement logic to calculate repair price,  500 is the correct average price		
 	}
 
@@ -111,6 +114,23 @@ public class Port  implements Entity{
 	public double getFuelPrice() {
 		return fuelPrice;	
 	}
+	
+	public void calculateFuelPrice() {
+		if(ThreadLocalRandom.current().nextBoolean()) {
+			fuelPrice += 7;
+		}else {
+			fuelPrice -= 7;			
+		}
+		
+		if(fuelPrice> fuelPriceStandard +200) {
+			fuelPrice = fuelPriceStandard +200;
+		}
+		
+		if(fuelPrice< fuelPriceStandard - 200) {
+			fuelPrice = fuelPriceStandard -200;
+		}
+		
+	}
 
 	/**
 	 * Calculate the cost to repair 1% for this specific ship
@@ -128,6 +148,10 @@ public class Port  implements Entity{
 
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 		market.update(minutsPassed, isNewDay, isNewWeek, isNewMonth);
+		
+		if(isNewDay) {
+			calculateFuelPrice();
+		}
 	}
 	
 	public boolean equals(Object obj){
