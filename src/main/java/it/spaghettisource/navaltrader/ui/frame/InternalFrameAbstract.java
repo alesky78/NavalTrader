@@ -5,6 +5,8 @@ import java.text.NumberFormat;
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,6 +36,11 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 	
 	public InternalFrameAbstract(MainDesktopPane parentDesktopPane,GameManager gameManager, String name,boolean resizable, boolean closable,boolean maximizable, boolean iconifiable) {
 		super(name, resizable, closable, maximizable, iconifiable);
+		
+		//TODO to make this frame undecorated
+//		BasicInternalFrameTitlePane titlePane = (BasicInternalFrameTitlePane) ((BasicInternalFrameUI) getUI()).getNorthPane();
+//		remove(titlePane);
+		
 		try {		
 			this.gameManager = gameManager; 
 			this.gameData = gameManager.getGameData();
