@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
-import it.spaghettisource.navaltrader.ui.MainFrame;
+import it.spaghettisource.navaltrader.ui.frame.MainFrame;
 
 public class Application {
 

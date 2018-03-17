@@ -1,13 +1,13 @@
-package it.spaghettisource.navaltrader.ui.frame;
+package it.spaghettisource.navaltrader.ui.internalframe;
 
 import javax.swing.event.InternalFrameEvent;
 
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawNavigation;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
 
 public class InternalFrameMapNavigation extends InternalFrameAbstract {
 	

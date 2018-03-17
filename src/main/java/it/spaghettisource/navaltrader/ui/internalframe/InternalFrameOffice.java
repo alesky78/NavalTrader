@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.ui.frame;
+package it.spaghettisource.navaltrader.ui.internalframe;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -34,7 +34,6 @@ import it.spaghettisource.navaltrader.game.model.Bank;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Finance;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.TextFieldPercentage;
@@ -42,6 +41,7 @@ import it.spaghettisource.navaltrader.ui.component.TableCellCurrentyRenderer;
 import it.spaghettisource.navaltrader.ui.component.TableCellPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.FinancialTableRow;
 import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 

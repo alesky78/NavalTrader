@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.ui.frame;
+package it.spaghettisource.navaltrader.ui.internalframe;
 
 import java.text.NumberFormat;
 
@@ -13,9 +13,9 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameData;
 import it.spaghettisource.navaltrader.game.GameManager;
-import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.event.EventListener;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
+import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
 
 public abstract class InternalFrameAbstract extends JInternalFrame implements EventListener,InternalFrameListener {
 

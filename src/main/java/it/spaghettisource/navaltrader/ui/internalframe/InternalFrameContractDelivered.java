@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.ui.frame;
+package it.spaghettisource.navaltrader.ui.internalframe;
 
 import java.awt.BorderLayout;
 
@@ -23,13 +23,13 @@ import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.loop.LoopManager;
 import it.spaghettisource.navaltrader.game.model.ProfitabilityRoute;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.TextFieldDouble;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.TransportContractTableRow;
 
 public class InternalFrameContractDelivered extends InternalFrameAbstract {

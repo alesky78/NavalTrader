@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.ui.frame;
+package it.spaghettisource.navaltrader.ui.internalframe;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -31,12 +31,12 @@ import it.spaghettisource.navaltrader.game.factory.ShipFactory;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.TableCellHullProgressBarPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.BuyShipTableRow;
 import it.spaghettisource.navaltrader.ui.model.SellShipTableRow;
 

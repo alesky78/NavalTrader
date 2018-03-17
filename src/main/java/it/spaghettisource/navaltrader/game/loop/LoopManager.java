@@ -7,7 +7,7 @@ import it.spaghettisource.navaltrader.game.GameData;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
 import it.spaghettisource.navaltrader.game.model.World;
-import it.spaghettisource.navaltrader.ui.frame.InternalFrameTimeSimulation;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameTimeSimulation;
 
 public class LoopManager implements  Runnable {
 

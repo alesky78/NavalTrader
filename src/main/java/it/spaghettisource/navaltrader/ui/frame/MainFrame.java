@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.ui;
+package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -17,13 +17,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
+import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
-import it.spaghettisource.navaltrader.ui.frame.InternalFrameMapNavigation;
-import it.spaghettisource.navaltrader.ui.frame.InternalFrameOffice;
-import it.spaghettisource.navaltrader.ui.frame.InternalFrameShipBroker;
-import it.spaghettisource.navaltrader.ui.frame.InternalFrameShipList;
-import it.spaghettisource.navaltrader.ui.frame.InternalFrameTimeSimulation;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameMapNavigation;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameOffice;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameShipBroker;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameShipList;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameTimeSimulation;
 
 public class MainFrame extends JFrame  implements ActionListener{
 

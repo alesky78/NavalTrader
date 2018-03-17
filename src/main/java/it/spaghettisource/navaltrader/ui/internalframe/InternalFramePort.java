@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.ui.frame;
+package it.spaghettisource.navaltrader.ui.internalframe;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -42,7 +42,6 @@ import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.game.model.TransportContract;
 import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.ButtonDrawPort;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
@@ -54,6 +53,7 @@ import it.spaghettisource.navaltrader.ui.component.TextFieldDouble;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
+import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.TransportContractTableRow;
 
 public class InternalFramePort extends InternalFrameAbstract  implements ActionListener  {

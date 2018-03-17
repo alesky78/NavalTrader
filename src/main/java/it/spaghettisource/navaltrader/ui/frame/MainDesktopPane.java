@@ -1,4 +1,4 @@
-package it.spaghettisource.navaltrader.ui;
+package it.spaghettisource.navaltrader.ui.frame;
 
 import java.awt.Dimension;
 
@@ -11,11 +11,12 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.model.ProfitabilityRoute;
+import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventListener;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.frame.InternalFrameContractDelivered;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameContractDelivered;
 
 public class MainDesktopPane extends JDesktopPane implements EventListener  {
 
