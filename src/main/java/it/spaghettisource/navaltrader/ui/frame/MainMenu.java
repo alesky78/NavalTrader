@@ -19,21 +19,9 @@ public class MainMenu extends JFrame implements ActionListener {
 	private static final String ACTION_NEW_GAME = "new game";
 	private static final String ACTION_LOAD_GAME = "load game";	
 	
-	public static void main(String[] args){
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				new MainMenu();
-			}
-		});
-		
-	}
-	
-	/**
-	 * Create the frame.
-	 */
-	public MainMenu() {
+		public MainMenu() {
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		//setUndecorated(true);
+		setUndecorated(true);
 		
 		JPanel panel = new PanelDrawBackground("/images/startBakground.png");
 		getContentPane().add(panel);

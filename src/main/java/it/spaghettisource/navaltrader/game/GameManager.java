@@ -6,6 +6,7 @@ import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
 import it.spaghettisource.navaltrader.game.model.Port;
 import it.spaghettisource.navaltrader.game.model.World;
+import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 
 public class GameManager {
@@ -48,6 +49,9 @@ public class GameManager {
 		if(loopManager!=null) {
 			loopManager.shutdown();			
 		}
+		
+		InboundEventQueue.getInstance().stopQueuePublisher();		
+		EventPublisher.getInstance().clearAllListeners();		
 
 	}	
 

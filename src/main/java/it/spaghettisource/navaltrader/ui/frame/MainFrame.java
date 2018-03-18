@@ -1,10 +1,9 @@
 package it.spaghettisource.navaltrader.ui.frame;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -17,9 +16,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
-import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.event.EventPublisher;
-import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
 import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameMapNavigation;
 import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameOffice;
 import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameShipBroker;
@@ -31,6 +27,9 @@ public class MainFrame extends JFrame  implements ActionListener{
 	static Log log = LogFactory.getLog(MainFrame.class.getName());
 
 	private static final String MENU_ACTION_QUIT_GAME = "quit";
+	private static final String MENU_ACTION_EXIT_GAME = "exit";
+	
+	
 	private static final String MENU_ACTION_FRAME_OFFICE = "office";
 	private static final String MENU_ACTION_FRAME_BROKER = "ship Broker";
 	private static final String MENU_ACTION_FRAME_SHIP = "ship list";
@@ -48,12 +47,13 @@ public class MainFrame extends JFrame  implements ActionListener{
 
 	public MainFrame(GameManager gameManager) {
 		super("Naval Trader");
+		
+		setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		setUndecorated(true);
+		//setIconImage(ImageIconFactory.getAppImage());
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		this.gameManager = gameManager;
-
-		setIconImage(ImageIconFactory.getAppImage());
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		desktop = new MainDesktopPane(gameManager);
 		//Make dragging a little faster but perhaps uglier.
 		desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);	        
@@ -64,13 +64,13 @@ public class MainFrame extends JFrame  implements ActionListener{
 		setResizable(true);
 
 		//Centre and size the frame
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation(screenSize.width/2-getSize().width/2, screenSize.height/2-getSize().height/2);	        
-		log.debug("center the frame");
-		log.debug("monitor width:"+screenSize.width+" height:"+screenSize.height);
-		log.debug("frame width:"+getSize().width+" height:"+getSize().height);
-		int inset = 200;
-		setBounds(inset, inset,screenSize.width  - inset*2,screenSize.height - inset*2);
+//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//		setLocation(screenSize.width/2-getSize().width/2, screenSize.height/2-getSize().height/2);	        
+//		log.debug("center the frame");
+//		log.debug("monitor width:"+screenSize.width+" height:"+screenSize.height);
+//		log.debug("frame width:"+getSize().width+" height:"+getSize().height);
+//		int inset = 200;
+//		setBounds(inset, inset,screenSize.width  - inset*2,screenSize.height - inset*2);
 
 		setJMenuBar(createMenuBar());
 
@@ -97,6 +97,11 @@ public class MainFrame extends JFrame  implements ActionListener{
 		menuItem.addActionListener(this);
 		menu.add(menuItem);		
 
+		menuItem = new JMenuItem("Exit");
+		menuItem.setActionCommand(MENU_ACTION_EXIT_GAME);
+		menuItem.addActionListener(this);
+		menu.add(menuItem);		
+		
 		//Set up the Game menu.
 		menu = new JMenu("Manage");
 		menuBar.add(menu);
@@ -134,9 +139,12 @@ public class MainFrame extends JFrame  implements ActionListener{
 	public void actionPerformed(ActionEvent event) {
 		if (MENU_ACTION_QUIT_GAME.equals(event.getActionCommand())) {
 			gameManager.quitGame();
-			InboundEventQueue.getInstance().stopQueuePublisher();		
-			EventPublisher.getInstance().clearAllListeners();
 
+		}else if(MENU_ACTION_EXIT_GAME.equals(event.getActionCommand())){
+			//close the main menu frame
+			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+			System.exit(0);
+			
 		}else if(MENU_ACTION_TIME_SIMULAION.equals(event.getActionCommand())){
 			
 			InternalFrameTimeSimulation frame = new InternalFrameTimeSimulation(desktop, gameManager);
