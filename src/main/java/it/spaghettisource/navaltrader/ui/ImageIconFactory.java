@@ -49,6 +49,19 @@ public class ImageIconFactory {
 
 	}
 	
+	public static BufferedImage getImageBy(String name) {
+
+		try {
+			return ImageIO.read(ImageIconFactory.class.getResourceAsStream(name));
+		} catch (IOException e) {
+			String message = "error loading the immange "+name+" for:"+e.getMessage();
+			log.error(message,e );
+			throw new RuntimeException(message,e);
+		}
+
+	}
+	
+	
 	private static ImageIcon getImageIconByNameAndSize(String name,int size) {
 		return new ImageIcon(getImageByNameAndSize(name,size));
 	}

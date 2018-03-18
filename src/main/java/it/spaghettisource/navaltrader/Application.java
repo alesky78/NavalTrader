@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
-import it.spaghettisource.navaltrader.ui.frame.MainFrame;
+import it.spaghettisource.navaltrader.ui.frame.MainMenu;
 
 public class Application {
 
@@ -17,9 +17,6 @@ public class Application {
 	public static boolean nimbus = true;
 
 	public static void main(String[] args){
-
-		//initialize game structure
-		GameManager gameManager = new GameManager();
 
 		if(nimbus) {
 			activateNimbus();
@@ -31,7 +28,7 @@ public class Application {
 		//creating and showing this application's GUI.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new MainFrame(gameManager);
+				new MainMenu();
 			}
 		});
 

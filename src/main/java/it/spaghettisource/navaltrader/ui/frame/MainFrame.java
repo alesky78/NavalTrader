@@ -30,7 +30,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 
 	static Log log = LogFactory.getLog(MainFrame.class.getName());
 
-	private static final String MENU_ACTION_NEW_GAME = "new";
 	private static final String MENU_ACTION_QUIT_GAME = "quit";
 	private static final String MENU_ACTION_FRAME_OFFICE = "office";
 	private static final String MENU_ACTION_FRAME_BROKER = "ship Broker";
@@ -91,13 +90,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 		menu = new JMenu("Game");
 		menuBar.add(menu);
 
-		menuItem = new JMenuItem("New");
-		menuItem.setMnemonic(KeyEvent.VK_N);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-		menuItem.setActionCommand(MENU_ACTION_NEW_GAME);
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-
 		menuItem = new JMenuItem("Quit");
 		menuItem.setMnemonic(KeyEvent.VK_N);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
@@ -140,15 +132,7 @@ public class MainFrame extends JFrame  implements ActionListener{
 
 
 	public void actionPerformed(ActionEvent event) {
-		if (MENU_ACTION_NEW_GAME.equals(event.getActionCommand())) { 
-
-			//start the new game
-			gameManager.newGame("test");			
-			gameManager.startGame();
-			InboundEventQueue.getInstance().startQueuePublisher();
-
-		}else if (MENU_ACTION_QUIT_GAME.equals(event.getActionCommand())) {
-
+		if (MENU_ACTION_QUIT_GAME.equals(event.getActionCommand())) {
 			gameManager.quitGame();
 			InboundEventQueue.getInstance().stopQueuePublisher();		
 			EventPublisher.getInstance().clearAllListeners();
