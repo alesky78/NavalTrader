@@ -135,8 +135,6 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			tabbedPane.addTab(TAB_TRANSPORT_CONTRACT, ImageIconFactory.getForTab("/icon/investment.png"),createTransportContractPanel());		
 			tabbedPane.addTab(TAB_CAST_OFF, ImageIconFactory.getForTab("/icon/helm.png"),createCastOffPanel());			
 
-			setMaximum(true);
-
 			getContentPane().add(tabbedPane);
 		}catch (Exception e) {
 			log.error("error creating port internal frame",e);

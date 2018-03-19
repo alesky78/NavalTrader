@@ -116,8 +116,9 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 						if(!exist) {
 							//open frame for specific ship
 							InternalFramePort newFrame = new InternalFramePort(parentDesktopPane,gameManager,data.getDockedPortName(),data.getName());
-							newFrame.setVisible(true);
 							parentDesktopPane.add(newFrame);
+							newFrame.setVisible(true);
+							newFrame.setMaximum(true);														
 							newFrame.setSelected(true);
 						}
 					}

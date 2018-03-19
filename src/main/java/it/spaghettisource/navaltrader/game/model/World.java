@@ -8,7 +8,7 @@ import it.spaghettisource.navaltrader.game.loop.Entity;
 
 public class World implements Entity {
 
-	private int gridSize;				//this is the actual world size
+	private int gridWidth,gridHeight;	//this is the actual world size 	
 	private int gridScale;				//this is the actual world scale, if you multiply gridSize * gridScale you have the real size
 	private BufferedImage worldMap;		//this is the actual world map
 		
@@ -18,12 +18,25 @@ public class World implements Entity {
 		ports = new ArrayList<Port>();
 	}
 	
-	public int getGridSize() {
-		return gridSize;
+	public int getGridWidth() {
+		return gridWidth;
 	}
 
-	public void setGridSize(int gridSize) {
-		this.gridSize = gridSize;
+	public int getGridHeight() {
+		return gridHeight;
+	}
+	
+	public int getWorldWidth() {
+		return gridWidth * gridScale;
+	}
+
+	public int getWorldHeight() {
+		return gridHeight * gridScale;
+	}	
+
+	public void setGridSize(int gridWidth,int gridHeight) {
+		this.gridWidth = gridWidth;
+		this.gridHeight = gridHeight;		
 	}
 
 	public int getGridScale() {
@@ -32,10 +45,6 @@ public class World implements Entity {
 
 	public void setGridScale(int gridScale) {
 		this.gridScale = gridScale;
-	}
-
-	public int getWorldSize(){
-		return gridSize * gridScale;
 	}
 	
 	public BufferedImage getWorldMap() {

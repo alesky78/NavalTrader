@@ -38,7 +38,6 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 
 	private Company company;
 	private World world;	
-	private int worldSize;
 
 	private boolean stopThread;
 	
@@ -52,8 +51,6 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 
 		this.company = company;
 		this.world = world;
-
-		worldSize = world.getWorldSize();	//TODO no good if will be biggest will become huge amount of memory, better to implement scale also here
 
 		//create a button for each port
 		portsButton = new ArrayList<>();
@@ -82,8 +79,10 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 	public void paintComponent(Graphics graphicsPanel) {
 		super.paintComponent(graphicsPanel);
 
-		int width = worldSize;	//+1 because is not consider index 0 in the size of the immage
-		int height = worldSize;
+		
+		//TODO what is the real size to use? 
+		int width = world.getWorldWidth();	//+1 because is not consider index 0 in the size of the immage
+		int height = world.getWorldHeight();
 
 		//create the double buffer of the same size of the grid
 		BufferedImage bufferImage = (BufferedImage)createImage(width, height); 
@@ -162,19 +161,23 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 	public void componentResized(ComponentEvent e) {
 		//put the correct position of the port buttons		
 		for (ButtonDrawPort buttonDrawPort : portsButton) {
-			buttonDrawPort.resetLocation(this, worldSize);
+			buttonDrawPort.resetLocation(this, world.getWorldWidth(),world.getWorldHeight());
 		}
 	}
 
 
-	public void componentMoved(ComponentEvent e) {		
+	public void componentMoved(ComponentEvent e) {	
+		//put the correct position of the port buttons
+		for (ButtonDrawPort buttonDrawPort : portsButton) {
+			buttonDrawPort.resetLocation(this, world.getWorldWidth(),world.getWorldHeight());
+		}		
 	}
 
 
 	public void componentShown(ComponentEvent e) {
 		//put the correct position of the port buttons
 		for (ButtonDrawPort buttonDrawPort : portsButton) {
-			buttonDrawPort.resetLocation(this, worldSize);
+			buttonDrawPort.resetLocation(this, world.getWorldWidth(),world.getWorldHeight());
 		}
 	}
 

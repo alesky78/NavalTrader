@@ -24,10 +24,8 @@ public class GridUtils {
 
 			FileWriter writer = new FileWriter(file);
 
-			int size = grid.getSize();
-
-			for (int y = 0; y<size; y++) {
-				for (int x = 0; x<size; x++) {
+			for (int y = 0; y<grid.getHeight(); y++) {
+				for (int x = 0; x<grid.getWidth(); x++) {
 					if(grid.getCell(x, y).isWall()){
 						writer.write(WALL);
 					}else{
@@ -36,7 +34,7 @@ public class GridUtils {
 
 					//next line if the last element but not for the last line of the grid
 					//other way there is an extra empty line
-					if(x == (size -1) && y != (size -1)){
+					if(x == (grid.getWidth() -1) && y != (grid.getHeight() -1)){
 						writer.write("\n");
 					}
 

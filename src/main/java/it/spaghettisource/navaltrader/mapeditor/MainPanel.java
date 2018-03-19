@@ -234,8 +234,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 				//set the correct grid value, but disabel the event
 				for (int index = 0; index < gridSizeValues.length; index++) {
-					if(gridSizeValues[index]==grid.getSize()) {
-						gridSizeList.removeActionListener(this);	//disable the event				
+					//if(gridSizeValues[index]==grid.getSize()) {
+					if(gridSizeValues[index]==0) {					
+						gridSizeList.removeActionListener(this);	//disable the event	other way a new event ACTION_GRID_SIZE will be fired
 						gridSizeList.setSelectedIndex(index);
 						gridSizeList.addActionListener(this);		//enable the event
 					}

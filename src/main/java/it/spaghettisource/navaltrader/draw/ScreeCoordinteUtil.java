@@ -29,15 +29,19 @@ public class ScreeCoordinteUtil {
 	/**
 	 * covert a point from real coordinate to the coordinate of a component
 	 * 
-	 * @param component
+	 * @param container
 	 * @param componentToDraw
 	 * @param realworldCoordinate
 	 * @param wolrdSize
 	 * @return
 	 */
-	public static void setLocationFromRealWorldToScreenCoordinate(Container component,JComponent componentToDraw, Point realworldCoordinate, int wolrdSize){
-		componentToDraw.setLocation((int)( (double)realworldCoordinate.getX() * ((double)component.getWidth()  / (double)wolrdSize) - (componentToDraw.getWidth() /2) ),
-									(int)( (double)realworldCoordinate.getY() * ((double)component.getHeight() / (double)wolrdSize) - (componentToDraw.getHeight()/2) ));
+	public static void setLocationFromRealWorldToScreenCoordinate(Container container,JComponent componentToDraw, Point realworldCoordinate, int wolrdWidth, int wolrdHeight){
+		int x = (int)( (double)realworldCoordinate.getX() * ((double)container.getWidth()  / (double)wolrdWidth) - (componentToDraw.getWidth() /2) );
+		int y = (int)( (double)realworldCoordinate.getY() * ((double)container.getHeight() / (double)wolrdHeight) - (componentToDraw.getHeight()/2) );
+		
+		
+		componentToDraw.setLocation((int)( (double)realworldCoordinate.getX() * ((double)container.getWidth()  / (double)wolrdWidth) - (componentToDraw.getWidth() /2) ),
+									(int)( (double)realworldCoordinate.getY() * ((double)container.getHeight() / (double)wolrdHeight) - (componentToDraw.getHeight()/2) ));
 
 	}
 	

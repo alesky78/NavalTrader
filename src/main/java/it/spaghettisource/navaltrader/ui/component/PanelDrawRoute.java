@@ -34,7 +34,6 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 	private Port port;
 	private World world;
 	
-	private int gridSize;
 	private int panelSize;
 	private int cellSize;
 	
@@ -46,7 +45,6 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 		setLayout(null);
 		setPreferredSize(new Dimension(panelSize,panelSize));		
 		
-		this.gridSize = world.getGridSize();
 		this.panelSize = panelSize;
 		this.port = port;
 		this.world = world;
@@ -66,7 +64,7 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 			button = new ButtonDrawPort(actualPort, ship, 20, 3, actionCommand,listner);
 			add(button);			
 			portsButton.add(button);
-			button.resetLocation(this, world.getWorldSize());			
+			button.resetLocation(this, world.getGridWidth(),world.getGridHeight());			
 		}		
 		
 		addComponentListener(this);
@@ -88,8 +86,8 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 	public void paintComponent(Graphics graphicsPanel) {
 		super.paintComponent(graphicsPanel);
 
-		int width = gridSize * cellSize + 1;	//+1 because is not consider index 0 in the size of the immage
-		int height = gridSize * cellSize + 1;
+		int width = world.getGridWidth() * cellSize + 1;	//+1 because is not consider index 0 in the size of the immage
+		int height = world.getGridHeight() * cellSize + 1;
 
 		//create the double buffer of the same size of the grid
 		BufferedImage bufferImage = (BufferedImage)createImage(width, height); 
@@ -132,7 +130,7 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 	public void componentResized(ComponentEvent e) {
 		//put the correct position of the port buttons		
 		for (ButtonDrawPort buttonDrawPort : portsButton) {
-			buttonDrawPort.resetLocation(this, world.getWorldSize());
+			buttonDrawPort.resetLocation(this, world.getWorldWidth(),world.getWorldHeight());
 		}
 	}
 
@@ -140,7 +138,7 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 	public void componentMoved(ComponentEvent e) {		
 		//put the correct position of the port buttons
 		for (ButtonDrawPort buttonDrawPort : portsButton) {
-			buttonDrawPort.resetLocation(this, world.getWorldSize());
+			buttonDrawPort.resetLocation(this, world.getWorldWidth(),world.getWorldHeight());
 		}		
 	}
 
@@ -148,7 +146,7 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 	public void componentShown(ComponentEvent e) {
 		//put the correct position of the port buttons
 		for (ButtonDrawPort buttonDrawPort : portsButton) {
-			buttonDrawPort.resetLocation(this, world.getWorldSize());
+			buttonDrawPort.resetLocation(this, world.getWorldWidth(),world.getWorldHeight());
 		}
 	}
 
@@ -156,7 +154,7 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 	public void componentHidden(ComponentEvent e) {
 		//put the correct position of the port buttons
 		for (ButtonDrawPort buttonDrawPort : portsButton) {
-			buttonDrawPort.resetLocation(this, world.getWorldSize());
+			buttonDrawPort.resetLocation(this, world.getWorldWidth(),world.getWorldHeight());
 		}		
 	}
 

@@ -11,14 +11,22 @@ public class Grid {
 
 	static Log log = LogFactory.getLog(Grid.class.getName());
 	
-	private int size;
+	private int width;	
+	private int height;	
 	private int totalCell;	
 	private Cell[][] grid;
 
+	/**
+	 * make a perfect square grid
+	 * 
+	 * @param size
+	 */
 	public Grid(int size) {
 		super();
-		this.size = size;
-		grid = new Cell[size][size];
+		width = size;
+		height = size;		
+		
+		grid = new Cell[width][height];
 		
 		for (int x = 0; x<size; x++) {
 			for (int y = 0; y<size; y++) {
@@ -26,12 +34,18 @@ public class Grid {
 			}	
 		}
 		
-		totalCell = size*size;
+		totalCell = width*height;
 	}
-	
 		
-	public int getSize() {
-		return size;
+		
+
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
 	}
 
 	public int getTotalCell() {
@@ -39,15 +53,15 @@ public class Grid {
 	}
 	
 	public void resetCells() {
-		for (int x = 0; x<size; x++) {
-			for (int y = 0; y<size; y++) {
+		for (int x = 0; x<width; x++) {
+			for (int y = 0; y<height; y++) {
 				grid[x][y].reset();
 			}	
 		}
 	}
 	
 	public Cell getCell(int x, int y) {
-		if(x < 0 || y < 0 || x > (size-1) || y > (size-1)) {
+		if(x < 0 || y < 0 || x > (width-1) || y > (height-1)) {
 			return null;
 		}
 		
@@ -62,7 +76,7 @@ public class Grid {
 		
 		for (int i = x - 1; i <= x + 1; i++) {
 			for (int j = y - 1; j <= y + 1; j++) {
-				if ((i == x && j == y) || i < 0 || j < 0 || j >= size|| i >=size) {
+				if ((i == x && j == y) || i < 0 || j < 0 || j >= height|| i >=width) {
 					continue;
 				}
 

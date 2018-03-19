@@ -91,8 +91,8 @@ public class ButtonDrawPort extends JButton{
 	}
 
 
-	public void resetLocation(JPanel panel,int worldSize){
-		ScreeCoordinteUtil.setLocationFromRealWorldToScreenCoordinate(panel, this, port.getCooridnate(), worldSize);
+	public void resetLocation(JPanel panel,int worldWidth, int worldHeight){
+		ScreeCoordinteUtil.setLocationFromRealWorldToScreenCoordinate(panel, this, port.getCooridnate(), worldWidth,worldHeight);
 	}
 
 
