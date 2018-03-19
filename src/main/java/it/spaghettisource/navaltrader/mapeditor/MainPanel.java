@@ -86,8 +86,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 		gridPanel = new GridPanel(grid,10);
 
 		//initialize the mouse size
-		mouseSize = new JTextField("1");
-		mouseSize.setColumns(3);
+		mouseSize = new JTextField("1",3);
+		mouseSize.setEditable(false);
 
 		//control and actions
 		JPanel controlPanel = new JPanel();

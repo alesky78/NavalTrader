@@ -131,7 +131,9 @@ public class GridPanel extends JPanel {
 			for (int row = center.getX()-(size/2); row < center.getX()+(size/2)+1; row++) {
 				for(int columns = center.getY()-(size/2); columns < center.getY()+(size/2)+1; columns++) {
 					    wall = grid.getCell(row, columns);
-						wall.setWall(wallFlag);			
+					    if(wall!=null){
+							wall.setWall(wallFlag);					    	
+					    }
 				}
 			}
 			
