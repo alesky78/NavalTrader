@@ -125,11 +125,8 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			this.portName = portName;
 			loopManager = gameManager.getLoopManager();
 			loopManager.setPauseByGame(true);
-			
-			setSize(700,500);
 		
 			setFrameIcon(ImageIconFactory.getForFrame("/icon/ship list.png"));
-
 			
 			initValuesFromModel();
 
@@ -138,6 +135,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 			tabbedPane.addTab(TAB_TRANSPORT_CONTRACT, ImageIconFactory.getForTab("/icon/investment.png"),createTransportContractPanel());		
 			tabbedPane.addTab(TAB_CAST_OFF, ImageIconFactory.getForTab("/icon/helm.png"),createCastOffPanel());			
 
+			setMaximum(true);
 
 			getContentPane().add(tabbedPane);
 		}catch (Exception e) {

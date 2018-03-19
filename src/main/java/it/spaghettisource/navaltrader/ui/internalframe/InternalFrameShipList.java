@@ -119,7 +119,6 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 							newFrame.setVisible(true);
 							parentDesktopPane.add(newFrame);
 							newFrame.setSelected(true);
-							newFrame.setMaximum(true);
 						}
 					}
 					

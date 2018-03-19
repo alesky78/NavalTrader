@@ -30,9 +30,9 @@ import it.spaghettisource.navaltrader.geometry.Point;
  * @author Alessandro
  *
  */
-public class PanelDrawNavigation extends JPanel implements ComponentListener  {
+public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 
-	static Log log = LogFactory.getLog(PanelDrawNavigation.class.getName());
+	static Log log = LogFactory.getLog(PanelDrawMainMap.class.getName());
 
 	private final static long SLEEP_TIME = 10;
 
@@ -44,7 +44,7 @@ public class PanelDrawNavigation extends JPanel implements ComponentListener  {
 	
 	private List<ButtonDrawPort> portsButton;
 
-	public PanelDrawNavigation(Company company,World world,int panelSize) {
+	public PanelDrawMainMap(Company company,World world,int panelSize) {
 		super(true);
 		setLayout(null);
 		setPreferredSize(new Dimension(panelSize,panelSize));
