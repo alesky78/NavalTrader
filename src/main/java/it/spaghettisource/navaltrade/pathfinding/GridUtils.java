@@ -55,23 +55,30 @@ public class GridUtils {
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
 
+			//int width,int height
+			
 			int lineCounter = 0;
-			while(reader.readLine()!=null ){
+			int columnCounter = 0;		
+			String line;
+			while((line = reader.readLine())!=null ){
 				lineCounter++; 
+				columnCounter = line.length();
 			}
+			
+			log.info("lines read:"+lineCounter);
+			
 			reader.close();
 
 			Grid grid = new Grid(lineCounter);
 
-
-			String line = null;
 			char actualChar;		
 
 			reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(new FileInputStream(file))));
 
 			for (int y = 0; y<lineCounter; y++) {
 				line = reader.readLine();	//read the next line
-				for (int x = 0; x<lineCounter; x++) {
+				log.info("content:>"+line+"< line number:"+y);
+				for (int x = 0; x<columnCounter; x++) {
 					actualChar = line.charAt(x);
 					if(actualChar==WALL) {
 						grid.getCell(x, y).setWall(true);
