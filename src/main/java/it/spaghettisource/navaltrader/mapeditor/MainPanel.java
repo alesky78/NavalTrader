@@ -1,6 +1,7 @@
 package it.spaghettisource.navaltrader.mapeditor;
 
 import java.awt.BorderLayout;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -9,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -38,6 +40,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 	
 	private JTextField gridHeight;
 	private JTextField gridWidth;
+	
+	private JTextField mouseSize;
 
 	private GridPanel gridPanel;
 	private Grid grid;
@@ -61,6 +65,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 	public MainPanel(int size) {
 		super();
 		setSize(size, size);
+		setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 
 		setLayout(new BorderLayout());
 		setFocusable(true);
@@ -68,7 +73,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 		UserActionListener listener = new UserActionListener(this); 
 
 		addMouseListener(listener);
-		addMouseMotionListener(listener);		
+		addMouseMotionListener(listener);
+		addMouseWheelListener(listener);
 		addKeyListener(listener);
 
 		//initialize the grid
@@ -79,6 +85,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 		//intialize the panel to drow the grid
 		gridPanel = new GridPanel(grid,10);
 
+		//initialize the mouse size
+		mouseSize = new JTextField("1");
+		mouseSize.setColumns(3);
 
 		//control and actions
 		JPanel controlPanel = new JPanel();
@@ -87,6 +96,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		JPanel controlPanel1 = new JPanel();
 		JPanel controlPanel2 = new JPanel();	
 		JPanel controlPanel3 = new JPanel();		
+		JPanel controlPanel4 = new JPanel();				
 
 		JButton buttonResetGrid = new JButton("reset result");
 		buttonResetGrid.setActionCommand(ACTION_RESET);
@@ -152,9 +162,15 @@ public class MainPanel extends JPanel  implements ActionListener{
 		controlPanel3.add(gridWidth);
 		controlPanel3.add(gridChangeButton);		
 		
+		//line 4
+		controlPanel4.add(new JLabel("mouse"));		
+		controlPanel4.add(mouseSize);
+		
 		controlPanel.add(controlPanel1);
 		controlPanel.add(controlPanel2);	
-		controlPanel.add(controlPanel3);		
+		controlPanel.add(controlPanel3);	
+		controlPanel.add(controlPanel4);		
+		
 
 		//put all togheter
 		add(controlPanel, BorderLayout.SOUTH);		
@@ -171,14 +187,24 @@ public class MainPanel extends JPanel  implements ActionListener{
 	}
 
 	public void addWall(int x, int y) {
-		gridPanel.addWallByScreenCoordinate(x, y);
+		gridPanel.addWallByScreenCoordinate(x, y,Integer.parseInt(mouseSize.getText()));
 	}
-
 
 	public void removeWall(int x, int y) {
-		gridPanel.removeWallByScreenCoordinate(x, y);
+		gridPanel.removeWallByScreenCoordinate(x, y,Integer.parseInt(mouseSize.getText()));
 	}
 
+	public void changeMouseSize(int value) {
+		log.info("mouse change value:"+value);
+		int newValue = Integer.parseInt(mouseSize.getText())+value;
+		if(newValue < 1 ){
+			newValue = 1;
+		}else if(newValue > 10){
+			newValue = 10;
+		}
+		mouseSize.setText( Integer.toString(newValue)  );			
+	}
+	
 	public void setGridPointCoordinate(int x, int y) {
 
 		Cell selected = gridPanel.getCellByScreenCoordinate(x, y);

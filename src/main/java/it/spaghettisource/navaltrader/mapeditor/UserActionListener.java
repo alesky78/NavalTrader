@@ -5,18 +5,19 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class UserActionListener  implements MouseListener, MouseMotionListener,KeyListener {
+public class UserActionListener  implements MouseListener, MouseMotionListener, KeyListener, MouseWheelListener  {
 
 	static Log log = LogFactory.getLog(UserActionListener.class.getName());
 
 	private boolean keyShiftDown;
 	private boolean keyControlDown;	
 	private MainPanel panel;
-
 
 
 	public UserActionListener(MainPanel panel) {
@@ -109,6 +110,14 @@ public class UserActionListener  implements MouseListener, MouseMotionListener,K
 	@Override
 	public void keyTyped(KeyEvent e) {
 
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		
+		int notches = e.getWheelRotation();
+		panel.changeMouseSize(notches);
+		
 	}
 
 }
