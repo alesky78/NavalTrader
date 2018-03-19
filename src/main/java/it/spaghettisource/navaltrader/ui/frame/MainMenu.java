@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawBackground;
 import it.spaghettisource.navaltrader.ui.event.InboundEventQueue;
+import java.awt.Color;
 
 public class MainMenu extends JFrame implements ActionListener {
 
@@ -29,6 +30,7 @@ public class MainMenu extends JFrame implements ActionListener {
 		panel.setLayout(null);
 		
 		JButton newGameButton = new JButton("New game");
+		newGameButton.setForeground(Color.WHITE);
 		newGameButton.setActionCommand(ACTION_NEW_GAME);		
 		newGameButton.addActionListener(this);
 		newGameButton.setFont(new Font("SansSerif", Font.BOLD, 30));
@@ -39,6 +41,7 @@ public class MainMenu extends JFrame implements ActionListener {
 		panel.add(newGameButton);
 		
 		JButton loadGameButton = new JButton("Load game");
+		loadGameButton.setForeground(Color.WHITE);
 		loadGameButton.setActionCommand(ACTION_LOAD_GAME);		
 		loadGameButton.addActionListener(this);		
 		loadGameButton.setFont(new Font("SansSerif", Font.BOLD, 30));
