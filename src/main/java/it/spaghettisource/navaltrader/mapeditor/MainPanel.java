@@ -31,11 +31,13 @@ public class MainPanel extends JPanel  implements ActionListener{
 	static Log log = LogFactory.getLog(MainPanel.class.getName());
 
 	private JComboBox<String> algorithmsList;
-	private JComboBox<Integer> gridSizeList;
 	private JComboBox<String> drawGridList;
 	private JComboBox<Boolean> allowDiagonalList;		
 	private JSlider alphaColorSlider;
 	private JTextField coordinatePointOnGrid;	
+	
+	private JTextField gridHeight;
+	private JTextField gridWidth;
 
 	private GridPanel gridPanel;
 	private Grid grid;
@@ -50,7 +52,6 @@ public class MainPanel extends JPanel  implements ActionListener{
 
 
 	private String[] algorithmsValues = { "AStar", "Dijkstra"};
-	private Integer[] gridSizeValues = { 10, 50, 100, 250, 300, 400, 500,1000};
 	private String[] drawGridValues = { "draw grid", "remove grid"};		
 	private Boolean[] allowDiagonalValues = { Boolean.TRUE, Boolean.FALSE};
 
@@ -71,11 +72,12 @@ public class MainPanel extends JPanel  implements ActionListener{
 		addKeyListener(listener);
 
 		//initialize the grid
-		gridSize = gridSizeValues[0];
-		grid = new Grid(gridSize);
+		gridHeight = new JTextField(10);
+		gridWidth = new JTextField(10);
+		grid = new Grid(10);
 
 		//intialize the panel to drow the grid
-		gridPanel = new GridPanel(grid,size);
+		gridPanel = new GridPanel(grid,10);
 
 
 		//control and actions
@@ -83,7 +85,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.PAGE_AXIS));
 
 		JPanel controlPanel1 = new JPanel();
-		JPanel controlPanel2 = new JPanel();		
+		JPanel controlPanel2 = new JPanel();	
+		JPanel controlPanel3 = new JPanel();		
 
 		JButton buttonResetGrid = new JButton("reset result");
 		buttonResetGrid.setActionCommand(ACTION_RESET);
@@ -96,9 +99,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 		algorithmsList = new JComboBox<String>(algorithmsValues);
 		algorithmsList.addActionListener(this);
 
-		gridSizeList = new JComboBox<Integer>(gridSizeValues);
-		gridSizeList.setActionCommand(ACTION_GRID_SIZE);		
-		gridSizeList.addActionListener(this);		
+		JButton gridChangeButton = new JButton("chang grid size");
+		gridChangeButton.setActionCommand(ACTION_GRID_SIZE);		
+		gridChangeButton.addActionListener(this);		
 
 		drawGridList = new JComboBox<String>(drawGridValues);
 		drawGridList.setActionCommand(ACTION_DRAW_GRID);		
@@ -135,8 +138,7 @@ public class MainPanel extends JPanel  implements ActionListener{
 		controlPanel1.add(buttonResetGrid);
 		controlPanel1.add(buttonStart);		
 		controlPanel1.add(algorithmsList);		
-		controlPanel1.add(allowDiagonalList);		
-		controlPanel1.add(gridSizeList);		
+		controlPanel1.add(allowDiagonalList);			
 
 		//line 2
 		controlPanel2.add(drawGridList);		
@@ -145,9 +147,14 @@ public class MainPanel extends JPanel  implements ActionListener{
 		controlPanel2.add(loadGrid);		
 		controlPanel2.add(saveGrid);				
 
-
+		//line 3
+		controlPanel3.add(gridHeight);
+		controlPanel3.add(gridWidth);
+		controlPanel3.add(gridChangeButton);		
+		
 		controlPanel.add(controlPanel1);
-		controlPanel.add(controlPanel2);		
+		controlPanel.add(controlPanel2);	
+		controlPanel.add(controlPanel3);		
 
 		//put all togheter
 		add(controlPanel, BorderLayout.SOUTH);		
@@ -199,9 +206,8 @@ public class MainPanel extends JPanel  implements ActionListener{
 		}else if (ACTION_GRID_SIZE.equals(command)){
 			startCell = null;
 			endCell = null;
-
-			gridSize  = (int)gridSizeList.getSelectedItem();
-			grid = new Grid(gridSize);
+			
+			grid = new Grid(Integer.parseInt(gridWidth.getText()), Integer.parseInt(gridHeight.getText()));
 			gridPanel.setGrid(grid);
 
 		}else if (ACTION_DRAW_GRID.equals(command)){
@@ -233,14 +239,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 				grid = GridUtils.loadFromFile(fileToLoad);
 
 				//set the correct grid value, but disabel the event
-				for (int index = 0; index < gridSizeValues.length; index++) {
-					//if(gridSizeValues[index]==grid.getSize()) {
-					if(gridSizeValues[index]==0) {					
-						gridSizeList.removeActionListener(this);	//disable the event	other way a new event ACTION_GRID_SIZE will be fired
-						gridSizeList.setSelectedIndex(index);
-						gridSizeList.addActionListener(this);		//enable the event
-					}
-				}
+
+				gridWidth.setText(Integer.toString(grid.getWidth()));
+				gridHeight.setText(Integer.toString(grid.getHeight()));
 
 				gridPanel.setGrid(grid);
 

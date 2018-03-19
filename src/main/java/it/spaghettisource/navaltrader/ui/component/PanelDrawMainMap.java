@@ -80,7 +80,7 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 		super.paintComponent(graphicsPanel);
 
 		
-		//TODO what is the real size to use? 
+		//TODO the real size must a correct relationship between the immage and the grid
 		int width = world.getWorldWidth();	//+1 because is not consider index 0 in the size of the immage
 		int height = world.getWorldHeight();
 

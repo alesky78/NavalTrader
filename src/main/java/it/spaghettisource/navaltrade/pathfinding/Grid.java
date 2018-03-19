@@ -36,6 +36,27 @@ public class Grid {
 		
 		totalCell = width*height;
 	}
+	
+	/**
+	 * make a perfect square grid
+	 * 
+	 * @param size
+	 */
+	public Grid(int width,int height) {
+		super();
+		this.width = width;
+		this.height = height;		
+		
+		grid = new Cell[width][height];
+		
+		for (int x = 0; x<width; x++) {
+			for (int y = 0; y<height; y++) {
+				grid[x][y] = new Cell(x, y);
+			}	
+		}
+		
+		totalCell = width*height;
+	}	
 		
 		
 
