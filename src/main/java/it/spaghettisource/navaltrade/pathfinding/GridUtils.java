@@ -65,11 +65,11 @@ public class GridUtils {
 				columnCounter = line.length();
 			}
 			
-			log.info("lines read:"+lineCounter);
+			log.info("lines:"+lineCounter+" columns:"+columnCounter);
 			
 			reader.close();
 
-			Grid grid = new Grid(lineCounter);
+			Grid grid = new Grid(columnCounter, lineCounter);
 
 			char actualChar;		
 

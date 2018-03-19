@@ -158,7 +158,9 @@ public class MainPanel extends JPanel  implements ActionListener{
 		controlPanel2.add(saveGrid);				
 
 		//line 3
+		controlPanel3.add(new JLabel("gridHeight"));		
 		controlPanel3.add(gridHeight);
+		controlPanel3.add(new JLabel("gridWidth"));		
 		controlPanel3.add(gridWidth);
 		controlPanel3.add(gridChangeButton);		
 		
