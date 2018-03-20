@@ -56,7 +56,7 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 		portsButton = new ArrayList<>();
 		ButtonDrawPort button;
 		for (Port port : world.getPorts()) {
-			button = new ButtonDrawPort(port, 25, 3, "",null);
+			button = new ButtonDrawPort(port, null,null);
 			add(button);			
 			portsButton.add(button);
 		}

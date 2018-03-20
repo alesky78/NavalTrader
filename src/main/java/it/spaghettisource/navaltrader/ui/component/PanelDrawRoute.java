@@ -61,7 +61,7 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 		portsButton = new ArrayList<>();
 		ButtonDrawPort button;
 		for (Port actualPort : world.getPorts()) {
-			button = new ButtonDrawPort(actualPort, ship, 20, 3, actionCommand,listner);
+			button = new ButtonDrawPort(actualPort, ship, actionCommand,listner);
 			add(button);			
 			portsButton.add(button);
 			button.resetLocation(this, world.getGridWidth(),world.getGridHeight());			
