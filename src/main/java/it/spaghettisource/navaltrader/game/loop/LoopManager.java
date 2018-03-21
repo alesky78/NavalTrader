@@ -33,8 +33,8 @@ public class LoopManager implements  Runnable {
 		pauseByGame	= false;
 		shutdown = false;
 		timeSleepMultiplicator = 1;
-		timeSleep = 2000;	//TODO review a valid amount for the time 2000 is to much i think 1000		
-		timePassInMinuts = 20;		//TODO still is jumping, reduce this time
+		timeSleep = 10;		
+		timePassInMinuts = 10;
 	}
 
 	public void startLoopManagerThread() {
@@ -44,20 +44,14 @@ public class LoopManager implements  Runnable {
 
 
 	public void goFast() {
-		if(timeSleepMultiplicator>0.015625) {
-			timeSleepMultiplicator = timeSleepMultiplicator / 2;
-			loopThread.interrupt();
-		}
+		timePassInMinuts = timePassInMinuts+1;
 	}
 
 	public void goSlow() {
-		if(timeSleepMultiplicator<8) {
-			timeSleepMultiplicator = timeSleepMultiplicator * 2;			
+		timePassInMinuts = timePassInMinuts-1;
+		if(timePassInMinuts<1){
+			timePassInMinuts = 1;	
 		}
-	}
-
-	public String getMultiplicator() {
-		return  ""+1/timeSleepMultiplicator;
 	}
 
 
@@ -108,7 +102,7 @@ public class LoopManager implements  Runnable {
 					
 					if(clockUI!=null){
 						try{
-							clockUI.updateSpeed();		//here clockUI could be null for multhythread							
+							clockUI.updateSpeed(timePassInMinuts);		//here clockUI could be null for multhythread							
 						}catch (Exception e) {}
 	
 					}

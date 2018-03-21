@@ -92,7 +92,7 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 		//////////////////////
 		// date info 
 		JPanel clockTimePanel = new JPanel(new FlowLayout());		
-		simulationSpeed = new JLabel("simulation speed: "+loopManager.getMultiplicator());		
+		simulationSpeed = new JLabel("");		
 		clockTimePanel.add(simulationSpeed);		
 
 	
@@ -117,8 +117,8 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 		}
 	}
 
-	public void updateSpeed() {
-		simulationSpeed.setText("simulation speed: x"+loopManager.getMultiplicator());
+	public void updateSpeed(int timePassInMinuts) {
+		simulationSpeed.setText("actual time per tick: "+timePassInMinuts);
 	}
 	
 	@Override
