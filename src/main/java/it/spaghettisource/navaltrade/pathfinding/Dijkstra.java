@@ -31,9 +31,9 @@ public class Dijkstra implements PathFinding {
 		
 		PriorityQueue<Cell> open = new PriorityQueue<Cell>();		
 
-		Cell targetCell = grid.getCell(end.getX(), end.getY());	
+		Cell targetCell = grid.getCell(end.getIntX(), end.getIntY());	
 		
-		Cell actualCell = grid.getCell(start.getX(), start.getY());
+		Cell actualCell = grid.getCell(start.getIntX(), start.getIntY());
 		actualCell.setVisited(true);
 		actualCell.setOpen(true);
 		//actualCell.calculatehCosts(end); 			
@@ -44,7 +44,7 @@ public class Dijkstra implements PathFinding {
 			actualCell.setVisited(true);
 
 			if (actualCell.equals(targetCell)  ) { // found goal
-				return calcPath( grid.getCell(start.getX(), start.getY()), actualCell);
+				return calcPath( grid.getCell(start.getIntX(), start.getIntY()), actualCell);
 			}
 
 			// for all adjacent nodes:

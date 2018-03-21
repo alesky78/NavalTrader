@@ -1,38 +1,43 @@
 package it.spaghettisource.navaltrader.geometry;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-
 public class Point {
 
-	private int x,y;
+	private double x,y;
 	
 	public Point(int x, int y) {
 		super();
 		this.x = x;
 		this.y = y;
 	}
+	
+	public Point(double x, double y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}	
 
-	public int getX() {
+	public double getX() {
 		return x;
 	}
+	
+	public int getIntX() {
+		return (int)x;
+	}	
 
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public int getY() {
+	public double getY() {
 		return y;
 	}
-
-	public void setY(int y) {
-		this.y = y;
+	
+	public int getIntY() {
+		return (int)y;
 	}
 
-	public void draw(Graphics g) { // draw itself
-		Graphics2D g2d = (Graphics2D)g;
-		g2d.drawOval(x, y, 10, 10);		
-
+	public void setY(double y) {
+		this.y = y;
 	}
 	
 	public boolean equals(Object obj){

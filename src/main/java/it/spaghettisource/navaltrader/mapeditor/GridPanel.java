@@ -207,9 +207,9 @@ public class GridPanel extends JPanel {
 		if(foundPath!=null && foundPath.length != 0){
 			for (int i = 0; i < foundPath.length; i++) {
 				graphicsGrid.setColor(YELLOW);			
-				graphicsGrid.fillRect(foundPath[i].getX()*cellSize, foundPath[i].getY()*cellSize, cellSize, cellSize);	
+				graphicsGrid.fillRect(foundPath[i].getIntX()*cellSize, foundPath[i].getIntY()*cellSize, cellSize, cellSize);	
 				graphicsGrid.setColor(BLACK);
-				graphicsGrid.drawRect(foundPath[i].getX()*cellSize, foundPath[i].getY()*cellSize, cellSize, cellSize);			
+				graphicsGrid.drawRect(foundPath[i].getIntX()*cellSize, foundPath[i].getIntY()*cellSize, cellSize, cellSize);			
 			}
 				
 		}

@@ -21,7 +21,7 @@ public class Mathematic {
 		double x = a.getX() + amountToMove/distance*(b.getX()-a.getX());
 		double y = a.getY() + amountToMove/distance*(b.getY()-a.getY());		
 		
-		return new Point((int)Math.round(x) , (int)Math.round(y));
+		return new Point(x, y);
 	}
 
 	
@@ -29,7 +29,7 @@ public class Mathematic {
 		return new Point(point.getX()*scale, point.getY()*scale);
 	}
 
-	public static double powBy2(int value) {
+	public static double powBy2(double value) {
 		return  Math.pow(value, 2);
 	}
 

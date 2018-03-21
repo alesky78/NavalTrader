@@ -26,8 +26,8 @@ public class PolyLine {
 		yPoints = Arrays.copyOf(yPoints, points);
 		
 		//add the new point
-		xPoints[points-1] = p.getX();
-		yPoints[points-1] = p.getY();		
+		xPoints[points-1] = p.getIntX();
+		yPoints[points-1] = p.getIntY();		
 		
 	}
 

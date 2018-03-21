@@ -100,9 +100,9 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 
 		//draw starting port point
 		graphicsImage.setColor(Color.YELLOW);
-		graphicsImage.fillRect(port.getCooridnate().getX()*cellSize, port.getCooridnate().getY()*cellSize, cellSize, cellSize);	
+		graphicsImage.fillRect(port.getCooridnate().getIntX()*cellSize, port.getCooridnate().getIntY()*cellSize, cellSize, cellSize);	
 		graphicsImage.setColor(Color.BLACK);
-		graphicsImage.drawRect(port.getCooridnate().getX()*cellSize, port.getCooridnate().getY()*cellSize, cellSize, cellSize);
+		graphicsImage.drawRect(port.getCooridnate().getIntX()*cellSize, port.getCooridnate().getIntY()*cellSize, cellSize, cellSize);
 		
 		graphicsImage.dispose();
 		
@@ -119,7 +119,7 @@ public class PanelDrawRoute extends JPanel implements ComponentListener {
 				path = route.getPath();
 				for (int i = 0; i < path.length; i++) {
 					graphicsGrid.setColor(Color.RED);			
-					graphicsGrid.fillRect(path[i].getX()*cellSize, path[i].getY()*cellSize, cellSize, cellSize);	
+					graphicsGrid.fillRect(path[i].getIntX()*cellSize, path[i].getIntY()*cellSize, cellSize, cellSize);	
 				}	
 			}
 		}

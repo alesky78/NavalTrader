@@ -42,11 +42,11 @@ public class Cell implements Comparable<Cell>{
 	}
 
 	public int getX() {
-		return coordinate.getX();
+		return coordinate.getIntX();
 	}
 
 	public int getY() {
-		return coordinate.getY();
+		return coordinate.getIntY();
 	}
 
 

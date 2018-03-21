@@ -199,9 +199,9 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener,  Acti
 				//draw the ships
 				graphicsBuffer.setStroke(new BasicStroke(10));
 				graphicsBuffer.setColor(Color.RED);	
-				graphicsBuffer.fillOval(point.getX(), point.getY(), 30, 30);			
+				graphicsBuffer.fillOval(point.getIntX(), point.getIntY(), 30, 30);			
 				graphicsBuffer.setColor(Color.BLACK);				
-				graphicsBuffer.drawOval(point.getX(), point.getY(), 30, 30);				
+				graphicsBuffer.drawOval(point.getIntX(), point.getIntY(), 30, 30);				
 			}
 			
 		}

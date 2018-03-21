@@ -31,7 +31,7 @@ public class LoopManager implements  Runnable {
 		shutdown = false;
 		timeSleepMultiplicator = 1;
 		timeSleep = 10;		
-		timePassInMinuts = 10;
+		timePassInMinuts = 1;
 	}
 
 	public void startLoopManagerThread() {
