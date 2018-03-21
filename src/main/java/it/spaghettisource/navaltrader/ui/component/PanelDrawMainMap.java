@@ -3,9 +3,12 @@ package it.spaghettisource.navaltrader.ui.component;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.Arc2D;
@@ -13,11 +16,15 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import it.spaghettisource.navaltrader.game.loop.LoopManager;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
 import it.spaghettisource.navaltrader.game.model.Port;
@@ -25,6 +32,7 @@ import it.spaghettisource.navaltrader.game.model.Ship;
 import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.FontUtil;
+import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 
 /**
  * this is the pannel used to draw all then ports and the position of the ships
@@ -34,21 +42,33 @@ import it.spaghettisource.navaltrader.ui.FontUtil;
  * @author Alessandro
  *
  */
-public class PanelDrawMainMap extends JPanel implements ComponentListener  {
+public class PanelDrawMainMap extends JPanel implements ComponentListener,  ActionListener  {
 
 	static Log log = LogFactory.getLog(PanelDrawMainMap.class.getName());
 
 	private final static long SLEEP_TIME = 10;
+	
+	private final static String ACTION_PAUSE = "pause";
+	private final static String ACTION_PLAY_X1 = "playx1";	
+	private final static String ACTION_PLAY_X2 = "playx2";	
+	private final static String ACTION_PLAY_X3 = "playx3";		
 
 	private Company company;
 	private World world;
 	private GameTime gameTime;		
+	private LoopManager loopManager;	
 
 	private boolean stopThread;
 	
 	private List<ButtonDrawPort> portsButton;
+	
+	private BufferedImage barUp;
+	private ImageIcon puase;	
+	private ImageIcon speedx1;
+	private ImageIcon speedx2;
+	private ImageIcon speedx3;	
 
-	public PanelDrawMainMap(Company company,World world,GameTime gameTime,int panelSize) {
+	public PanelDrawMainMap(Company company,World world,GameTime gameTime,LoopManager loopManager, int panelSize) {
 		super(true);
 		setLayout(null);
 		setPreferredSize(new Dimension(panelSize,panelSize));
@@ -57,7 +77,15 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 		this.company = company;
 		this.world = world;
 		this.gameTime = gameTime;
+		this.loopManager = loopManager;
 
+		//load all the immages
+		barUp = ImageIconFactory.getBufferImageByName("/images/barra-up.png");
+		puase = ImageIconFactory.getImageIconByName("/images/clock-pause.png");
+		speedx1 = ImageIconFactory.getImageIconByName("/images/clock-1.png");
+		speedx2 = ImageIconFactory.getImageIconByName("/images/clock-2.png");
+		speedx3 = ImageIconFactory.getImageIconByName("/images/clock-3.png");		
+		
 		//create a button for each port
 		portsButton = new ArrayList<>();
 		ButtonDrawPort button;
@@ -67,6 +95,47 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 			portsButton.add(button);
 		}
 
+		//create the button for the clock
+		JButton pause = new JButton(puase);
+		pause.setBounds(20, 5, puase.getIconWidth(), puase.getIconHeight());		
+		pause.setBorder(BorderFactory.createEmptyBorder());
+		pause.setContentAreaFilled(false);				
+		pause.setFocusPainted(false);
+		pause.setActionCommand(ACTION_PAUSE);
+		pause.addActionListener(this);
+		add(pause);		
+
+		JButton speed1 = new JButton(speedx1);
+		speed1.setBounds(100, 32, speedx1.getIconWidth(), speedx1.getIconHeight());		
+		speed1.setBorder(BorderFactory.createEmptyBorder());
+		speed1.setContentAreaFilled(false);				
+		speed1.setFocusPainted(false);
+		speed1.setActionCommand(ACTION_PLAY_X1);
+		speed1.addActionListener(this);		
+		add(speed1);		
+		
+		JButton speed2 = new JButton(speedx2);
+		speed2.setBounds(140, 32, speedx2.getIconWidth(), speedx2.getIconHeight());		
+		speed2.setBorder(BorderFactory.createEmptyBorder());
+		speed2.setContentAreaFilled(false);				
+		speed2.setFocusPainted(false);
+		speed2.setActionCommand(ACTION_PLAY_X2);
+		speed2.addActionListener(this);		
+		add(speed2);	
+		
+		JButton speed3 = new JButton(speedx3);
+		speed3.setBounds(180, 32, speedx3.getIconWidth(), speedx3.getIconHeight());		
+		speed3.setBorder(BorderFactory.createEmptyBorder());
+		speed3.setContentAreaFilled(false);				
+		speed3.setFocusPainted(false);
+		speed3.setActionCommand(ACTION_PLAY_X3);
+		speed3.addActionListener(this);		
+		add(speed3);	
+		
+		
+		
+		
+		//prepare to start
 		addComponentListener(this);
 		stopThread = false;
 
@@ -95,17 +164,27 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 		Graphics2D graphicsBuffer = bufferImage.createGraphics();
 
 		//draw
-		graphicsBuffer.drawImage(world.getWorldMap(),0,0,width,height,0,0,world.getWorldMap().getWidth(),world.getWorldMap().getHeight(),null);		
+		graphicsBuffer.drawImage(world.getWorldMap(),0,0,width,height,null);
 
 		drawShips(graphicsBuffer);
-		
-		drawTime(graphicsBuffer);
+
+		drawBarUp(graphicsBuffer,bufferImage);
 
 		graphicsBuffer.dispose();
 
 		//draw all to the JPanel Graphics
 		graphicsPanel.drawImage(bufferImage,0,0,getWidth(),getHeight(),0,0,bufferImage.getWidth(),bufferImage.getHeight(),null);		
 
+	}
+
+
+	private void drawBarUp(Graphics2D graphicsBuffer,BufferedImage bufferImage) {
+
+		graphicsBuffer.drawImage(barUp,0,0,bufferImage.getWidth(),150,0,0,barUp.getWidth(),barUp.getHeight(),null);
+		
+		drawTime(graphicsBuffer);
+			
+		
 	}
 
 
@@ -130,18 +209,17 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 		graphicsBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
 		String date = 	gameTime.getDate();
-		
-		int stringWidth = graphicsBuffer.getFontMetrics().stringWidth(date);		
+			
 		int stringHeight = graphicsBuffer.getFontMetrics().getAscent();
 		
 		graphicsBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
-		int xStart = 50;
-		int yStart = 50;			
+		int xStart = 230;
+		int yStart = 45;			
 		
 		graphicsBuffer.setColor(Color.WHITE);
 		graphicsBuffer.drawString(date,xStart,yStart);
-		graphicsBuffer.fill(new Arc2D.Float(xStart-stringHeight-5, yStart-stringHeight, stringHeight, stringHeight, 90, -gameTime.getTimeInAngleFormat(), Arc2D.PIE));
+		graphicsBuffer.fill(new Arc2D.Float(xStart-stringHeight-30, yStart-stringHeight, stringHeight, stringHeight, 90, -gameTime.getTimeInAngleFormat(), Arc2D.PIE));
 
 		
 		
@@ -184,6 +262,24 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 
 
 
+	public void actionPerformed(ActionEvent event) {
+		String command = event.getActionCommand();
+		if(ACTION_PAUSE.equals(command)) {
+			loopManager.setPauseByUser(true);
+		}else if(ACTION_PLAY_X1.equals(command)) {
+			loopManager.setPauseByUser(false);
+			loopManager.goFast();		
+		}else if(ACTION_PLAY_X2.equals(command)) {
+			loopManager.setPauseByUser(false);
+			loopManager.goFast();	
+		}else if(ACTION_PLAY_X3.equals(command)) {
+			loopManager.setPauseByUser(false);
+			loopManager.goSlow();				
+		}
+		
+	}
+
+	
 
 	public void componentResized(ComponentEvent e) {
 		//put the correct position of the port buttons		
@@ -211,6 +307,8 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener  {
 
 	public void componentHidden(ComponentEvent e) {
 	}
+
+
 
 
 }

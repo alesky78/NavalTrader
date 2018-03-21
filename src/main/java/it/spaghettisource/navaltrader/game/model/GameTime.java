@@ -112,12 +112,7 @@ public class GameTime {
 	 */
 	public int getTimeInAngleFormat(){
 		int actualValue = (actualDate.get(Calendar.HOUR_OF_DAY) * 60 + actualDate.get(Calendar.MINUTE));
-		double maxValue = 24*60D;		
-		int angle = (int) ((actualValue/maxValue) * 360);
-		log.info("actualValue:"+actualValue+" maxValue:"+maxValue+" angle:"+angle);
-		
-		return angle;
-		
+		return (int) ((actualValue/ (24*60D) ) * 360);
 	}
 
 

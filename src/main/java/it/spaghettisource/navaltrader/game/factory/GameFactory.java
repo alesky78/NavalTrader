@@ -81,7 +81,7 @@ public class GameFactory {
 			Grid grid = GridUtils.loadFromFile(tempFile);
 			
 			world.setGridSize(grid.getWidth(), grid.getHeight());
-			world.setWorldMap(ImageIconFactory.getImageBy("/scenario/world.png"));
+			world.setWorldMap(ImageIconFactory.getBufferImageByName("/scenario/world.png"));
 			
 			PathFinding finder =  new AStar();	
 			Point[] path;

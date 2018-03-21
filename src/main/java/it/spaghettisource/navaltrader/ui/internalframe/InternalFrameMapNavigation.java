@@ -1,8 +1,8 @@
 package it.spaghettisource.navaltrader.ui.internalframe;
 
-import java.beans.PropertyVetoException;
-
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,6 +13,7 @@ import it.spaghettisource.navaltrader.ui.component.PanelDrawMainMap;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
+import java.awt.Color;
 
 public class InternalFrameMapNavigation extends InternalFrameAbstract {
 	
@@ -22,13 +23,15 @@ public class InternalFrameMapNavigation extends InternalFrameAbstract {
 	
 	
 	public InternalFrameMapNavigation(MainDesktopPane parentDesktopPane, GameManager gameManager) {
-		super(parentDesktopPane, gameManager, "navigation", true, true, true, true);
+		super(parentDesktopPane, gameManager, "navigation", false, false, false, false);
 		
 		try {
 			setSize(850,850);   
 			setFrameIcon(ImageIconFactory.getForFrame("/icon/globe.png"));
-			
-			panel = new PanelDrawMainMap(gameManager.getGameData().getCompany(), gameManager.getGameData().getWorld(),gameManager.getGameData().getGameTime(), 600);
+						
+			panel = new PanelDrawMainMap(gameManager.getGameData().getCompany(), gameManager.getGameData().getWorld(),gameManager.getGameData().getGameTime(),gameManager.getLoopManager(), 600);
+			panel.setBackground(Color.BLACK);
+			panel.setBorder(null);
 			
 			getContentPane().add(panel);
 			panel.start();

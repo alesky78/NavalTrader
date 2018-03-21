@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyVetoException;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -182,8 +183,15 @@ public class MainFrame extends JFrame  implements ActionListener{
 			} catch (java.beans.PropertyVetoException e) {}	        
 		}else if (MENU_ACTION_FRAME_NAVIGATION.equals(event.getActionCommand())) { 
 			InternalFrameMapNavigation frame = new InternalFrameMapNavigation(desktop, gameManager);
+			desktop.add(frame);			
+			try {
+				frame.setMaximum(true);
+				frame.setSelected(true);					
+			} catch (PropertyVetoException e1) {
+				e1.printStackTrace();
+			}														
 			frame.setVisible(true);
-			desktop.add(frame);
+
 			try {
 				frame.setSelected(true);
 			} catch (java.beans.PropertyVetoException e) {}	        

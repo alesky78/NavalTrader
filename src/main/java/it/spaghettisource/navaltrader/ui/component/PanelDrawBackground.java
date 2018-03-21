@@ -15,7 +15,7 @@ public class PanelDrawBackground extends JPanel {
 	public PanelDrawBackground(String immageName) {
 		super();
 		
-		background = ImageIconFactory.getImageBy(immageName);
+		background = ImageIconFactory.getBufferImageByName(immageName);
 		
 	}
 
