@@ -28,7 +28,7 @@ public class InternalFrameMapNavigation extends InternalFrameAbstract {
 			setSize(850,850);   
 			setFrameIcon(ImageIconFactory.getForFrame("/icon/globe.png"));
 			
-			panel = new PanelDrawMainMap(gameManager.getGameData().getCompany(), gameManager.getGameData().getWorld(), 600);
+			panel = new PanelDrawMainMap(gameManager.getGameData().getCompany(), gameManager.getGameData().getWorld(),gameManager.getGameData().getGameTime(), 600);
 			
 			getContentPane().add(panel);
 			panel.start();

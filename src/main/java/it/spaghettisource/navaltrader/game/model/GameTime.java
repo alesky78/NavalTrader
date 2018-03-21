@@ -104,7 +104,21 @@ public class GameTime {
 		return dateFormat.format(actualDate.getTime());
 	}	
 
-
+	/**
+	 * return the time of the actual day 
+	 * as a value between 0 to 359 that can be used to draw a clock for the time
+	 * 
+	 * @return
+	 */
+	public int getTimeInAngleFormat(){
+		int actualValue = (actualDate.get(Calendar.HOUR_OF_DAY) * 60 + actualDate.get(Calendar.MINUTE));
+		double maxValue = 24*60D;		
+		int angle = (int) ((actualValue/maxValue) * 360);
+		log.info("actualValue:"+actualValue+" maxValue:"+maxValue+" angle:"+angle);
+		
+		return angle;
+		
+	}
 
 
 }

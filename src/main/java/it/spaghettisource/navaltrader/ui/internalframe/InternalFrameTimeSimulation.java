@@ -29,7 +29,6 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 	private GameTime gameTime;
 	private LoopManager loopManager;
 	
-	private JLabel date;	
 	private JLabel simulationSpeed;		
 	
 	
@@ -93,9 +92,7 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 		//////////////////////
 		// date info 
 		JPanel clockTimePanel = new JPanel(new FlowLayout());		
-		date = new JLabel("date: "+gameTime.getDate());
 		simulationSpeed = new JLabel("simulation speed: "+loopManager.getMultiplicator());		
-		clockTimePanel.add(date);
 		clockTimePanel.add(simulationSpeed);		
 
 	
@@ -120,8 +117,7 @@ public class InternalFrameTimeSimulation extends InternalFrameAbstract  implemen
 		}
 	}
 
-	public void updateTime(String time) {
-		date.setText("date: "+time);
+	public void updateSpeed() {
 		simulationSpeed.setText("simulation speed: x"+loopManager.getMultiplicator());
 	}
 	

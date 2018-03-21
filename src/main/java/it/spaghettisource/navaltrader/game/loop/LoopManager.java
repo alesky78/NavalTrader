@@ -108,7 +108,7 @@ public class LoopManager implements  Runnable {
 					
 					if(clockUI!=null){
 						try{
-							clockUI.updateTime(gameTime.getDate());				//here clockUI could be null for multhythread							
+							clockUI.updateSpeed();		//here clockUI could be null for multhythread							
 						}catch (Exception e) {}
 	
 					}
