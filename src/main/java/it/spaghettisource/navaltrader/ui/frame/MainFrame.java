@@ -33,7 +33,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 	private static final String MENU_ACTION_FRAME_OFFICE = "office";
 	private static final String MENU_ACTION_FRAME_BROKER = "ship Broker";
 	private static final String MENU_ACTION_FRAME_SHIP = "ship list";
-	private static final String MENU_ACTION_FRAME_NAVIGATION = "ship navigation";	
 
 
 
@@ -76,8 +75,25 @@ public class MainFrame extends JFrame  implements ActionListener{
 		//Display the window.
 		setVisible(true);
 
+		createMapNavigationFrame();
 
 	}
+	
+	private void createMapNavigationFrame() {
+		InternalFrameMapNavigation frame = new InternalFrameMapNavigation(desktop, gameManager);
+		desktop.add(frame);			
+		try {
+			frame.setMaximum(true);
+			frame.setSelected(true);					
+		} catch (PropertyVetoException e1) {
+			e1.printStackTrace();
+		}														
+		frame.setVisible(true);
+
+		try {
+			frame.setSelected(true);
+		} catch (java.beans.PropertyVetoException e) {}
+	}	 	
 
 	private JMenuBar createMenuBar() {
 		menuBar = new JMenuBar();
@@ -117,11 +133,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 
 		menuItem = new JMenuItem("Ship List");
 		menuItem.setActionCommand(MENU_ACTION_FRAME_SHIP);
-		menuItem.addActionListener(this);
-		menu.add(menuItem);		
-
-		menuItem = new JMenuItem("Ship navigation map");
-		menuItem.setActionCommand(MENU_ACTION_FRAME_NAVIGATION);
 		menuItem.addActionListener(this);
 		menu.add(menuItem);		
 		
@@ -165,22 +176,10 @@ public class MainFrame extends JFrame  implements ActionListener{
 			try {
 				frame.setSelected(true);
 			} catch (java.beans.PropertyVetoException e) {}	        
-		}else if (MENU_ACTION_FRAME_NAVIGATION.equals(event.getActionCommand())) { 
-			InternalFrameMapNavigation frame = new InternalFrameMapNavigation(desktop, gameManager);
-			desktop.add(frame);			
-			try {
-				frame.setMaximum(true);
-				frame.setSelected(true);					
-			} catch (PropertyVetoException e1) {
-				e1.printStackTrace();
-			}														
-			frame.setVisible(true);
+		}     
 
-			try {
-				frame.setSelected(true);
-			} catch (java.beans.PropertyVetoException e) {}	        
-		}       
+	}
 
-	}	 	
+	
 
 }
