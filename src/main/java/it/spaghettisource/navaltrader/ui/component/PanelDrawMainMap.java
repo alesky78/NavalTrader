@@ -194,13 +194,16 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener,  Acti
 		Point point;
 		for (Ship ship : company.getShips()) {
 			point = ship.getPosition();
-
-			//draw the ships
-			graphicsBuffer.setStroke(new BasicStroke(10));
-			graphicsBuffer.setColor(Color.RED);	
-			graphicsBuffer.fillOval(point.getX(), point.getY(), 30, 30);			
-			graphicsBuffer.setColor(Color.BLACK);				
-			graphicsBuffer.drawOval(point.getX(), point.getY(), 30, 30);			
+			
+			if(!ship.isDocked()) {
+				//draw the ships
+				graphicsBuffer.setStroke(new BasicStroke(10));
+				graphicsBuffer.setColor(Color.RED);	
+				graphicsBuffer.fillOval(point.getX(), point.getY(), 30, 30);			
+				graphicsBuffer.setColor(Color.BLACK);				
+				graphicsBuffer.drawOval(point.getX(), point.getY(), 30, 30);				
+			}
+			
 		}
 	}
 
@@ -275,13 +278,13 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener,  Acti
 			loopManager.setPauseByUser(true);
 		}else if(ACTION_PLAY_X1.equals(command)) {
 			loopManager.setPauseByUser(false);
-			loopManager.goFast();		
+			loopManager.goFast(1);		
 		}else if(ACTION_PLAY_X2.equals(command)) {
 			loopManager.setPauseByUser(false);
-			loopManager.goFast();	
+			loopManager.goFast(7);	
 		}else if(ACTION_PLAY_X3.equals(command)) {
 			loopManager.setPauseByUser(false);
-			loopManager.goSlow();				
+			loopManager.goFast(14);				
 		}
 		
 	}

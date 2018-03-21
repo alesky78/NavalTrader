@@ -231,6 +231,11 @@ public class Ship implements Entity{
 		this.basePrice = basePrice;
 	}
 
+	
+	public boolean isDocked() {
+		return SHIP_STATUS_DOCKED.equals(status);
+	}
+	
 	public String getStatus() {
 		return status;
 	}

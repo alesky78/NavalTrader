@@ -43,6 +43,10 @@ public class LoopManager implements  Runnable {
 	public void goFast() {
 		timePassInMinuts = timePassInMinuts+1;
 	}
+	
+	public void goFast(int timePassedPerTick) {
+		timePassInMinuts = timePassedPerTick;
+	}
 
 	public void goSlow() {
 		timePassInMinuts = timePassInMinuts-1;
