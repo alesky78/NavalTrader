@@ -21,7 +21,6 @@ import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameMapNavigatio
 import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameOffice;
 import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameShipBroker;
 import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameShipList;
-import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameTimeSimulation;
 
 public class MainFrame extends JFrame  implements ActionListener{
 
@@ -35,7 +34,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 	private static final String MENU_ACTION_FRAME_BROKER = "ship Broker";
 	private static final String MENU_ACTION_FRAME_SHIP = "ship list";
 	private static final String MENU_ACTION_FRAME_NAVIGATION = "ship navigation";	
-	private static final String MENU_ACTION_TIME_SIMULAION = "time simultion";	
 
 
 
@@ -107,11 +105,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 		menu = new JMenu("Manage");
 		menuBar.add(menu);
 
-		menuItem = new JMenuItem("Time simulation");
-		menuItem.setActionCommand(MENU_ACTION_TIME_SIMULAION);
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-
 		menuItem = new JMenuItem("Office");
 		menuItem.setActionCommand(MENU_ACTION_FRAME_OFFICE);
 		menuItem.addActionListener(this);
@@ -145,15 +138,6 @@ public class MainFrame extends JFrame  implements ActionListener{
 			//close the main menu frame
 			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 			System.exit(0);
-			
-		}else if(MENU_ACTION_TIME_SIMULAION.equals(event.getActionCommand())){
-			
-			InternalFrameTimeSimulation frame = new InternalFrameTimeSimulation(desktop, gameManager);
-			frame.setVisible(true);
-			desktop.add(frame);
-			try {
-				frame.setSelected(true);
-			} catch (java.beans.PropertyVetoException e) {}		
 			
 		}else if (MENU_ACTION_FRAME_OFFICE.equals(event.getActionCommand())) { 
 
