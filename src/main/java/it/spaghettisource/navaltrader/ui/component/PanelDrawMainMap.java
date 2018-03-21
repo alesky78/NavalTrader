@@ -3,7 +3,7 @@ package it.spaghettisource.navaltrader.ui.component;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -13,6 +13,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener,  Acti
 	private LoopManager loopManager;	
 
 	private boolean stopThread;
+	private NumberFormat formatCurrency = NumberFormat.getCurrencyInstance();
 	
 	private List<ButtonDrawPort> portsButton;
 	
@@ -182,7 +184,7 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener,  Acti
 
 		graphicsBuffer.drawImage(barUp,0,0,bufferImage.getWidth(),150,0,0,barUp.getWidth(),barUp.getHeight(),null);
 		
-		drawTime(graphicsBuffer);
+		drawTimeAndBudget(graphicsBuffer,bufferImage);
 			
 		
 	}
@@ -203,17 +205,17 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener,  Acti
 	}
 
 
-	private void drawTime(Graphics2D graphicsBuffer) {
+	private void drawTimeAndBudget(Graphics2D graphicsBuffer,BufferedImage bufferImage) {
 	
 		graphicsBuffer.setFont(FontUtil.getDrawFont());
 		graphicsBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
-		String date = 	gameTime.getDate();
-			
-		int stringHeight = graphicsBuffer.getFontMetrics().getAscent();
+		FontMetrics fontMetrics = graphicsBuffer.getFontMetrics();
+		int stringHeight = fontMetrics.getAscent();		
+
 		
-		graphicsBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		
+		//print date and clock
+		String date = 	gameTime.getDate();		
 		int xStart = 230;
 		int yStart = 45;			
 		
@@ -221,6 +223,11 @@ public class PanelDrawMainMap extends JPanel implements ComponentListener,  Acti
 		graphicsBuffer.drawString(date,xStart,yStart);
 		graphicsBuffer.fill(new Arc2D.Float(xStart-stringHeight-30, yStart-stringHeight, stringHeight, stringHeight, 90, -gameTime.getTimeInAngleFormat(), Arc2D.PIE));
 
+		//print budget
+		String budget = formatCurrency.format(company.getBudget());
+		int stringWidth = fontMetrics.stringWidth(budget);
+		graphicsBuffer.drawString(budget,bufferImage.getWidth()/2 - stringWidth/2 ,95);
+		
 		
 		
 	}
