@@ -20,7 +20,7 @@ public class FontUtil {
 		if(drawFont==null){
 			Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
 			attributes.put(TextAttribute.TRACKING, 0.01);
-			drawFont = new Font("arial", Font.BOLD, 40).deriveFont(attributes);			
+			drawFont = new Font("arial", Font.BOLD, 20).deriveFont(attributes);			
 		}
 
 		return drawFont; 

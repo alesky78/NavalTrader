@@ -28,7 +28,7 @@ import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 public class ButtonDrawPort extends JButton{
 
 	static Log log = LogFactory.getLog(ButtonDrawPort.class.getName());
-	static BufferedImage dockImmage = ImageIconFactory.getBufferImageByName("/scenario/dock.png");
+	static BufferedImage dockImmage = ImageIconFactory.getBufferImageByName("/images/dock.png");
 
 	private Port port;
 	private Ship ship;

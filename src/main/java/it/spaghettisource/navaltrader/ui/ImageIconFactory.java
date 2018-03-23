@@ -65,7 +65,7 @@ public class ImageIconFactory {
 
 		try {
 			return ImageIO.read(ImageIconFactory.class.getResourceAsStream(name));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			String message = "error loading the immange "+name+" for:"+e.getMessage();
 			log.error(message,e );
 			throw new RuntimeException(message,e);

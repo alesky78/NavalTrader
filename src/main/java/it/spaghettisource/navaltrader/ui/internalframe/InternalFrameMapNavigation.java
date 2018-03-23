@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.component.PanelDrawMainMap;
+import it.spaghettisource.navaltrader.ui.component.PanelDrawGameBoard;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
@@ -19,7 +19,7 @@ public class InternalFrameMapNavigation extends InternalFrameAbstract {
 	
 	static Log log = LogFactory.getLog(InternalFrameMapNavigation.class.getName());
 	
-	private PanelDrawMainMap panel;
+	private PanelDrawGameBoard panel;
 	
 	
 	public InternalFrameMapNavigation(MainDesktopPane parentDesktopPane, GameManager gameManager) {
@@ -29,7 +29,7 @@ public class InternalFrameMapNavigation extends InternalFrameAbstract {
 			setSize(850,850);   
 			setFrameIcon(ImageIconFactory.getForFrame("/icon/globe.png"));
 						
-			panel = new PanelDrawMainMap(gameManager.getGameData().getCompany(), gameManager.getGameData().getWorld(),gameManager.getGameData().getGameTime(),gameManager.getLoopManager(), 600);
+			panel = new PanelDrawGameBoard(gameManager.getGameData().getCompany(), gameManager.getGameData().getWorld(),gameManager.getGameData().getGameTime(),gameManager.getLoopManager(), 600);
 			panel.setBackground(Color.BLACK);
 			panel.setBorder(null);
 			
