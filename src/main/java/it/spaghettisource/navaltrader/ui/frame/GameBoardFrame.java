@@ -1,7 +1,5 @@
 package it.spaghettisource.navaltrader.ui.frame;
 
-import java.beans.PropertyVetoException;
-
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -10,7 +8,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.GameManager;
-import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameMapNavigation;
 
 public class GameBoardFrame extends JFrame{
 
@@ -44,27 +41,7 @@ public class GameBoardFrame extends JFrame{
 		//Display the window.
 		setVisible(true);
 
-		createMapNavigationFrame();
-
 	}
-	
-	private void createMapNavigationFrame() {
-		InternalFrameMapNavigation frame = new InternalFrameMapNavigation(desktop, gameManager);
-		desktop.add(frame);			
-		try {
-			frame.setMaximum(true);
-			frame.setSelected(true);					
-		} catch (PropertyVetoException e1) {
-			e1.printStackTrace();
-		}														
-		frame.setVisible(true);
-
-		try {
-			frame.setSelected(true);
-		} catch (java.beans.PropertyVetoException e) {}
-	}	 	
-
-
 	
 
 }

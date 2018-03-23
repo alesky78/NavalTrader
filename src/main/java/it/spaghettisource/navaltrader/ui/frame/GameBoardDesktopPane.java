@@ -1,10 +1,14 @@
 package it.spaghettisource.navaltrader.ui.frame;
 
+import java.awt.Component;
 import java.awt.Dimension;
+import java.beans.PropertyVetoException;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,20 +21,47 @@ import it.spaghettisource.navaltrader.ui.event.EventListener;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameContractDelivered;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameGameBoard;
 
-public class GameBoardDesktopPane extends JDesktopPane implements EventListener  {
+public class GameBoardDesktopPane extends JDesktopPane implements EventListener     {
 
 	static Log log = LogFactory.getLog(GameBoardDesktopPane.class.getName());	
 	
 	private GameManager gameManager;
+	private InternalFrameGameBoard gameBoardFrame;
 	
 	public GameBoardDesktopPane(GameManager gameManager) {
 		super();
 		this.gameManager = gameManager;
 		EventPublisher.getInstance().register(this);		
+				
+		createMapNavigationFrame();
 	}
 
+	private void createMapNavigationFrame() {
+		gameBoardFrame = new InternalFrameGameBoard(this, gameManager);
+		add(gameBoardFrame, 100);			
+		try {
+			gameBoardFrame.setMaximum(true);
+			gameBoardFrame.setSelected(true);					
+		} catch (PropertyVetoException e1) {
+			e1.printStackTrace();
+		}														
+		gameBoardFrame.setVisible(true);
+		gameBoardFrame.moveToBack();
 
+		try {
+			gameBoardFrame.setSelected(true);
+		} catch (java.beans.PropertyVetoException e) {}
+	}	 
+		
+
+    public Component add(Component comp) {
+    	Component newC =  super.add(comp);
+    	gameBoardFrame.moveToBack();
+    	return newC;
+    }
+	
 	public void centerInTheDesktopPane(JInternalFrame frame){
 		Dimension desktopSize = getSize();
 	    Dimension jInternalFrameSize = frame.getSize();
@@ -73,7 +104,8 @@ public class GameBoardDesktopPane extends JDesktopPane implements EventListener 
 	@Override
 	public EventType[] getEventsOfInterest() {
 		return new EventType[]{EventType.CONTRACT_COMPLETED_EVENT};
-	}	
+	}
+
 	
 	
 }
