@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import java.text.NumberFormat;
@@ -25,6 +26,7 @@ import javax.swing.JPanel;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.game.loop.LoopManager;
 import it.spaghettisource.navaltrader.game.model.Company;
 import it.spaghettisource.navaltrader.game.model.GameTime;
@@ -34,6 +36,10 @@ import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.FontUtil;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
+import it.spaghettisource.navaltrader.ui.frame.GameBoardDesktopPane;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameOffice;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameShipBroker;
+import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameShipList;
 
 /**
  * this is the pannel used to draw all then ports and the position of the ships
@@ -43,9 +49,9 @@ import it.spaghettisource.navaltrader.ui.ImageIconFactory;
  * @author Alessandro
  *
  */
-public class PanelDrawGameBoard extends JPanel implements ComponentListener,  ActionListener  {
+public class PanelGameBoard extends JPanel implements ComponentListener,  ActionListener  {
 
-	static Log log = LogFactory.getLog(PanelDrawGameBoard.class.getName());
+	static Log log = LogFactory.getLog(PanelGameBoard.class.getName());
 
 	private final static long SLEEP_TIME = 10;
 	
@@ -58,6 +64,9 @@ public class PanelDrawGameBoard extends JPanel implements ComponentListener,  Ac
 	private final static String ACTION_OFFICE = "office";			
 	private final static String ACTION_SETTING = "setting";	
 
+	private GameBoardDesktopPane parentDesktopPane;
+	private GameManager gameManager;
+	
 	private Company company;
 	private World world;
 	private GameTime gameTime;		
@@ -80,16 +89,19 @@ public class PanelDrawGameBoard extends JPanel implements ComponentListener,  Ac
 	private ImageIcon office;		
 	private ImageIcon setting;	
 	
-	public PanelDrawGameBoard(Company company,World world,GameTime gameTime,LoopManager loopManager, int panelSize) {
+	public PanelGameBoard(GameBoardDesktopPane parentDesktopPane,GameManager gameManager, int panelSize) {
 		super(true);
 		setLayout(null);
 		setPreferredSize(new Dimension(panelSize,panelSize));
 		setIgnoreRepaint(true);
 
-		this.company = company;
-		this.world = world;
-		this.gameTime = gameTime;
-		this.loopManager = loopManager;
+		this.parentDesktopPane = parentDesktopPane;
+		this.gameManager = gameManager;
+		
+		this.company = gameManager.getGameData().getCompany();
+		this.world = gameManager.getGameData().getWorld();
+		this.gameTime = gameManager.getGameData().getGameTime();
+		this.loopManager = gameManager.getLoopManager();
 
 		//load all the immages
 		barUp = ImageIconFactory.getBufferImageByName("/images/bar-up.png");
@@ -151,7 +163,7 @@ public class PanelDrawGameBoard extends JPanel implements ComponentListener,  Ac
 		
 		//create the button for the bar down
 		JButton shipListB = new JButton(shipList);
-		shipListB.setBounds(810, 975, shipList.getIconWidth(), shipList.getIconHeight());		
+		shipListB.setBounds(810, 998, shipList.getIconWidth(), shipList.getIconHeight());		
 		shipListB.setBorder(BorderFactory.createEmptyBorder());
 		shipListB.setContentAreaFilled(false);				
 		shipListB.setFocusPainted(false);
@@ -160,7 +172,7 @@ public class PanelDrawGameBoard extends JPanel implements ComponentListener,  Ac
 		add(shipListB);	
 		
 		JButton shipBrokerB = new JButton(shipBroker);
-		shipBrokerB.setBounds(885, 975, shipBroker.getIconWidth(), shipBroker.getIconHeight());		
+		shipBrokerB.setBounds(885, 998, shipBroker.getIconWidth(), shipBroker.getIconHeight());		
 		shipBrokerB.setBorder(BorderFactory.createEmptyBorder());
 		shipBrokerB.setContentAreaFilled(false);				
 		shipBrokerB.setFocusPainted(false);
@@ -169,7 +181,7 @@ public class PanelDrawGameBoard extends JPanel implements ComponentListener,  Ac
 		add(shipBrokerB);		
 		
 		JButton officeB = new JButton(office);
-		officeB.setBounds(965, 975, office.getIconWidth(), office.getIconHeight());		
+		officeB.setBounds(965, 998, office.getIconWidth(), office.getIconHeight());		
 		officeB.setBorder(BorderFactory.createEmptyBorder());
 		officeB.setContentAreaFilled(false);				
 		officeB.setFocusPainted(false);
@@ -178,7 +190,7 @@ public class PanelDrawGameBoard extends JPanel implements ComponentListener,  Ac
 		add(officeB);			
 	
 		JButton settingB = new JButton(setting);
-		settingB.setBounds(1040, 975, setting.getIconWidth(), setting.getIconHeight());		
+		settingB.setBounds(1040, 998, setting.getIconWidth(), setting.getIconHeight());		
 		settingB.setBorder(BorderFactory.createEmptyBorder());
 		settingB.setContentAreaFilled(false);				
 		settingB.setFocusPainted(false);
@@ -341,6 +353,33 @@ public class PanelDrawGameBoard extends JPanel implements ComponentListener,  Ac
 		}else if(ACTION_PLAY_X3.equals(command)) {
 			loopManager.setPauseByUser(false);
 			loopManager.goFast(14);				
+		}else if(ACTION_SHIP_BROKER.equals(command)) {
+			InternalFrameShipBroker frame = new InternalFrameShipBroker(parentDesktopPane,gameManager);
+			frame.setVisible(true);
+			parentDesktopPane.add(frame);
+			try {
+				frame.setSelected(true);
+			} catch (java.beans.PropertyVetoException e) {}
+		}else if(ACTION_SHIP_LIST.equals(command)) {
+			InternalFrameShipList frame = new InternalFrameShipList(parentDesktopPane,gameManager);
+			frame.setVisible(true);
+			parentDesktopPane.add(frame);
+			try {
+				frame.setSelected(true);
+			} catch (java.beans.PropertyVetoException e) {}	      
+		}else if(ACTION_OFFICE.equals(command)) {
+			InternalFrameOffice frame = new InternalFrameOffice(parentDesktopPane,gameManager);
+			frame.setVisible(true);
+			parentDesktopPane.add(frame);
+			try {
+				frame.setSelected(true);
+			} catch (java.beans.PropertyVetoException e) {}
+		}else if(ACTION_SETTING.equals(command)) {
+			//gameManager.quitGame();
+			
+			//close the main menu frame
+			//this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+			System.exit(0);
 		}
 		
 	}

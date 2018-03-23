@@ -15,13 +15,13 @@ import it.spaghettisource.navaltrader.game.GameData;
 import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.event.EventListener;
 import it.spaghettisource.navaltrader.ui.event.EventPublisher;
-import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
+import it.spaghettisource.navaltrader.ui.frame.GameBoardDesktopPane;
 
 public abstract class InternalFrameAbstract extends JInternalFrame implements EventListener,InternalFrameListener {
 
 	static Log log = LogFactory.getLog(InternalFrameAbstract.class.getName());
 
-	protected MainDesktopPane parentDesktopPane;
+	protected GameBoardDesktopPane parentDesktopPane;
 
 	protected GameManager gameManager;
 	protected GameData gameData; 
@@ -29,12 +29,12 @@ public abstract class InternalFrameAbstract extends JInternalFrame implements Ev
 
 	protected NumberFormat percentageFormat = NumberFormat.getPercentInstance();		
 
-	public InternalFrameAbstract(MainDesktopPane parentDesktopPane,GameManager gameManager, String name) {
+	public InternalFrameAbstract(GameBoardDesktopPane parentDesktopPane,GameManager gameManager, String name) {
 		this(parentDesktopPane, gameManager, name, true, true, true, true);
 	}
 	
 	
-	public InternalFrameAbstract(MainDesktopPane parentDesktopPane,GameManager gameManager, String name,boolean resizable, boolean closable,boolean maximizable, boolean iconifiable) {
+	public InternalFrameAbstract(GameBoardDesktopPane parentDesktopPane,GameManager gameManager, String name,boolean resizable, boolean closable,boolean maximizable, boolean iconifiable) {
 		super(name, resizable, closable, maximizable, iconifiable);
 		
 		//TODO to make this frame undecorated

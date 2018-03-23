@@ -30,7 +30,7 @@ import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 import it.spaghettisource.navaltrader.ui.component.TableCellHullProgressBarPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
+import it.spaghettisource.navaltrader.ui.frame.GameBoardDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.ShipListTableRow;
 
 public class InternalFrameShipList extends InternalFrameAbstract  implements ActionListener  {
@@ -46,7 +46,7 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 	private EventList<ShipListTableRow> listShipData;
 
 
-	public InternalFrameShipList(MainDesktopPane parentDesktopPane,GameManager gameManager) {
+	public InternalFrameShipList(GameBoardDesktopPane parentDesktopPane,GameManager gameManager) {
 		super(parentDesktopPane,gameManager, "ship list");
 		setSize(850,300);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/agenda.png"));

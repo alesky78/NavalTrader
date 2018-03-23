@@ -73,7 +73,7 @@ public class MainMenu extends JFrame implements ActionListener {
 					GameManager gameManager = new GameManager();	
 					gameManager.startNewGame("test");			
 	
-					new MainFrame(gameManager);
+					new GameBoardFrame(gameManager);
 				}
 			});
 			

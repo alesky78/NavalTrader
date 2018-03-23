@@ -41,7 +41,7 @@ import it.spaghettisource.navaltrader.ui.component.TableCellCurrentyRenderer;
 import it.spaghettisource.navaltrader.ui.component.TableCellPercentageRenderer;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
+import it.spaghettisource.navaltrader.ui.frame.GameBoardDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.FinancialTableRow;
 import it.spaghettisource.navaltrader.ui.model.LoanTableRow;
 
@@ -76,7 +76,7 @@ public class InternalFrameOffice extends InternalFrameAbstract  implements Actio
 
 
 
-	public InternalFrameOffice(MainDesktopPane parentDesktopPane,GameManager gameManager) {
+	public InternalFrameOffice(GameBoardDesktopPane parentDesktopPane,GameManager gameManager) {
 		super(parentDesktopPane,gameManager,"Office");
 		setSize(500,450);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/desk.png"));

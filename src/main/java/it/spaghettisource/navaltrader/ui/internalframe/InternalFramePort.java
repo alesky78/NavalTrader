@@ -53,7 +53,7 @@ import it.spaghettisource.navaltrader.ui.component.TextFieldDouble;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
+import it.spaghettisource.navaltrader.ui.frame.GameBoardDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.TransportContractTableRow;
 
 public class InternalFramePort extends InternalFrameAbstract  implements ActionListener  {
@@ -118,7 +118,7 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 	
 
-	public InternalFramePort(MainDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
+	public InternalFramePort(GameBoardDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
 		super(parentDesktopPane,gameManager, portName);
 		try {		
 			this.shipName = shipName;

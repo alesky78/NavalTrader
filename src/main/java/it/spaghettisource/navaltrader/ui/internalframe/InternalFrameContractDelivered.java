@@ -29,7 +29,7 @@ import it.spaghettisource.navaltrader.ui.component.TextFieldDouble;
 import it.spaghettisource.navaltrader.ui.component.TextFieldInteger;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
+import it.spaghettisource.navaltrader.ui.frame.GameBoardDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.TransportContractTableRow;
 
 public class InternalFrameContractDelivered extends InternalFrameAbstract {
@@ -41,7 +41,7 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 	
 	private EventList<TransportContractTableRow> listDeliveredContract;	
 	
-	public InternalFrameContractDelivered(MainDesktopPane parentDesktopPane, GameManager gameManager, ProfitabilityRoute profitabilityRoute) {
+	public InternalFrameContractDelivered(GameBoardDesktopPane parentDesktopPane, GameManager gameManager, ProfitabilityRoute profitabilityRoute) {
 		super(parentDesktopPane, gameManager, "contract delivered", true, true, false, false);
 		
 		this.profitabilityRoute = profitabilityRoute;

@@ -36,7 +36,7 @@ import it.spaghettisource.navaltrader.ui.component.TableCellHullProgressBarPerce
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.event.Event;
 import it.spaghettisource.navaltrader.ui.event.EventType;
-import it.spaghettisource.navaltrader.ui.frame.MainDesktopPane;
+import it.spaghettisource.navaltrader.ui.frame.GameBoardDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.BuyShipTableRow;
 import it.spaghettisource.navaltrader.ui.model.SellShipTableRow;
 
@@ -68,7 +68,7 @@ public class InternalFrameShipBroker extends InternalFrameAbstract  implements A
 	private TextFieldCurrency sellShipNetBudget;		
 
 
-	public InternalFrameShipBroker(MainDesktopPane parentDesktopPane,GameManager gameManager) {
+	public InternalFrameShipBroker(GameBoardDesktopPane parentDesktopPane,GameManager gameManager) {
 		super(parentDesktopPane,gameManager, "ship broker");
 		setSize(850,450);   
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/justice.png"));

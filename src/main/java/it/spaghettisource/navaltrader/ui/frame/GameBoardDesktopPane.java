@@ -18,13 +18,13 @@ import it.spaghettisource.navaltrader.ui.event.EventPublisher;
 import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.internalframe.InternalFrameContractDelivered;
 
-public class MainDesktopPane extends JDesktopPane implements EventListener  {
+public class GameBoardDesktopPane extends JDesktopPane implements EventListener  {
 
-	static Log log = LogFactory.getLog(MainDesktopPane.class.getName());	
+	static Log log = LogFactory.getLog(GameBoardDesktopPane.class.getName());	
 	
 	private GameManager gameManager;
 	
-	public MainDesktopPane(GameManager gameManager) {
+	public GameBoardDesktopPane(GameManager gameManager) {
 		super();
 		this.gameManager = gameManager;
 		EventPublisher.getInstance().register(this);		
