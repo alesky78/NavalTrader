@@ -1,6 +1,5 @@
 package it.spaghettisource.navaltrader.ui.component;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -11,8 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -79,6 +79,8 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 	
 	private BufferedImage barUp;
 	private BufferedImage barDown;	
+	private BufferedImage ship;
+	
 	private ImageIcon puase;	
 	private ImageIcon speedx1;
 	private ImageIcon speedx2;
@@ -106,6 +108,8 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		//load all the immages
 		barUp = ImageIconFactory.getBufferImageByName("/images/bar-up.png");
 		barDown = ImageIconFactory.getBufferImageByName("/images/bar-down.png");
+		ship = ImageIconFactory.getBufferImageByName("/images/ship.png");
+		
 		puase = ImageIconFactory.getImageIconByName("/images/clock-pause.png");
 		speedx1 = ImageIconFactory.getImageIconByName("/images/clock-1.png");
 		speedx2 = ImageIconFactory.getImageIconByName("/images/clock-2.png");
@@ -287,17 +291,22 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 	}
 	
 	private void drawShips(Graphics2D graphicsBuffer) {
-		Point point;
-		for (Ship ship : company.getShips()) {
-			point = ship.getPosition();
+		Point shipPosition;
+		for (Ship actualShip : company.getShips()) {
+			shipPosition = actualShip.getPosition();
 			
-			if(!ship.isDocked()) {
-				//draw the ships
-				graphicsBuffer.setStroke(new BasicStroke(10));
-				graphicsBuffer.setColor(Color.RED);	
-				graphicsBuffer.fillOval(point.getIntX(), point.getIntY(), 30, 30);			
-				graphicsBuffer.setColor(Color.BLACK);				
-				graphicsBuffer.drawOval(point.getIntX(), point.getIntY(), 30, 30);				
+			if(!actualShip.isDocked()) {
+
+				// Rotation information				
+				double rotationRequired = Math.toRadians (actualShip.getShipAngle());
+				double locationX = ship.getWidth() / 2;
+				double locationY = ship.getHeight() / 2;
+				AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+				AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+
+				// Drawing the rotated image at the required drawing locations
+				graphicsBuffer.drawImage(op.filter(ship, null), shipPosition.getIntX()-ship.getWidth()/2, shipPosition.getIntY()-ship.getHeight()/2, null);
+				
 			}
 			
 		}

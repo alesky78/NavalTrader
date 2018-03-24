@@ -31,6 +31,12 @@ public class NavigationRoute {
 		actualPosition = path[0];
 
 	}
+	
+	public double getDegreeNavigationAngle() {
+		return Mathematic.angleDegreesBetweenPoints(actualPosition, path[actualPathIndex]);
+		
+	}
+	
 
 	public Port getDestinationPort() {
 		return route.getDestination();

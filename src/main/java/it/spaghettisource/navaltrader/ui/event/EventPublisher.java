@@ -99,8 +99,7 @@ public class EventPublisher {
 	public boolean hasListner(Event event) {
 		if(!getListeners(event.getEventType()).isEmpty()){
 			return true;
-		}else {
-			log.debug("there are not listener for "+event.getEventType());			
+		}else {		
 			return false;
 		}
 	}

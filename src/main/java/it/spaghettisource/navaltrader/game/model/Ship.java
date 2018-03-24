@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import it.spaghettisource.navaltrader.game.loop.Entity;
+import it.spaghettisource.navaltrader.geometry.Angle;
 import it.spaghettisource.navaltrader.geometry.Mathematic;
 import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.event.Event;
@@ -49,7 +50,7 @@ public class Ship implements Entity{
 	private int maxHp;
 	private double hpDamagePerNodeOfNavigation;
 	private double hpDamagePerRoute;	
-	
+
 	private int dwt;
 	private int maxDwt;	
 	private int teu;
@@ -64,6 +65,9 @@ public class Ship implements Entity{
 
 	private int speed;	
 	private int maxSpeed;	
+
+	private Angle shipAngle;		//used to draw the ship for the correct angulation	
+	private double rotationSpeed = 1;			
 
 	private List<TransportContract> transportContracts;
 
@@ -100,6 +104,8 @@ public class Ship implements Entity{
 		this.status = SHIP_STATUS_DOCKED;
 		waitingTimeInHours = 0;
 
+		shipAngle = new Angle(0);
+
 	}
 
 	public void setCompany(Company company) {
@@ -132,7 +138,7 @@ public class Ship implements Entity{
 		}
 
 		teuToUnload = 0;
-		
+
 		if(!toClose.isEmpty()){
 			double totalBudget = 0;
 			double penaltyCharges = 0;			
@@ -143,23 +149,23 @@ public class Ship implements Entity{
 				dwt -= transportContract.getTeu()*transportContract.getDwtPerTeu();			
 
 				transportContracts.remove(transportContract);
-				
+
 				totalBudget += transportContract.getTotalPrice();
 				finance.addEntry(FinancialEntryType.SHIP_INCOME, transportContract.getTotalPrice());
-				
+
 				if(transportContract.getDayForDelivery()<0) {
 					penaltyCharges += Math.abs(transportContract.getDayForDelivery())*transportContract.getDayClausePenalty();
 				}
-				
+
 			}
 
 			finance.addEntry(FinancialEntryType.PENALTY_CHARGES, -penaltyCharges);
 			company.addBudget(totalBudget-penaltyCharges);
-			
+
 			profitabilityRoute.setIncomeObtained(totalBudget);
 			profitabilityRoute.setPenaltyCharges(penaltyCharges);
 			profitabilityRoute.addContractClosed(toClose);
-			
+
 			InboundEventQueue.getInstance().put(new Event(EventType.CONTRACT_COMPLETED_EVENT,profitabilityRoute));
 			InboundEventQueue.getInstance().put(new Event(EventType.FINANCIAL_EVENT,this));
 		}
@@ -214,7 +220,7 @@ public class Ship implements Entity{
 		this.dockedPort = null;
 		teuToLoad = 0;		
 	}
-	
+
 	public Finance getFinance() {
 		return finance;
 	}
@@ -231,11 +237,11 @@ public class Ship implements Entity{
 		this.basePrice = basePrice;
 	}
 
-	
+
 	public boolean isDocked() {
 		return SHIP_STATUS_DOCKED.equals(status);
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
@@ -247,7 +253,7 @@ public class Ship implements Entity{
 	public int getHpPercentage() {
 		return 	(hp*100)/maxHp;
 	}
-	
+
 	public int getHpPercentage(int damagedHp) {
 		return 	(damagedHp*100)/maxHp;
 	}
@@ -259,7 +265,7 @@ public class Ship implements Entity{
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
-	
+
 	public void addHp(int hpToAdd) {
 		this.hp += hpToAdd;
 	}	
@@ -288,7 +294,7 @@ public class Ship implements Entity{
 		log.debug("ship damage new damage per node:"+hpDamagePerNodeOfNavigation);
 	}
 
-	
+
 	public int getDwt() {
 		return dwt;
 	}
@@ -396,6 +402,22 @@ public class Ship implements Entity{
 		this.maxSpeed = maxSpeed;
 	}
 
+	public double getShipAngle() {
+		return shipAngle.getValue();
+	}
+
+
+	public void updateShipAngle() {
+		if(!SHIP_STATUS_NAVIGATION.equals(status)) {
+			shipAngle.resetAngle(navigationRoute.getDegreeNavigationAngle());
+		}else {
+			shipAngle.rotateTo(navigationRoute.getDegreeNavigationAngle(), 1);
+		}
+
+	}
+
+
+
 	/**
 	 * this is the main method that must be called to cast of a ship
 	 * it tacking care to prepare the ship for the load activities and the navigation route
@@ -412,7 +434,7 @@ public class Ship implements Entity{
 
 		//calculate the time to load all the cargo based on the accepted contract in this port
 		waitingTimeInHours = teuToLoad / dockedPort.getLoadTeuPerHour() ;	
-		
+
 		InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));	
 
 	}
@@ -424,9 +446,12 @@ public class Ship implements Entity{
 	 */
 	private void loadShip(double hourPassed) {
 		waitingTimeInHours = waitingTimeInHours - hourPassed;
-		
+
 		if(waitingTimeInHours<0) {	//if finish to load the ship prepare to navigate
 			log.debug("ship :"+name+" completed loading start navigation");
+
+			updateShipAngle();	//prepare the starting angle
+
 			status = SHIP_STATUS_NAVIGATION;
 
 			//cost for cast off
@@ -441,12 +466,12 @@ public class Ship implements Entity{
 
 			//calculate the damage
 			calculateDamageForNodeOfNavigation();			
-			
+
 			//ship start to navigate
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
 		}
 	}
-	
+
 	/**
 	 * navigate to the destination
 	 * 
@@ -455,7 +480,8 @@ public class Ship implements Entity{
 	private void navigation(double hourPassed) {
 
 		position = navigationRoute.navigate(hourPassed);
-		
+		updateShipAngle();
+
 		//fuel
 		double fuelConsumed = getFuelConsumptionPerHour(navigationRoute.getSpeed())*hourPassed;
 		fuel -= fuelConsumed;
@@ -464,17 +490,17 @@ public class Ship implements Entity{
 		//damage
 		double damage = hpDamagePerNodeOfNavigation * navigationRoute.getSpeed()*hourPassed;
 		hpDamagePerRoute += damage;
-		
+
 		if(navigationRoute.isArrivedAtDestination()) {
 
 			//evaluate the final damage
 			profitabilityRoute.addHpDamaged((int)hpDamagePerRoute);
 			hp -= (int)hpDamagePerRoute;
 			log.debug("ship damage per route:"+hpDamagePerRoute);
-			
+
 			//docking the ship
 			setDockedPort(navigationRoute.getDestinationPort());	//this set also final coordinate of the ship
-			
+
 			waitingTimeInHours = 4;		//TODO set the docking time, may be function of the port ??? in fact depend from the traffic in the dock
 
 			status = SHIP_STATUS_DOCKING;
@@ -495,13 +521,13 @@ public class Ship implements Entity{
 		waitingTimeInHours = waitingTimeInHours - hourPassed;
 		if(waitingTimeInHours<0) {
 			log.debug("ship :"+name+" completed docking");
-			
+
 			//cost for cast off to dock
 			double castOffCost = dockedPort.getCastOffCost(this);
 			finance.addEntry(FinancialEntryType.SHIP_DOCK_COST_TUG, -castOffCost);
 			company.removeBudget(castOffCost);			
 			profitabilityRoute.addTugCharges(castOffCost);
-			
+
 			//close contracts
 			closeContracts();
 
@@ -517,7 +543,7 @@ public class Ship implements Entity{
 		}
 	}	
 
-	
+
 	/**
 	 * spend time loading the ship
 	 * 
@@ -525,7 +551,7 @@ public class Ship implements Entity{
 	 */
 	private void unloadShip(double hourPassed) {
 		waitingTimeInHours = waitingTimeInHours - hourPassed;
-		
+
 		if(waitingTimeInHours<0) {	//if finish to load the ship
 			log.debug("ship :"+name+" completed unloading ");
 			status = SHIP_STATUS_DOCKED;
@@ -533,10 +559,10 @@ public class Ship implements Entity{
 			//ship start to navigate
 			InboundEventQueue.getInstance().put(new Event(EventType.SHIP_STATUS_CHANGE_EVENT,this));			
 		}		
-		
+
 	}	
-	
-	
+
+
 	@Override	
 	public void update(int minutsPassed, boolean isNewDay, boolean isNewWeek, boolean isNewMonth) {
 
@@ -546,7 +572,7 @@ public class Ship implements Entity{
 				transportContract.reduceDayForDelivery();
 			}
 		}
-		
+
 		double hourPassed = minutsPassed/60.0;
 
 		if(SHIP_STATUS_DOCKED.equals(status)) {
