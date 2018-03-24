@@ -1,7 +1,5 @@
 package it.spaghettisource.navaltrader.ui.component;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
@@ -28,12 +26,15 @@ import it.spaghettisource.navaltrader.ui.ImageIconFactory;
 public class ButtonDrawPort extends JButton{
 
 	static Log log = LogFactory.getLog(ButtonDrawPort.class.getName());
-	static BufferedImage dockImmage = ImageIconFactory.getBufferImageByName("/images/dock.png");
+	static BufferedImage dockGreen = ImageIconFactory.getBufferImageByName("/images/dock-green.png");
+	static BufferedImage dockRed = ImageIconFactory.getBufferImageByName("/images/dock-red.png");
+	static BufferedImage dockStandard = ImageIconFactory.getBufferImageByName("/images/dock.png");		
 
 	private Port port;
 	private Ship ship;
 	private int buttonBordersize;
 	private boolean isValidDockedPort;	
+	private boolean isStandardDockedPort;	
 
 	public ButtonDrawPort( Port port, String actionCommand, ActionListener listner) {
 		super();
@@ -41,9 +42,9 @@ public class ButtonDrawPort extends JButton{
 		this.buttonBordersize = buttonBordersize;
 		setBorder(BorderFactory.createEmptyBorder());
 		setContentAreaFilled(false);
-		setSize(dockImmage.getWidth(), dockImmage.getHeight());
-		isValidDockedPort = true;		
-		
+		setSize(dockGreen.getWidth(), dockGreen.getHeight());
+		isStandardDockedPort = true;
+			
 		//add listener and command only if there is a listener and if the ship can go to this port
 		if(listner!=null && actionCommand !=null){
 			addActionListener(listner);
@@ -58,10 +59,11 @@ public class ButtonDrawPort extends JButton{
 		this.buttonBordersize = buttonBordersize;
 		setBorder(BorderFactory.createEmptyBorder());
 		setContentAreaFilled(false);
-		setSize(dockImmage.getWidth(), dockImmage.getHeight());
+		setSize(dockGreen.getWidth(), dockGreen.getHeight());
 		
 		if(port.getShipSizeAccepted() >= ship.getShipSize()){
 			isValidDockedPort = true;
+			isStandardDockedPort = false;
 		}
 		
 		//add listener and command only if there is a listener and if the ship can go to this port
@@ -81,13 +83,13 @@ public class ButtonDrawPort extends JButton{
 		Graphics2D graphicsBuffer = (Graphics2D) g;
 
 		//draw the ports
-		if(isValidDockedPort){
-			graphicsBuffer.setColor(Color.GREEN);			
+		if(isStandardDockedPort) {
+			graphicsBuffer.drawImage(dockStandard, 0, 0, dockStandard.getWidth(), dockStandard.getHeight(), null);
+		}else if(isValidDockedPort){
+			graphicsBuffer.drawImage(dockGreen, 0, 0, dockGreen.getWidth(), dockGreen.getHeight(), null);			
 		}else{
-			graphicsBuffer.setColor(Color.RED);			
+			graphicsBuffer.drawImage(dockRed, 0, 0, dockRed.getWidth(), dockRed.getHeight(), null);
 		}
-	
-		graphicsBuffer.drawImage(dockImmage, 0, 0, dockImmage.getWidth(), dockImmage.getHeight(), null);
 		
 	}
 
