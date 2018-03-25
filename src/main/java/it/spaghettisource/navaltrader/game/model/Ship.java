@@ -407,11 +407,11 @@ public class Ship implements Entity{
 	}
 
 
-	public void updateShipAngle() {
+	public void updateShipAngle(double hourPassed) {
 		if(!SHIP_STATUS_NAVIGATION.equals(status)) {
 			shipAngle.resetAngle(navigationRoute.getDegreeNavigationAngle());
 		}else {
-			shipAngle.rotateTo(navigationRoute.getDegreeNavigationAngle(), 1);
+			shipAngle.rotateTo(navigationRoute.getDegreeNavigationAngle(), 20*hourPassed);	//move 20 degree per hour
 		}
 
 	}
@@ -450,7 +450,7 @@ public class Ship implements Entity{
 		if(waitingTimeInHours<0) {	//if finish to load the ship prepare to navigate
 			log.debug("ship :"+name+" completed loading start navigation");
 
-			updateShipAngle();	//prepare the starting angle
+			updateShipAngle(hourPassed);	//prepare the starting angle
 
 			status = SHIP_STATUS_NAVIGATION;
 
@@ -480,7 +480,7 @@ public class Ship implements Entity{
 	private void navigation(double hourPassed) {
 
 		position = navigationRoute.navigate(hourPassed);
-		updateShipAngle();
+		updateShipAngle(hourPassed);
 
 		//fuel
 		double fuelConsumed = getFuelConsumptionPerHour(navigationRoute.getSpeed())*hourPassed;
