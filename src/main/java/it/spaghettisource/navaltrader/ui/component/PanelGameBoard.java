@@ -80,6 +80,8 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 	private BufferedImage barUp;
 	private BufferedImage barDown;	
 	private BufferedImage ship;
+	private BufferedImage shipDocked;	
+	
 	
 	private ImageIcon puase;	
 	private ImageIcon speedx1;
@@ -109,6 +111,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		barUp = ImageIconFactory.getBufferImageByName("/images/bar-up.png");
 		barDown = ImageIconFactory.getBufferImageByName("/images/bar-down.png");
 		ship = ImageIconFactory.getBufferImageByName("/images/ship.png");
+		shipDocked = ImageIconFactory.getBufferImageByName("/images/dock-ship.png");
 		
 		puase = ImageIconFactory.getImageIconByName("/images/clock-pause.png");
 		speedx1 = ImageIconFactory.getImageIconByName("/images/clock-1.png");
@@ -237,6 +240,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		//draw on the new immage
 		graphicsBuffer.drawImage(world.getWorldMap(),0,0,width,height,null);
 		drawShips(graphicsBuffer);
+		drawPorts(graphicsBuffer);		
 		graphicsBuffer.dispose();
 
 		//draw all to the JPanel Graphics
@@ -249,8 +253,6 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 	}
 
 
-	
-	
 	private void drawBar(Graphics2D graphicsBuffer,int width, int height) {
 
 		//bar up
@@ -311,42 +313,23 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 			
 		}
 	}	
-
-	private class Repainter implements Runnable{
-
-		long timeSleep;
-		private JPanel panel;
-
-		public Repainter(long timeSleep, JPanel panel) {
-			super();
-			this.timeSleep = timeSleep;
-			this.panel = panel;
-		}
-
-
-		@Override
-		public void run() {
-
-
-			while(!stopThread){
-
-				try {
-
-					Thread.sleep(timeSleep);
-					panel.repaint();
-				} catch (InterruptedException e) {
-				}
-
+	
+	private void drawPorts(Graphics2D graphicsBuffer) {
+		//the ports are draw as button  and maintained in the variable portsButton
+		//but there are extra staff to draw.. for example the ship docked in the port is draw here
+		Point coordinate = null;
+		for (ButtonDrawPort port : portsButton) {
+			if(!port.getManagedPort().getDockedShip().isEmpty()) {	//if the port has ship draw related icon
+				coordinate = port.getManagedPort().getCooridnate();
+				graphicsBuffer.drawImage(shipDocked, coordinate.getIntX() - 50 - shipDocked.getWidth() , coordinate.getIntY() -50 - shipDocked.getHeight(), shipDocked.getWidth(), shipDocked.getHeight(), null);
+				
+				
 			}
-
-			log.info("stop thread to draw ship map navigation");
-
 		}
-
-
-
+		
+		
+		
 	}
-
 
 
 	public void actionPerformed(ActionEvent event) {
@@ -423,6 +406,40 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 	}
 
 
+	private class Repainter implements Runnable{
+
+		long timeSleep;
+		private JPanel panel;
+
+		public Repainter(long timeSleep, JPanel panel) {
+			super();
+			this.timeSleep = timeSleep;
+			this.panel = panel;
+		}
+
+
+		@Override
+		public void run() {
+
+
+			while(!stopThread){
+
+				try {
+
+					Thread.sleep(timeSleep);
+					panel.repaint();
+				} catch (InterruptedException e) {
+				}
+
+			}
+
+			log.info("stop thread to draw ship map navigation");
+
+		}
+
+
+
+	}
 
 
 }

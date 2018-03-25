@@ -24,7 +24,7 @@ public class ImageIconFactory {
 	}
 
 
-	public static BufferedImage getScaledBufferedImage(BufferedImage srcImg, int w, int h){
+	private static BufferedImage getScaledBufferedImage(BufferedImage srcImg, int w, int h){
 		Image tmp = srcImg.getScaledInstance(w, h, Image.SCALE_SMOOTH);
 		BufferedImage dimg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 

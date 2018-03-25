@@ -29,12 +29,14 @@ public class ButtonDrawPort extends JButton{
 	static BufferedImage dockGreen = ImageIconFactory.getBufferImageByName("/images/dock-green.png");
 	static BufferedImage dockRed = ImageIconFactory.getBufferImageByName("/images/dock-red.png");
 	static BufferedImage dockStandard = ImageIconFactory.getBufferImageByName("/images/dock.png");		
+	static BufferedImage shipDocked = ImageIconFactory.getBufferImageByName("/images/dock-ship.png");		
 
 	private Port port;
 	private Ship ship;
 	private int buttonBordersize;
-	private boolean isValidDockedPort;	
-	private boolean isStandardDockedPort;	
+	private boolean isValidDockedPort;		//verify if the related ship can go in this port
+
+	private boolean isForBoardGame;	// this flag identify if the button will be used for the navigation Panel of for the boardGame Panel	 
 
 	public ButtonDrawPort( Port port, String actionCommand, ActionListener listner) {
 		super();
@@ -43,9 +45,9 @@ public class ButtonDrawPort extends JButton{
 		setBorder(BorderFactory.createEmptyBorder());
 		setContentAreaFilled(false);
 		setSize(dockGreen.getWidth(), dockGreen.getHeight());
-		isStandardDockedPort = true;
+		isForBoardGame = true;
 			
-		//add listener and command only if there is a listener and if the ship can go to this port
+		//add listener and command
 		if(listner!=null && actionCommand !=null){
 			addActionListener(listner);
 			setActionCommand(actionCommand);			
@@ -60,10 +62,10 @@ public class ButtonDrawPort extends JButton{
 		setBorder(BorderFactory.createEmptyBorder());
 		setContentAreaFilled(false);
 		setSize(dockGreen.getWidth(), dockGreen.getHeight());
+		isForBoardGame = false;		
 		
 		if(port.getShipSizeAccepted() >= ship.getShipSize()){
 			isValidDockedPort = true;
-			isStandardDockedPort = false;
 		}
 		
 		//add listener and command only if there is a listener and if the ship can go to this port
@@ -82,8 +84,8 @@ public class ButtonDrawPort extends JButton{
 		super.paintComponent(g); 
 		Graphics2D graphicsBuffer = (Graphics2D) g;
 
-		//draw the ports
-		if(isStandardDockedPort) {
+		//draw the ports in the board
+		if(isForBoardGame) {
 			graphicsBuffer.drawImage(dockStandard, 0, 0, dockStandard.getWidth(), dockStandard.getHeight(), null);
 		}else if(isValidDockedPort){
 			graphicsBuffer.drawImage(dockGreen, 0, 0, dockGreen.getWidth(), dockGreen.getHeight(), null);			
