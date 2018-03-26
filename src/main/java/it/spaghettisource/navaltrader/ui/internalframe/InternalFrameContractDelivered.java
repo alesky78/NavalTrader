@@ -50,7 +50,7 @@ public class InternalFrameContractDelivered extends InternalFrameAbstract {
 		
 		setSize(700,450);
 		setFrameIcon(ImageIconFactory.getForFrame("/icon/container.png"));		
-		parentDesktopPane.centerInTheDesktopPane(this);
+		parentDesktopPane.centerFrameInTheDesktopPane(this);
 			
 		initValuesFromModel();
 		

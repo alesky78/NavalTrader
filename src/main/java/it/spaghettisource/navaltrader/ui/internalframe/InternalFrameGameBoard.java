@@ -1,9 +1,6 @@
 package it.spaghettisource.navaltrader.ui.internalframe;
 
 import java.awt.Color;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 
 import javax.swing.event.InternalFrameEvent;
 

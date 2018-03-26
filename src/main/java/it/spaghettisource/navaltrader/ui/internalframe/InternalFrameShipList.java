@@ -90,7 +90,7 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);			
 		table.setAutoCreateRowSorter(true);			
 		table.getColumnModel().getColumn(6).setCellRenderer(TableCellHullProgressBarPercentageRenderer.getRenderer());	
-		
+
 		table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
 			public void valueChanged(ListSelectionEvent event) {
 				try{
@@ -99,31 +99,10 @@ public class InternalFrameShipList extends InternalFrameAbstract  implements Act
 
 					//enter in port only if the ship is docked
 					if(data.getStatus().equals(Ship.SHIP_STATUS_DOCKED)){
-						JInternalFrame[] frames =  parentDesktopPane.getAllFrames();
-						boolean exist = false;
-						for (JInternalFrame frame : frames) {
-							if(frame.getTitle().equals(data.getDockedPortName())) {
-								exist = true;
-								if(frame.isIcon()) {
-									frame.setIcon(false);
-								}
-								
-								frame.moveToFront(); 
-								frame.setSelected(true);			
-							};
-						}
-						
-						if(!exist) {
-							//open frame for specific ship
-							InternalFramePort newFrame = new InternalFramePort(parentDesktopPane,gameManager,data.getDockedPortName(),data.getName());
-							parentDesktopPane.add(newFrame);
-							newFrame.setVisible(true);
-							newFrame.setMaximum(true);														
-							newFrame.setSelected(true);
-						}
+						parentDesktopPane.createInternalFramePort(gameManager,data.getDockedPort(),data.getShip());
 					}
-					
-					
+
+
 				}catch (Exception e) {}
 			}
 		});		

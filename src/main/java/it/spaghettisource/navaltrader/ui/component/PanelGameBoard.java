@@ -54,7 +54,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 	static Log log = LogFactory.getLog(PanelGameBoard.class.getName());
 
 	private final static long SLEEP_TIME = 10;
-	
+
 	private final static String ACTION_PAUSE = "pause";
 	private final static String ACTION_PLAY_X1 = "playx1";	
 	private final static String ACTION_PLAY_X2 = "playx2";	
@@ -62,11 +62,12 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 	private final static String ACTION_SHIP_LIST = "ship_list";	
 	private final static String ACTION_SHIP_BROKER = "ship_Broker";	
 	private final static String ACTION_OFFICE = "office";			
-	private final static String ACTION_SETTING = "setting";	
+	private final static String ACTION_SETTING = "setting";
+	private final static String ACTION_OPEN_PORT = "port";	
 
 	private GameBoardDesktopPane parentDesktopPane;
 	private GameManager gameManager;
-	
+
 	private Company company;
 	private World world;
 	private GameTime gameTime;		
@@ -74,15 +75,15 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 
 	private boolean stopThread;
 	private NumberFormat formatCurrency = NumberFormat.getCurrencyInstance();
-	
+
 	private List<ButtonDrawPort> portsButton;
-	
+
 	private BufferedImage barUp;
 	private BufferedImage barDown;	
 	private BufferedImage ship;
 	private BufferedImage shipDocked;	
-	
-	
+
+
 	private ImageIcon puase;	
 	private ImageIcon speedx1;
 	private ImageIcon speedx2;
@@ -92,7 +93,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 	private ImageIcon shipBroker;	
 	private ImageIcon office;		
 	private ImageIcon setting;	
-	
+
 	public PanelGameBoard(GameBoardDesktopPane parentDesktopPane,GameManager gameManager, int panelSize) {
 		super(true);
 		setLayout(null);
@@ -101,7 +102,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 
 		this.parentDesktopPane = parentDesktopPane;
 		this.gameManager = gameManager;
-		
+
 		this.company = gameManager.getGameData().getCompany();
 		this.world = gameManager.getGameData().getWorld();
 		this.gameTime = gameManager.getGameData().getGameTime();
@@ -112,7 +113,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		barDown = ImageIconFactory.getBufferImageByName("/images/bar-down.png");
 		ship = ImageIconFactory.getBufferImageByName("/images/ship.png");
 		shipDocked = ImageIconFactory.getBufferImageByName("/images/dock-ship.png");
-		
+
 		puase = ImageIconFactory.getImageIconByName("/images/clock-pause.png");
 		speedx1 = ImageIconFactory.getImageIconByName("/images/clock-1.png");
 		speedx2 = ImageIconFactory.getImageIconByName("/images/clock-2.png");
@@ -121,12 +122,12 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		shipBroker = ImageIconFactory.getImageIconByName("/images/ship-broker.png");
 		office = ImageIconFactory.getImageIconByName("/images/office.png");
 		setting = ImageIconFactory.getImageIconByName("/images/setting.png");
-		
+
 		//create a button for each port
 		portsButton = new ArrayList<>();
 		ButtonDrawPort button;
 		for (Port port : world.getPorts()) {
-			button = new ButtonDrawPort(port, null,null);
+			button = new ButtonDrawPort(port, ACTION_OPEN_PORT,this);
 			add(button);			
 			portsButton.add(button);
 		}
@@ -149,7 +150,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		speed1.setActionCommand(ACTION_PLAY_X1);
 		speed1.addActionListener(this);		
 		add(speed1);		
-		
+
 		JButton speed2 = new JButton(speedx2);
 		speed2.setBounds(140, 32, speedx2.getIconWidth(), speedx2.getIconHeight());		
 		speed2.setBorder(BorderFactory.createEmptyBorder());
@@ -158,7 +159,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		speed2.setActionCommand(ACTION_PLAY_X2);
 		speed2.addActionListener(this);		
 		add(speed2);	
-		
+
 		JButton speed3 = new JButton(speedx3);
 		speed3.setBounds(180, 32, speedx3.getIconWidth(), speedx3.getIconHeight());		
 		speed3.setBorder(BorderFactory.createEmptyBorder());
@@ -167,7 +168,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		speed3.setActionCommand(ACTION_PLAY_X3);
 		speed3.addActionListener(this);		
 		add(speed3);	
-		
+
 		//create the button for the bar down
 		JButton shipListB = new JButton(shipList);
 		shipListB.setBounds(810, 998, shipList.getIconWidth(), shipList.getIconHeight());		
@@ -177,7 +178,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		shipListB.setActionCommand(ACTION_SHIP_LIST);
 		shipListB.addActionListener(this);
 		add(shipListB);	
-		
+
 		JButton shipBrokerB = new JButton(shipBroker);
 		shipBrokerB.setBounds(885, 998, shipBroker.getIconWidth(), shipBroker.getIconHeight());		
 		shipBrokerB.setBorder(BorderFactory.createEmptyBorder());
@@ -186,7 +187,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		shipBrokerB.setActionCommand(ACTION_SHIP_BROKER);
 		shipBrokerB.addActionListener(this);
 		add(shipBrokerB);		
-		
+
 		JButton officeB = new JButton(office);
 		officeB.setBounds(965, 998, office.getIconWidth(), office.getIconHeight());		
 		officeB.setBorder(BorderFactory.createEmptyBorder());
@@ -195,7 +196,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		officeB.setActionCommand(ACTION_OFFICE);
 		officeB.addActionListener(this);
 		add(officeB);			
-	
+
 		JButton settingB = new JButton(setting);
 		settingB.setBounds(1040, 998, setting.getIconWidth(), setting.getIconHeight());		
 		settingB.setBorder(BorderFactory.createEmptyBorder());
@@ -204,10 +205,10 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		settingB.setActionCommand(ACTION_SETTING);
 		settingB.addActionListener(this);
 		add(settingB);			
-		
-		
-		
-		
+
+
+
+
 		//prepare to start
 		addComponentListener(this);
 		stopThread = false;
@@ -228,7 +229,7 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		super.paintComponent(graphicsPanel);
 
 		Graphics2D mainGraphics = (Graphics2D)graphicsPanel;
-		
+
 		//TODO the real size must a correct relationship between the immage and the grid
 		int width = world.getWorldWidth();	//+1 because is not consider index 0 in the size of the immage
 		int height = world.getWorldHeight();
@@ -248,8 +249,8 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 
 		//draw the command on main immage
 		drawBar(mainGraphics,getWidth(),getHeight());		
-		
-		
+
+
 	}
 
 
@@ -257,30 +258,30 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 
 		//bar up
 		graphicsBuffer.drawImage(barUp,0,0,width,barUp.getHeight(),0,0,barUp.getWidth(),barUp.getHeight(),null);
-		
+
 		//bar down
 		graphicsBuffer.drawImage(barDown,(width/2)-barDown.getWidth()/2,height-barDown.getHeight(),(width/2)+barDown.getWidth()/2,height,0,0,barDown.getWidth(),barDown.getHeight(),null);
-		
+
 		drawTimeAndBudget(graphicsBuffer,width,height);
-			
-		
+
+
 	}
 
 
 	private void drawTimeAndBudget(Graphics2D graphicsBuffer,int width, int height) {
-	
+
 		graphicsBuffer.setFont(FontUtil.getDrawFont());
 		graphicsBuffer.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		
+
 		FontMetrics fontMetrics = graphicsBuffer.getFontMetrics();
 		int stringHeight = fontMetrics.getAscent();		
 
-		
+
 		//print date and clock
 		String date = 	gameTime.getDate();		
 		int xStart = 130;
 		int yStart = 21;			
-		
+
 		graphicsBuffer.setColor(Color.WHITE);
 		graphicsBuffer.drawString(date,xStart,yStart);
 		graphicsBuffer.fill(new Arc2D.Float(xStart-stringHeight-15, yStart-stringHeight, stringHeight, stringHeight, 90, -gameTime.getTimeInAngleFormat(), Arc2D.PIE));
@@ -289,14 +290,14 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 		String budget = formatCurrency.format(company.getBudget());
 		int stringWidth = fontMetrics.stringWidth(budget);
 		graphicsBuffer.drawString(budget,width/2 - stringWidth/2 ,45);
-		
+
 	}
-	
+
 	private void drawShips(Graphics2D graphicsBuffer) {
 		Point shipPosition;
 		for (Ship actualShip : company.getShips()) {
 			shipPosition = actualShip.getPosition();
-			
+
 			if(!actualShip.isDocked()) {
 
 				// Rotation information				
@@ -308,12 +309,12 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 
 				// Drawing the rotated image at the required drawing locations
 				graphicsBuffer.drawImage(op.filter(ship, null), shipPosition.getIntX()-ship.getWidth()/2, shipPosition.getIntY()-ship.getHeight()/2, null);
-				
+
 			}
-			
+
 		}
 	}	
-	
+
 	private void drawPorts(Graphics2D graphicsBuffer) {
 		//the ports are draw as button  and maintained in the variable portsButton
 		//but there are extra staff to draw.. for example the ship docked in the port is draw here
@@ -322,13 +323,13 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 			if(!port.getManagedPort().getDockedShip().isEmpty()) {	//if the port has ship draw related icon
 				coordinate = port.getManagedPort().getCooridnate();
 				graphicsBuffer.drawImage(shipDocked, coordinate.getIntX() - 50 - shipDocked.getWidth() , coordinate.getIntY() -50 - shipDocked.getHeight(), shipDocked.getWidth(), shipDocked.getHeight(), null);
-				
-				
+
+
 			}
 		}
-		
-		
-		
+
+
+
 	}
 
 
@@ -368,15 +369,21 @@ public class PanelGameBoard extends JPanel implements ComponentListener,  Action
 			} catch (java.beans.PropertyVetoException e) {}
 		}else if(ACTION_SETTING.equals(command)) {
 			//gameManager.quitGame();
-			
+
 			//close the main menu frame
 			//this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 			System.exit(0);
+		}else if(ACTION_OPEN_PORT.equals(command)){
+			Port targetPort = ((ButtonDrawPort)event.getSource()).getManagedPort();
+			if(!targetPort.getDockedShip().isEmpty()){
+				parentDesktopPane.createInternalFramePort(gameManager,targetPort,targetPort.getDockedShip().get(0));
+			}
+
 		}
-		
+
 	}
 
-	
+
 
 	public void componentResized(ComponentEvent e) {
 		//put the correct position of the port buttons		

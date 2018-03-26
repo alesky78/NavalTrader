@@ -46,7 +46,6 @@ import it.spaghettisource.navaltrader.ui.SpringLayoutUtilities;
 import it.spaghettisource.navaltrader.ui.component.ButtonDrawPort;
 import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 import it.spaghettisource.navaltrader.ui.component.ProgressBarHull;
-import it.spaghettisource.navaltrader.ui.component.TableCellRenderCheckContract;
 import it.spaghettisource.navaltrader.ui.component.TableCheckContract;
 import it.spaghettisource.navaltrader.ui.component.TextFieldCurrency;
 import it.spaghettisource.navaltrader.ui.component.TextFieldDouble;
@@ -56,6 +55,9 @@ import it.spaghettisource.navaltrader.ui.event.EventType;
 import it.spaghettisource.navaltrader.ui.frame.GameBoardDesktopPane;
 import it.spaghettisource.navaltrader.ui.model.TransportContractTableRow;
 
+
+
+//TODO introduce a mechanism to pass from one ship to another in this port if we have multiple ships
 public class InternalFramePort extends InternalFrameAbstract  implements ActionListener  {
 
 	static Log log = LogFactory.getLog(InternalFramePort.class.getName());
@@ -118,13 +120,16 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 	
 
-	public InternalFramePort(GameBoardDesktopPane parentDesktopPane,GameManager gameManager,String portName, String shipName) {
-		super(parentDesktopPane,gameManager, portName);
+	public InternalFramePort(GameBoardDesktopPane parentDesktopPane,GameManager gameManager,Port port, Ship ship) {
+		super(parentDesktopPane,gameManager, port.getName());
 		try {		
-			this.shipName = shipName;
-			this.portName = portName;
+			this.ship = ship;
+			this.shipName = ship.getName();
+			this.port = port;			
+			this.portName = port.getName();
 			loopManager = gameManager.getLoopManager();
 			loopManager.setPauseByGame(true);
+			this.world = gameData.getWorld();
 		
 			setFrameIcon(ImageIconFactory.getForFrame("/icon/ship list.png"));
 			
@@ -150,10 +155,6 @@ public class InternalFramePort extends InternalFrameAbstract  implements ActionL
 
 
 	private void initValuesFromModel() {
-
-		ship = gameData.getCompany().getShipByName(shipName);
-		world = gameData.getWorld();
-		port = gameData.getWorld().getPortByName(portName);
 
 		//ship status
 		shipStatus = new JTextField(ship.getStatus());
