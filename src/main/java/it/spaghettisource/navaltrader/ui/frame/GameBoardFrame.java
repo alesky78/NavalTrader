@@ -30,8 +30,7 @@ public class GameBoardFrame extends JFrame{
 
 		this.gameManager = gameManager;
 		desktop = new GameBoardDesktopPane(gameManager);
-		//Make dragging a little faster but perhaps uglier.
-		desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);	        
+       
 
 		//Add content to the window and pack it
 		setContentPane(desktop);

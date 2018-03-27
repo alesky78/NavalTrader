@@ -36,6 +36,9 @@ public class GameBoardDesktopPane extends JDesktopPane implements EventListener 
 		this.gameManager = gameManager;
 		EventPublisher.getInstance().register(this);		
 
+		//Make dragging a little faster but perhaps uglier.
+		//setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);	 
+		
 		createInternalFrameGameBoard();
 	}
 

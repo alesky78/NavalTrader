@@ -43,8 +43,9 @@ public class Angle {
 	}
 	
 	public void rotateTo(double newValue, double move) {
-		
-		if(value > 0 && newValue> 0) {
+		if(value ==  newValue) {
+			//do nothing
+		}else if(value > 0 && newValue> 0) {
 			if(newValue>value) {
 				addToAngle(move);
 			}else if(value > newValue){
@@ -64,11 +65,11 @@ public class Angle {
 				addToAngle(move);				
 			}
 		}else  if(value < 0 && newValue> 0) {
-			double oppositAngle = 180 - value;
+			double oppositAngle = 180 + value;
 			if(oppositAngle<newValue) {
-				addToAngle(move);
+				addToAngle(-move);
 			}else if(oppositAngle > newValue){
-				addToAngle(-move);				
+				addToAngle(move);				
 			}
 		}else  if(value != 0 && newValue == 0) {
 			if(value>0) {

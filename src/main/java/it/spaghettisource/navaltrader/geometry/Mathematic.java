@@ -31,6 +31,11 @@ public class Mathematic {
 	/**
 	 * return a value between -180 to 180 extremes included
 	 * 
+	 * the angle is calculated by the x axis and the line generated between the two point passed as parameter
+	 * 0 degree is over the x axis
+	 * later the angle is positive on clock direction
+	 * until -x that is 180 then starting from -179 to -1
+	 * 
 	 * @param p1
 	 * @param p2
 	 * @return
