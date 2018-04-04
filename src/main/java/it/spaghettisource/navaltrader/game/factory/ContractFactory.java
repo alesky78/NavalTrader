@@ -74,11 +74,11 @@ public class ContractFactory {
 						
 						distance = sourcePort.getRouteTo(destinationPort).getDistanceInScale();
 						
-						days = distance / (SPEED_REDUCTION * 24) * ThreadLocalRandom.current().nextInt(60, 120)/100; //days between 50% to 150%
+						days = distance / (SPEED_REDUCTION * 24) * ThreadLocalRandom.current().nextInt(80, 200)/100; //days between 80% to 200%
 						
 						pricePerTeu = calcolatePricePerTeu(distance, product, teu, dwt);
 						
-						dayPenality = teu * pricePerTeu * ThreadLocalRandom.current().nextInt(1, 20)/100; //penalty  between 1% to 15% of the total contract per day
+						dayPenality = teu * pricePerTeu * ThreadLocalRandom.current().nextInt(1, 20)/100; //penalty  between 1% to 20% of the total contract per day
 						
 						newContracts.add(new TransportContract(product, teu, dwt, pricePerTeu, dayPenality, days, destinationPort));				
 					}
