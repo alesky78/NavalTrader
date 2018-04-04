@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
@@ -32,7 +30,6 @@ import it.spaghettisource.navaltrader.game.model.World;
 import it.spaghettisource.navaltrader.geometry.Mathematic;
 import it.spaghettisource.navaltrader.geometry.Point;
 import it.spaghettisource.navaltrader.ui.ImageIconFactory;
-import it.spaghettisource.navaltrader.ui.component.PanelDrawRoute;
 
 public class GameFactory {
 

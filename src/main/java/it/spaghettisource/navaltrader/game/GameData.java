@@ -9,12 +9,14 @@ import it.spaghettisource.navaltrader.game.model.World;
 
 public class GameData implements Serializable {
 
+	private GameSetting setting;
 	private Company company;
 	private World world;
 	private GameTime time;
 	
-	public GameData(Company company,GameTime time,World world) {
+	public GameData(GameSetting setting,Company company,GameTime time,World world) {
 		super();
+		this.setting = setting;
 		this.company = company;
 		this.time = time;
 		this.world = world;
@@ -31,5 +33,9 @@ public class GameData implements Serializable {
 	public World getWorld() {
 		return world;
 	}
-		
+
+	public GameSetting getConfig() {
+		return setting;
+	}
+
 }

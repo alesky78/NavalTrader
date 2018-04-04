@@ -15,20 +15,17 @@ public class GameManager {
 	private LoopManager loopManager;
 
 
-	public void startNewGame(String companyName) {
-
-		//TODO initialization of the game, selection of scenario and port and make a progress bar wiht thread
+	public void startNewGame(GameSetting config, String companyName, String portName) {
 		
 		GameTime gameTime = new GameTime();
 		
 		GameFactory factory = new GameFactory();
 		World world = 	factory.createWorld();
 		
-		
-		Port startPort = world.getPortByName("Gioia Tauro");
+		Port startPort = world.getPortByName(portName);
 		Company company = new Company(companyName, startPort, 40000000,world);
 
-		gameData = new GameData(company,gameTime,world);
+		gameData = new GameData(config,company,gameTime,world);
 		loopManager = new LoopManager(gameData);
 		
 		loopManager.startLoopManagerThread();

@@ -7,7 +7,6 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import it.spaghettisource.navaltrader.game.GameManager;
 import it.spaghettisource.navaltrader.ui.frame.MainMenu;
 
 public class Application {
